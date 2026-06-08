@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eleva Padel Club · Pizarra, Málaga</title>
+  <meta name="description" content="El club de referencia del Valle. 4 pistas outdoor panorámicas con iluminación LED, academia, torneos Pool y zona chill-out. Pizarra, Málaga.">
+  <meta name="theme-color" content="#1A1A1A">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:title"       content="Eleva Padel Club · Pizarra, Málaga">
+  <meta property="og:description" content="Pádel elevado a otro nivel. El club de referencia del Valle del Guadalhorce.">
+  <meta property="og:image"       content="assets/img/og.jpg">
+  <meta property="og:locale"      content="es_ES">
+
+  <!-- Fonts (solo CSS, sin JS externo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css?v=20260609">
+
+  <!-- Fallback: si JS no carga, todo el contenido es visible -->
+  <noscript>
+    <style>
+      #splash { display: none !important; }
+      [data-reveal] { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     GRAIN TEXTURE OVERLAY
+════════════════════════════════════════════════════════════ -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SPLASH
+════════════════════════════════════════════════════════════ -->
+<div id="splash" role="status" aria-label="Cargando Eleva Padel Club">
+  <div class="splash-inner">
+    <div class="splash-triangle" aria-hidden="true">
+      <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+        <path class="triangle-path" d="M50,4 L96,86 L4,86 Z"/>
+      </svg>
+    </div>
+    <div class="splash-letters" aria-label="ELEVA">
+      <span aria-hidden="true">E</span>
+      <span aria-hidden="true">L</span>
+      <span aria-hidden="true">E</span>
+      <span aria-hidden="true">V</span>
+      <span aria-hidden="true">A</span>
+    </div>
+    <div class="splash-bar-wrap" aria-hidden="true">
+      <div class="splash-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     CUSTOM CURSOR
+════════════════════════════════════════════════════════════ -->
+<div id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <span class="cursor-label"></span>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAVEGACIÓN
+════════════════════════════════════════════════════════════ -->
+<nav id="main-nav" aria-label="Navegación principal">
+  <a href="#" class="nav-logo" aria-label="Eleva Padel Club — inicio">
+    <svg class="nav-logo-tri" viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M15,2 L28,25 L2,25 Z"/>
+    </svg>
+    <span class="logo-wordmark">ELEVA</span>
+  </a>
+
+  <ul class="nav-links" role="list">
+    <li><a href="#club"      data-num="01" data-cursor="ver">El Club</a></li>
+    <li><a href="#servicios" data-num="02" data-cursor="ver">Servicios</a></li>
+    <li><a href="#academia"  data-num="03" data-cursor="ver">Academia</a></li>
+    <li><a href="#pools"     data-num="04" data-cursor="ver">Pools</a></li>
+    <li><a href="#galeria"   data-num="05" data-cursor="mirar">Galería</a></li>
+    <li><a href="#contacto"  data-num="06" data-cursor="leer">Contacto</a></li>
+  </ul>
+
+  <a href="https://vola.plus/app-link/club/1498"
+     target="_blank" rel="noopener noreferrer"
+     class="nav-cta"
+     data-cursor="reservar">
+    Reservar
+  </a>
+
+  <button class="nav-burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-overlay">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div id="nav-overlay" class="nav-overlay" role="dialog" aria-label="Menú de navegación" aria-modal="true">
+  <a href="#club"      data-cursor="ver">El Club</a>
+  <a href="#servicios" data-cursor="ver">Servicios</a>
+  <a href="#academia"  data-cursor="ver">Academia</a>
+  <a href="#pools"     data-cursor="ver">Pools</a>
+  <a href="#galeria"   data-cursor="mirar">Galería</a>
+  <a href="#contacto"  data-cursor="leer">Contacto</a>
+  <a href="https://vola.plus/app-link/club/1498"
+     target="_blank" rel="noopener noreferrer"
+     class="nav-overlay-cta"
+     data-cursor="reservar">
+    Reservar pista →
+  </a>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     MARCA LATERAL FIJA
+════════════════════════════════════════════════════════════ -->
+<div class="brand-mark" aria-hidden="true">
+  ELEVA · PADEL CLUB · PIZARRA · MÁLAGA
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════ -->
+<section id="hero" class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <p class="hero-kicker" data-reveal>PADEL CLUB · 4 PISTAS OUTDOOR · PIZARRA · MÁLAGA</p>
+    <h1 class="hero-title" data-reveal data-reveal-delay="100">
+      <span class="hero-title-line">Eleva</span>
+      <span class="hero-title-line hero-title-offset">Padel Club.</span>
+    </h1>
+    <p class="hero-tagline" data-reveal data-reveal-delay="200">Pádel elevado a otro nivel.</p>
+    <div class="hero-ctas" data-reveal data-reveal-delay="300">
+      <a href="https://vola.plus/app-link/club/1498"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn-primary"
+         data-cursor="reservar">
+        Reservar pista →
+      </a>
+      <a href="#club" class="btn btn-ghost" data-cursor="ver">
+        Descubrir el club
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     MARQUEE STRIP
+════════════════════════════════════════════════════════════ -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-inner">
+      4 Pistas Outdoor
+      <span class="marquee-sep" aria-hidden="true">Δ</span>
+      Academia &amp; Clases
+      <span class="marquee-sep" aria-hidden="true">Δ</span>
+      Pools y Torneos
+      <span class="marquee-sep" aria-hidden="true">Δ</span>
+      Zona Chill-Out
+      <span class="marquee-sep" aria-hidden="true">Δ</span>
+      Pizarra, Málaga
+      <span class="marquee-sep" aria-hidden="true">Δ</span>
+      High Performance &amp; Social Club
+      <span class="marquee-sep" aria-hidden="true">Δ</span>
+    </span>
+    <span class="marquee-inner" aria-hidden="true">
+      4 Pistas Outdoor
+      <span class="marquee-sep">Δ</span>
+      Academia &amp; Clases
+      <span class="marquee-sep">Δ</span>
+      Pools y Torneos
+      <span class="marquee-sep">Δ</span>
+      Zona Chill-Out
+      <span class="marquee-sep">Δ</span>
+      Pizarra, Málaga
+      <span class="marquee-sep">Δ</span>
+      High Performance &amp; Social Club
+      <span class="marquee-sep">Δ</span>
+    </span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN 01 — EL CLUB
+════════════════════════════════════════════════════════════ -->
+<section id="club" class="section-club" aria-labelledby="club-heading">
+  <div class="club-grid">
+
+    <!-- Collage de fotos -->
+    <div class="club-collage" aria-hidden="true">
+      <div class="club-photo club-photo-1">
+        <div class="club-photo-inner"></div>
+        <div class="club-tape">EST. 2024</div>
+      </div>
+      <div class="club-photo club-photo-2">
+        <div class="club-photo-inner"></div>
+      </div>
+      <div class="club-photo club-photo-3">
+        <div class="club-photo-inner"></div>
+      </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="club-content">
+      <span class="section-watermark" aria-hidden="true">01</span>
+      <span class="section-label">El Club</span>
+
+      <div class="club-aside" aria-hidden="true">EST · 2024 · PIZARRA · MÁLAGA</div>
+
+      <h2 id="club-heading" class="club-heading" data-reveal>
+        Un club con más futuro<br>que presente.
+      </h2>
+
+      <dl class="club-defs" data-reveal data-reveal-delay="100">
+        <div class="club-def">
+          <dt>Pistas</dt>
+          <dd>4 outdoor panorámicas con iluminación LED</dd>
+        </div>
+        <div class="club-def">
+          <dt>Horario</dt>
+          <dd>Mañanas 9:00–12:00 · Tardes y noches 17:00–00:00</dd>
+        </div>
+        <div class="club-def">
+          <dt>Reservas</dt>
+          <dd>
+            <a href="https://vola.plus/app-link/club/1498"
+               target="_blank" rel="noopener"
+               data-cursor="reservar">
+              vola.plus/app-link/club/1498
+            </a>
+          </dd>
+        </div>
+        <div class="club-def">
+          <dt>Comunidad</dt>
+          <dd>
+            <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+               target="_blank" rel="noopener"
+               data-cursor="unirse">
+              Grupo WhatsApp activo →
+            </a>
+          </dd>
+        </div>
+        <div class="club-def">
+          <dt>Torneos</dt>
+          <dd>Pools semanales · Viernes 20:00</dd>
+        </div>
+      </dl>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN 02 — SERVICIOS (scroll horizontal en desktop)
+════════════════════════════════════════════════════════════ -->
+<section id="servicios" class="section-services" aria-labelledby="servicios-heading">
+  <h2 id="servicios-heading" class="sr-only">Servicios de Eleva Padel Club</h2>
+
+  <div class="services-sticky" id="services-sticky">
+    <div class="services-track" id="services-track" role="list">
+
+      <!-- CARD 1: Pistas (fondo negro) -->
+      <article class="service-card card-dark" role="listitem">
+        <div class="service-left">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke="var(--gold)" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="14" width="52" height="36" rx="2" stroke-width="2"/>
+            <line x1="32" y1="14" x2="32" y2="50" stroke-width="1.5"/>
+            <line x1="6"  y1="27" x2="58" y2="27" stroke-width="1.5"/>
+            <line x1="6"  y1="37" x2="58" y2="37" stroke-width="1.5"/>
+            <circle cx="19" cy="32" r="3.5" stroke-width="1.5"/>
+            <circle cx="45" cy="32" r="3.5" stroke-width="1.5"/>
+          </svg>
+          <span class="service-num">01 / 04</span>
+        </div>
+        <div class="service-right">
+          <span class="service-cat">Instalaciones</span>
+          <h3 class="service-title">Pistas</h3>
+          <p class="service-subtitle">Juega. Cualquier hora.</p>
+          <p class="service-desc">
+            4 pistas outdoor de cristal panorámico con iluminación LED de última generación.
+            Cristal, luz y hierba de primer nivel.
+            Reserva en segundos desde la app.
+          </p>
+          <a href="https://vola.plus/app-link/club/1498"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn-primary"
+             data-cursor="reservar">
+            Reservar pista →
+          </a>
+          <span class="service-progress">01 / 04</span>
+        </div>
+      </article>
+
+      <!-- CARD 2: Academia (fondo beige) -->
+      <article class="service-card card-light" role="listitem">
+        <div class="service-left">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke="var(--black)" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Pala -->
+            <ellipse cx="28" cy="27" rx="17" ry="19" stroke-width="2"/>
+            <line x1="22" y1="9"  x2="20" y2="45" stroke-width="1" opacity=".45"/>
+            <line x1="28" y1="8"  x2="28" y2="46" stroke-width="1" opacity=".45"/>
+            <line x1="34" y1="9"  x2="36" y2="45" stroke-width="1" opacity=".45"/>
+            <line x1="11" y1="19" x2="45" y2="21" stroke-width="1" opacity=".45"/>
+            <line x1="10" y1="27" x2="46" y2="27" stroke-width="1" opacity=".45"/>
+            <line x1="11" y1="35" x2="45" y2="33" stroke-width="1" opacity=".45"/>
+            <line x1="36" y1="44" x2="56" y2="58" stroke-width="3"/>
+          </svg>
+          <span class="service-num" style="color:var(--black);opacity:.4">02 / 04</span>
+        </div>
+        <div class="service-right">
+          <span class="service-cat">Formación</span>
+          <h3 class="service-title" style="color:var(--black)">Academia</h3>
+          <p class="service-subtitle" style="color:var(--black)">Sube de nivel de verdad.</p>
+          <p class="service-desc" style="color:var(--black)">
+            Grupos de 3–4 personas, monitores federados, 1h de técnica real.
+            Clases para todos los niveles, desde iniciación hasta competición.
+            Sesiones de prueba disponibles.
+          </p>
+          <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn-dark"
+             id="btn-academia-card"
+             data-cursor="WhatsApp">
+            Consultar plazas →
+          </a>
+          <span class="service-progress" style="color:var(--black)">02 / 04</span>
+        </div>
+      </article>
+
+      <!-- CARD 3: Pools (fondo negro) -->
+      <article class="service-card card-dark" role="listitem">
+        <div class="service-left">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke="var(--gold)" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Trofeo -->
+            <path d="M20 8 H44 V32 C44 42 36 48 32 48 C28 48 20 42 20 32 Z" stroke-width="2"/>
+            <path d="M20 14 C15 14 9 18 9 26 C9 34 15 36 20 34" stroke-width="2"/>
+            <path d="M44 14 C49 14 55 18 55 26 C55 34 49 36 44 34" stroke-width="2"/>
+            <line x1="32" y1="48" x2="32" y2="56" stroke-width="2"/>
+            <line x1="22" y1="56" x2="42" y2="56" stroke-width="2.5"/>
+          </svg>
+          <span class="service-num">03 / 04</span>
+        </div>
+        <div class="service-right">
+          <span class="service-cat">Competición</span>
+          <h3 class="service-title">Pools</h3>
+          <p class="service-subtitle">Compite cada viernes.</p>
+          <p class="service-desc">
+            Pools por categoría: SNP, 4ª, Mixta, Rocha.
+            Viernes a las 20:00, precio fijo, buen rollo garantizado.
+            Liga interna y torneos mensuales para todos los niveles.
+          </p>
+          <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn-primary"
+             data-cursor="unirse">
+            Unirse al grupo →
+          </a>
+          <span class="service-progress">03 / 04</span>
+        </div>
+      </article>
+
+      <!-- CARD 4: Chill-Out (fondo beige) -->
+      <article class="service-card card-light" role="listitem">
+        <div class="service-left">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke="var(--black)" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Vaso -->
+            <path d="M15 10 L19 52 H45 L49 10 Z" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="20" y1="30" x2="44" y2="30" stroke-width="1.5" stroke-dasharray="3 2.5"/>
+            <line x1="38" y1="10" x2="46" y2="0"  stroke-width="2"/>
+            <rect x="24" y="36" width="10" height="10" rx="1.5" stroke-width="1.5"/>
+            <line x1="24" y1="41" x2="34" y2="41" stroke-width="1" opacity=".5"/>
+            <line x1="29" y1="36" x2="29" y2="46" stroke-width="1" opacity=".5"/>
+          </svg>
+          <span class="service-num" style="color:var(--black);opacity:.4">04 / 04</span>
+        </div>
+        <div class="service-right">
+          <span class="service-cat">Ambiente</span>
+          <h3 class="service-title" style="color:var(--black)">Chill-Out</h3>
+          <p class="service-subtitle" style="color:var(--black)">El partido acaba, la tarde no.</p>
+          <p class="service-desc" style="color:var(--black)">
+            Zona de descanso con barra de refrigerios y bebidas frías después del partido.
+            Donde se fraguan los próximos equipos y las mejores conversaciones.
+          </p>
+          <a href="#contacto"
+             class="btn btn-dark"
+             data-cursor="ver">
+            Cómo llegar →
+          </a>
+          <span class="service-progress" style="color:var(--black)">04 / 04</span>
+        </div>
+      </article>
+
+    </div><!-- /services-track -->
+  </div><!-- /services-sticky -->
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN 03 — ACADEMIA
+════════════════════════════════════════════════════════════ -->
+<section id="academia" class="section-academy" aria-labelledby="academia-heading">
+  <div class="academy-header">
+    <span class="section-watermark" aria-hidden="true">03</span>
+    <span class="section-label">Academia</span>
+    <h2 id="academia-heading" class="academy-title" data-reveal>
+      Entrena en serio.<br><em>Mejora de verdad.</em>
+    </h2>
+  </div>
+
+  <div class="academy-grid">
+
+    <!-- Nivel Iniciación -->
+    <div class="academy-card" data-reveal>
+      <svg class="academy-icon" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="20" cy="12" r="6"/>
+        <path d="M8 38 C8 28 32 28 32 38"/>
+        <line x1="20" y1="18" x2="20" y2="28"/>
+      </svg>
+      <span class="academy-level">Iniciación</span>
+      <h3 class="academy-card-title">Empieza bien desde cero.</h3>
+      <p class="academy-card-desc">
+        Aprende la técnica correcta desde el primer golpe. Sin vicios, con base.
+      </p>
+      <ul class="academy-includes">
+        <li>Fundamentos de técnica</li>
+        <li>Movimiento y posicionamiento</li>
+        <li>Reglas y puntuación</li>
+      </ul>
+    </div>
+
+    <!-- Nivel Intermedio -->
+    <div class="academy-card" data-reveal data-reveal-delay="100">
+      <svg class="academy-icon" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="20" cy="12" r="6"/>
+        <path d="M8 38 C8 28 32 28 32 38"/>
+        <line x1="20" y1="18" x2="20" y2="28"/>
+        <line x1="13" y1="23" x2="27" y2="23"/>
+      </svg>
+      <span class="academy-level">Intermedio</span>
+      <h3 class="academy-card-title">Consolida y táctica real.</h3>
+      <p class="academy-card-desc">
+        Ya golpeas bien. Ahora aprende a pensar el partido y a jugar en pareja.
+      </p>
+      <ul class="academy-includes">
+        <li>Técnica avanzada</li>
+        <li>Táctica de pareja</li>
+        <li>Situaciones reales de juego</li>
+      </ul>
+    </div>
+
+    <!-- Nivel Avanzado -->
+    <div class="academy-card" data-reveal data-reveal-delay="200">
+      <svg class="academy-icon" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="20" cy="12" r="6"/>
+        <path d="M8 38 C8 28 32 28 32 38"/>
+        <line x1="20" y1="18" x2="20" y2="28"/>
+        <line x1="13" y1="23" x2="27" y2="23"/>
+        <path d="M14 6 L20 2 L26 6" fill="none"/>
+      </svg>
+      <span class="academy-level">Avanzado / Competición</span>
+      <h3 class="academy-card-title">Sube de categoría.</h3>
+      <p class="academy-card-desc">
+        Para los que ya juegan y quieren resultados. Análisis, estrategia, competición.
+      </p>
+      <ul class="academy-includes">
+        <li>Análisis de juego</li>
+        <li>Preparación para torneos</li>
+        <li>Estrategia de partido</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- CTA block -->
+  <div class="container">
+    <div class="academy-cta-block" data-reveal>
+      <span>
+        <strong>Sesión de prueba:</strong> 1h · Grupos 3–4 personas · <strong>10€/persona</strong><br>
+        Monitores federados · Todos los niveles · Disponibilidad consultable por WhatsApp
+      </span>
+      <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn-primary"
+         id="btn-prueba"
+         data-cursor="WhatsApp">
+        Reservar sesión de prueba →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN 04 — POOLS & TORNEOS
+════════════════════════════════════════════════════════════ -->
+<section id="pools" class="section-pools" aria-labelledby="pools-heading">
+  <div class="pools-header">
+    <span class="section-watermark" aria-hidden="true">04</span>
+    <span class="section-label" style="color:var(--gray)">Pools &amp; Torneos</span>
+    <h2 id="pools-heading" class="pools-title" data-reveal>
+      Compite<br>cada viernes.
+    </h2>
+  </div>
+
+  <div class="pools-grid" role="list">
+
+    <div class="pool-card" role="listitem" data-reveal>
+      <div class="pool-header">
+        <span class="pool-name">POOL SNP</span>
+        <span class="pool-badge">Activa</span>
+      </div>
+      <div class="pool-meta">
+        <span>Viernes · 20:00–21:30</span>
+      </div>
+      <div class="pool-price-tag">8€</div>
+      <p class="pool-desc">Sin par absoluto. Para quienes quieren saber exactamente dónde están.</p>
+    </div>
+
+    <div class="pool-card" role="listitem" data-reveal data-reveal-delay="80">
+      <div class="pool-header">
+        <span class="pool-name">POOL 4ª MASCULINA</span>
+        <span class="pool-badge">Activa</span>
+      </div>
+      <div class="pool-meta">
+        <span>Viernes · 20:00–21:30</span>
+      </div>
+      <div class="pool-price-tag">8€</div>
+      <p class="pool-desc">Cuarta categoría masculina. Nivel parejo, partido garantizado.</p>
+    </div>
+
+    <div class="pool-card" role="listitem" data-reveal data-reveal-delay="160">
+      <div class="pool-header">
+        <span class="pool-name">POOL MIXTA</span>
+        <span class="pool-badge">Activa</span>
+      </div>
+      <div class="pool-meta">
+        <span>Viernes · 20:00–21:30</span>
+      </div>
+      <div class="pool-price-tag">8€</div>
+      <p class="pool-desc">Mixta abierta. El mejor ambiente de la semana.</p>
+    </div>
+
+    <div class="pool-card" role="listitem" data-reveal data-reveal-delay="240">
+      <div class="pool-header">
+        <span class="pool-name">POOL ROCHA</span>
+        <span class="pool-badge">Activa</span>
+      </div>
+      <div class="pool-meta">
+        <span>Viernes · 20:00–21:30</span>
+      </div>
+      <div class="pool-price-tag">8€</div>
+      <p class="pool-desc">Categoría Rocha. Competición real, buen rollo también.</p>
+    </div>
+
+  </div>
+
+  <!-- Quote strip + CTA -->
+  <div class="pools-quote">
+    <blockquote data-reveal>
+      "Hay lugares con<br>más futuro que presente."
+    </blockquote>
+    <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+       target="_blank" rel="noopener noreferrer"
+       class="btn btn-primary"
+       id="btn-pool"
+       data-cursor="unirse">
+      Apuntarse al próximo pool →
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN 05 — GALERÍA
+════════════════════════════════════════════════════════════ -->
+<section id="galeria" class="section-gallery" aria-labelledby="galeria-heading">
+  <div class="gallery-header">
+    <h2 id="galeria-heading" class="gallery-title" data-reveal>El club.</h2>
+    <span class="gallery-subtitle" aria-hidden="true">Pizarra · Málaga · Est. 2024</span>
+  </div>
+
+  <div class="gallery-lanes" aria-label="Galería de imágenes del club">
+    <!-- Lane 1: →, velocidad normal -->
+    <div class="gallery-lane lane-1">
+      <div class="gallery-strip">
+        <div class="gallery-img gi-1"  role="img" aria-label="Pistas al atardecer"></div>
+        <div class="gallery-img gi-2"  role="img" aria-label="Detalle de cristal y malla"></div>
+        <div class="gallery-img gi-3"  role="img" aria-label="Pelota en acción"></div>
+        <div class="gallery-img gi-4"  role="img" aria-label="Pala de pádel"></div>
+        <div class="gallery-img gi-5"  role="img" aria-label="Zona chill-out"></div>
+        <div class="gallery-img gi-6"  role="img" aria-label="Iluminación LED nocturna"></div>
+        <!-- Duplicados para loop continuo -->
+        <div class="gallery-img gi-1"  aria-hidden="true"></div>
+        <div class="gallery-img gi-2"  aria-hidden="true"></div>
+        <div class="gallery-img gi-3"  aria-hidden="true"></div>
+        <div class="gallery-img gi-4"  aria-hidden="true"></div>
+        <div class="gallery-img gi-5"  aria-hidden="true"></div>
+        <div class="gallery-img gi-6"  aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- Lane 2: ←, velocidad lenta -->
+    <div class="gallery-lane lane-2">
+      <div class="gallery-strip">
+        <div class="gallery-img gi-7"  role="img" aria-label="Jugadores en partido"></div>
+        <div class="gallery-img gi-8"  role="img" aria-label="Logo del club"></div>
+        <div class="gallery-img gi-9"  role="img" aria-label="Vista de pistas"></div>
+        <div class="gallery-img gi-10" role="img" aria-label="Entrada al club"></div>
+        <div class="gallery-img gi-11" role="img" aria-label="Red central"></div>
+        <!-- Duplicados -->
+        <div class="gallery-img gi-7"  aria-hidden="true"></div>
+        <div class="gallery-img gi-8"  aria-hidden="true"></div>
+        <div class="gallery-img gi-9"  aria-hidden="true"></div>
+        <div class="gallery-img gi-10" aria-hidden="true"></div>
+        <div class="gallery-img gi-11" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- Lane 3: →, velocidad rápida -->
+    <div class="gallery-lane lane-3">
+      <div class="gallery-strip">
+        <div class="gallery-img gi-12" role="img" aria-label="Jugadoras en partido"></div>
+        <div class="gallery-img gi-13" role="img" aria-label="Pala Bullpadel"></div>
+        <div class="gallery-img gi-14" role="img" aria-label="Pista con reflejos LED"></div>
+        <div class="gallery-img gi-15" role="img" aria-label="Grupo de jugadores"></div>
+        <div class="gallery-img gi-16" role="img" aria-label="Atardecer sobre las pistas"></div>
+        <!-- Duplicados -->
+        <div class="gallery-img gi-12" aria-hidden="true"></div>
+        <div class="gallery-img gi-13" aria-hidden="true"></div>
+        <div class="gallery-img gi-14" aria-hidden="true"></div>
+        <div class="gallery-img gi-15" aria-hidden="true"></div>
+        <div class="gallery-img gi-16" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     SECCIÓN 06 — RESERVA & CONTACTO
+════════════════════════════════════════════════════════════ -->
+<section id="contacto" class="section-contact" aria-labelledby="contacto-heading">
+  <div class="contact-split">
+
+    <!-- Mitad izquierda: CTA reserva -->
+    <div class="contact-left">
+      <svg class="contact-tri" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50,4 L96,86 L4,86 Z"/>
+      </svg>
+      <h2 id="contacto-heading" class="contact-title" data-reveal>
+        Reserva<br><em>tu pista.</em>
+      </h2>
+      <a href="https://vola.plus/app-link/club/1498"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn-primary"
+         data-cursor="reservar">
+        Reservar pista →
+      </a>
+      <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+         target="_blank" rel="noopener noreferrer"
+         class="contact-secondary"
+         data-cursor="unirse">
+        Únete a la comunidad WhatsApp →
+      </a>
+    </div>
+
+    <!-- Mitad derecha: formulario -->
+    <div class="contact-right">
+      <h3 class="contact-form-title">Info sobre la academia</h3>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="form-group">
+          <label for="f-nombre">Nombre</label>
+          <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="f-telefono">Teléfono</label>
+          <input type="tel" id="f-telefono" name="telefono" placeholder="600 000 000" required autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <label for="f-nivel">Nivel</label>
+          <select id="f-nivel" name="nivel" required>
+            <option value="" disabled selected>Selecciona tu nivel</option>
+            <option value="Iniciación">Iniciación</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+            <option value="Competición">Competición</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-mensaje">Mensaje (opcional)</label>
+          <textarea id="f-mensaje" name="mensaje" placeholder="¿Algo que quieras añadir?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit" data-cursor="enviar">
+          Enviar por WhatsApp →
+        </button>
+        <p class="form-note">
+          Te redirige a WhatsApp con los datos rellenados. Respuesta en &lt;24h.
+        </p>
+      </form>
+    </div>
+
+  </div><!-- /contact-split -->
+
+  <!-- Info strip -->
+  <div class="contact-info" role="contentinfo">
+    <div class="contact-info-cell">
+      <span class="contact-info-label">Teléfono</span>
+      <span class="contact-info-value" id="info-phone">
+        <a href="#" id="link-phone" data-cursor="llamar">[TELÉFONO]</a>
+      </span>
+    </div>
+    <div class="contact-info-cell">
+      <span class="contact-info-label">Instagram</span>
+      <span class="contact-info-value">
+        <a href="https://instagram.com/elevapadelpizarra"
+           target="_blank" rel="noopener"
+           data-cursor="mirar">
+          @elevapadelpizarra
+        </a>
+      </span>
+    </div>
+    <div class="contact-info-cell">
+      <span class="contact-info-label">Dirección</span>
+      <span class="contact-info-value" id="info-address">[DIRECCIÓN] · Pizarra, Málaga</span>
+    </div>
+    <div class="contact-info-cell">
+      <span class="contact-info-label">Horario</span>
+      <span class="contact-info-value" id="info-schedule">
+        Mañanas 9:00–12:00<br>Tardes / noches 17:00–00:00
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer id="footer" aria-label="Pie de página">
+  <div class="footer-marquee" aria-hidden="true">
+    <span class="footer-marquee-inner">
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+      Eleva Padel Club &nbsp;·&nbsp;
+    </span>
+  </div>
+
+  <div class="footer-grid">
+    <!-- Columna 1: Logo + Mapa -->
+    <div>
+      <div class="footer-logo">
+        <svg viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15,2 L28,25 L2,25 Z"/>
+        </svg>
+        <span class="footer-logo-name">ELEVA</span>
+      </div>
+      <p class="footer-claim">El club de referencia del Valle.</p>
+      <div class="footer-col-title">Cómo llegar</div>
+      <div class="footer-map-placeholder" id="footer-map">
+        <a href="https://maps.google.com/?q=Pizarra,Málaga"
+           target="_blank" rel="noopener"
+           data-cursor="ver">
+          Ver en Google Maps →
+        </a>
+      </div>
+    </div>
+
+    <!-- Columna 2: Contacto -->
+    <div>
+      <div class="footer-col-title">Contacto</div>
+      <div class="footer-contact-item">
+        <span class="lbl">Teléfono / WhatsApp</span>
+        <span class="val" id="footer-phone"><a href="#" id="footer-link-phone" data-cursor="llamar">[TELÉFONO]</a></span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="lbl">Instagram</span>
+        <span class="val">
+          <a href="https://instagram.com/elevapadelpizarra"
+             target="_blank" rel="noopener"
+             data-cursor="mirar">
+            @elevapadelpizarra
+          </a>
+        </span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="lbl">Reservas</span>
+        <span class="val">
+          <a href="https://vola.plus/app-link/club/1498"
+             target="_blank" rel="noopener"
+             data-cursor="reservar">
+            App Vola Plus
+          </a>
+        </span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="lbl">Comunidad</span>
+        <span class="val">
+          <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
+             target="_blank" rel="noopener"
+             data-cursor="unirse">
+            Grupo WhatsApp
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <!-- Columna 3: Navegación -->
+    <div>
+      <div class="footer-col-title">El Club</div>
+      <ul class="footer-links">
+        <li><a href="#club"      data-cursor="ver">El Club</a></li>
+        <li><a href="#servicios" data-cursor="ver">Servicios</a></li>
+        <li><a href="#academia"  data-cursor="ver">Academia</a></li>
+        <li><a href="#pools"     data-cursor="ver">Pools &amp; Torneos</a></li>
+        <li><a href="#galeria"   data-cursor="mirar">Galería</a></li>
+        <li><a href="#contacto"  data-cursor="leer">Contacto</a></li>
+        <li>
+          <a href="https://vola.plus/app-link/club/1498"
+             target="_blank" rel="noopener"
+             data-cursor="reservar">
+            Reservar pista
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-legal">
+      &copy; 2026 Eleva Padel Club · Pizarra, Málaga ·
+      Créditos de imágenes en <a href="assets/credits.json" style="color:inherit;border-bottom:1px solid rgba(245,240,235,.15)">credits.json</a>
+    </p>
+    <a href="#" class="footer-back-top" data-cursor="arriba">↑ Volver arriba</a>
+    <p class="footer-credit">
+      Diseño web por
+      <a href="https://juanma-dev-portfolio.vercel.app"
+         target="_blank" rel="noopener"
+         data-cursor="ver">
+        Juanma Fernández
+      </a>
+    </p>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════
+     FAB — TRIÁNGULO FLOTANTE RESERVAR
+════════════════════════════════════════════════════════════ -->
+<div class="fab-triangle">
+  <a href="https://vola.plus/app-link/club/1498"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Reservar pista en Eleva Padel Club"
+     data-cursor="reservar">
+    <svg viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M15,2 L28,25 L2,25 Z"/>
+    </svg>
+  </a>
+  <span class="fab-tooltip" aria-hidden="true">Reservar pista</span>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS — todo diferido, sin type="module"
+════════════════════════════════════════════════════════════ -->
+<script src="lib/gsap.min.js?v=20260609"          defer></script>
+<script src="lib/ScrollTrigger.min.js?v=20260609" defer></script>
+<script src="lib/manifest.js?v=20260609"          defer></script>
+<script src="js/main.js?v=20260609"               defer></script>
+
+</body>
+</html>

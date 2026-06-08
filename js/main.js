@@ -1,0 +1,613 @@
+/* ================================================================
+   ELEVA PADEL CLUB — main.js
+   IIFE pattern. Sin módulos, sin build. Funciona en file://.
+   ================================================================ */
+(function () {
+  'use strict';
+
+  /* ────────────────────────────────────────────────────────────────
+     UTILIDADES
+  ──────────────────────────────────────────────────────────────── */
+  function safe(fn, name) {
+    try { fn(); }
+    catch (e) { console.warn('[Eleva] ' + name + ' falló:', e.message); }
+  }
+
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) {
+    return Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
+  }
+
+  function lerp(a, b, n) { return (1 - n) * a + n * b; }
+
+  function waURL(phone, msg) {
+    return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+  }
+
+  function isTouch() {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     SPLASH  — CSS es la red de seguridad primaria (4.5s).
+              JS la esconde a los 4s por si acaso.
+  ──────────────────────────────────────────────────────────────── */
+  function initSplash() {
+    var splash = document.getElementById('splash');
+    if (!splash) return;
+
+    /* Calcula la longitud real del triángulo SVG */
+    var path = splash.querySelector('.triangle-path');
+    if (path && path.getTotalLength) {
+      var len = path.getTotalLength();
+      path.style.strokeDasharray  = len;
+      path.style.strokeDashoffset = len;
+    }
+
+    /* Backup JS: esconde a los 4s */
+    setTimeout(function () {
+      splash.classList.add('hidden');
+    }, 4000);
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     CURSOR PERSONALIZADO
+  ──────────────────────────────────────────────────────────────── */
+  function initCursor() {
+    if (isTouch()) {
+      document.body.classList.add('touch-device');
+      return;
+    }
+
+    var cursor = document.getElementById('cursor');
+    if (!cursor) return;
+
+    var dot   = cursor.querySelector('.cursor-dot');
+    var ring  = cursor.querySelector('.cursor-ring');
+    var label = cursor.querySelector('.cursor-label');
+
+    var mx = window.innerWidth / 2;
+    var my = window.innerHeight / 2;
+    var rx = mx, ry = my;
+    var rafId;
+
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    }, { passive: true });
+
+    function tick() {
+      rx = lerp(rx, mx, 0.14);
+      ry = lerp(ry, my, 0.14);
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      rafId = requestAnimationFrame(tick);
+    }
+    tick();
+
+    /* Cambio de label contextual */
+    document.addEventListener('mouseover', function (e) {
+      var el = e.target.closest('[data-cursor]');
+      if (el) {
+        label.textContent = el.dataset.cursor;
+        cursor.classList.add('has-label');
+      }
+      if (e.target.closest('a, button')) {
+        cursor.classList.add('is-hovering');
+      }
+    });
+
+    document.addEventListener('mouseout', function (e) {
+      if (!e.target.closest('[data-cursor]') || !e.relatedTarget || !e.relatedTarget.closest('[data-cursor]')) {
+        cursor.classList.remove('has-label');
+      }
+      if (e.target.closest('a, button') && (!e.relatedTarget || !e.relatedTarget.closest('a, button'))) {
+        cursor.classList.remove('is-hovering');
+      }
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     NAVEGACIÓN — scrolled state + burger menu
+  ──────────────────────────────────────────────────────────────── */
+  function initNav() {
+    var nav     = document.getElementById('main-nav');
+    var burger  = nav ? nav.querySelector('.nav-burger') : null;
+    var overlay = document.getElementById('nav-overlay');
+
+    if (!nav) return;
+
+    /* Scroll state */
+    var scrolled = false;
+    window.addEventListener('scroll', function () {
+      var now = window.scrollY > 60;
+      if (now !== scrolled) {
+        scrolled = now;
+        nav.classList.toggle('nav-scrolled', now);
+      }
+    }, { passive: true });
+
+    /* Burger menu */
+    if (burger && overlay) {
+      burger.addEventListener('click', function () {
+        var isOpen = overlay.classList.contains('is-open');
+        overlay.style.display = isOpen ? 'none' : 'flex';
+        requestAnimationFrame(function () {
+          overlay.classList.toggle('is-open', !isOpen);
+        });
+        burger.classList.toggle('is-open', !isOpen);
+        burger.setAttribute('aria-expanded', String(!isOpen));
+        document.body.style.overflow = isOpen ? '' : 'hidden';
+      });
+
+      /* Cierra al pulsar un link del overlay */
+      overlay.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          overlay.style.display = 'none';
+          overlay.classList.remove('is-open');
+          burger.classList.remove('is-open');
+          burger.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        });
+      });
+
+      /* Cierra con Escape */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+          overlay.style.display = 'none';
+          overlay.classList.remove('is-open');
+          burger.classList.remove('is-open');
+          burger.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     HERO — parallax muy sutil en el background
+  ──────────────────────────────────────────────────────────────── */
+  function initHero() {
+    var heroBg = $('.hero-bg');
+    if (!heroBg || isTouch()) return;
+
+    window.addEventListener('scroll', function () {
+      var scrollY = window.scrollY;
+      var heroH   = document.getElementById('hero').offsetHeight;
+      if (scrollY > heroH) return;
+      var pct = scrollY / heroH;
+      heroBg.style.transform = 'scale(1.04) translateY(' + (pct * 30) + 'px)';
+    }, { passive: true });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     SERVICIOS — scroll horizontal con GSAP en desktop
+  ──────────────────────────────────────────────────────────────── */
+  function initServices() {
+    var sticky = document.getElementById('services-sticky');
+    var track  = document.getElementById('services-track');
+    var cards  = $$('.service-card');
+
+    if (!sticky || !track || !cards.length) return;
+
+    var mobile = window.matchMedia('(max-width: 768px)').matches;
+
+    if (mobile) {
+      /* Móvil: iconos con scroll del track */
+      if (cards[0]) cards[0].classList.add('icon-drawn');
+
+      track.addEventListener('scroll', function () {
+        var idx = Math.round(track.scrollLeft / window.innerWidth);
+        cards.forEach(function (card, i) {
+          if (i <= idx + 1 && !card.classList.contains('icon-drawn')) {
+            card.classList.add('icon-drawn');
+          }
+        });
+      }, { passive: true });
+      return;
+    }
+
+    /* Desktop: GSAP horizontal scrub */
+    if (!window.gsap || !window.ScrollTrigger) {
+      /* Fallback sin GSAP: CSS snap horizontal */
+      track.style.overflowX = 'scroll';
+      track.style.scrollSnapType = 'x mandatory';
+      cards.forEach(function (c) { c.style.scrollSnapAlign = 'start'; });
+      if (cards[0]) cards[0].classList.add('icon-drawn');
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* GSAP necesita position static aquí — él gestiona el fixed */
+    sticky.style.position = 'static';
+
+    var totalW = (cards.length - 1) * window.innerWidth;
+
+    gsap.to(track, {
+      x: -totalW,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: sticky,
+        pin: true,
+        pinSpacing: true,
+        start: 'top top',
+        end: '+=' + totalW,
+        scrub: 1.2,
+        onUpdate: function (self) {
+          var prog = self.progress * (cards.length - 1);
+          cards.forEach(function (card, i) {
+            if (prog >= i - 0.35 && !card.classList.contains('icon-drawn')) {
+              card.classList.add('icon-drawn');
+            }
+          });
+        }
+      }
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     REVEALS — IntersectionObserver en todos los [data-reveal]
+               + timeout 6s de seguridad
+  ──────────────────────────────────────────────────────────────── */
+  function initReveals() {
+    var els = $$('[data-reveal]');
+    if (!els.length) return;
+
+    /* 1. Ocultar inicialmente vía JS (no CSS) para no romper sin JS */
+    els.forEach(function (el) {
+      var delay = parseInt(el.dataset.revealDelay || '0', 10);
+      el.style.opacity   = '0';
+      el.style.transform = 'translateY(32px)';
+      el.style.transition =
+        'opacity 0.75s cubic-bezier(0.16,1,0.3,1) ' + delay + 'ms, ' +
+        'transform 0.75s cubic-bezier(0.16,1,0.3,1) ' + delay + 'ms';
+    });
+
+    /* 2. Safety timeout 6s — revela todo lo pendiente */
+    var safetyTimer = setTimeout(function () {
+      els.forEach(function (el) {
+        if (el.dataset.revealPending) reveal(el);
+      });
+    }, 6000);
+
+    function reveal(el) {
+      el.style.opacity   = '1';
+      el.style.transform = 'none';
+      delete el.dataset.revealPending;
+    }
+
+    /* 3. IntersectionObserver */
+    if (!('IntersectionObserver' in window)) {
+      clearTimeout(safetyTimer);
+      els.forEach(reveal);
+      return;
+    }
+
+    els.forEach(function (el) { el.dataset.revealPending = '1'; });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          reveal(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+    els.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     MANIFEST — actualiza el DOM con datos de lib/manifest.js
+  ──────────────────────────────────────────────────────────────── */
+  function initManifest() {
+    var data = window.__ELEVA__;
+    if (!data || !data.brand) return;
+
+    var brand = data.brand;
+    var phone = brand.phone || '';
+
+    /* Teléfono */
+    var telHref = 'tel:+' + phone.replace(/\D/g, '');
+    $$('[id^="link-phone"], [id^="footer-link-phone"]').forEach(function (el) {
+      el.href        = telHref;
+      el.textContent = brand.phone.replace(/^34/, '+34 ');
+    });
+
+    /* WhatsApp con mensajes específicos */
+    var waBase = waURL(phone, 'Hola, me interesa información sobre Eleva Padel Club.');
+
+    /* Academia card CTA */
+    var btnAcad = document.getElementById('btn-academia-card');
+    if (btnAcad) {
+      btnAcad.href = waURL(phone,
+        'Hola, me interesa consultar plazas de la academia de Eleva Padel Club.');
+    }
+
+    /* Sesión de prueba CTA */
+    var btnPrueba = document.getElementById('btn-prueba');
+    if (btnPrueba) {
+      btnPrueba.href = waURL(phone,
+        'Hola, me interesa reservar una sesión de prueba de academia en Eleva Padel Club. ' +
+        '1h · Grupos 3–4 personas · 10€/persona.');
+    }
+
+    /* Pool CTA */
+    var btnPool = document.getElementById('btn-pool');
+    if (btnPool) {
+      btnPool.href = waURL(phone,
+        'Hola, me gustaría apuntarme al próximo pool de Eleva Padel Club.');
+    }
+
+    /* Dirección */
+    var infoAddr = document.getElementById('info-address');
+    if (infoAddr && brand.address) {
+      infoAddr.textContent = brand.address;
+    }
+
+    /* Horario */
+    var infoSched = document.getElementById('info-schedule');
+    if (infoSched && brand.schedule) {
+      infoSched.innerHTML = brand.schedule.replace(/·/g, '<br>·');
+    }
+
+    /* Google Maps embed en footer */
+    var mapEl = document.getElementById('footer-map');
+    if (mapEl && brand.mapEmbed && brand.mapEmbed.length > 10) {
+      var iframe = document.createElement('iframe');
+      iframe.src           = brand.mapEmbed;
+      iframe.style.cssText = 'width:100%;height:100%;border:0';
+      iframe.loading       = 'lazy';
+      iframe.allowFullscreen = true;
+      iframe.setAttribute('aria-hidden', 'true');
+      mapEl.innerHTML = '';
+      mapEl.appendChild(iframe);
+    }
+
+    /* Gallery con fotos reales si las rutas existen */
+    if (data.gallery && Array.isArray(data.gallery)) {
+      var imgs = $$('.gallery-img');
+      var seen = {};
+      imgs.forEach(function (el) {
+        var gi = el.className.match(/gi-(\d+)/);
+        if (!gi) return;
+        var idx = parseInt(gi[1], 10) - 1;
+        var src = data.gallery[idx];
+        if (src) {
+          var key = src;
+          if (!seen[key]) {
+            seen[key] = true;
+            var img = new Image();
+            img.onload = function () {
+              $$('.gi-' + (idx + 1)).forEach(function (div) {
+                /* background shorthand sobreescribe los gradientes CSS */
+                div.style.background = 'url(' + src + ') center/cover no-repeat';
+              });
+            };
+            img.src = src;
+          }
+        }
+      });
+    }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     FORMULARIO DE CONTACTO — abre WhatsApp con los datos
+  ──────────────────────────────────────────────────────────────── */
+  function initContact() {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var data  = window.__ELEVA__;
+      var phone = (data && data.brand && data.brand.phone) || '';
+
+      var nombre   = (form.querySelector('[name="nombre"]').value   || '').trim();
+      var telefono = (form.querySelector('[name="telefono"]').value  || '').trim();
+      var nivel    = (form.querySelector('[name="nivel"]').value     || '').trim();
+      var mensaje  = (form.querySelector('[name="mensaje"]').value   || '').trim();
+
+      if (!nombre || !telefono || !nivel) {
+        var first = form.querySelector(':invalid');
+        if (first) first.focus();
+        return;
+      }
+
+      var text =
+        'Hola, me interesa información sobre la academia de Eleva Padel Club.\n\n' +
+        'Nombre: '   + nombre   + '\n' +
+        'Teléfono: ' + telefono + '\n' +
+        'Nivel: '    + nivel;
+      if (mensaje) text += '\nMensaje: ' + mensaje;
+
+      var url = waURL(phone, text);
+      try { window.open(url, '_blank', 'noopener'); }
+      catch (ex) { window.location.href = url; }
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     SMOOTH SCROLL — anclas internas (refuerzo cross-browser)
+  ──────────────────────────────────────────────────────────────── */
+  function initSmoothScroll() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var target = document.querySelector(a.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      var navH = document.getElementById('main-nav').offsetHeight || 80;
+      var top  = target.getBoundingClientRect().top + window.scrollY - navH;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     GSAP EXTRAS — efectos adicionales que no interfieren con initReveals
+  ──────────────────────────────────────────────────────────────── */
+  function initGSAPExtras() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* Footer marquee: pequeño efecto parallax sutil */
+    var footerMarquee = $('.footer-marquee');
+    if (footerMarquee) {
+      gsap.to(footerMarquee, {
+        x: -80,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#footer',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2
+        }
+      });
+    }
+
+    /* Academy cards: entrada más expresiva (reemplaza initReveals para estos) */
+    var acCards = $$('.academy-card');
+    if (acCards.length) {
+      acCards.forEach(function (card) {
+        /* Anula el data-reveal para que GSAP tome el control */
+        card.removeAttribute('data-reveal');
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(40px)';
+      });
+      gsap.to(acCards, {
+        opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power2.out',
+        scrollTrigger: { trigger: '.academy-grid', start: 'top 80%' }
+      });
+    }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     CLUB COLLAGE — rotación sutil al entrar en viewport
+  ──────────────────────────────────────────────────────────────── */
+  function initCollage() {
+    if (!('IntersectionObserver' in window)) return;
+
+    var collage = $('.club-collage');
+    if (!collage) return;
+
+    var photos = $$('.club-photo', collage);
+    var rots   = ['-2.5deg', '1.8deg', '-0.8deg'];
+
+    photos.forEach(function (p, i) {
+      p.style.transform = 'rotate(' + rots[i] + ') translateY(30px)';
+      p.style.opacity   = '0';
+      p.style.transition = 'opacity 0.8s ease ' + (i * 130) + 'ms, transform 0.9s cubic-bezier(0.16,1,0.3,1) ' + (i * 130) + 'ms';
+    });
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        photos.forEach(function (p, i) {
+          p.style.transform = 'rotate(' + rots[i] + ') translateY(0)';
+          p.style.opacity   = '1';
+        });
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+
+    obs.observe(collage);
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     BACK TO TOP suave
+  ──────────────────────────────────────────────────────────────── */
+  function initBackTop() {
+    var btn = $('.footer-back-top');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     AURORA BACKGROUND — reacciona suavemente al mouse
+  ──────────────────────────────────────────────────────────────── */
+  function initAurora() {
+    if (isTouch()) return;
+
+    var style = document.createElement('style');
+    style.textContent = '.aurora-orb{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);opacity:0;transition:opacity 1.5s,left 0.5s,top 0.5s;will-change:left,top;}';
+    document.head.appendChild(style);
+
+    var orb = document.createElement('div');
+    orb.className = 'aurora-orb';
+    orb.style.cssText = 'width:600px;height:400px;background:radial-gradient(ellipse,rgba(196,168,130,0.07) 0%,transparent 70%);margin-left:-300px;margin-top:-200px;';
+    document.body.appendChild(orb);
+
+    setTimeout(function () { orb.style.opacity = '1'; }, 300);
+
+    document.addEventListener('mousemove', function (e) {
+      orb.style.left = e.clientX + 'px';
+      orb.style.top  = e.clientY + 'px';
+    }, { passive: true });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     POOL — actualiza CTAs con mensajes formateados por categoría
+  ──────────────────────────────────────────────────────────────── */
+  function initPools() {
+    var data = window.__ELEVA__;
+    if (!data || !data.brand || !data.pools) return;
+
+    var phone = data.brand.phone;
+    var btn   = document.getElementById('btn-pool');
+    if (btn && phone) {
+      btn.href = waURL(phone,
+        '¡Hola! Me gustaría apuntarme al próximo pool de Eleva Padel Club 🎾\n' +
+        'Viernes 20:00 · 8€/persona.');
+    }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     SERVICIOS HERO SECTION — height nativa vs GSAP
+  ──────────────────────────────────────────────────────────────── */
+  function fixServicesHeight() {
+    /* En desktop sin GSAP: altura mínima visible */
+    var mobile = window.matchMedia('(max-width: 768px)').matches;
+    if (mobile) return;
+    if (!window.gsap) {
+      var sticky = document.getElementById('services-sticky');
+      if (sticky) sticky.style.minHeight = '100vh';
+    }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     INIT — llama todo en orden seguro
+  ──────────────────────────────────────────────────────────────── */
+  function init() {
+    safe(initSplash,        'splash');
+    safe(initCursor,        'cursor');
+    safe(initNav,           'nav');
+    safe(initHero,          'hero');
+    safe(initAurora,        'aurora');
+    safe(initCollage,       'collage');
+    safe(initReveals,       'reveals');
+    safe(initServices,      'services');
+    safe(initManifest,      'manifest');
+    safe(initPools,         'pools');
+    safe(initContact,       'contact');
+    safe(initSmoothScroll,  'smoothScroll');
+    safe(initBackTop,       'backTop');
+    safe(fixServicesHeight, 'servicesHeight');
+    /* GSAP extras al final, no bloquea nada */
+    safe(initGSAPExtras,    'gsapExtras');
+  }
+
+  /* Lanzar cuando el DOM está listo */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
