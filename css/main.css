@@ -127,7 +127,13 @@ svg { display: block; }
 #cursor.has-label .cursor-label { opacity: 1; transform: none; }
 #cursor.is-hovering .cursor-ring { width: 52px; height: 52px; opacity: .9; }
 #cursor.is-hovering .cursor-dot  { transform: translate(-50%,-50%) scale(0.5); }
-@media (hover: none) { #cursor { display: none; } body { cursor: auto; } button { cursor: pointer; } }
+@media (hover: none) {
+  #cursor { display: none; }
+  body    { cursor: auto; }
+  button  { cursor: pointer; touch-action: manipulation; }
+  .btn    { cursor: pointer; }
+  a       { cursor: pointer; }
+}
 
 /* ── 5. SPLASH ─────────────────────────────────────────────────── */
 #splash {
@@ -300,7 +306,12 @@ svg { display: block; }
   flex-direction: column;
   gap: 5px;
   padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  touch-action: manipulation;
 }
 .nav-burger span {
   display: block;
@@ -334,6 +345,8 @@ svg { display: block; }
   color: var(--white-warm);
   letter-spacing: .05em;
   transition: color .2s;
+  touch-action: manipulation;
+  padding: .25rem 0;
 }
 .nav-overlay a:hover { color: var(--gold); }
 .nav-overlay .nav-overlay-cta {
@@ -380,11 +393,12 @@ svg { display: block; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px; height: 48px;
+  width: 52px; height: 52px;
   border-radius: 50%;
   background: rgba(196,168,130,.12);
   border: 1px solid rgba(196,168,130,.4);
   transition: background .25s, border-color .25s;
+  touch-action: manipulation;
 }
 .fab-triangle a:hover { background: var(--gold); border-color: var(--gold); }
 .fab-triangle a:hover svg path { stroke: var(--black); }
@@ -412,10 +426,12 @@ svg { display: block; }
   letter-spacing: .1em;
   text-transform: uppercase;
   padding: .9rem 2rem;
+  min-height: 44px;
   border-radius: 2px;
   transition: background .25s, color .25s, border-color .25s, transform .2s;
   white-space: nowrap;
   cursor: none;
+  touch-action: manipulation;
 }
 .btn:hover { transform: translateY(-1px); }
 .btn-primary {
@@ -873,7 +889,7 @@ svg { display: block; }
   .services-track {
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pinch-zoom;
     height: auto;
     min-height: 90vh;
   }
@@ -1165,6 +1181,7 @@ svg { display: block; }
 }
 .gallery-lane {
   overflow: hidden;
+  touch-action: pan-y pinch-zoom;
 }
 .gallery-strip {
   display: flex;
@@ -1313,9 +1330,11 @@ svg { display: block; }
   font-family: var(--font-body);
   font-size: var(--t-sm);
   padding: .85rem 1rem;
+  min-height: 44px;
   transition: border-color .25s;
   appearance: none;
   -webkit-appearance: none;
+  touch-action: manipulation;
 }
 .form-group input:focus,
 .form-group select:focus,
@@ -1520,15 +1539,6 @@ svg { display: block; }
   transition: color .2s;
 }
 .footer-credit a:hover { color: var(--gold); }
-.footer-back-top {
-  font-family: var(--font-mono);
-  font-size: .6rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: rgba(245,240,235,.35);
-  transition: color .2s;
-}
-.footer-back-top:hover { color: var(--gold); }
 
 /* ── 20. RESPONSIVE ────────────────────────────────────────────── */
 @media (max-width: 1024px) {

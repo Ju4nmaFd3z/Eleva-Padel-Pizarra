@@ -131,36 +131,46 @@
 
     /* Burger menu */
     if (burger && overlay) {
-      burger.addEventListener('click', function () {
-        var isOpen = overlay.classList.contains('is-open');
-        overlay.style.display = isOpen ? 'none' : 'flex';
+      function closeOverlay() {
+        overlay.classList.remove('is-open');
+        burger.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+        /* Esconde el overlay tras la transición de opacidad (300ms) */
+        setTimeout(function () {
+          if (!overlay.classList.contains('is-open')) {
+            overlay.style.display = 'none';
+          }
+        }, 320);
+      }
+
+      function openOverlay() {
+        overlay.style.display = 'flex';
         requestAnimationFrame(function () {
-          overlay.classList.toggle('is-open', !isOpen);
+          overlay.classList.add('is-open');
         });
-        burger.classList.toggle('is-open', !isOpen);
-        burger.setAttribute('aria-expanded', String(!isOpen));
-        document.body.style.overflow = isOpen ? '' : 'hidden';
+        burger.classList.add('is-open');
+        burger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+
+      burger.addEventListener('click', function () {
+        if (overlay.classList.contains('is-open')) {
+          closeOverlay();
+        } else {
+          openOverlay();
+        }
       });
 
       /* Cierra al pulsar un link del overlay */
       overlay.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          overlay.style.display = 'none';
-          overlay.classList.remove('is-open');
-          burger.classList.remove('is-open');
-          burger.setAttribute('aria-expanded', 'false');
-          document.body.style.overflow = '';
-        });
+        a.addEventListener('click', closeOverlay);
       });
 
       /* Cierra con Escape */
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
-          overlay.style.display = 'none';
-          overlay.classList.remove('is-open');
-          burger.classList.remove('is-open');
-          burger.setAttribute('aria-expanded', 'false');
-          document.body.style.overflow = '';
+          closeOverlay();
         }
       });
     }
