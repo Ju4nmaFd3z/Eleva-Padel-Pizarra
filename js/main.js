@@ -10,7 +10,7 @@
   ──────────────────────────────────────────────────────────────── */
   function safe(fn, name) {
     try { fn(); }
-    catch (e) { console.warn('[Eleva] ' + name + ' falló:', e.message); }
+    catch (e) { console.error('[Eleva] ' + name + ' falló:', e); }
   }
 
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
@@ -81,8 +81,11 @@
     function tick() {
       rx = lerp(rx, mx, 0.14);
       ry = lerp(ry, my, 0.14);
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
+      ring.style.left  = rx + 'px';
+      ring.style.top   = ry + 'px';
+      /* Label sigue al anillo: 22px a la derecha del centro del ring */
+      label.style.left = (rx + 22) + 'px';
+      label.style.top  = (ry - 6)  + 'px';
       rafId = requestAnimationFrame(tick);
     }
     tick();
@@ -135,22 +138,25 @@
         overlay.classList.remove('is-open');
         burger.classList.remove('is-open');
         burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Abrir menú');
         document.body.style.overflow = '';
-        /* Esconde el overlay tras la transición de opacidad (300ms) */
         setTimeout(function () {
           if (!overlay.classList.contains('is-open')) {
             overlay.style.display = 'none';
+            overlay.setAttribute('aria-hidden', 'true');
           }
         }, 320);
       }
 
       function openOverlay() {
         overlay.style.display = 'flex';
+        overlay.removeAttribute('aria-hidden');
         requestAnimationFrame(function () {
           overlay.classList.add('is-open');
         });
         burger.classList.add('is-open');
         burger.setAttribute('aria-expanded', 'true');
+        burger.setAttribute('aria-label', 'Cerrar menú');
         document.body.style.overflow = 'hidden';
       }
 
@@ -256,6 +262,13 @@
         }
       }
     });
+
+    /* Limpiar triggers al salir para evitar memory leaks */
+    window.addEventListener('beforeunload', function () {
+      if (window.ScrollTrigger) {
+        ScrollTrigger.getAll().forEach(function (t) { t.kill(); });
+      }
+    });
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -276,12 +289,12 @@
         'transform 0.75s cubic-bezier(0.16,1,0.3,1) ' + delay + 'ms';
     });
 
-    /* 2. Safety timeout 6s — revela todo lo pendiente */
+    /* 2. Safety timeout 10s — revela todo lo pendiente (cubre conexiones 3G lentas) */
     var safetyTimer = setTimeout(function () {
       els.forEach(function (el) {
         if (el.dataset.revealPending) reveal(el);
       });
-    }, 6000);
+    }, 10000);
 
     function reveal(el) {
       el.style.opacity   = '1';
@@ -318,18 +331,16 @@
     if (!data || !data.brand) return;
 
     var brand = data.brand;
-    var phone = brand.phone || '';
+    var phone = (brand.phone || '').toString().replace(/\D/g, '');
 
     /* Teléfono */
-    var telHref = 'tel:+' + phone.replace(/\D/g, '');
+    var telHref = phone ? 'tel:+' + phone : '#';
     $$('[id^="link-phone"], [id^="footer-link-phone"]').forEach(function (el) {
       el.href        = telHref;
-      el.textContent = brand.phone.replace(/^34/, '+34 ');
+      el.textContent = phone ? '+' + phone.replace(/^34/, '34 ') : brand.phone;
     });
 
     /* WhatsApp con mensajes específicos */
-    var waBase = waURL(phone, 'Hola, me interesa información sobre Eleva Padel Club.');
-
     /* Academia card CTA */
     var btnAcad = document.getElementById('btn-academia-card');
     if (btnAcad) {
@@ -358,10 +369,19 @@
       infoAddr.textContent = brand.address;
     }
 
-    /* Horario */
+    /* Horario — construir sin innerHTML para evitar XSS */
     var infoSched = document.getElementById('info-schedule');
     if (infoSched && brand.schedule) {
-      infoSched.innerHTML = brand.schedule.replace(/·/g, '<br>·');
+      infoSched.textContent = '';
+      brand.schedule.split('·').forEach(function (part, i) {
+        if (i > 0) {
+          infoSched.appendChild(document.createElement('br'));
+          var sep = document.createTextNode('·' + part);
+          infoSched.appendChild(sep);
+        } else {
+          infoSched.appendChild(document.createTextNode(part));
+        }
+      });
     }
 
     /* Google Maps embed en footer */
@@ -415,16 +435,27 @@
       e.preventDefault();
 
       var data  = window.__ELEVA__;
-      var phone = (data && data.brand && data.brand.phone) || '';
+      var phone = ((data && data.brand && data.brand.phone) || '').toString().replace(/\D/g, '');
 
       var nombre   = (form.querySelector('[name="nombre"]').value   || '').trim();
       var telefono = (form.querySelector('[name="telefono"]').value  || '').trim();
       var nivel    = (form.querySelector('[name="nivel"]').value     || '').trim();
       var mensaje  = (form.querySelector('[name="mensaje"]').value   || '').trim();
 
+      /* Foco al primer campo vacío obligatorio */
       if (!nombre || !telefono || !nivel) {
-        var first = form.querySelector(':invalid');
-        if (first) first.focus();
+        var requiredIds = ['f-nombre', 'f-telefono', 'f-nivel'];
+        for (var i = 0; i < requiredIds.length; i++) {
+          var fld = document.getElementById(requiredIds[i]);
+          if (fld && !fld.value.trim()) { fld.focus(); break; }
+        }
+        return;
+      }
+
+      /* Validar que el teléfono del club esté configurado antes de abrir WhatsApp */
+      var phoneRegex = /^34\d{9}$/;
+      if (!phone || !phoneRegex.test(phone)) {
+        console.error('[Eleva] Teléfono no configurado en manifest.js');
         return;
       }
 
@@ -528,37 +559,26 @@
   }
 
   /* ────────────────────────────────────────────────────────────────
-     BACK TO TOP suave
-  ──────────────────────────────────────────────────────────────── */
-  function initBackTop() {
-    var btn = $('.footer-back-top');
-    if (!btn) return;
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  /* ────────────────────────────────────────────────────────────────
      AURORA BACKGROUND — reacciona suavemente al mouse
   ──────────────────────────────────────────────────────────────── */
   function initAurora() {
     if (isTouch()) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     var style = document.createElement('style');
-    style.textContent = '.aurora-orb{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);opacity:0;transition:opacity 1.5s,left 0.5s,top 0.5s;will-change:left,top;}';
+    style.textContent = '.aurora-orb{position:fixed;top:0;left:0;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);opacity:0;transition:opacity 1.5s,transform 0.5s;will-change:transform;}';
     document.head.appendChild(style);
 
     var orb = document.createElement('div');
     orb.className = 'aurora-orb';
-    orb.style.cssText = 'width:600px;height:400px;background:radial-gradient(ellipse,rgba(196,168,130,0.07) 0%,transparent 70%);margin-left:-300px;margin-top:-200px;';
+    orb.style.cssText = 'width:600px;height:400px;background:radial-gradient(ellipse,rgba(196,168,130,0.07) 0%,transparent 70%);';
     document.body.appendChild(orb);
 
     setTimeout(function () { orb.style.opacity = '1'; }, 300);
 
     document.addEventListener('mousemove', function (e) {
-      orb.style.left = e.clientX + 'px';
-      orb.style.top  = e.clientY + 'px';
+      /* translate en lugar de left/top: corre en el compositor, sin layout */
+      orb.style.transform = 'translate(' + (e.clientX - 300) + 'px,' + (e.clientY - 200) + 'px)';
     }, { passive: true });
   }
 
@@ -569,7 +589,7 @@
     var data = window.__ELEVA__;
     if (!data || !data.brand || !data.pools) return;
 
-    var phone = data.brand.phone;
+    var phone = (data.brand.phone || '').toString().replace(/\D/g, '');
     var btn   = document.getElementById('btn-pool');
     if (btn && phone) {
       btn.href = waURL(phone,
@@ -607,7 +627,6 @@
     safe(initPools,         'pools');
     safe(initContact,       'contact');
     safe(initSmoothScroll,  'smoothScroll');
-    safe(initBackTop,       'backTop');
     safe(fixServicesHeight, 'servicesHeight');
     /* GSAP extras al final, no bloquea nada */
     safe(initGSAPExtras,    'gsapExtras');

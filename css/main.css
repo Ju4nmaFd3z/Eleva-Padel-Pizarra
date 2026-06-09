@@ -61,16 +61,14 @@ img, video { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 button { border: none; background: none; font: inherit; cursor: none; }
 button:focus-visible,
-a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 ul { list-style: none; }
 svg { display: block; }
 
 /* ── 3. GRAIN OVERLAY ──────────────────────────────────────────── */
 .grain {
   position: fixed;
-  inset: 0;
-  width: 200%;
-  height: 200%;
+  inset: -4px;
   pointer-events: none;
   z-index: 1;
   opacity: .032;
@@ -79,10 +77,10 @@ svg { display: block; }
 }
 @keyframes grain-drift {
   0%   { transform: translate(0,0); }
-  25%  { transform: translate(-1%,-1%); }
-  50%  { transform: translate(1%,-1%); }
-  75%  { transform: translate(-1%,1%); }
-  100% { transform: translate(1%,1%); }
+  25%  { transform: translate(-2px,-2px); }
+  50%  { transform: translate(2px,-2px); }
+  75%  { transform: translate(-2px,2px); }
+  100% { transform: translate(2px,2px); }
 }
 
 /* ── 4. CUSTOM CURSOR ──────────────────────────────────────────── */
@@ -112,7 +110,7 @@ svg { display: block; }
 }
 .cursor-label {
   position: absolute;
-  left: 22px; top: -6px;
+  /* left/top se gestionan por JS en tick() para seguir al anillo */
   font-family: var(--font-mono);
   font-size: .6rem;
   letter-spacing: .1em;
@@ -123,6 +121,7 @@ svg { display: block; }
   transform: translateX(-4px);
   transition: opacity .2s, transform .2s;
   mix-blend-mode: normal;
+  pointer-events: none;
 }
 #cursor.has-label .cursor-label { opacity: 1; transform: none; }
 #cursor.is-hovering .cursor-ring { width: 52px; height: 52px; opacity: .9; }
@@ -270,7 +269,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: rgba(245,240,235,.65);
+  color: rgba(245,240,235,.85);
   transition: color .25s;
   position: relative;
 }
@@ -461,7 +460,6 @@ svg { display: block; }
 }
 .section-pad { padding: var(--section-pad) 0; }
 
-.reveal { /* default visible — JS sets initial hidden state */ }
 
 /* ── 11. HERO ──────────────────────────────────────────────────── */
 #hero {
@@ -483,7 +481,6 @@ svg { display: block; }
     linear-gradient(155deg, #1A1A1A 0%, #2A1A0A 38%, #6B4020 62%, #C4A882 88%, #E8DDD0 100%);
   background-blend-mode: overlay, normal, normal, normal;
   transform: scale(1.04);
-  transition: transform 8s linear;
 }
 .hero-overlay {
   position: absolute;
@@ -1121,7 +1118,7 @@ svg { display: block; }
 .pool-desc {
   font-size: var(--t-sm);
   line-height: 1.7;
-  color: var(--gray);
+  color: rgba(26,26,26,.78);
   max-width: 40ch;
 }
 
@@ -1527,6 +1524,9 @@ svg { display: block; }
   letter-spacing: .08em;
   color: rgba(245,240,235,.3);
 }
+.footer-legal-link { color: inherit; border-bottom: 1px solid rgba(245,240,235,.15); }
+.footer-legal-link:hover { border-color: rgba(245,240,235,.4); }
+
 .footer-credit {
   font-family: var(--font-mono);
   font-size: .6rem;
@@ -1613,3 +1613,46 @@ svg { display: block; }
 
 /* ── 24. SELECTION ─────────────────────────────────────────────── */
 ::selection { background: var(--gold); color: var(--black); }
+
+/* ── 25. CARD-LIGHT — colores propios para no depender de inline styles ── */
+.service-card.card-light .service-num      { color: var(--black); }
+.service-card.card-light .service-title    { color: var(--black); }
+.service-card.card-light .service-subtitle { color: var(--black); }
+.service-card.card-light .service-desc     { color: var(--black); }
+.service-card.card-light .service-progress { color: var(--black); }
+
+/* ── 26. SKIP LINK (accesibilidad de teclado) ──────────────────── */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  background: var(--gold);
+  color: var(--black);
+  padding: .75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  outline: 3px solid var(--black);
+  white-space: nowrap;
+}
+
+/* ── 27. FORCED COLORS — cursor nativo en modo accesibilidad ───── */
+@media (forced-colors: active) {
+  body   { cursor: auto; }
+  button { cursor: pointer; }
+  #cursor { display: none; }
+}

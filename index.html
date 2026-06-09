@@ -4,20 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eleva Padel Club · Pizarra, Málaga</title>
-  <meta name="description" content="El club de referencia del Valle. 4 pistas outdoor panorámicas con iluminación LED, academia, torneos Pool y zona chill-out. Pizarra, Málaga.">
+  <meta name="description" content="Eleva Padel Club: 4 pistas outdoor LED, academia federada, pools semanales y zona chill-out en Pizarra, Málaga. Reserva online en Vola Plus.">
   <meta name="theme-color" content="#1A1A1A">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Canónica y SEO -->
+  <link rel="canonical" href="https://eleva-padel-pizarra.vercel.app/">
+  <link rel="alternate" hreflang="es"       href="https://eleva-padel-pizarra.vercel.app/">
+  <link rel="alternate" hreflang="x-default" href="https://eleva-padel-pizarra.vercel.app/">
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://eleva-padel-pizarra.vercel.app/">
   <meta property="og:title"       content="Eleva Padel Club · Pizarra, Málaga">
   <meta property="og:description" content="Pádel elevado a otro nivel. El club de referencia del Valle del Guadalhorce.">
-  <meta property="og:image"       content="assets/img/og.jpg">
+  <meta property="og:image"       content="https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg">
   <meta property="og:locale"      content="es_ES">
+
+  <!-- JSON-LD LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportsActivityLocation",
+    "name": "Eleva Padel Club",
+    "description": "Club de pádel con 4 pistas outdoor LED, academia federada, pools y torneos semanales en Pizarra, Málaga.",
+    "image": "https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg",
+    "url": "https://eleva-padel-pizarra.vercel.app/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pizarra",
+      "addressRegion": "Málaga",
+      "addressCountry": "ES"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "09:00",
+        "closes": "00:00"
+      }
+    ],
+    "sameAs": ["https://instagram.com/elevapadelpizarra"]
+  }
+  </script>
 
   <!-- Fonts (solo CSS, sin JS externo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/main.css?v=20260609">
 
@@ -30,6 +65,8 @@
   </noscript>
 </head>
 <body>
+
+<a href="#hero" class="skip-link">Saltar al contenido principal</a>
 
 <!-- ════════════════════════════════════════════════════════════
      GRAIN TEXTURE OVERLAY
@@ -101,7 +138,7 @@
 </nav>
 
 <!-- Mobile nav overlay -->
-<div id="nav-overlay" class="nav-overlay" role="dialog" aria-label="Menú de navegación" aria-modal="true">
+<div id="nav-overlay" class="nav-overlay" role="dialog" aria-label="Menú de navegación" aria-modal="true" aria-hidden="true">
   <a href="#club"      data-cursor="ver">El Club</a>
   <a href="#servicios" data-cursor="ver">Servicios</a>
   <a href="#academia"  data-cursor="ver">Academia</a>
@@ -317,13 +354,13 @@
             <line x1="11" y1="35" x2="45" y2="33" stroke-width="1" opacity=".45"/>
             <line x1="36" y1="44" x2="56" y2="58" stroke-width="3"/>
           </svg>
-          <span class="service-num" style="color:var(--black);opacity:.4">02 / 04</span>
+          <span class="service-num">02 / 04</span>
         </div>
         <div class="service-right">
           <span class="service-cat">Formación</span>
-          <h3 class="service-title" style="color:var(--black)">Academia</h3>
-          <p class="service-subtitle" style="color:var(--black)">Sube de nivel de verdad.</p>
-          <p class="service-desc" style="color:var(--black)">
+          <h3 class="service-title">Academia</h3>
+          <p class="service-subtitle">Sube de nivel de verdad.</p>
+          <p class="service-desc">
             Grupos de 3–4 personas, monitores federados, 1h de técnica real.
             Clases para todos los niveles, desde iniciación hasta competición.
             Sesiones de prueba disponibles.
@@ -335,7 +372,7 @@
              data-cursor="WhatsApp">
             Consultar plazas →
           </a>
-          <span class="service-progress" style="color:var(--black)">02 / 04</span>
+          <span class="service-progress">02 / 04</span>
         </div>
       </article>
 
@@ -383,13 +420,13 @@
             <line x1="24" y1="41" x2="34" y2="41" stroke-width="1" opacity=".5"/>
             <line x1="29" y1="36" x2="29" y2="46" stroke-width="1" opacity=".5"/>
           </svg>
-          <span class="service-num" style="color:var(--black);opacity:.4">04 / 04</span>
+          <span class="service-num">04 / 04</span>
         </div>
         <div class="service-right">
           <span class="service-cat">Ambiente</span>
-          <h3 class="service-title" style="color:var(--black)">Chill-Out</h3>
-          <p class="service-subtitle" style="color:var(--black)">El partido acaba, la tarde no.</p>
-          <p class="service-desc" style="color:var(--black)">
+          <h3 class="service-title">Chill-Out</h3>
+          <p class="service-subtitle">El partido acaba, la tarde no.</p>
+          <p class="service-desc">
             Zona de descanso con barra de refrigerios y bebidas frías después del partido.
             Donde se fraguan los próximos equipos y las mejores conversaciones.
           </p>
@@ -398,7 +435,7 @@
              data-cursor="ver">
             Cómo llegar →
           </a>
-          <span class="service-progress" style="color:var(--black)">04 / 04</span>
+          <span class="service-progress">04 / 04</span>
         </div>
       </article>
 
@@ -506,7 +543,7 @@
 <section id="pools" class="section-pools" aria-labelledby="pools-heading">
   <div class="pools-header">
     <span class="section-watermark" aria-hidden="true">04</span>
-    <span class="section-label" style="color:var(--gray)">Pools &amp; Torneos</span>
+    <span class="section-label">Pools &amp; Torneos</span>
     <h2 id="pools-heading" class="pools-title" data-reveal>
       Compite<br>cada viernes.
     </h2>
@@ -517,7 +554,7 @@
     <div class="pool-card" role="listitem" data-reveal>
       <div class="pool-header">
         <span class="pool-name">POOL SNP</span>
-        <span class="pool-badge">Activa</span>
+        <span class="pool-badge"><span aria-hidden="true">✓ </span>Activa</span>
       </div>
       <div class="pool-meta">
         <span>Viernes · 20:00–21:30</span>
@@ -529,7 +566,7 @@
     <div class="pool-card" role="listitem" data-reveal data-reveal-delay="80">
       <div class="pool-header">
         <span class="pool-name">POOL 4ª MASCULINA</span>
-        <span class="pool-badge">Activa</span>
+        <span class="pool-badge"><span aria-hidden="true">✓ </span>Activa</span>
       </div>
       <div class="pool-meta">
         <span>Viernes · 20:00–21:30</span>
@@ -541,7 +578,7 @@
     <div class="pool-card" role="listitem" data-reveal data-reveal-delay="160">
       <div class="pool-header">
         <span class="pool-name">POOL MIXTA</span>
-        <span class="pool-badge">Activa</span>
+        <span class="pool-badge"><span aria-hidden="true">✓ </span>Activa</span>
       </div>
       <div class="pool-meta">
         <span>Viernes · 20:00–21:30</span>
@@ -553,7 +590,7 @@
     <div class="pool-card" role="listitem" data-reveal data-reveal-delay="240">
       <div class="pool-header">
         <span class="pool-name">POOL ROCHA</span>
-        <span class="pool-badge">Activa</span>
+        <span class="pool-badge"><span aria-hidden="true">✓ </span>Activa</span>
       </div>
       <div class="pool-meta">
         <span>Viernes · 20:00–21:30</span>
@@ -675,7 +712,7 @@
     <!-- Mitad derecha: formulario -->
     <div class="contact-right">
       <h3 class="contact-form-title">Info sobre la academia</h3>
-      <form class="contact-form" id="contact-form" novalidate>
+      <form class="contact-form" id="contact-form">
         <div class="form-group">
           <label for="f-nombre">Nombre</label>
           <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name">
@@ -840,7 +877,7 @@
   <div class="footer-bottom">
     <p class="footer-legal">
       &copy; 2026 Eleva Padel Club · Pizarra, Málaga ·
-      Créditos de imágenes en <a href="assets/credits.json" style="color:inherit;border-bottom:1px solid rgba(245,240,235,.15)">credits.json</a>
+      Créditos de imágenes en <a href="assets/credits.json" class="footer-legal-link">credits.json</a>
     </p>
 <p class="footer-credit">
       Diseño web por
