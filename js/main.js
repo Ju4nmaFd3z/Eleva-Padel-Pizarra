@@ -479,7 +479,9 @@
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a[href^="#"]');
       if (!a) return;
-      var target = document.querySelector(a.getAttribute('href'));
+      var href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      var target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
       var navH = document.getElementById('main-nav').offsetHeight || 80;
