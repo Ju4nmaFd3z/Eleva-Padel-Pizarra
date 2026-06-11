@@ -1413,6 +1413,12 @@ svg { display: block; }
 }
 .contact-secondary:hover { opacity: 1; }
 
+.contact-secondary--soon {
+  opacity: .35;
+  cursor: default;
+}
+.contact-secondary--soon:hover { opacity: .35; }
+
 .contact-right {
   padding: clamp(4rem, 8vw, 7rem) var(--container-pad);
   display: flex;

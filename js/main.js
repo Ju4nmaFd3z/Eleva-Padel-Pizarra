@@ -83,8 +83,8 @@
       ry = lerp(ry, my, 0.14);
       ring.style.left  = rx + 'px';
       ring.style.top   = ry + 'px';
-      /* Label sigue al anillo: 22px a la derecha del centro del ring */
-      label.style.left = (rx + 22) + 'px';
+      /* Label sigue al anillo: 34px a la derecha del centro del ring */
+      label.style.left = (rx + 34) + 'px';
       label.style.top  = (ry - 6)  + 'px';
       rafId = requestAnimationFrame(tick);
     }
