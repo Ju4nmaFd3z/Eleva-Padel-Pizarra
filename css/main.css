@@ -945,7 +945,7 @@ svg { display: block; }
 /* ── 15. SECCIÓN 03 — ACADEMIA ─────────────────────────────────── */
 .section-academy {
   background: var(--black);
-  padding: var(--section-pad) 0;
+  padding: var(--section-pad) 0 0;
   position: relative;
   overflow: hidden;
 }
@@ -1035,29 +1035,6 @@ svg { display: block; }
   color: var(--gold);
 }
 
-.academy-cta-block {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-  background: rgba(196,168,130,.06);
-  border: 1px solid rgba(196,168,130,.15);
-  padding: 2.5rem clamp(2rem, 5vw, 4rem);
-  border-radius: 3px;
-  flex-wrap: wrap;
-}
-.academy-cta-block span {
-  font-family: var(--font-mono);
-  font-size: var(--t-sm);
-  color: rgba(245,240,235,.65);
-  line-height: 1.9;
-}
-.academy-cta-block span strong {
-  color: var(--gold);
-  font-weight: 700;
-}
-.academy-cta-block .btn { margin-left: auto; }
 
 /* ── 16. SECCIÓN 04 — POOLS ────────────────────────────────────── */
 /* ── 16. SECCIÓN 05 — POOLS & TORNEOS ─────────────────────────── */
@@ -1372,6 +1349,7 @@ svg { display: block; }
   color: var(--white-warm);
   position: relative;
   overflow: hidden;
+  border-top: 1px solid rgba(196,168,130,.12);
 }
 .contact-split {
   display: grid;
@@ -1535,10 +1513,13 @@ svg { display: block; }
   margin-bottom: 5rem;
   user-select: none;
 }
-.footer-marquee-inner {
-  display: inline-block;
+.footer-marquee-track {
+  display: inline-flex;
   animation: marquee-run 25s linear infinite;
-  padding-right: 3rem;
+}
+.footer-marquee-inner {
+  display: inline-flex;
+  white-space: nowrap;
 }
 .footer-grid {
   display: grid;
@@ -1676,8 +1657,11 @@ svg { display: block; }
   .club-grid { grid-template-columns: 1fr; }
   .club-collage { height: 380px; }
   .academy-grid { grid-template-columns: 1fr; gap: 1px; }
-  .academy-cta-block { flex-direction: column; align-items: flex-start; }
-  .academy-cta-block .btn { margin-left: 0; }
+  .academy-rates-grid { grid-template-columns: 1fr; }
+  .academy-rate-block { padding: 2rem 0; border-right: none; border-bottom: 1px solid rgba(196,168,130,.12); }
+  .academy-rate-block:last-child { border-bottom: none; }
+  .academy-rates-header { flex-direction: column; gap: .8rem; }
+  .academy-rates-sub { text-align: left; }
   .pools-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .contact-info { grid-template-columns: repeat(2, 1fr); }
@@ -2245,37 +2229,93 @@ svg { display: block; }
 /* ════════════════════════════════════════════════════════════════
    34. PRECIOS DE ACADEMIA
 ════════════════════════════════════════════════════════════════ */
-.academy-pricing {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px;
-  margin-bottom: 48px;
-  padding-top: 8px;
+.academy-rates {
+  background: var(--beige);
+  border-top: 1px solid rgba(26,26,26,.08);
+  padding: clamp(3rem, 6vw, 5rem) var(--container-pad);
 }
-.academy-pricing-title {
+.academy-rates-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+.academy-rates-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  font-size: .6rem;
+  letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--gold);
-  margin: 0 0 14px;
-}
-.academy-price-list {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 3px 16px;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  margin: 0;
-}
-.academy-price-list > div { display: contents; }
-.academy-price-list dt { color: rgba(245,240,235,0.55); line-height: 1.5; }
-.academy-price-list dd {
-  font-weight: 600;
-  color: var(--white-warm);
-  text-align: right;
-  margin: 0;
+  color: var(--gray);
   white-space: nowrap;
+}
+.academy-rates-sub {
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,.35);
+  margin: 0;
+  text-align: right;
+  line-height: 1.7;
+}
+.academy-rates-sub strong { color: rgba(26,26,26,.55); font-weight: 400; }
+.academy-rates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(26,26,26,.1);
+  border-bottom: 1px solid rgba(26,26,26,.1);
+}
+.academy-rate-block {
+  padding: 2.5rem 2rem 2.5rem 0;
+  border-right: 1px solid rgba(26,26,26,.1);
+}
+.academy-rate-block:not(:first-child) { padding-left: 2rem; }
+.academy-rate-block:last-child { border-right: none; }
+.academy-rate-cat {
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin: 0 0 1.5rem;
+}
+.academy-rate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: .7rem 0;
+  border-bottom: 1px solid rgba(26,26,26,.06);
+}
+.academy-rate-row:last-child { border-bottom: none; }
+.academy-rate-desc {
+  font-family: var(--font-body);
+  font-size: .8rem;
+  color: rgba(26,26,26,.5);
+  line-height: 1.4;
+}
+.academy-rate-price {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  color: var(--black);
+  white-space: nowrap;
+  line-height: 1;
+}
+.academy-rate-unit {
+  font-family: var(--font-mono);
+  font-size: .55rem;
+  letter-spacing: .08em;
+  color: var(--gold);
+  margin-left: .2em;
+  vertical-align: middle;
+}
+.academy-rates-cta {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2.5rem;
 }
 
 /* ════════════════════════════════════════════════════════════════
