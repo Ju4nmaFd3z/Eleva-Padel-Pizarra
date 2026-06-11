@@ -301,12 +301,6 @@
       }
     });
 
-    /* Limpiar triggers al salir para evitar memory leaks */
-    window.addEventListener('beforeunload', function () {
-      if (window.ScrollTrigger) {
-        ScrollTrigger.getAll().forEach(function (t) { t.kill(); });
-      }
-    });
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -386,29 +380,6 @@
       el.href        = telHref;
       el.textContent = displayPhone;
     });
-
-    /* WhatsApp con mensajes específicos */
-    /* Academia card CTA */
-    var btnAcad = document.getElementById('btn-academia-card');
-    if (btnAcad) {
-      btnAcad.href = waURL(phone,
-        'Hola, me interesa consultar plazas de la academia de Eleva Padel Club.');
-    }
-
-    /* Sesión de prueba CTA */
-    var btnPrueba = document.getElementById('btn-prueba');
-    if (btnPrueba) {
-      btnPrueba.href = waURL(phone,
-        'Hola, me interesa reservar una sesión de prueba de academia en Eleva Padel Club. ' +
-        '1h · Grupos 3–4 personas · 10€/persona.');
-    }
-
-    /* Eventos privados CTA */
-    var btnEventos = document.getElementById('btn-eventos');
-    if (btnEventos && phone) {
-      btnEventos.href = waURL(phone,
-        'Hola, me gustaría información sobre la reserva del club para un evento privado.');
-    }
 
     /* Dirección */
     var infoAddr = document.getElementById('info-address');
@@ -491,12 +462,15 @@
         return;
       }
 
+      var lang = localStorage.getItem('eleva-lang') || 'es';
+      var i18n = window.__ELEVA_I18N__;
+      var t    = (i18n && i18n[lang]) || {};
       var text =
-        'Hola, me interesa información sobre la academia de Eleva Padel Club.\n\n' +
-        'Nombre: '   + nombre   + '\n' +
-        'Teléfono: ' + telefono + '\n' +
-        'Nivel: '    + nivel;
-      if (mensaje) text += '\nMensaje: ' + mensaje;
+        (resolveKey(t, 'wa.contact') || 'Hola, me interesa información sobre la academia de Eleva Padel Club.') + '\n\n' +
+        (resolveKey(t, 'contact.labelName')  || 'Nombre')   + ': ' + nombre   + '\n' +
+        (resolveKey(t, 'contact.labelPhone') || 'Teléfono') + ': ' + telefono + '\n' +
+        (resolveKey(t, 'contact.labelLevel') || 'Nivel')    + ': ' + nivel;
+      if (mensaje) text += '\n' + (resolveKey(t, 'contact.labelMessage') || 'Mensaje') + ': ' + mensaje;
 
       var url = waURL(phone, text);
       try { window.open(url, '_blank', 'noopener'); }
@@ -600,9 +574,6 @@
     if (isTouch()) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var style = document.createElement('style');
-    style.textContent = '.aurora-orb{position:fixed;top:0;left:0;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);opacity:0;transition:opacity 1.5s,transform 0.5s;will-change:transform;}';
-    document.head.appendChild(style);
 
     var orb = document.createElement('div');
     orb.className = 'aurora-orb';
@@ -615,21 +586,6 @@
       /* translate en lugar de left/top: corre en el compositor, sin layout */
       orb.style.transform = 'translate(' + (e.clientX - 300) + 'px,' + (e.clientY - 200) + 'px)';
     }, { passive: true });
-  }
-
-  /* ────────────────────────────────────────────────────────────────
-     POOL — actualiza CTAs con mensajes formateados por categoría
-  ──────────────────────────────────────────────────────────────── */
-  function initPools() {
-    var data = window.__ELEVA__;
-    if (!data || !data.brand || !data.pools) return;
-
-    var phone = (data.brand.phone || '').toString().replace(/\D/g, '');
-    var btn   = document.getElementById('btn-pool');
-    if (btn && phone) {
-      btn.href = waURL(phone,
-        '¡Hola! Me gustaría apuntarme al próximo pool de Eleva Padel Club 🎾');
-    }
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -688,6 +644,18 @@
       btn.classList.toggle('lang-active', active);
       btn.setAttribute('aria-pressed', String(active));
     });
+
+    /* WA hrefs — actualiza según idioma */
+    var eleva = window.__ELEVA__;
+    if (eleva && eleva.brand && eleva.brand.phone) {
+      var phone = eleva.brand.phone.toString().replace(/\D/g, '');
+      var btnAcad   = document.getElementById('btn-academia-card');
+      var btnPrueba = document.getElementById('btn-prueba');
+      var btnPool   = document.getElementById('btn-pool');
+      if (btnAcad)   btnAcad.href   = waURL(phone, resolveKey(t, 'wa.academia') || 'Hola, me interesa consultar plazas de la academia de Eleva Padel Club.');
+      if (btnPrueba) btnPrueba.href = waURL(phone, resolveKey(t, 'wa.prueba')   || 'Hola, me interesa una sesión de prueba en la academia de Eleva Padel Club.');
+      if (btnPool)   btnPool.href   = waURL(phone, resolveKey(t, 'wa.pool')     || '¡Hola! Me gustaría apuntarme al próximo pool de Eleva Padel Club 🎾');
+    }
   }
 
   function initI18n() {
@@ -761,7 +729,6 @@
     safe(initReveals,       'reveals');
     safe(initServices,      'services');
     safe(initManifest,      'manifest');
-    safe(initPools,         'pools');
     safe(initContact,       'contact');
     safe(initTeamCards,     'teamCards');
     safe(initI18n,          'i18n');

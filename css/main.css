@@ -236,29 +236,99 @@ svg { display: block; }
   border-bottom: 1px solid rgba(196,168,130,.12);
 }
 
+/* ── NAV LOGO ────────────────────────────────────────────────── */
+
 .nav-logo {
   display: flex;
   align-items: center;
   gap: .75rem;
   flex-shrink: 0;
+  transition: gap .6s var(--ease-out);
 }
+.nav-logo:hover { gap: 1rem; }
+
+/* ── Triángulo: spring-overshoot + triple glow + stroke retrace ── */
+@keyframes tri-ascend {
+  0%   { transform: scale(1)    rotate(0deg);    }
+  42%  { transform: scale(1.22) rotate(-5.5deg); }
+  68%  { transform: scale(1.13) rotate(-2.8deg); }
+  100% { transform: scale(1.15) rotate(-3.5deg); }
+}
+@keyframes tri-glow {
+  0%   { filter: drop-shadow(0 0 0px transparent); }
+  42%  { filter:
+    drop-shadow(0 0  6px rgba(196,168,130,1))
+    drop-shadow(0 0 18px rgba(196,168,130,.7))
+    drop-shadow(0 0 38px rgba(196,168,130,.35)); }
+  100% { filter:
+    drop-shadow(0 0  3px rgba(196,168,130,.95))
+    drop-shadow(0 0 11px rgba(196,168,130,.52))
+    drop-shadow(0 0 24px rgba(196,168,130,.22)); }
+}
+@keyframes stroke-retrace {
+  from { stroke-dashoffset: 80; }
+  to   { stroke-dashoffset:  0; }
+}
+
 .nav-logo-tri {
   width: 28px; height: auto;
   flex-shrink: 0;
+  transition: transform .5s var(--ease-out), filter .5s var(--ease-out);
+}
+.nav-logo:hover .nav-logo-tri {
+  animation:
+    tri-ascend .72s var(--ease-out) forwards,
+    tri-glow   .72s var(--ease-out) forwards;
 }
 .nav-logo-tri path {
   fill: none;
   stroke: var(--gold);
   stroke-width: 2.5;
   stroke-linejoin: round;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 0;
+  transition: fill .45s var(--ease-out), stroke-width .45s var(--ease-out);
 }
+.nav-logo:hover .nav-logo-tri path {
+  fill: rgba(196,168,130,.2);
+  stroke-width: 1.8;
+  animation: stroke-retrace .78s var(--ease-out) forwards;
+}
+
+/* ── Wordmark: shimmer sin cortes ────────────────────────────
+   Gradiente 300% de ancho. En reposo la ventana visible cae
+   en la zona blanca del extremo derecho (posición 100%).
+   En hover cae en la zona blanca del extremo izquierdo (0%).
+   El destello dorado sólo cruza el texto durante la transición.
+────────────────────────────────────────────────────────────── */
 .logo-wordmark {
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 300;
   letter-spacing: .38em;
   text-indent: .38em;
-  color: var(--white-warm);
+  background: linear-gradient(
+    105deg,
+    var(--white-warm)  0%,
+    var(--white-warm) 34%,
+    #cba96a           46%,
+    #fdf0d5           52%,
+    #cba96a           58%,
+    var(--white-warm) 66%,
+    var(--white-warm) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition:
+    background-position .8s var(--ease-out),
+    letter-spacing      .5s var(--ease-out);
+}
+.nav-logo:hover .logo-wordmark {
+  background-position: 0% center;
+  letter-spacing: .46em;
 }
 
 .nav-links {
@@ -335,9 +405,10 @@ svg { display: block; }
   justify-content: center;
   gap: 2.5rem;
   opacity: 0;
+  pointer-events: none;
   transition: opacity .3s;
 }
-.nav-overlay.is-open { opacity: 1; }
+.nav-overlay.is-open { opacity: 1; pointer-events: auto; }
 .nav-overlay a {
   font-family: var(--font-display);
   font-size: clamp(2rem, 8vw, 3.5rem);
@@ -454,12 +525,6 @@ svg { display: block; }
 .btn-dark:hover { border-color: var(--white-warm); }
 
 /* ── 10. LAYOUT UTILITIES ──────────────────────────────────────── */
-.container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--container-pad);
-}
-.section-pad { padding: var(--section-pad) 0; }
 
 
 /* ── 11. HERO ──────────────────────────────────────────────────── */
@@ -1047,7 +1112,6 @@ svg { display: block; }
 }
 
 
-/* ── 16. SECCIÓN 04 — POOLS ────────────────────────────────────── */
 /* ── 16. SECCIÓN 05 — POOLS & TORNEOS ─────────────────────────── */
 .section-pools {
   background: var(--beige);
@@ -2036,9 +2100,6 @@ svg { display: block; }
 /* ════════════════════════════════════════════════════════════════
    31. PATROCINADORES
 ════════════════════════════════════════════════════════════════ */
-/* ════════════════════════════════════════════════════════════════
-   31. PATROCINADORES — rediseño editorial
-════════════════════════════════════════════════════════════════ */
 .section-sponsors {
   background: var(--black);
   padding: clamp(5rem,10vw,8rem) var(--container-pad);
@@ -2187,26 +2248,6 @@ svg { display: block; }
 }
 
 /* ════════════════════════════════════════════════════════════════
-   32. POOL — PRIZE & REG INFO
-════════════════════════════════════════════════════════════════ */
-.pool-prize {
-  font-family: var(--font-body);
-  font-size: 0.71rem;
-  letter-spacing: 0.03em;
-  color: var(--gold);
-  margin: 10px 0 3px;
-  line-height: 1.4;
-}
-.pool-reg {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(245,240,235,0.35);
-  margin: 0 0 12px;
-}
-
-/* ════════════════════════════════════════════════════════════════
    33. TARIFAS DE PISTAS (service card inline)
 ════════════════════════════════════════════════════════════════ */
 .service-rates {
@@ -2343,7 +2384,7 @@ svg { display: block; }
 }
 .lang-btn:hover { color: rgba(245,240,235,0.75); }
 .lang-btn.lang-active { color: var(--gold); }
-@media (max-width: 900px) { #main-nav .lang-switch { display: none; } }
+@media (max-width: 768px) { #main-nav .lang-switch { display: none; } }
 
 /* overlay lang switcher */
 .nav-overlay-lang {
@@ -2357,4 +2398,17 @@ svg { display: block; }
 .nav-overlay-lang .lang-btn {
   font-size: 0.7rem;
   padding: 6px 10px;
+}
+
+/* ── AURORA ORB ─────────────────────────────────────────────── */
+.aurora-orb {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0;
+  transition: opacity 1.5s, transform 0.5s;
+  will-change: transform;
 }

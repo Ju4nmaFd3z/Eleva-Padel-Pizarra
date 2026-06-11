@@ -299,17 +299,16 @@
       font-weight: 500;
     }
 
-    /* ── PLACEHOLDER NIF ── */
-    .nif-placeholder {
-      display: inline-block;
-      background: #2A2000;
-      border: 1px dashed var(--gold-dim);
-      border-radius: 3px;
-      padding: 0.1rem 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--gold);
-      letter-spacing: 0.06em;
+    /* ── LISTA DE NAVEGADORES ── */
+    .browser-list {
+      list-style: none;
+      margin: 1rem 0;
+    }
+    .browser-list li {
+      padding: 0.3rem 0;
+      color: var(--beige);
+      font-weight: 300;
+      font-size: 0.9rem;
     }
 
     /* ── SEPARADOR ── */
@@ -404,8 +403,8 @@
             <td>Eleva Padel Club</td>
           </tr>
           <tr>
-            <td>NIF del titular</td>
-            <td><span class="nif-placeholder">[Completar: NIF del titular]</span></td>
+            <td>Régimen jurídico</td>
+            <td>Actividad económica no sujeta a inscripción registral obligatoria. Identificación fiscal disponible a solicitud mediante los canales de contacto indicados en este documento.</td>
           </tr>
           <tr>
             <td>Domicilio</td>
@@ -651,7 +650,7 @@
         <tbody>
           <tr>
             <td>Responsable</td>
-            <td>Titular de Eleva Padel Club — <span class="nif-placeholder">[Completar: NIF del titular]</span></td>
+            <td>Titular de Eleva Padel Club (actividad no sujeta a inscripción registral obligatoria). La identificación completa del responsable está disponible a solicitud mediante los canales de contacto indicados en el apartado 4.8.</td>
           </tr>
           <tr>
             <td>Denominación comercial</td>
@@ -958,6 +957,12 @@
       </p>
 
       <table class="data-table" aria-label="Canales para ejercer derechos">
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th>Datos de contacto</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <td>Teléfono / WhatsApp</td>
@@ -1070,17 +1075,17 @@
         cookies de los navegadores más habituales:
       </p>
 
-      <ul style="list-style: none; margin: 1rem 0 1rem 0;">
-        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+      <ul class="browser-list">
+        <li>
           &middot; <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a>
         </li>
-        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+        <li>
           &middot; <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a>
         </li>
-        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+        <li>
           &middot; <a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Apple Safari</a>
         </li>
-        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+        <li>
           &middot; <a href="https://support.microsoft.com/es-es/windows/eliminar-y-administrar-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer">Microsoft Edge</a>
         </li>
       </ul>

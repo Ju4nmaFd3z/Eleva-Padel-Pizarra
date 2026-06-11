@@ -100,7 +100,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 27'><path d='M15,2 L28,25 L2,25 Z' fill='none' stroke='%23C4A882' stroke-width='2.5' stroke-linejoin='round'/></svg>">
 
-  <link rel="stylesheet" href="css/main.css?v=20260611">
+  <link rel="stylesheet" href="css/main.css?v=20260612">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
@@ -162,7 +162,7 @@
     <span class="logo-wordmark">ELEVA</span>
   </a>
 
-  <ul class="nav-links" role="list" aria-label="Navegación" data-i18n-arialabel="nav.ariaLabel">
+  <ul class="nav-links" role="list">
     <li><a href="#club"      data-num="01" data-cursor="ver"   data-i18n="nav.club">El Club</a></li>
     <li><a href="#servicios" data-num="02" data-cursor="ver"   data-i18n="nav.services">Servicios</a></li>
     <li><a href="#academia"  data-num="03" data-cursor="ver"   data-i18n="nav.academy">Academia</a></li>
@@ -351,7 +351,7 @@
           <dt data-i18n="club.bookings">Reservas</dt>
           <dd>
             <a href="https://vola.plus/app-link/club/1498"
-               target="_blank" rel="noopener"
+               target="_blank" rel="noopener noreferrer"
                data-cursor="reservar">
               vola.plus/app-link/club/1498
             </a>
@@ -361,7 +361,7 @@
           <dt data-i18n="club.community">Comunidad</dt>
           <dd>
             <a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE"
-               target="_blank" rel="noopener"
+               target="_blank" rel="noopener noreferrer"
                data-cursor="unirse"
                data-i18n="club.communityLink">
               Grupo WhatsApp activo
@@ -823,29 +823,29 @@
 
     <div class="sponsors-list" role="list">
 
-      <a href="#" class="sponsor-row" role="listitem" data-reveal data-reveal-delay="80">
+      <div class="sponsor-row" role="listitem" data-reveal data-reveal-delay="80">
         <span class="sponsor-row-court" aria-label="Pista 01">Pista <em>01</em></span>
         <span class="sponsor-row-name">Campoheltos</span>
         <span class="sponsor-row-badge" data-i18n="sponsors.badge">Patrocinador Principal</span>
-      </a>
+      </div>
 
-      <a href="#" class="sponsor-row" role="listitem" data-reveal data-reveal-delay="140">
+      <div class="sponsor-row" role="listitem" data-reveal data-reveal-delay="140">
         <span class="sponsor-row-court" aria-label="Pista 02">Pista <em>02</em></span>
         <span class="sponsor-row-name">Cedrón</span>
         <span class="sponsor-row-badge" data-i18n="sponsors.badge">Patrocinador Principal</span>
-      </a>
+      </div>
 
-      <a href="#" class="sponsor-row" role="listitem" data-reveal data-reveal-delay="200">
+      <div class="sponsor-row" role="listitem" data-reveal data-reveal-delay="200">
         <span class="sponsor-row-court" aria-label="Pista 03">Pista <em>03</em></span>
         <span class="sponsor-row-name">Montajes Peyma</span>
         <span class="sponsor-row-badge" data-i18n="sponsors.badge">Patrocinador Principal</span>
-      </a>
+      </div>
 
-      <a href="#" class="sponsor-row" role="listitem" data-reveal data-reveal-delay="260">
+      <div class="sponsor-row" role="listitem" data-reveal data-reveal-delay="260">
         <span class="sponsor-row-court" aria-label="Pista 04">Pista <em>04</em></span>
         <span class="sponsor-row-name">Kocsa Obras y Servicios</span>
         <span class="sponsor-row-badge" data-i18n="sponsors.badge">Patrocinador Principal</span>
-      </a>
+      </div>
 
       <div class="sponsor-row sponsor-row--soon" role="listitem" data-reveal data-reveal-delay="320">
         <span class="sponsor-row-court" aria-hidden="true">· · ·</span>
@@ -871,7 +871,7 @@
   </div>
 
   <div class="gallery-lanes" aria-label="Galería de imágenes del club" data-i18n-arialabel="gallery.ariaLabel">
-    <!-- Lane 1:, velocidad normal -->
+    <!-- Lane 1: velocidad normal -->
     <div class="gallery-lane lane-1">
       <div class="gallery-strip">
         <div class="gallery-img gi-1"  role="img" aria-label="Pistas al atardecer"        data-i18n-arialabel="gallery.img1"></div>
@@ -898,7 +898,7 @@
         <div class="gallery-img gi-9"  role="img" aria-label="Vista de pistas"      data-i18n-arialabel="gallery.img9"></div>
         <div class="gallery-img gi-10" role="img" aria-label="Entrada al club"      data-i18n-arialabel="gallery.img10"></div>
         <div class="gallery-img gi-11" role="img" aria-label="Red central"          data-i18n-arialabel="gallery.img11"></div>
-        <!-- Duplicados -->
+        <!-- Duplicados para loop continuo -->
         <div class="gallery-img gi-7"  aria-hidden="true"></div>
         <div class="gallery-img gi-8"  aria-hidden="true"></div>
         <div class="gallery-img gi-9"  aria-hidden="true"></div>
@@ -954,7 +954,7 @@
          data-i18n="contact.ctaWA">
         Únete a la comunidad WhatsApp
       </a>
-      <span class="contact-secondary contact-secondary--soon" aria-disabled="true" data-cursor="próximamente" data-i18n="contact.ctaEvent">Reservar el club para evento privado</span>
+      <span class="contact-secondary contact-secondary--soon" data-cursor="próximamente" data-i18n="contact.ctaEvent">Reservar el club para evento privado</span>
     </div>
 
     <!-- Mitad derecha: formulario -->
@@ -1154,9 +1154,9 @@
 ════════════════════════════════════════════════════════════ -->
 <script src="lib/gsap.min.js?v=20260610"          defer></script>
 <script src="lib/ScrollTrigger.min.js?v=20260610" defer></script>
-<script src="lib/manifest.js?v=20260610"          defer></script>
-<script src="lib/translations.js?v=20260610"      defer></script>
-<script src="js/main.js?v=20260611"               defer></script>
+<script src="lib/manifest.js?v=20260612"          defer></script>
+<script src="lib/translations.js?v=20260612"      defer></script>
+<script src="js/main.js?v=20260612"               defer></script>
 
 </body>
 </html>
