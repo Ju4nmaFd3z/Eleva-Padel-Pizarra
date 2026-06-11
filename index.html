@@ -100,7 +100,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 27'><path d='M15,2 L28,25 L2,25 Z' fill='none' stroke='%23C4A882' stroke-width='2.5' stroke-linejoin='round'/></svg>">
 
-  <link rel="stylesheet" href="css/main.css?v=20260612">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
+  <link rel="stylesheet" href="css/main.css?v=20260613">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
@@ -155,7 +156,7 @@
      NAVEGACIÓN
 ════════════════════════════════════════════════════════════ -->
 <nav id="main-nav" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
-  <a href="#" class="nav-logo" aria-label="Eleva Padel Club — inicio" data-i18n-arialabel="nav.logoLabel">
+  <a href="#hero" class="nav-logo" aria-label="Eleva Padel Club — inicio" data-i18n-arialabel="nav.logoLabel">
     <svg class="nav-logo-tri" viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M15,2 L28,25 L2,25 Z"/>
     </svg>
@@ -999,7 +1000,7 @@
     <div class="contact-info-cell">
       <span class="contact-info-label" data-i18n="contact.infoPhone">Teléfono</span>
       <span class="contact-info-value" id="info-phone">
-        <a href="#" id="link-phone" data-cursor="llamar">[TELÉFONO]</a>
+        <a href="tel:+34659143103" id="link-phone" data-cursor="llamar">+34 659 14 31 03</a>
       </span>
     </div>
     <div class="contact-info-cell">
@@ -1014,7 +1015,7 @@
     </div>
     <div class="contact-info-cell">
       <span class="contact-info-label" data-i18n="contact.infoAddress">Dirección</span>
-      <span class="contact-info-value" id="info-address">[DIRECCIÓN] · Pizarra, Málaga</span>
+      <span class="contact-info-value" id="info-address">Pasaje de Jerez S/N · 29560 Pizarra, Málaga</span>
     </div>
     <div class="contact-info-cell">
       <span class="contact-info-label" data-i18n="contact.infoSchedule">Horario</span>
@@ -1058,7 +1059,7 @@
       <div class="footer-col-title" data-i18n="footer.contactTitle">Contacto</div>
       <div class="footer-contact-item">
         <span class="lbl" data-i18n="footer.phoneLabel">Teléfono / WhatsApp</span>
-        <span class="val" id="footer-phone"><a href="#" id="footer-link-phone" data-cursor="llamar">[TELÉFONO]</a></span>
+        <span class="val" id="footer-phone"><a href="tel:+34659143103" id="footer-link-phone" data-cursor="llamar">+34 659 14 31 03</a></span>
       </div>
       <div class="footer-contact-item">
         <span class="lbl" data-i18n="contact.infoInstagram">Instagram</span>
@@ -1152,11 +1153,12 @@
 <!-- ════════════════════════════════════════════════════════════
      SCRIPTS — todo diferido, sin type="module"
 ════════════════════════════════════════════════════════════ -->
-<script src="lib/gsap.min.js?v=20260610"          defer></script>
-<script src="lib/ScrollTrigger.min.js?v=20260610" defer></script>
-<script src="lib/manifest.js?v=20260612"          defer></script>
-<script src="lib/translations.js?v=20260612"      defer></script>
-<script src="js/main.js?v=20260612"               defer></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script src="lib/gsap.min.js?v=20260613"          defer></script>
+<script src="lib/ScrollTrigger.min.js?v=20260613" defer></script>
+<script src="lib/manifest.js?v=20260613"          defer></script>
+<script src="lib/translations.js?v=20260613"      defer></script>
+<script src="js/main.js?v=20260613"               defer></script>
 
 </body>
 </html>

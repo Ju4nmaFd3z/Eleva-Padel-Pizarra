@@ -212,9 +212,12 @@
     if (!heroBg || isTouch()) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    var heroEl = document.getElementById('hero');
+    if (!heroEl) return;
+
     window.addEventListener('scroll', function () {
       var scrollY = window.scrollY;
-      var heroH   = document.getElementById('hero').offsetHeight;
+      var heroH   = heroEl.offsetHeight;
       if (scrollY > heroH) return;
       var pct = scrollY / heroH;
       heroBg.style.transform = 'scale(1.04) translateY(' + (pct * 30) + 'px)';
@@ -387,17 +390,31 @@
       infoAddr.textContent = brand.address;
     }
 
-    /* Google Maps embed en footer */
+    /* Leaflet map en footer */
     var mapEl = document.getElementById('footer-map');
-    if (mapEl && brand.mapEmbed && brand.mapEmbed.length > 10) {
-      var iframe = document.createElement('iframe');
-      iframe.src           = brand.mapEmbed;
-      iframe.style.cssText = 'width:100%;height:100%;border:0';
-      iframe.loading       = 'lazy';
-      iframe.allowFullscreen = true;
-      iframe.setAttribute('aria-hidden', 'true');
+    if (mapEl && typeof L !== 'undefined') {
+      var lat = brand.mapLat || 36.769391;
+      var lng = brand.mapLng || -4.709363;
       mapEl.innerHTML = '';
-      mapEl.appendChild(iframe);
+      var leafMap = L.map(mapEl, {
+        center: [lat, lng],
+        zoom: 16,
+        zoomControl: false,
+        scrollWheelZoom: false,
+        dragging: false,
+        attributionControl: false
+      });
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(leafMap);
+      var dot = L.divIcon({
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#C4A882;box-shadow:0 0 0 3px rgba(196,168,130,.25)"></div>',
+        className: '',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+      L.marker([lat, lng], { icon: dot }).addTo(leafMap);
     }
 
     /* Gallery con fotos reales si las rutas existen */
@@ -490,7 +507,8 @@
       var target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      var navH = document.getElementById('main-nav').offsetHeight || 80;
+      var navEl = document.getElementById('main-nav');
+      var navH  = (navEl && navEl.offsetHeight) || 80;
       var top  = target.getBoundingClientRect().top + window.scrollY - navH;
       window.scrollTo({ top: top, behavior: 'smooth' });
     });
@@ -712,7 +730,7 @@
     if (mobile) return;
     if (!window.gsap) {
       var sticky = document.getElementById('services-sticky');
-      if (sticky) sticky.style.minHeight = '100vh';
+      if (sticky) sticky.style.minHeight = '100dvh';
     }
   }
 
