@@ -250,7 +250,7 @@
       if (cards[0]) cards[0].classList.add('icon-drawn');
 
       track.addEventListener('scroll', function () {
-        var idx = Math.round(track.scrollLeft / window.innerWidth);
+        var idx = Math.round(track.scrollLeft / track.clientWidth);
         cards.forEach(function (card, i) {
           if (i <= idx + 1 && !card.classList.contains('icon-drawn')) {
             card.classList.add('icon-drawn');
