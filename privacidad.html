@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviso Legal, Privacidad y Normas · Eleva Padel Club</title>
+  <meta name="robots" content="noindex">
+
+  <!-- Google Fonts — mismas que la web principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --black:      #1A1A1A;
+      --black-mid:  #212121;
+      --black-soft: #2A2A2A;
+      --white-warm: #F5F0EB;
+      --beige:      #E8E0D8;
+      --gold:       #C4A882;
+      --gold-dim:   #9E8560;
+      --gray:       #7A7268;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono:    'Space Mono', 'Courier New', monospace;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--white-warm);
+      background: var(--black);
+      overflow-x: hidden;
+    }
+
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+
+    /* ── LAYOUT ── */
+    .page-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2.5rem) clamp(4rem, 8vw, 6rem);
+    }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3rem;
+      transition: gap 0.2s ease;
+    }
+    .back-link:hover { gap: 0.75rem; text-decoration: none; }
+    .back-link .arrow { font-size: 1rem; line-height: 1; }
+
+    /* ── HEADER DEL DOCUMENTO ── */
+    .doc-header {
+      border-bottom: 1px solid #333;
+      padding-bottom: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .doc-header .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-header h1 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      color: var(--white-warm);
+      margin-bottom: 1rem;
+    }
+
+    .doc-header .meta {
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── ÍNDICE ── */
+    .toc {
+      background: var(--black-mid);
+      border: 1px solid #2E2E2E;
+      border-left: 3px solid var(--gold-dim);
+      border-radius: 4px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .toc-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.9rem;
+    }
+
+    .toc ol {
+      list-style: none;
+      counter-reset: toc-counter;
+    }
+
+    .toc ol li {
+      counter-increment: toc-counter;
+      padding: 0.2rem 0;
+      font-size: 0.875rem;
+    }
+
+    .toc ol li::before {
+      content: counter(toc-counter, upper-roman) ". ";
+      color: var(--gold-dim);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      margin-right: 0.4rem;
+    }
+
+    .toc a { color: var(--beige); }
+    .toc a:hover { color: var(--gold); }
+
+    /* ── SECCIONES ── */
+    section { margin-bottom: 4rem; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    section h2 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--white-warm);
+      border-bottom: 1px solid #2C2C2C;
+      padding-bottom: 0.75rem;
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+
+    section h3 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--gold);
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    p {
+      color: var(--beige);
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    /* ── TABLAS DE DATOS ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.875rem;
+    }
+
+    .data-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid #2E2E2E;
+      font-weight: 400;
+    }
+
+    .data-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #232323;
+      color: var(--beige);
+      vertical-align: top;
+      font-weight: 300;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .data-table td:first-child {
+      color: var(--white-warm);
+      font-weight: 400;
+      white-space: nowrap;
+      padding-right: 1.5rem;
+      min-width: 170px;
+    }
+
+    /* ── LISTA DE DERECHOS ── */
+    .rights-list {
+      list-style: none;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .rights-list li {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #222;
+      font-size: 0.9rem;
+      color: var(--beige);
+      font-weight: 300;
+    }
+
+    .rights-list li:last-child { border-bottom: none; }
+
+    .rights-list .right-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      background: #232323;
+      border: 1px solid #333;
+      border-radius: 2px;
+      padding: 0.2rem 0.45rem;
+      white-space: nowrap;
+      align-self: flex-start;
+      margin-top: 0.15rem;
+      flex-shrink: 0;
+    }
+
+    /* ── LISTA DE NORMAS / REGLAMENTO ── */
+    .rules-list {
+      list-style: none;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .rules-list li {
+      display: flex;
+      gap: 0.9rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #222;
+      font-size: 0.9rem;
+      color: var(--beige);
+      font-weight: 300;
+      align-items: flex-start;
+    }
+
+    .rules-list li:last-child { border-bottom: none; }
+
+    .rules-list .bullet {
+      color: var(--gold-dim);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* ── CAJA DE AVISO / NOTA ── */
+    .notice-box {
+      background: #1E1E1E;
+      border: 1px solid #303030;
+      border-left: 3px solid var(--gold-dim);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 0.875rem;
+      color: var(--beige);
+      font-weight: 300;
+    }
+
+    .notice-box strong {
+      color: var(--white-warm);
+      font-weight: 500;
+    }
+
+    /* ── PLACEHOLDER NIF ── */
+    .nif-placeholder {
+      display: inline-block;
+      background: #2A2000;
+      border: 1px dashed var(--gold-dim);
+      border-radius: 3px;
+      padding: 0.1rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── SEPARADOR ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #252525;
+      margin: 3rem 0;
+    }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      border-top: 1px solid #2A2A2A;
+      padding-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--gray);
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .doc-footer a { color: var(--gold-dim); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 540px) {
+      .data-table td:first-child {
+        min-width: auto;
+        white-space: normal;
+      }
+      .data-table th,
+      .data-table td {
+        padding: 0.6rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-wrap">
+
+    <!-- VOLVER AL CLUB -->
+    <a href="index.html" class="back-link">
+      <span class="arrow">←</span>
+      <span>Volver al club</span>
+    </a>
+
+    <!-- CABECERA DEL DOCUMENTO -->
+    <header class="doc-header">
+      <p class="eyebrow">Documentación legal</p>
+      <h1>Aviso Legal, Privacidad<br>&amp; Normas del Club</h1>
+      <p class="meta">Última actualización: Junio 2026 &nbsp;·&nbsp; Eleva Padel Club · Pizarra, Málaga</p>
+    </header>
+
+    <!-- ÍNDICE -->
+    <nav class="toc" aria-label="Índice del documento">
+      <p class="toc-title">Índice</p>
+      <ol>
+        <li><a href="#aviso-legal">Aviso Legal</a></li>
+        <li><a href="#cancelaciones">Política de Cancelaciones</a></li>
+        <li><a href="#normas">Normas del Club</a></li>
+        <li><a href="#privacidad">Política de Privacidad</a></li>
+        <li><a href="#cookies">Política de Cookies</a></li>
+      </ol>
+    </nav>
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         I. AVISO LEGAL
+         ════════════════════════════════════════════════════════════ -->
+    <section id="aviso-legal">
+      <p class="section-label">Sección I — LSSI-CE Art. 10</p>
+      <h2>Aviso Legal</h2>
+
+      <p>
+        En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la
+        Información y del Comercio Electrónico (LSSI-CE), se facilitan los datos identificativos del titular
+        de este sitio web.
+      </p>
+
+      <h3>Datos del titular</h3>
+
+      <table class="data-table" aria-label="Datos identificativos del titular">
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Información</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Denominación comercial</td>
+            <td>Eleva Padel Club</td>
+          </tr>
+          <tr>
+            <td>NIF del titular</td>
+            <td><span class="nif-placeholder">[Completar: NIF del titular]</span></td>
+          </tr>
+          <tr>
+            <td>Domicilio</td>
+            <td>Pasaje de Jerez S/N, 29560 Pizarra, Málaga (España)</td>
+          </tr>
+          <tr>
+            <td>Teléfono / WhatsApp</td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a></td>
+          </tr>
+          <tr>
+            <td>Actividad</td>
+            <td>Club deportivo de pádel: instalaciones, academia y competición</td>
+          </tr>
+          <tr>
+            <td>Sitio web</td>
+            <td><a href="https://eleva-padel-pizarra.vercel.app/">eleva-padel-pizarra.vercel.app</a></td>
+          </tr>
+          <tr>
+            <td>Alojamiento web</td>
+            <td>Vercel Inc., 340 Pine Street, Suite 701, San Francisco, CA 94104 (EE.UU.)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Condiciones de uso</h3>
+
+      <p>
+        El acceso y uso de este sitio web implican la aceptación de las presentes condiciones. El titular
+        se reserva el derecho de modificar, en cualquier momento y sin previo aviso, los contenidos
+        y las presentes condiciones de uso.
+      </p>
+
+      <p>
+        Los contenidos de este sitio (textos, imágenes, logotipos, diseño) son titularidad del responsable
+        del sitio o de terceros que han autorizado su uso, y están protegidos por la normativa de
+        propiedad intelectual e industrial. Queda prohibida su reproducción total o parcial sin
+        autorización expresa.
+      </p>
+
+      <p>
+        El titular no se responsabiliza de los daños o perjuicios que pudieran derivarse del uso
+        incorrecto del sitio web, ni del contenido de sitios de terceros enlazados desde esta página.
+      </p>
+
+      <h3>Jurisdicción</h3>
+
+      <p>
+        Las presentes condiciones se rigen e interpretan conforme a la legislación española.
+        Para la resolución de cualquier controversia derivada del acceso o uso de este sitio web,
+        las partes se someten a la jurisdicción de los Juzgados y Tribunales de Málaga, con renuncia
+        expresa a cualquier otro fuero que pudiera corresponderles, sin perjuicio de los derechos
+        reconocidos a los consumidores y usuarios por la normativa vigente.
+      </p>
+
+    </section>
+
+    <hr class="divider">
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         II. POLÍTICA DE CANCELACIONES
+         ════════════════════════════════════════════════════════════ -->
+    <section id="cancelaciones">
+      <p class="section-label">Sección II — Condiciones de servicio</p>
+      <h2>Política de Cancelaciones</h2>
+
+      <p>
+        Con el fin de garantizar el correcto funcionamiento de las instalaciones y el aprovechamiento
+        equitativo de los recursos del club, Eleva Padel Club establece las siguientes condiciones
+        de cancelación para todos sus servicios.
+      </p>
+
+      <h3>Reservas de pista</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas de cancelación de pistas">
+        <li>
+          <span class="bullet">01</span>
+          <span>Las reservas de pista deberán cancelarse con un mínimo de <strong>24 horas de antelación</strong> respecto a la hora de inicio del turno reservado.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span>Las cancelaciones efectuadas fuera de este plazo podrán no ser reembolsadas, independientemente del motivo alegado.</span>
+        </li>
+      </ul>
+
+      <h3>Clases particulares</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas de cancelación de clases particulares">
+        <li>
+          <span class="bullet">01</span>
+          <span>Las clases particulares deberán cancelarse con un mínimo de <strong>24 horas de antelación</strong> respecto a la hora programada.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span>Las cancelaciones realizadas fuera del plazo indicado podrán no ser recuperadas ni reembolsadas.</span>
+        </li>
+      </ul>
+
+      <h3>Clases grupales y escuela</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas de cancelación de clases grupales">
+        <li>
+          <span class="bullet">01</span>
+          <span>Las plazas en clases grupales y escuela se reservan con carácter mensual. La inscripción implica la reserva de plaza para la totalidad del período contratado.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span>Las ausencias del alumno no garantizan automáticamente la recuperación de la clase. La posibilidad de recuperación queda sujeta a la disponibilidad de plazas en otros grupos y a la valoración del entrenador responsable.</span>
+        </li>
+      </ul>
+
+      <h3>Cancelaciones por causa del club</h3>
+
+      <ul class="rules-list" role="list" aria-label="Cancelaciones imputables al club">
+        <li>
+          <span class="bullet">01</span>
+          <span>En caso de <strong>lluvia u otras condiciones meteorológicas adversas</strong> que impidan el desarrollo de la actividad, el club se compromete a recuperar la sesión en otra fecha o, en su caso, a compensar al usuario de forma proporcional.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span>En caso de cualquier otra imposibilidad de prestación del servicio imputable al club (avería, causa de fuerza mayor, etc.), la actividad será igualmente recuperada o compensada en los términos que el club comunique al usuario.</span>
+        </li>
+        <li>
+          <span class="bullet">03</span>
+          <span>El club podrá <strong>modificar horarios o grupos</strong> por motivos organizativos o de gestión, notificándolo a los usuarios afectados con la mayor antelación posible.</span>
+        </li>
+      </ul>
+
+      <div class="notice-box">
+        <strong>Importante:</strong> Para cualquier gestión de cancelación o solicitud de recuperación,
+        contacta con el club a través de WhatsApp al <a href="tel:+34659143103">+34 659 14 31 03</a>
+        con la mayor antelación posible.
+      </div>
+
+    </section>
+
+    <hr class="divider">
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         III. NORMAS DEL CLUB
+         ════════════════════════════════════════════════════════════ -->
+    <section id="normas">
+      <p class="section-label">Sección III — Reglamento interno</p>
+      <h2>Normas del Club</h2>
+
+      <p>
+        El uso de las instalaciones de Eleva Padel Club implica la aceptación de las siguientes
+        normas de convivencia y funcionamiento, cuyo cumplimiento es obligatorio para todos los
+        usuarios, socios, alumnos y visitantes.
+      </p>
+
+      <h3>Convivencia y respeto</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas de convivencia">
+        <li>
+          <span class="bullet">—</span>
+          <span>Se ruega <strong>puntualidad</strong> para el correcto funcionamiento de las reservas y actividades del club.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>El <strong>respeto mutuo</strong> entre jugadores, trabajadores y entrenadores es de carácter obligatorio. Cualquier conducta irrespetuosa, intimidatoria o vejatoria podrá ser causa de expulsión inmediata de las instalaciones.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>El club se <strong>reserva el derecho de admisión y permanencia</strong> en sus instalaciones, pudiendo denegar o revocar el acceso a cualquier persona cuyo comportamiento resulte incompatible con el ambiente del club o con las presentes normas.</span>
+        </li>
+      </ul>
+
+      <h3>Uso de las instalaciones</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas de uso de instalaciones">
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>No está permitido</strong> acceder a las pistas con <strong>bebidas alcohólicas</strong> ni con <strong>envases de vidrio</strong> de ningún tipo.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>El <strong>material del club</strong> (raquetas, pelotas, redes, iluminación, etc.) deberá utilizarse de forma correcta y adecuada a su finalidad, evitando un uso que pueda provocar deterioro o accidentes.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>Cualquier <strong>desperfecto o incidencia</strong> en las instalaciones o en el material deberá comunicarse de inmediato al personal del club, con independencia de su causa.</span>
+        </li>
+      </ul>
+
+      <h3>Menores de edad</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas sobre menores de edad">
+        <li>
+          <span class="bullet">—</span>
+          <span>Los <strong>menores de edad</strong> deberán estar en todo momento supervisados por un adulto responsable fuera de las actividades organizadas por el club. El club no asume responsabilidad de custodia sobre menores no inscritos en actividades dirigidas.</span>
+        </li>
+      </ul>
+
+      <h3>Organización de actividades</h3>
+
+      <ul class="rules-list" role="list" aria-label="Normas sobre organización de actividades">
+        <li>
+          <span class="bullet">—</span>
+          <span>Las <strong>actividades, grupos y niveles</strong> podrán ser reorganizados por el club según criterios de nivel de juego y disponibilidad, con el objetivo de optimizar la experiencia formativa y deportiva de todos los participantes.</span>
+        </li>
+      </ul>
+
+      <div class="notice-box">
+        <strong>Nota:</strong> El incumplimiento reiterado de estas normas podrá dar lugar a la
+        suspensión temporal o definitiva del acceso a las instalaciones y servicios del club,
+        sin derecho a reembolso de las cuotas o reservas abonadas.
+      </div>
+
+    </section>
+
+    <hr class="divider">
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         IV. POLÍTICA DE PRIVACIDAD
+         ════════════════════════════════════════════════════════════ -->
+    <section id="privacidad">
+      <p class="section-label">Sección IV — RGPD 2016/679 &amp; LOPDGDD 3/2018</p>
+      <h2>Política de Privacidad</h2>
+
+      <p>
+        En Eleva Padel Club tratamos los datos personales de forma transparente y responsable, en
+        cumplimiento del Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de
+        abril de 2016, relativo a la protección de las personas físicas en lo que respecta al
+        tratamiento de datos personales y a la libre circulación de estos datos (RGPD), y de la
+        Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de
+        los derechos digitales (LOPDGDD).
+      </p>
+
+
+      <!-- 4.1 Responsable -->
+      <h3>4.1 Responsable del tratamiento</h3>
+
+      <table class="data-table" aria-label="Datos del responsable del tratamiento">
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Información</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Responsable</td>
+            <td>Titular de Eleva Padel Club — <span class="nif-placeholder">[Completar: NIF del titular]</span></td>
+          </tr>
+          <tr>
+            <td>Denominación comercial</td>
+            <td>Eleva Padel Club</td>
+          </tr>
+          <tr>
+            <td>Domicilio</td>
+            <td>Pasaje de Jerez S/N, 29560 Pizarra, Málaga (España)</td>
+          </tr>
+          <tr>
+            <td>Contacto para privacidad</td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <!-- 4.2 Qué datos recabamos y cómo -->
+      <h3>4.2 Datos recabados y canales de obtención</h3>
+
+      <p>
+        Este sitio web no dispone de formularios propios que almacenen datos en ninguna base de datos,
+        ni de área privada, ni de registro de usuarios. No recabamos datos personales a través de la
+        web de forma directa ni automatizada.
+      </p>
+
+      <p>
+        El único canal de contacto habilitado en la web es un botón que abre <strong>WhatsApp</strong>.
+        Cuando el usuario hace clic y decide enviar un mensaje, la comunicación se realiza
+        íntegramente a través de la plataforma de WhatsApp (Meta Platforms Ireland Limited). En ese
+        momento, WhatsApp puede recopilar los datos que el propio usuario facilite voluntariamente
+        en el chat —nombre del perfil de WhatsApp, número de teléfono y el contenido del mensaje—.
+        El responsable solo accede a esa información en el contexto de la conversación.
+      </p>
+
+      <p>
+        Adicionalmente, esta web carga las tipografías mediante <strong>Google Fonts</strong>,
+        un servicio externo de Google LLC. Al acceder a la página, el navegador del usuario realiza
+        una petición a los servidores de Google (googleapis.com / fonts.gstatic.com), lo que puede
+        implicar la transmisión de la dirección IP del usuario y datos técnicos del navegador a
+        Google. El responsable no controla ni almacena esa información; su tratamiento queda sujeto
+        exclusivamente a la política de privacidad de Google.
+      </p>
+
+      <p>
+        El proveedor de alojamiento <strong>Vercel Inc.</strong> puede registrar, de forma automática,
+        datos de acceso técnicos (dirección IP, fecha y hora de la solicitud, URL visitada, código de
+        respuesta HTTP) en sus registros de servidor, en cumplimiento de sus propias obligaciones
+        operativas y de seguridad.
+      </p>
+
+      <div class="notice-box">
+        <strong>Resumen:</strong> No guardamos ningún dato personal en servidores propios. Si nos
+        escribes por WhatsApp, tratamos únicamente los datos que tú mismo compartas en esa conversación,
+        y solo para responderte. Los datos técnicos que puedan registrar Google o Vercel están sujetos
+        a sus propias políticas de privacidad.
+      </div>
+
+
+      <!-- 4.3 Finalidad -->
+      <h3>4.3 Finalidad del tratamiento</h3>
+
+      <table class="data-table" aria-label="Finalidades del tratamiento">
+        <thead>
+          <tr>
+            <th>Finalidad</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Atención al usuario</td>
+            <td>
+              Responder a consultas, solicitudes de información sobre el club, reservas de pistas
+              o inscripciones en actividades que el usuario nos remite voluntariamente a través
+              de WhatsApp.
+            </td>
+          </tr>
+          <tr>
+            <td>Funcionamiento del sitio</td>
+            <td>
+              Carga de tipografías mediante Google Fonts para la correcta visualización de la web
+              y prestación del servicio de alojamiento por Vercel Inc.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <!-- 4.4 Base jurídica -->
+      <h3>4.4 Base jurídica del tratamiento</h3>
+
+      <table class="data-table" aria-label="Base jurídica del tratamiento">
+        <thead>
+          <tr>
+            <th>Tratamiento</th>
+            <th>Base jurídica (Art. 6 RGPD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Atención de consultas por WhatsApp</td>
+            <td>
+              <strong>Consentimiento del interesado</strong> (Art. 6.1.a RGPD): el usuario
+              inicia de forma libre y voluntaria la conversación de WhatsApp, lo que implica
+              el consentimiento para que el responsable trate los datos compartidos en dicha
+              conversación con el fin de atender su consulta.
+            </td>
+          </tr>
+          <tr>
+            <td>Seguimiento de la consulta planteada</td>
+            <td>
+              <strong>Interés legítimo</strong> (Art. 6.1.f RGPD): poder responder y dar
+              seguimiento a la consulta o gestión iniciada por el propio usuario, siempre
+              que no prevalezcan los intereses o derechos fundamentales de este.
+            </td>
+          </tr>
+          <tr>
+            <td>Google Fonts (carga de tipografías)</td>
+            <td>
+              <strong>Interés legítimo</strong> (Art. 6.1.f RGPD): correcta visualización
+              y experiencia de usuario en el sitio web.
+            </td>
+          </tr>
+          <tr>
+            <td>Registros de acceso de Vercel</td>
+            <td>
+              <strong>Interés legítimo</strong> (Art. 6.1.f RGPD): seguridad, integridad
+              y correcto funcionamiento del servicio de alojamiento web.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <!-- 4.5 Destinatarios -->
+      <h3>4.5 Destinatarios y comunicaciones a terceros</h3>
+
+      <p>
+        No cedemos datos personales a terceros con fines comerciales, publicitarios ni de ningún otro
+        tipo ajeno a la prestación del servicio solicitado, salvo en los supuestos descritos a
+        continuación, derivados del propio funcionamiento de los servicios que utilizamos y que el
+        usuario activa o acepta implícitamente al navegar por el sitio web:
+      </p>
+
+      <table class="data-table" aria-label="Destinatarios de datos">
+        <thead>
+          <tr>
+            <th>Destinatario</th>
+            <th>Motivo de la comunicación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>WhatsApp / Meta Platforms Ireland Ltd.</td>
+            <td>
+              Plataforma de mensajería a través de la cual el usuario contacta con el club de
+              forma voluntaria. El tratamiento de datos en WhatsApp se rige por la
+              <a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener noreferrer">política de privacidad de WhatsApp/Meta (EEA)</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>Google LLC (Google Fonts)</td>
+            <td>
+              Servicio de tipografías en línea. La dirección IP del usuario puede ser transmitida
+              a servidores de Google al cargar la página. Consulta la
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">política de privacidad de Google</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>Vercel Inc. (alojamiento web)</td>
+            <td>
+              Proveedor de alojamiento de este sitio web. Vercel puede registrar datos de
+              acceso técnicos en sus registros de servidor. Consulta la
+              <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">política de privacidad de Vercel</a>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        En ningún caso vendemos, alquilamos ni compartimos tus datos con terceros para
+        sus propias finalidades comerciales o de marketing.
+      </p>
+
+
+      <!-- 4.6 Transferencias internacionales -->
+      <h3>4.6 Transferencias internacionales de datos</h3>
+
+      <p>
+        Algunos de los proveedores mencionados están radicados o procesan datos en Estados Unidos u
+        otros países fuera del Espacio Económico Europeo (EEE). En tales casos, las transferencias
+        internacionales de datos están amparadas en las siguientes garantías adecuadas, conforme
+        al Capítulo V del RGPD:
+      </p>
+
+      <table class="data-table" aria-label="Transferencias internacionales de datos">
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Garantía aplicable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Meta Platforms / WhatsApp</td>
+            <td>
+              Marco de Privacidad de Datos UE–EE.UU. (EU-U.S. Data Privacy Framework, DPF),
+              adoptado mediante Decisión de Adecuación de la Comisión Europea de 10 de julio
+              de 2023 (C/2023/4745); y, con carácter subsidiario, Cláusulas Contractuales Tipo
+              (SCCs) aprobadas por la Comisión Europea mediante Decisión de Ejecución
+              (UE) 2021/914.
+            </td>
+          </tr>
+          <tr>
+            <td>Google LLC</td>
+            <td>
+              Marco de Privacidad de Datos UE–EE.UU. (EU-U.S. Data Privacy Framework, DPF) y
+              Cláusulas Contractuales Tipo (SCCs) según la Decisión de Ejecución
+              (UE) 2021/914 de la Comisión Europea.
+            </td>
+          </tr>
+          <tr>
+            <td>Vercel Inc.</td>
+            <td>
+              Cláusulas Contractuales Tipo (SCCs) incorporadas en el Adendo de Protección de
+              Datos (<em>Data Processing Addendum</em>) de Vercel Inc.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Puedes obtener una copia de las garantías aplicadas o información adicional sobre las
+        transferencias internacionales contactando con nosotros a través de los canales
+        indicados en el apartado 4.8.
+      </p>
+
+
+      <!-- 4.7 Plazos de conservación -->
+      <h3>4.7 Plazos de conservación</h3>
+
+      <p>
+        Los datos que compartas con nosotros a través de WhatsApp se conservarán únicamente durante
+        el tiempo necesario para atender tu consulta o gestión. Una vez atendida, los datos se
+        mantendrán durante el plazo mínimo exigido por la legislación aplicable según la naturaleza
+        de la comunicación; con carácter general, no más de <strong>3 años</strong> desde el último
+        contacto, salvo que la ley imponga un plazo diferente (por ejemplo, en materia fiscal
+        o contractual).
+      </p>
+
+      <p>
+        Los registros de acceso generados automáticamente por Vercel y los datos técnicos que
+        pudiera tratar Google con motivo de la carga de tipografías están sujetos a los plazos
+        de retención propios de cada proveedor, sobre los que el responsable no ejerce control.
+      </p>
+
+
+      <!-- 4.8 Derechos del interesado -->
+      <h3>4.8 Tus derechos</h3>
+
+      <p>
+        Como interesado, puedes ejercer en cualquier momento los siguientes derechos reconocidos
+        por el RGPD y desarrollados por la LOPDGDD:
+      </p>
+
+      <ul class="rights-list" role="list" aria-label="Derechos del interesado ARCO+">
+        <li>
+          <span class="right-tag">Acceso</span>
+          <span>Conocer si tratamos datos personales que te conciernen y obtener una copia de ellos, así como información sobre la finalidad, origen y destinatarios del tratamiento.</span>
+        </li>
+        <li>
+          <span class="right-tag">Rectificación</span>
+          <span>Corregir los datos inexactos o incompletos que estemos tratando.</span>
+        </li>
+        <li>
+          <span class="right-tag">Supresión</span>
+          <span>Solicitar la eliminación de tus datos cuando, entre otros motivos, ya no sean necesarios para la finalidad para la que fueron recabados ("derecho al olvido").</span>
+        </li>
+        <li>
+          <span class="right-tag">Oposición</span>
+          <span>Oponerte al tratamiento de tus datos cuando este se base en nuestro interés legítimo, salvo que acreditemos motivos legítimos imperiosos o el ejercicio o defensa de reclamaciones.</span>
+        </li>
+        <li>
+          <span class="right-tag">Limitación</span>
+          <span>Solicitar que suspendamos temporalmente el tratamiento de tus datos mientras se verifica una impugnación sobre su exactitud o se resuelve una reclamación.</span>
+        </li>
+        <li>
+          <span class="right-tag">Portabilidad</span>
+          <span>Recibir los datos que nos hayas facilitado en un formato estructurado, de uso común y lectura mecánica, y transmitirlos a otro responsable del tratamiento cuando sea técnicamente posible.</span>
+        </li>
+        <li>
+          <span class="right-tag">Retirar consentimiento</span>
+          <span>Retirar en cualquier momento el consentimiento otorgado, sin que ello afecte a la licitud del tratamiento basado en el consentimiento previo a su retirada.</span>
+        </li>
+      </ul>
+
+      <h3>Cómo ejercer tus derechos</h3>
+
+      <p>
+        Puedes ejercer tus derechos de forma gratuita contactando con nosotros a través de
+        cualquiera de los siguientes canales, indicando claramente el derecho que deseas ejercer
+        y aportando una copia de tu DNI u otro documento identificativo válido:
+      </p>
+
+      <table class="data-table" aria-label="Canales para ejercer derechos">
+        <tbody>
+          <tr>
+            <td>Teléfono / WhatsApp</td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a></td>
+          </tr>
+          <tr>
+            <td>Correo postal</td>
+            <td>Eleva Padel Club, Pasaje de Jerez S/N, 29560 Pizarra, Málaga</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Responderemos a tu solicitud en el plazo máximo de <strong>un mes</strong> a partir de la
+        recepción. Dicho plazo podrá prorrogarse hasta dos meses adicionales en casos de especial
+        complejidad o cuando así lo exija el volumen de solicitudes, comunicándotelo debidamente
+        dentro del primer mes junto con los motivos de la prórroga.
+      </p>
+
+      <div class="notice-box">
+        <strong>Reclamación ante la AEPD:</strong> Si consideras que el tratamiento de tus datos
+        personales no se ajusta a la normativa vigente o que no hemos atendido correctamente tu
+        solicitud, tienes derecho a presentar una reclamación ante la Agencia Española de
+        Protección de Datos (AEPD), autoridad de control competente en España. Puedes hacerlo
+        a través de su sede electrónica en
+        <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">www.aepd.es</a>
+        o en su dirección postal: C/ Jorge Juan, 6, 28001 Madrid. En cualquier caso, te animamos
+        a contactar previamente con nosotros para intentar resolver cualquier cuestión de forma
+        directa y ágil.
+      </div>
+
+    </section>
+
+    <hr class="divider">
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         V. POLÍTICA DE COOKIES
+         ════════════════════════════════════════════════════════════ -->
+    <section id="cookies">
+      <p class="section-label">Sección V — LSSI-CE Art. 22.2 &amp; RGPD</p>
+      <h2>Política de Cookies</h2>
+
+      <p>
+        Esta política informa sobre el uso de cookies y tecnologías similares en el sitio web de
+        Eleva Padel Club, en cumplimiento del artículo 22.2 de la Ley 34/2002, de Servicios de
+        la Sociedad de la Información y del Comercio Electrónico (LSSI-CE), y del RGPD.
+      </p>
+
+      <h3>¿Qué son las cookies?</h3>
+
+      <p>
+        Las cookies son pequeños archivos de texto que un sitio web puede instalar en el dispositivo
+        del usuario al visitarlo. Sirven para recordar preferencias, analizar el comportamiento de
+        navegación o habilitar funcionalidades concretas. Tecnologías similares como el
+        <em>local storage</em>, el <em>session storage</em> o los píxeles de seguimiento pueden
+        tener efectos equivalentes.
+      </p>
+
+      <h3>Uso de cookies en este sitio</h3>
+
+      <p>
+        <strong>Eleva Padel Club no utiliza cookies propias</strong> de ningún tipo: no instalamos
+        cookies de sesión, de análisis de tráfico, de personalización ni de publicidad en el
+        dispositivo del usuario. No empleamos ninguna herramienta de analítica web (Google
+        Analytics, Matomo, etc.) ni de publicidad comportamental.
+      </p>
+
+      <p>
+        Sin embargo, este sitio web carga las tipografías mediante <strong>Google Fonts</strong>,
+        un servicio de Google LLC. Al acceder a la página, el navegador del usuario establece
+        una conexión con los servidores de Google (googleapis.com / fonts.gstatic.com) para
+        descargar los archivos de fuentes. Esta conexión puede dar lugar al registro de datos
+        técnicos por parte de Google (dirección IP, información del navegador) y, en función de
+        la configuración del navegador y de la sesión existente con Google, al acceso o creación
+        de identificadores de tercero. Este tratamiento escapa al control del responsable de este
+        sitio web.
+      </p>
+
+      <table class="data-table" aria-label="Tecnologías de terceros">
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Finalidad</th>
+            <th>Tipo</th>
+            <th>Más información</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Fonts (Google LLC)</td>
+            <td>Carga de tipografías para la correcta visualización del sitio web</td>
+            <td>Técnica / tercero</td>
+            <td>
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+                Política de privacidad de Google
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Cómo gestionar o bloquear las cookies de terceros</h3>
+
+      <p>
+        Puedes configurar tu navegador para bloquear cookies de terceros o eliminar las existentes.
+        Ten en cuenta que bloquear las conexiones a Google Fonts puede afectar a la apariencia
+        visual del sitio (las fuentes se mostrarán con tipografías del sistema), pero no alterará
+        su funcionalidad esencial. A continuación encontrarás los enlaces a la configuración de
+        cookies de los navegadores más habituales:
+      </p>
+
+      <ul style="list-style: none; margin: 1rem 0 1rem 0;">
+        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+          &middot; <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a>
+        </li>
+        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+          &middot; <a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a>
+        </li>
+        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+          &middot; <a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Apple Safari</a>
+        </li>
+        <li style="padding: 0.3rem 0; color: var(--beige); font-weight: 300; font-size: 0.9rem;">
+          &middot; <a href="https://support.microsoft.com/es-es/windows/eliminar-y-administrar-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer">Microsoft Edge</a>
+        </li>
+      </ul>
+
+      <div class="notice-box">
+        <strong>En resumen:</strong> Esta web no instala ninguna cookie propia. El único tercero
+        que puede registrar datos técnicos al cargar la página es Google, a través del servicio
+        Google Fonts utilizado para las tipografías. No empleamos herramientas de analítica,
+        publicidad ni seguimiento de ningún tipo.
+      </div>
+
+    </section>
+
+    <hr class="divider">
+
+    <!-- PIE DEL DOCUMENTO -->
+    <footer class="doc-footer">
+      <p>Eleva Padel Club &nbsp;·&nbsp; Pasaje de Jerez S/N, 29560 Pizarra, Málaga</p>
+      <p>
+        <a href="tel:+34659143103">+34 659 14 31 03</a> &nbsp;·&nbsp;
+        <a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a>
+      </p>
+      <p style="margin-top: 0.5rem;">Última actualización: Junio 2026</p>
+      <p style="margin-top: 1rem;">
+        <a href="index.html">← Volver al club</a>
+      </p>
+    </footer>
+
+  </div><!-- /page-wrap -->
+
+</body>
+</html>

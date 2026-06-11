@@ -134,17 +134,24 @@
 
     /* Burger menu */
     if (burger && overlay) {
+      function burgerLabel(key, fallback) {
+        var lang = localStorage.getItem('eleva-lang') || 'es';
+        var i18n = window.__ELEVA_I18N__;
+        return (i18n && i18n[lang] && resolveKey(i18n[lang], key)) || fallback;
+      }
+
       function closeOverlay() {
         overlay.classList.remove('is-open');
         burger.classList.remove('is-open');
         burger.setAttribute('aria-expanded', 'false');
-        burger.setAttribute('aria-label', 'Abrir menú');
+        burger.setAttribute('aria-label', burgerLabel('nav.menuOpen', 'Abrir menú'));
         document.body.style.overflow = '';
+        burger.focus();
         setTimeout(function () {
-          if (!overlay.classList.contains('is-open')) {
-            overlay.style.display = 'none';
-            overlay.setAttribute('aria-hidden', 'true');
-          }
+          /* Siempre ocultar: evita que el overlay quede display:flex con opacity:0
+             bloqueando invisiblemente todos los clicks de la página */
+          overlay.style.display = 'none';
+          overlay.setAttribute('aria-hidden', 'true');
         }, 320);
       }
 
@@ -153,12 +160,27 @@
         overlay.removeAttribute('aria-hidden');
         requestAnimationFrame(function () {
           overlay.classList.add('is-open');
+          var firstFocusable = overlay.querySelector('a, button');
+          if (firstFocusable) firstFocusable.focus();
         });
         burger.classList.add('is-open');
         burger.setAttribute('aria-expanded', 'true');
-        burger.setAttribute('aria-label', 'Cerrar menú');
+        burger.setAttribute('aria-label', burgerLabel('nav.menuClose', 'Cerrar menú'));
         document.body.style.overflow = 'hidden';
       }
+
+      /* Focus trap inside overlay */
+      overlay.addEventListener('keydown', function (e) {
+        if (e.key !== 'Tab' || !overlay.classList.contains('is-open')) return;
+        var focusable = overlay.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+        var first = focusable[0];
+        var last  = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+        }
+      });
 
       burger.addEventListener('click', function () {
         if (overlay.classList.contains('is-open')) {
@@ -188,6 +210,7 @@
   function initHero() {
     var heroBg = $('.hero-bg');
     if (!heroBg || isTouch()) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     window.addEventListener('scroll', function () {
       var scrollY = window.scrollY;
@@ -211,7 +234,19 @@
     var mobile = window.matchMedia('(max-width: 768px)').matches;
 
     if (mobile) {
-      /* Móvil: iconos con scroll del track */
+      /* Crear dots de navegación */
+      var dotsWrap = document.createElement('div');
+      dotsWrap.className = 'services-dots';
+      dotsWrap.setAttribute('aria-hidden', 'true');
+      var dotEls = cards.map(function (_, i) {
+        var d = document.createElement('span');
+        d.className = 'services-dot' + (i === 0 ? ' is-active' : '');
+        dotsWrap.appendChild(d);
+        return d;
+      });
+      if (sticky.parentNode) sticky.parentNode.insertBefore(dotsWrap, sticky.nextSibling);
+
+      /* Primer icono visible desde el inicio */
       if (cards[0]) cards[0].classList.add('icon-drawn');
 
       track.addEventListener('scroll', function () {
@@ -220,6 +255,9 @@
           if (i <= idx + 1 && !card.classList.contains('icon-drawn')) {
             card.classList.add('icon-drawn');
           }
+        });
+        dotEls.forEach(function (d, i) {
+          d.classList.toggle('is-active', i === idx);
         });
       }, { passive: true });
       return;
@@ -297,6 +335,7 @@
     }, 10000);
 
     function reveal(el) {
+      if (!el.dataset.revealPending) return;
       el.style.opacity   = '1';
       el.style.transform = 'none';
       delete el.dataset.revealPending;
@@ -335,9 +374,17 @@
 
     /* Teléfono */
     var telHref = phone ? 'tel:+' + phone : '#';
+    var displayPhone = (function () {
+      if (!phone) return brand.phone;
+      if (/^34\d{9}$/.test(phone)) {
+        var n = phone.slice(2);
+        return '+34 ' + n.slice(0,3) + ' ' + n.slice(3,5) + ' ' + n.slice(5,7) + ' ' + n.slice(7);
+      }
+      return '+' + phone;
+    }());
     $$('[id^="link-phone"], [id^="footer-link-phone"]').forEach(function (el) {
       el.href        = telHref;
-      el.textContent = phone ? '+' + phone.replace(/^34/, '34 ') : brand.phone;
+      el.textContent = displayPhone;
     });
 
     /* WhatsApp con mensajes específicos */
@@ -356,32 +403,17 @@
         '1h · Grupos 3–4 personas · 10€/persona.');
     }
 
-    /* Pool CTA */
-    var btnPool = document.getElementById('btn-pool');
-    if (btnPool) {
-      btnPool.href = waURL(phone,
-        'Hola, me gustaría apuntarme al próximo pool de Eleva Padel Club.');
+    /* Eventos privados CTA */
+    var btnEventos = document.getElementById('btn-eventos');
+    if (btnEventos && phone) {
+      btnEventos.href = waURL(phone,
+        'Hola, me gustaría información sobre la reserva del club para un evento privado.');
     }
 
     /* Dirección */
     var infoAddr = document.getElementById('info-address');
     if (infoAddr && brand.address) {
       infoAddr.textContent = brand.address;
-    }
-
-    /* Horario — construir sin innerHTML para evitar XSS */
-    var infoSched = document.getElementById('info-schedule');
-    if (infoSched && brand.schedule) {
-      infoSched.textContent = '';
-      brand.schedule.split('·').forEach(function (part, i) {
-        if (i > 0) {
-          infoSched.appendChild(document.createElement('br'));
-          var sep = document.createTextNode('·' + part);
-          infoSched.appendChild(sep);
-        } else {
-          infoSched.appendChild(document.createTextNode(part));
-        }
-      });
     }
 
     /* Google Maps embed en footer */
@@ -495,7 +527,6 @@
   ──────────────────────────────────────────────────────────────── */
   function initGSAPExtras() {
     if (!window.gsap || !window.ScrollTrigger) return;
-    gsap.registerPlugin(ScrollTrigger);
 
     /* Footer marquee: pequeño efecto parallax sutil */
     var footerMarquee = $('.footer-marquee');
@@ -518,6 +549,8 @@
       acCards.forEach(function (card) {
         /* Anula el data-reveal para que GSAP tome el control */
         card.removeAttribute('data-reveal');
+        delete card.dataset.revealPending;
+        card.style.transition = 'none';
         card.style.opacity = '0';
         card.style.transform = 'translateY(40px)';
       });
@@ -595,9 +628,111 @@
     var btn   = document.getElementById('btn-pool');
     if (btn && phone) {
       btn.href = waURL(phone,
-        '¡Hola! Me gustaría apuntarme al próximo pool de Eleva Padel Club 🎾\n' +
-        'Viernes 20:00 · 8€/persona.');
+        '¡Hola! Me gustaría apuntarme al próximo pool de Eleva Padel Club 🎾');
     }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     I18N — motor de traducción ES / EN / NL
+  ──────────────────────────────────────────────────────────────── */
+  function resolveKey(obj, path) {
+    return path.split('.').reduce(function (o, k) {
+      return (o != null && o[k] !== undefined) ? o[k] : undefined;
+    }, obj);
+  }
+
+  function applyLang(lang) {
+    var i18n = window.__ELEVA_I18N__;
+    if (!i18n || !i18n[lang]) return;
+    var t = i18n[lang];
+
+    localStorage.setItem('eleva-lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+
+    /* Texto plano */
+    $$('[data-i18n]').forEach(function (el) {
+      var val = resolveKey(t, el.getAttribute('data-i18n'));
+      if (val !== undefined) el.textContent = val;
+    });
+
+    /* Contenido HTML (headings con <br>/<em>, CTA notes) */
+    $$('[data-i18n-html]').forEach(function (el) {
+      var val = resolveKey(t, el.getAttribute('data-i18n-html'));
+      if (val !== undefined) el.innerHTML = val;
+    });
+
+    /* Placeholders de inputs y textareas */
+    $$('[data-i18n-ph]').forEach(function (el) {
+      var val = resolveKey(t, el.getAttribute('data-i18n-ph'));
+      if (val !== undefined) el.setAttribute('placeholder', val);
+    });
+
+    /* aria-label */
+    $$('[data-i18n-arialabel]').forEach(function (el) {
+      var val = resolveKey(t, el.getAttribute('data-i18n-arialabel'));
+      if (val !== undefined) el.setAttribute('aria-label', val);
+    });
+
+    /* Burger: actualiza su aria-label según estado actual del menú */
+    var burger = document.querySelector('.nav-burger');
+    if (burger) {
+      var isOpen = burger.classList.contains('is-open');
+      var burgerKey = isOpen ? 'nav.menuClose' : 'nav.menuOpen';
+      var burgerVal = resolveKey(t, burgerKey);
+      if (burgerVal !== undefined) burger.setAttribute('aria-label', burgerVal);
+    }
+
+    /* Estado activo del switcher */
+    $$('.lang-btn').forEach(function (btn) {
+      var active = btn.getAttribute('data-lang') === lang;
+      btn.classList.toggle('lang-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  function initI18n() {
+    var saved = localStorage.getItem('eleva-lang') || 'es';
+    applyLang(saved);
+
+    $$('.lang-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        applyLang(btn.getAttribute('data-lang'));
+      });
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     TEAM CARDS — tilt 3D con cursor tracking + spring-back
+  ──────────────────────────────────────────────────────────────── */
+  function initTeamCards() {
+    if (isTouch()) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    $$('.team-card').forEach(function (card) {
+      var live = false;
+
+      card.addEventListener('mouseenter', function () {
+        live = true;
+        card.style.willChange  = 'transform';
+        card.style.transition  = '';
+      });
+
+      card.addEventListener('mousemove', function (e) {
+        if (!live) return;
+        var r  = card.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+        var dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+        card.style.transform =
+          'perspective(700px) rotateX(' + (-dy * 7) + 'deg) rotateY(' + (dx * 10) + 'deg) translateZ(14px)';
+      });
+
+      card.addEventListener('mouseleave', function () {
+        live = false;
+        card.style.transition  = 'transform 0.7s cubic-bezier(0.16,1,0.3,1)';
+        card.style.transform   = '';
+        card.style.willChange  = 'auto';
+      });
+    });
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -628,6 +763,8 @@
     safe(initManifest,      'manifest');
     safe(initPools,         'pools');
     safe(initContact,       'contact');
+    safe(initTeamCards,     'teamCards');
+    safe(initI18n,          'i18n');
     safe(initSmoothScroll,  'smoothScroll');
     safe(fixServicesHeight, 'servicesHeight');
     /* GSAP extras al final, no bloquea nada */
