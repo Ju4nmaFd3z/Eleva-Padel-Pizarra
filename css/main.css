@@ -966,7 +966,7 @@ svg { display: block; }
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
-    touch-action: pan-x;
+    touch-action: pan-x pan-y;
     overscroll-behavior-x: contain;
     height: auto;
     min-height: 85vh;
@@ -1801,6 +1801,73 @@ svg { display: block; }
     justify-content: center;
     padding: .5rem 1rem;
   }
+
+  /* ── TARIFAS ACADEMIA — REDISEÑO COMPLETO MÓVIL ──────────────── */
+  .academy-rates {
+    padding: 2.5rem 0;
+  }
+  .academy-rates-header {
+    padding: 0 var(--container-pad);
+    margin-bottom: 1.5rem;
+    flex-direction: column;
+    gap: .4rem;
+  }
+  .academy-rates-sub { display: none; }
+
+  .academy-rates-grid {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    padding: 0 var(--container-pad);
+    border-top: none;
+    border-bottom: none;
+  }
+  .academy-rate-block {
+    background: rgba(26,26,26,.05);
+    border-radius: 4px;
+    padding: 1.25rem 1.25rem .9rem;
+    border-right: none;
+    border-bottom: none;
+  }
+  .academy-rate-block:not(:first-child) { padding-left: 1.25rem; }
+  .academy-rate-block:last-child { border-bottom: none; }
+
+  .academy-rate-cat {
+    font-size: .62rem;
+    letter-spacing: .2em;
+    margin-bottom: .9rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid rgba(196,168,130,.3);
+    color: var(--gold);
+  }
+  .academy-rate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: .38rem 0;
+    gap: .5rem;
+    border-bottom: 1px solid rgba(26,26,26,.05);
+  }
+  .academy-rate-row:last-child { border-bottom: none; }
+  .academy-rate-desc {
+    font-size: .82rem;
+    color: rgba(26,26,26,.52);
+    line-height: 1.3;
+  }
+  .academy-rate-price {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .academy-rate-unit { font-size: .6rem; }
+
+  .academy-rates-cta {
+    justify-content: center;
+    padding: 1.75rem var(--container-pad) 0;
+  }
+  .academy-rates-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2236,8 +2303,8 @@ svg { display: block; }
   color: rgba(245,240,235,0.22);
 }
 .sponsor-row-badge--soon {
-  color: rgba(245,240,235,0.22) !important;
-  opacity: 1 !important;
+  color: rgba(245,240,235,0.22);
+  opacity: 1;
   border: 1px dashed rgba(245,240,235,0.18);
   padding: 4px 10px;
 }
