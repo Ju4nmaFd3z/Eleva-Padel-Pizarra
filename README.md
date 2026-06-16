@@ -6,7 +6,7 @@ Web estática lista para publicar. Sin instalaciones, sin programas especiales.
 
 ## Ver la web en tu ordenador
 
-Abre el archivo `index.html` haciendo doble clic. Se abrirá directamente en tu navegador. Funciona sin conexión a internet (solo las fuentes de texto y el fondo del hero requieren conexión la primera vez).
+Abre el archivo `index.html` haciendo doble clic. Se abrirá directamente en tu navegador. Funciona sin conexión a internet (solo las fuentes de texto, el fondo del hero y el mapa requieren conexión la primera vez).
 
 ---
 
@@ -16,36 +16,34 @@ Abre el archivo `index.html` haciendo doble clic. Se abrirá directamente en tu 
 2. Una vez dentro, haz clic en **"Add New → Project"**.
 3. Selecciona **"Upload"** (o arrastra toda la carpeta `Eleva-Padel-Pizarra`).
 4. Haz clic en **Deploy**.
-5. En menos de un minuto tendrás una URL pública tipo `https://eleva-padel.vercel.app`.
+5. En menos de un minuto tendrás una URL pública tipo `https://eleva-padel-pizarra.vercel.app`.
 6. Puedes conectar tu dominio propio desde el panel de Vercel.
 
 ---
 
-## Cambiar el número de WhatsApp y los datos del club
+## Cambiar el número de WhatsApp, la dirección y el mapa
 
 Abre el archivo `lib/manifest.js` con cualquier editor de texto (Bloc de notas, TextEdit, etc.).
 
 Busca estas líneas y cámbialas:
 
 ```
-phone:    '34600000000',   // ← pon el número del club sin + ni espacios
-address:  'C/ Ejemplo 1, Pizarra, Málaga',  // ← dirección real
-schedule: 'Mañanas 9:00–12:00 · Tardes y noches 17:00–00:00', // ← horario si cambia
+phone:   '34659143103',   // ← número del club sin + ni espacios
+address: 'Pasaje de Jerez S/N · 29560 Pizarra, Málaga',  // ← dirección real
+mapLat:  36.769391,        // ← latitud (la usa el mapa del footer)
+mapLng:  -4.709363,        // ← longitud
 ```
 
 El número debe empezar por `34` (prefijo de España) sin el `+`. Por ejemplo, si el teléfono es `612 345 678`, escribe `34612345678`.
 
+Para obtener `mapLat`/`mapLng`: en Google Maps, haz clic derecho sobre la ubicación del club y copia las dos coordenadas que aparecen arriba del menú (latitud, longitud). El mapa del footer (Leaflet + OpenStreetMap/CARTO) se dibuja solo con esas coordenadas; no hace falta ningún código de Google.
+
 ---
 
-## Añadir el mapa de Google
+## Cambiar los textos
 
-1. Ve a **Google Maps** y busca la dirección del club.
-2. Haz clic en **Compartir → Insertar un mapa**.
-3. Copia solo la parte `src="..."` del código que te da Google.
-4. Abre `lib/manifest.js` y pega ese enlace en:
-   ```
-   mapEmbed: 'PEGA_AQUÍ_EL_SRC_DE_GOOGLE_MAPS',
-   ```
+- Los textos visibles de la web (secciones, precios, torneo, equipo, etc.) están en `index.html`.
+- Las **traducciones** (Español / Inglés / Neerlandés) están en `lib/translations.js`. Cada texto traducible lleva un atributo `data-i18n` en el HTML; su traducción vive en `translations.js` bajo la misma clave para los tres idiomas. Si añades o cambias un texto traducible, actualízalo en los tres idiomas.
 
 ---
 
@@ -59,8 +57,11 @@ Las fotos van en la carpeta `assets/img/`. Los nombres que la web espera son:
 | `club-01.jpg`   | Collage de "El Club" — foto izquierda |
 | `club-02.jpg`   | Collage de "El Club" — foto derecha |
 | `club-03.jpg`   | Collage de "El Club" — foto central |
-| `gallery-01.jpg` hasta `gallery-16.jpg` | Galería de imágenes |
+| `team-lorena.jpg` | Foto del equipo (Lorena Vano) |
+| `gallery-01.jpg` … `gallery-16.jpg` | Galería de imágenes |
 | `og.jpg`        | Vista previa al compartir en redes (1200×630 px) |
+
+Las imágenes de los pools están en `assets/pools/opt/` ya optimizadas en varios tamaños (AVIF + JPEG de respaldo). Si las regeneras, mantén esa estructura.
 
 **Consejo:** las fotos deberían pesar menos de 500 KB cada una para que carguen rápido. Puedes comprimir gratis en [squoosh.app](https://squoosh.app).
 
@@ -68,21 +69,21 @@ Las fotos van en la carpeta `assets/img/`. Los nombres que la web espera son:
 
 ## Actualizar el cache (tras cualquier cambio)
 
-Cuando cambies cualquier archivo (fotos, textos, colores…), los navegadores a veces guardan la versión antigua. Para forzar la actualización, abre `index.html` y cambia la fecha en estos tres sitios:
+Cuando cambies cualquier archivo (fotos, textos, colores…), los navegadores a veces guardan la versión antigua. Para forzar la actualización, abre `index.html` y cambia la versión en el `?v=` de los archivos:
 
 ```html
-<link rel="stylesheet" href="css/main.css?v=20260609">   ← cambia la fecha
-<script src="lib/manifest.js?v=20260609" defer></script>  ← cambia la fecha
-<script src="js/main.js?v=20260609"     defer></script>  ← cambia la fecha
+<link rel="stylesheet" href="css/main.css?v=20260612b">   ← cambia la versión
+<script src="lib/manifest.js?v=20260612b" defer></script>  ← cambia la versión
+<script src="js/main.js?v=20260612b"     defer></script>  ← cambia la versión
 ```
 
-Pon la fecha de hoy en formato YYYYMMDD (por ejemplo, `20260715`).
+Usa la fecha de hoy en formato YYYYMMDD (por ejemplo, `20260715`).
 
 ---
 
-## Añadir el Instagram en el header
+## Cambiar el Instagram
 
-El Instagram ya está enlazado como `@elevapadelpizarra` en el footer y en la sección de contacto. Para cambiar el usuario, busca `elevapadelpizarra` en `index.html` y sustitúyelo.
+El Instagram está enlazado como `@elevapadelpizarra` en el footer y en la sección de contacto. Para cambiar el usuario, busca `elevapadelpizarra` en `index.html` y sustitúyelo.
 
 ---
 
@@ -91,17 +92,22 @@ El Instagram ya está enlazado como `@elevapadelpizarra` en el footer y en la se
 ```
 Eleva-Padel-Pizarra/
 ├── index.html          ← la web completa
+├── privacidad.html     ← aviso legal, privacidad y normas (noindex)
 ├── css/
 │   └── main.css        ← todos los estilos
 ├── js/
 │   └── main.js         ← interactividad
 ├── lib/
-│   ├── manifest.js     ← datos editables del club
+│   ├── manifest.js     ← datos editables (teléfono, dirección, mapa, galería)
+│   ├── translations.js ← traducciones ES / EN / NL
 │   ├── gsap.min.js     ← animaciones (local, sin CDN)
 │   └── ScrollTrigger.min.js
 ├── assets/
-│   ├── img/            ← aquí van las fotos
+│   ├── img/            ← fotos del club y galería
+│   ├── pools/opt/      ← imágenes de pools optimizadas (AVIF + JPEG)
 │   └── credits.json    ← créditos de imágenes
+├── robots.txt
+├── sitemap.xml
 └── vercel.json         ← configuración de despliegue
 ```
 
@@ -116,10 +122,10 @@ No. Abre `index.html` directamente con doble clic.
 Todos los modernos: Chrome, Firefox, Safari, Edge. Internet Explorer no está soportado (está descontinuado).
 
 **¿Puedo editar los textos directamente?**
-Sí, en `index.html` con cualquier editor de texto. Los textos de los pools, la academia y los servicios también se pueden editar en `lib/manifest.js`.
+Sí, en `index.html` con cualquier editor de texto. Recuerda que las traducciones a inglés y neerlandés están en `lib/translations.js`.
 
-**El mapa no aparece en local, ¿es normal?**
-Sí. Google Maps solo funciona cuando la web está en un servidor (Vercel). En local aparece un enlace "Ver en Google Maps".
+**El mapa no aparece, ¿es normal?**
+El mapa del footer usa OpenStreetMap/CARTO y necesita conexión a internet la primera vez. Si por algún motivo no carga, se muestra automáticamente un enlace "Ver en Google Maps" como alternativa.
 
 ---
 

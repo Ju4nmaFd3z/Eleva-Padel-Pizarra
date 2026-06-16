@@ -35,7 +35,6 @@
   --t-3xl: clamp(2rem, 4.5vw, 3.5rem);
   --t-4xl: clamp(2.8rem, 6vw, 5rem);
   --t-5xl: clamp(3.5rem, 8vw, 7rem);
-  --t-6xl: clamp(4.5rem, 12vw, 10rem);
 }
 
 /* ── 2. RESET ──────────────────────────────────────────────────── */
@@ -171,11 +170,12 @@ svg { display: block; }
 .triangle-path {
   fill: none;
   stroke: var(--gold);
-  stroke-width: 2;
+  stroke-width: 3;
   stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 300;
-  stroke-dashoffset: 300;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 6;
+  stroke-dasharray: 215;
+  stroke-dashoffset: 215;
   animation: draw-triangle 1.4s var(--ease-out) forwards;
 }
 @keyframes draw-triangle { to { stroke-dashoffset: 0; } }
@@ -266,11 +266,6 @@ svg { display: block; }
     drop-shadow(0 0 11px rgba(196,168,130,.52))
     drop-shadow(0 0 24px rgba(196,168,130,.22)); }
 }
-@keyframes stroke-retrace {
-  from { stroke-dashoffset: 80; }
-  to   { stroke-dashoffset:  0; }
-}
-
 .nav-logo-tri {
   width: 28px; height: auto;
   flex-shrink: 0;
@@ -282,18 +277,11 @@ svg { display: block; }
     tri-glow   .72s var(--ease-out) forwards;
 }
 .nav-logo-tri path {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-  stroke-dasharray: 80;
-  stroke-dashoffset: 0;
-  transition: fill .45s var(--ease-out), stroke-width .45s var(--ease-out);
+  fill: var(--gold);
+  transition: fill .45s var(--ease-out);
 }
 .nav-logo:hover .nav-logo-tri path {
-  fill: rgba(196,168,130,.2);
-  stroke-width: 1.8;
-  animation: stroke-retrace .78s var(--ease-out) forwards;
+  fill: #d8bd92;
 }
 
 /* ── Wordmark: shimmer sin cortes ────────────────────────────
@@ -473,9 +461,9 @@ svg { display: block; }
   touch-action: manipulation;
 }
 .fab-triangle a:hover { background: var(--gold); border-color: var(--gold); }
-.fab-triangle a:hover svg path { stroke: var(--black); }
-.fab-triangle svg { width: 18px; }
-.fab-triangle svg path { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linejoin: round; }
+.fab-triangle a:hover svg path { fill: var(--black); }
+.fab-triangle svg { width: 20px; }
+.fab-triangle svg path { fill: var(--gold); transition: fill .25s; }
 .fab-tooltip {
   font-family: var(--font-mono);
   font-size: .55rem;
@@ -525,10 +513,7 @@ svg { display: block; }
 }
 .btn-dark:hover { border-color: var(--white-warm); }
 
-/* ── 10. LAYOUT UTILITIES ──────────────────────────────────────── */
-
-
-/* ── 11. HERO ──────────────────────────────────────────────────── */
+/* ── 10. HERO ──────────────────────────────────────────────────── */
 #hero {
   position: relative;
   height: 100dvh;
@@ -725,7 +710,7 @@ svg { display: block; }
   background-size: cover;
   background-position: center;
 }
-/* Placeholders para fotos — sustituir con fotos reales */
+/* Fotos del club */
 .club-photo-1 .club-photo-inner {
   background:
     url('../assets/img/club-01.jpg') center/cover no-repeat,
@@ -1019,6 +1004,46 @@ svg { display: block; }
   }
 }
 
+/* Tablet TÁCTIL (769–1024): mismo carrusel snap que móvil para servicios.
+   El JS de initServices detecta el mismo caso (isTouch + ≤1024) y crea
+   los dots. Mantenemos la rejilla 42/58 propia de tablet, sólo cambiamos
+   el contenedor a snap horizontal. */
+@media (min-width: 769px) and (max-width: 1024px) and (pointer: coarse) {
+  .section-services { height: auto; }
+  .services-sticky {
+    display: block;
+    position: static;
+    height: auto;
+    overflow: hidden;
+  }
+  .services-track {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    height: auto;
+    min-height: 80vh;
+  }
+  .services-track::-webkit-scrollbar { display: none; }
+  .service-card {
+    flex: 0 0 100%;
+    width: 100%;
+    min-height: 80vh;
+    height: auto;
+    scroll-snap-align: start;
+  }
+  .services-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .6rem;
+    padding: 1rem 0 1.5rem;
+    background: var(--black);
+  }
+}
+
 /* ── 15. SECCIÓN 03 — ACADEMIA ─────────────────────────────────── */
 .section-academy {
   background: var(--black);
@@ -1115,13 +1140,16 @@ svg { display: block; }
 
 /* ── 16. SECCIÓN 05 — POOLS & TORNEOS ─────────────────────────── */
 .section-pools {
-  background: var(--beige);
-  color: var(--black);
-  padding: var(--section-pad) 0;
+  background: var(--black-mid);
+  color: var(--white-warm);
+  padding: var(--section-pad) 0 0;
   position: relative;
-  overflow: hidden;
+  /* overflow:visible es imprescindible para que el pin de ScrollTrigger
+     funcione (un padre con overflow:hidden lo rompe). El clip horizontal
+     de la bobina lo hace .pools-reel, y body ya tiene overflow-x:hidden. */
+  overflow: visible;
 }
-.section-pools .section-watermark { opacity: .18; }
+.section-pools .section-watermark { opacity: .07; }
 .pools-header {
   position: relative;
   max-width: var(--container-max);
@@ -1135,149 +1163,129 @@ svg { display: block; }
   font-weight: 300;
   line-height: 1.1;
   max-width: 18ch;
-  color: var(--black);
+  color: var(--white-warm);
 }
 
-/* Grid de tarjetas */
-.pools-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--container-pad);
-  background: rgba(26,26,26,0.1);
-}
-
-.pool-card {
-  background: var(--beige);
-  padding: clamp(2rem, 4vw, 3rem);
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+/* ── LA BOBINA — medallones cinematográficos ───────────────────── */
+.pools-reel {
   position: relative;
+  height: 100dvh;
+  margin-top: 1.5rem;
   overflow: hidden;
-  transition: background 0.3s ease;
-}
-/* Sombra oscura que cubre la tarjeta en hover */
-.pool-card::before {
-  content: '';
-  position: absolute;
-  inset: 0 100% 0 0;
-  background: rgba(26,26,26,0.04);
-  transition: inset 0.5s cubic-bezier(0.16,1,0.3,1);
-  pointer-events: none;
-}
-.pool-card:hover::before { inset: 0; }
-/* Línea dorada superior que crece de izquierda a derecha */
-.pool-card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--gold);
-  transition: width 0.55s cubic-bezier(0.16,1,0.3,1);
-}
-.pool-card:hover::after { width: 100%; }
-
-.pool-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
 }
-.pool-name {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 400;
-  color: var(--black);
+/* Aura de fondo que vira al color de la pool en foco */
+.pools-aura {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 80vw; height: 80vw;
+  max-width: 880px; max-height: 880px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--reel-accent, #C4A882) 0%, transparent 60%);
+  opacity: .16;
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
 }
-.pool-badge {
-  font-family: var(--font-mono);
-  font-size: .52rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid rgba(196,168,130,0.55);
-  padding: .25rem .6rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Día y hora */
-.pool-meta {
+.pools-track {
   display: flex;
-  align-items: baseline;
-  gap: 0.8rem;
+  flex: none;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  /* padding lateral = medio viewport menos media tarjeta → centra primera/última */
+  padding: 0 calc(50vw - clamp(130px, 18vw, 190px));
+  will-change: transform;
+  position: relative;
+  z-index: 1;
 }
-.pool-day {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-  font-weight: 300;
-  color: var(--black);
-  line-height: 1;
+
+/* Mapa de color por categoría / género (lo aporta la UI, no el JPG) */
+.pool-card[data-cat="masculina"] { --pool-accent: #C4A882; }
+.pool-card[data-cat="femenina"]  { --pool-accent: #E8A0B8; }
+.pool-card[data-cat="mixta"]     { --pool-accent: #9B8CE0; }
+.pool-card[data-cat="rocha"]     { --pool-accent: #B89066; }
+
+.pool-card {
+  flex: 0 0 clamp(220px, 34vw, 360px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  text-align: center;
+  transform-origin: center center;
+  /* el foco (scale/opacity/blur) lo controla JS; transición sólo para fallback/mobile */
 }
-.pool-time {
+.pool-medallion {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  transition: transform .7s var(--ease-out);
+}
+.pool-medallion-aura {
+  position: absolute;
+  inset: -9%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pool-accent) 0%, transparent 68%);
+  opacity: 0;
+  transform: scale(.85);
+  transition: opacity .55s var(--ease-out), transform .55s var(--ease-out);
+  z-index: -1;
+  pointer-events: none;
+}
+.pool-medallion-img {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 20px 55px rgba(0,0,0,.55);
+}
+.pool-card:hover .pool-medallion-aura { opacity: .65; transform: scale(1); }
+
+.pool-cta-line {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
   font-family: var(--font-mono);
-  font-size: var(--t-xs);
-  letter-spacing: 0.1em;
-  color: rgba(26,26,26,0.45);
-  padding-bottom: 0.15em;
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--pool-accent, var(--gold));
+  opacity: .7;
+  transition: opacity .4s var(--ease-out), letter-spacing .4s var(--ease-out);
 }
-
-/* Precio */
-.pool-price-tag {
-  font-family: var(--font-display);
-  font-size: var(--t-3xl);
-  font-weight: 600;
-  color: var(--gold);
-  line-height: 1;
-}
-.pool-price-unit {
-  font-size: 0.55em;
-  font-weight: 300;
-  opacity: 0.75;
-  vertical-align: super;
-  margin-left: 1px;
-}
-
-/* Descripción */
-.pool-desc {
-  font-family: var(--font-body);
-  font-size: var(--t-sm);
-  line-height: 1.7;
-  color: rgba(26,26,26,0.72);
-  max-width: 38ch;
-}
+.pool-card:hover .pool-cta-line { opacity: 1; letter-spacing: .32em; }
 
 /* Franja de beneficios compartidos */
 .pools-perks {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 1.4rem var(--container-pad);
+  /* full-bleed: la franja ocupa todo el ancho para que el borde superior
+     llegue de borde a borde; el contenido se mantiene alineado al contenedor
+     con padding lateral = gutter normal o el margen del contenedor (lo mayor). */
+  margin: 0;
+  padding: 1.4rem max(var(--container-pad), calc((100% - var(--container-max)) / 2));
   display: flex;
   align-items: center;
   gap: 1.2rem;
   flex-wrap: wrap;
-  border-top: 1px solid rgba(26,26,26,0.1);
-  border-bottom: 1px solid rgba(26,26,26,0.1);
+  border-top: 1px solid rgba(245,240,235,0.1);
 }
 .pools-perks-label {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(26,26,26,0.38);
+  color: rgba(245,240,235,0.4);
   flex-shrink: 0;
 }
 .pools-perks-item {
   font-family: var(--font-body);
   font-size: 0.82rem;
-  color: rgba(26,26,26,0.65);
+  color: rgba(245,240,235,0.68);
 }
 .pools-perks-dot {
-  color: rgba(26,26,26,0.22);
+  color: rgba(245,240,235,0.25);
   flex-shrink: 0;
 }
 .pools-perks-item--prize {
@@ -1287,7 +1295,7 @@ svg { display: block; }
 
 /* Quote + CTA (bloque oscuro interno) */
 .pools-quote {
-  background: var(--black);
+  background: var(--beige);
   padding: clamp(3rem, 6vw, 5rem) var(--container-pad);
   display: flex;
   align-items: center;
@@ -1300,7 +1308,7 @@ svg { display: block; }
   font-style: italic;
   font-size: var(--t-3xl);
   font-weight: 300;
-  color: var(--white-warm);
+  color: var(--black);
   line-height: 1.2;
   max-width: 24ch;
 }
@@ -1311,7 +1319,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(245,240,235,0.45);
+  color: rgba(26,26,26,0.5);
   margin-top: 1rem;
 }
 
@@ -1399,7 +1407,7 @@ svg { display: block; }
 }
 .gallery-img:hover::after { background: rgba(26,26,26,.2); }
 
-/* Gallery gradients as photo placeholders */
+/* Degradados de respaldo de la galería (JS los sustituye por las fotos reales) */
 .gi-1  { background-color: #7B4C2A; background-image: linear-gradient(135deg,#7B4C2A,#C4893E,#E8C97B); }
 .gi-2  { background-color: #2D3748; background-image: linear-gradient(45deg,#2D3748,#4A6080,#8BACC8); }
 .gi-3  { background-color: #5C2C0A; background-image: linear-gradient(160deg,#5C2C0A,#C4A882,#F5E8D0); }
@@ -1447,7 +1455,7 @@ svg { display: block; }
   width: clamp(80px, 15vw, 140px);
   height: auto;
 }
-.contact-tri path { fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-linejoin: round; }
+.contact-tri path { fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: miter; stroke-miterlimit: 6; }
 .contact-title {
   font-family: var(--font-display);
   font-size: var(--t-4xl);
@@ -1524,6 +1532,7 @@ svg { display: block; }
 .form-group textarea:focus {
   outline: none;
   border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,168,130,.25);
 }
 .form-group select { cursor: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A882' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
 .form-group select option { background: var(--black); color: var(--white-warm); }
@@ -1615,7 +1624,7 @@ svg { display: block; }
   margin-bottom: 1.25rem;
 }
 .footer-logo svg { width: 26px; }
-.footer-logo svg path { fill: none; stroke: var(--gold); stroke-width: 2.5; stroke-linejoin: round; }
+.footer-logo svg path { fill: var(--gold); }
 .footer-logo-name {
   font-family: var(--font-display);
   font-size: 1.25rem;
@@ -1734,9 +1743,30 @@ svg { display: block; }
   .academy-rate-block:last-child { border-bottom: none; }
   .academy-rates-header { flex-direction: column; gap: .8rem; }
   .academy-rates-sub { text-align: left; }
-  .pools-grid { grid-template-columns: 1fr; }
+  .pool-card { flex-basis: clamp(200px, 30vw, 300px); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .contact-info { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Tablet TÁCTIL (769–1024): la bobina pasa a scroll-snap horizontal,
+   igual que en móvil, porque el pin+scrub con el dedo es incómodo.
+   El JS de initPools detecta este mismo caso (isTouch + ≤1024). */
+@media (min-width: 769px) and (max-width: 1024px) and (pointer: coarse) {
+  .pools-reel {
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 0 2.5rem;
+  }
+  .pools-reel::-webkit-scrollbar { display: none; }
+  .pools-track { padding: 0 calc(50vw - 22vw); gap: 6vw; }
+  .pool-card { flex-basis: 44vw; scroll-snap-align: center; }
+  .pools-aura { display: none; }
+  /* CTA siempre visible en táctil (el :hover no dispara) */
+  .pool-cta-line { opacity: 1; }
 }
 
 @media (max-width: 768px) {
@@ -1752,6 +1782,23 @@ svg { display: block; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; text-align: center; }
   .pools-quote { flex-direction: column; }
+
+  /* Bobina → scroll-snap horizontal nativo en móvil */
+  .pools-reel {
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 0 2.5rem;
+  }
+  .pools-reel::-webkit-scrollbar { display: none; }
+  .pools-track { padding: 0 16vw; gap: 8vw; }
+  .pool-card { flex-basis: 68vw; scroll-snap-align: center; gap: 1.1rem; }
+  .pools-aura { display: none; }
+  /* CTA "Apuntarme" siempre visible y legible en táctil (el :hover no
+     se dispara nunca con el dedo, quedaría atenuado al 70%). */
+  .pool-cta-line { opacity: 1; font-size: .68rem; }
 
   /* ── TIPOGRAFÍA MÓVIL ─────────────────────────────────────
      Los nuevos tokens ya tienen mínimos correctos (clamp),
@@ -1769,14 +1816,12 @@ svg { display: block; }
   .form-group textarea { font-size: 1rem; }
 
   /* Tamaños que no usan tokens */
-  .pool-badge               { font-size: 0.75rem; }
   .contact-info-label       { font-size: 0.8125rem; }
   .footer-legal,
   .footer-credit            { font-size: 0.6875rem; } /* texto legal, admisible */
 
   /* Mayor line-height en textos densos */
-  .service-desc,
-  .pool-desc                { line-height: 1.85; }
+  .service-desc             { line-height: 1.85; }
   .academy-card-desc        { line-height: 1.8; color: rgba(245,240,235,.82); }
   .academy-includes li      { color: rgba(245,240,235,.78); }
   .club-def dd              { line-height: 1.65; }
@@ -1895,6 +1940,29 @@ svg { display: block; }
   }
   #splash { animation-delay: .1s; }
   .hero-bg { transform: none; transition: none; }
+  .hero-scroll-line { animation: none; }
+
+  /* Bobina → rejilla estática centrada, sin pin/scrub/efectos */
+  .pools-reel {
+    height: auto;
+    overflow: visible;
+    display: block;
+  }
+  .pools-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    transform: none !important;
+    padding: 0 var(--container-pad);
+    gap: 2.5rem;
+  }
+  .pool-card {
+    flex-basis: clamp(190px, 26vw, 280px);
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .pool-medallion { transition: none; }
+  .pools-aura { display: none; }
 }
 
 /* ── 22. SCROLLBAR ─────────────────────────────────────────────── */
@@ -1958,6 +2026,9 @@ svg { display: block; }
   /* Sobreescribe cursor:none de .btn — iOS Safari necesita cursor:pointer
      para despachar click events en <a> y <button> sin interacción nativa */
   .btn, a, button { cursor: pointer; touch-action: manipulation; }
+  /* En táctil el :hover no se dispara: la CTA de los medallones debe
+     verse siempre al 100% (cubre también la rejilla de reduced-motion). */
+  .pool-cta-line { opacity: 1; }
 }
 @media (pointer: coarse) {
   /* Feedback visual en tap para dispositivos táctiles */

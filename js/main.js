@@ -215,12 +215,18 @@
     var heroEl = document.getElementById('hero');
     if (!heroEl) return;
 
+    var ticking = false;
     window.addEventListener('scroll', function () {
-      var scrollY = window.scrollY;
-      var heroH   = heroEl.offsetHeight;
-      if (scrollY > heroH) return;
-      var pct = scrollY / heroH;
-      heroBg.style.transform = 'scale(1.04) translateY(' + (pct * 30) + 'px)';
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var scrollY = window.scrollY;
+        var heroH   = heroEl.offsetHeight;
+        if (scrollY > heroH) return;
+        var pct = scrollY / heroH;
+        heroBg.style.transform = 'scale(1.04) translateY(' + (pct * 30) + 'px)';
+      });
     }, { passive: true });
   }
 
@@ -234,7 +240,11 @@
 
     if (!sticky || !track || !cards.length) return;
 
-    var mobile = window.matchMedia('(max-width: 768px)').matches;
+    /* Snap = móvil (≤768) o tablet táctil (≤1024). En táctil el pin+scrub
+       del scroll vertical para avanzar tarjetas es confuso, así que usamos
+       el carrusel nativo con snap horizontal (coherente con la bobina). */
+    var mobile = window.matchMedia('(max-width: 768px)').matches ||
+                 (isTouch() && window.matchMedia('(max-width: 1024px)').matches);
 
     if (mobile) {
       /* Crear dots de navegación */
@@ -281,18 +291,19 @@
     /* GSAP necesita position static aquí — él gestiona el fixed */
     sticky.style.position = 'static';
 
-    var totalW = (cards.length - 1) * window.innerWidth;
+    var getTotalW = function () { return (cards.length - 1) * window.innerWidth; };
 
     gsap.to(track, {
-      x: -totalW,
+      x: function () { return -getTotalW(); },
       ease: 'none',
       scrollTrigger: {
         trigger: sticky,
         pin: true,
         pinSpacing: true,
         start: 'top top',
-        end: '+=' + totalW,
+        end: function () { return '+=' + getTotalW(); },
         scrub: 1.2,
+        invalidateOnRefresh: true,
         onUpdate: function (self) {
           var prog = self.progress * (cards.length - 1);
           cards.forEach(function (card, i) {
@@ -308,7 +319,7 @@
 
   /* ────────────────────────────────────────────────────────────────
      REVEALS — IntersectionObserver en todos los [data-reveal]
-               + timeout 6s de seguridad
+               + timeout 10s de seguridad
   ──────────────────────────────────────────────────────────────── */
   function initReveals() {
     var els = $$('[data-reveal]');
@@ -395,26 +406,33 @@
     if (mapEl && typeof L !== 'undefined') {
       var lat = brand.mapLat || 36.769391;
       var lng = brand.mapLng || -4.709363;
-      mapEl.innerHTML = '';
-      var leafMap = L.map(mapEl, {
-        center: [lat, lng],
-        zoom: 16,
-        zoomControl: false,
-        scrollWheelZoom: false,
-        dragging: false,
-        attributionControl: false
-      });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        subdomains: 'abcd',
-        maxZoom: 19
-      }).addTo(leafMap);
-      var dot = L.divIcon({
-        html: '<div style="width:12px;height:12px;border-radius:50%;background:#C4A882;box-shadow:0 0 0 3px rgba(196,168,130,.25)"></div>',
-        className: '',
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
-      L.marker([lat, lng], { icon: dot }).addTo(leafMap);
+      /* Conservar el enlace de fallback a Google Maps por si Leaflet falla */
+      var mapFallback = mapEl.innerHTML;
+      try {
+        mapEl.innerHTML = '';
+        var leafMap = L.map(mapEl, {
+          center: [lat, lng],
+          zoom: 16,
+          zoomControl: false,
+          scrollWheelZoom: false,
+          dragging: false,
+          attributionControl: false
+        });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          subdomains: 'abcd',
+          maxZoom: 19
+        }).addTo(leafMap);
+        var dot = L.divIcon({
+          html: '<div style="width:12px;height:12px;border-radius:50%;background:#C4A882;box-shadow:0 0 0 3px rgba(196,168,130,.25)"></div>',
+          className: '',
+          iconSize: [12, 12],
+          iconAnchor: [6, 6]
+        });
+        L.marker([lat, lng], { icon: dot }).addTo(leafMap);
+      } catch (mapErr) {
+        /* Restaurar el enlace de "cómo llegar" si el mapa no pudo montarse */
+        mapEl.innerHTML = mapFallback;
+      }
     }
 
     /* Gallery con fotos reales si las rutas existen */
@@ -722,6 +740,146 @@
   }
 
   /* ────────────────────────────────────────────────────────────────
+     POOLS — "La Bobina": carrusel cinematográfico de medallones.
+     Desktop: pin + scrub horizontal (GSAP) con profundidad de campo.
+     Móvil: scroll-snap nativo. Sin GSAP / reduced-motion: rejilla estática.
+     Cursor: tilt 3D + magnético por medallón. Aura de fondo por género.
+  ──────────────────────────────────────────────────────────────── */
+  function initPools() {
+    var reel  = document.getElementById('pools-reel');
+    var track = document.getElementById('pools-track');
+    if (!reel || !track) return;
+
+    var cards = $$('.pool-card', track);
+    if (!cards.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    /* "snap" = móvil (≤768) y también tablet táctil (≤1024): el pin+scrub
+       con el dedo es incómodo, así que en cualquier táctil hasta 1024 usamos
+       el carrusel con scroll-snap nativo. El pin+scrub queda sólo para
+       puntero fino en pantallas grandes (desktop). */
+    var snap = window.matchMedia('(max-width: 768px)').matches ||
+               (isTouch() && window.matchMedia('(max-width: 1024px)').matches);
+    var ACCENT = { masculina: '#C4A882', femenina: '#E8A0B8', mixta: '#9B8CE0', rocha: '#B89066' };
+
+    /* Foco: escala / opacidad / desenfoque según distancia al centro del viewport.
+       Lee todos los rects primero y escribe después (un solo reflow por frame). */
+    function applyFocus() {
+      var vw = window.innerWidth;
+      var cx = vw / 2;
+      var rects = cards.map(function (c) { return c.getBoundingClientRect(); });
+      var bestDist = Infinity, bestCat = 'masculina';
+      for (var i = 0; i < cards.length; i++) {
+        var r = rects[i];
+        var dist = Math.abs((r.left + r.width / 2) - cx);
+        var t = Math.min(dist / (vw * 0.5), 1);          /* 0 = centro, 1 = borde */
+        var scale = lerp(1, 0.78, t);
+        var op    = lerp(1, 0.40, t);
+        var blur  = (t * t * 3).toFixed(2);
+        var sat   = lerp(1, 0.65, t).toFixed(2);
+        cards[i].style.transform = 'scale(' + scale.toFixed(3) + ')';
+        cards[i].style.opacity   = op.toFixed(3);
+        cards[i].style.filter    = 'blur(' + blur + 'px) saturate(' + sat + ')';
+        cards[i].style.zIndex    = String(Math.round((1 - t) * 100));
+        if (dist < bestDist) { bestDist = dist; bestCat = cards[i].dataset.cat || 'masculina'; }
+      }
+      reel.style.setProperty('--reel-accent', ACCENT[bestCat] || '#C4A882');
+    }
+
+    /* Cursor: tilt 3D + arrastre magnético del medallón (solo puntero fino) */
+    if (!isTouch()) {
+      cards.forEach(function (card) {
+        var med = card.querySelector('.pool-medallion');
+        if (!med) return;
+        var live = false;
+        card.addEventListener('mouseenter', function () {
+          live = true;
+          med.style.transition = 'transform .15s var(--ease-out)';
+        });
+        card.addEventListener('mousemove', function (e) {
+          if (!live) return;
+          var r  = med.getBoundingClientRect();
+          var dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+          var dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+          med.style.transform =
+            'perspective(800px) rotateX(' + (-dy * 9) + 'deg) rotateY(' + (dx * 12) + 'deg) ' +
+            'translate(' + (dx * 10) + 'px,' + (dy * 10) + 'px) translateZ(24px)';
+        });
+        card.addEventListener('mouseleave', function () {
+          live = false;
+          med.style.transition = 'transform .7s var(--ease-out)';
+          med.style.transform  = '';
+        });
+      });
+    }
+
+    /* Móvil / tablet táctil: scroll-snap nativo + foco al hacer scroll.
+       Forzamos el modo snap por JS además del CSS porque en tablet táctil
+       (769–1024) el CSS de @media(max-width:768px) no aplica. */
+    if (snap) {
+      reel.style.height = 'auto';
+      reel.style.overflowX = 'auto';
+      reel.style.overflowY = 'hidden';
+      reel.style.scrollSnapType = 'x mandatory';
+      cards.forEach(function (c) { c.style.scrollSnapAlign = 'center'; });
+      var ticking = false;
+      applyFocus();
+      reel.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () { applyFocus(); ticking = false; });
+      }, { passive: true });
+      window.addEventListener('resize', applyFocus, { passive: true });
+      return;
+    }
+
+    /* Desktop sin GSAP: fallback scroll-snap horizontal */
+    if (!window.gsap || !window.ScrollTrigger) {
+      reel.style.overflowX = 'auto';
+      reel.style.scrollSnapType = 'x mandatory';
+      cards.forEach(function (c) {
+        c.style.scrollSnapAlign = 'center';
+        c.style.transition = 'transform .45s var(--ease-out), opacity .45s, filter .45s';
+      });
+      applyFocus();
+      reel.addEventListener('scroll', function () { requestAnimationFrame(applyFocus); }, { passive: true });
+      return;
+    }
+
+    /* Desktop: pin + scrub horizontal */
+    gsap.registerPlugin(ScrollTrigger);
+    cards.forEach(function (c) { c.style.transition = 'none'; });  /* scrub: sin transición */
+
+    /* Distancia = lo justo para CENTRAR la última insignia en el viewport.
+       Se calcula con offsetLeft/offsetWidth (fiables) en vez de track.scrollWidth,
+       que en contenedores flex con scroll NO cuenta el padding derecho y dejaba
+       el recorrido corto (la última pool no llegaba al centro). */
+    var getDistance = function () {
+      var last = cards[cards.length - 1];
+      return Math.max(0, last.offsetLeft + last.offsetWidth / 2 - window.innerWidth / 2);
+    };
+
+    /* Un único tramo 1:1 (sin "hold" final): el recorrido es igual de suave
+       al principio (primera insignia) que al final (Rocha), sin zona muerta. */
+    gsap.to(track, {
+      x: function () { return -getDistance(); },
+      ease: 'none',
+      scrollTrigger: {
+        trigger: reel,
+        pin: true,
+        pinSpacing: true,
+        start: 'top top',
+        end: function () { return '+=' + getDistance(); },
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: applyFocus
+      }
+    });
+    applyFocus();
+  }
+
+  /* ────────────────────────────────────────────────────────────────
      SERVICIOS HERO SECTION — height nativa vs GSAP
   ──────────────────────────────────────────────────────────────── */
   function fixServicesHeight() {
@@ -749,6 +907,7 @@
     safe(initManifest,      'manifest');
     safe(initContact,       'contact');
     safe(initTeamCards,     'teamCards');
+    safe(initPools,         'pools');
     safe(initI18n,          'i18n');
     safe(initSmoothScroll,  'smoothScroll');
     safe(fixServicesHeight, 'servicesHeight');

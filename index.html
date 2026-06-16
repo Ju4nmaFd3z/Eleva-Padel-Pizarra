@@ -14,12 +14,14 @@
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Eleva Padel Club">
   <meta property="og:url"         content="https://eleva-padel-pizarra.vercel.app/">
   <meta property="og:title"       content="Eleva Padel Club · Pizarra, Málaga">
   <meta property="og:description" content="Pádel elevado a otro nivel. El club de referencia del Valle del Guadalhorce.">
   <meta property="og:image"       content="https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt"   content="Eleva Padel Club · Pizarra, Málaga">
   <meta property="og:locale"      content="es_ES">
 
   <!-- Twitter / X Card -->
@@ -27,6 +29,7 @@
   <meta name="twitter:title"       content="Eleva Padel Club · Pizarra, Málaga">
   <meta name="twitter:description" content="Pádel elevado a otro nivel. El club de referencia del Valle del Guadalhorce.">
   <meta name="twitter:image"       content="https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg">
+  <meta name="twitter:image:alt"   content="Eleva Padel Club · Pizarra, Málaga">
 
   <!-- JSON-LD LocalBusiness -->
   <script type="application/ld+json">
@@ -98,10 +101,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 27'><path d='M15,2 L28,25 L2,25 Z' fill='none' stroke='%23C4A882' stroke-width='2.5' stroke-linejoin='round'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
-  <link rel="stylesheet" href="css/main.css?v=20260612b">
+  <link rel="stylesheet" href="css/main.css?v=20260616">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
@@ -126,8 +129,8 @@
 <div id="splash" role="status" aria-label="Cargando Eleva Padel Club">
   <div class="splash-inner">
     <div class="splash-triangle" aria-hidden="true">
-      <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
-        <path class="triangle-path" d="M50,4 L96,86 L4,86 Z"/>
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path class="triangle-path" d="M17.5 74 L50 12 L82.5 74 M14 89 H86"/>
       </svg>
     </div>
     <div class="splash-letters" aria-label="ELEVA">
@@ -157,8 +160,8 @@
 ════════════════════════════════════════════════════════════ -->
 <nav id="main-nav" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
   <a href="#hero" class="nav-logo" aria-label="Eleva Padel Club — inicio" data-i18n-arialabel="nav.logoLabel">
-    <svg class="nav-logo-tri" viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M15,2 L28,25 L2,25 Z"/>
+    <svg class="nav-logo-tri" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
     </svg>
     <span class="logo-wordmark">ELEVA</span>
   </a>
@@ -182,12 +185,12 @@
   </a>
 
   <div class="lang-switch" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
-    <button class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
-    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <button class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
+    <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
+    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+    <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
   </div>
 
-  <button class="nav-burger" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen" aria-expanded="false" aria-controls="nav-overlay">
+  <button type="button" class="nav-burger" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen" aria-expanded="false" aria-controls="nav-overlay">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -209,9 +212,9 @@
     Reservar pista
   </a>
   <div class="nav-overlay-lang" aria-label="Seleccionar idioma" data-i18n-arialabel="nav.langLabel">
-    <button class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
-    <button class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <button class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
+    <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
+    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+    <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
   </div>
 </div>
 
@@ -689,7 +692,7 @@
   <div class="team-grid">
     <div class="team-card" data-reveal>
       <div class="team-photo-wrap">
-        <div class="team-photo" aria-hidden="true" style="background-image:url('assets/img/team-lorena.png');background-size:cover;background-position:top center;"></div>
+        <div class="team-photo" aria-hidden="true" style="background-image:url('assets/img/team-lorena.jpg');background-size:cover;background-position:top center;"></div>
       </div>
       <div class="team-info">
         <h3 class="team-name">Lorena Vano</h3>
@@ -723,60 +726,120 @@
     </h2>
   </div>
 
-  <div class="pools-grid" role="list">
+  <!-- LA BOBINA — carrusel cinematográfico de medallones (pin + scrub horizontal) -->
+  <div class="pools-reel" id="pools-reel">
+    <div class="pools-aura" aria-hidden="true"></div>
+    <div class="pools-track" id="pools-track" role="list">
 
-    <article class="pool-card" role="listitem" data-reveal>
-      <header class="pool-header">
-        <span class="pool-name">Pool SNP</span>
-        <span class="pool-badge"><span aria-hidden="true">✓ </span><span data-i18n="pools.active">Activa</span></span>
-      </header>
-      <div class="pool-meta">
-        <span class="pool-day" data-i18n="pools.snpDay">Viernes</span>
-        <span class="pool-time" data-i18n="pools.snpTime">21:30 – 23:00</span>
-      </div>
-      <div class="pool-price-tag">8<span class="pool-price-unit">€</span></div>
-      <p class="pool-desc" data-i18n="pools.snpDesc">Sin par absoluto. Para quienes quieren saber exactamente dónde están.</p>
-    </article>
+      <a class="pool-card" data-cat="masculina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_snp_masculina-240.avif 240w, assets/pools/opt/pool_snp_masculina-480.avif 480w, assets/pools/opt/pool_snp_masculina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_snp_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP Masculina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
 
-    <article class="pool-card" role="listitem" data-reveal data-reveal-delay="80">
-      <header class="pool-header">
-        <span class="pool-name">Pool 4ª Masculina</span>
-        <span class="pool-badge"><span aria-hidden="true">✓ </span><span data-i18n="pools.active">Activa</span></span>
-      </header>
-      <div class="pool-meta">
-        <span class="pool-day" data-i18n="pools.m4Day">Viernes</span>
-        <span class="pool-time" data-i18n="pools.m4Time">20:20 – 21:50</span>
-      </div>
-      <div class="pool-price-tag">8<span class="pool-price-unit">€</span></div>
-      <p class="pool-desc" data-i18n="pools.m4Desc">Cuarta categoría masculina. Nivel parejo, partido garantizado.</p>
-    </article>
+      <a class="pool-card" data-cat="femenina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_snp_femenina-240.avif 240w, assets/pools/opt/pool_snp_femenina-480.avif 480w, assets/pools/opt/pool_snp_femenina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_snp_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP Femenina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
 
-    <article class="pool-card" role="listitem" data-reveal data-reveal-delay="160">
-      <header class="pool-header">
-        <span class="pool-name">Pool Mixta</span>
-        <span class="pool-badge"><span aria-hidden="true">✓ </span><span data-i18n="pools.active">Activa</span></span>
-      </header>
-      <div class="pool-meta">
-        <span class="pool-day" data-i18n="pools.mixDay">Jueves</span>
-        <span class="pool-time" data-i18n="pools.mixTime">20:00 – 21:30</span>
-      </div>
-      <div class="pool-price-tag">8<span class="pool-price-unit">€</span></div>
-      <p class="pool-desc" data-i18n="pools.mixDesc">Mixta abierta. El mejor ambiente de la semana.</p>
-    </article>
+      <a class="pool-card" data-cat="masculina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_3a_masculina-240.avif 240w, assets/pools/opt/pool_3a_masculina-480.avif 480w, assets/pools/opt/pool_3a_masculina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_3a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 3ª Categoría Masculina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
 
-    <article class="pool-card" role="listitem" data-reveal data-reveal-delay="240">
-      <header class="pool-header">
-        <span class="pool-name">Pool Rocha</span>
-        <span class="pool-badge"><span aria-hidden="true">✓ </span><span data-i18n="pools.active">Activa</span></span>
-      </header>
-      <div class="pool-meta">
-        <span class="pool-day" data-i18n="pools.rochaDay">Martes</span>
-        <span class="pool-time" data-i18n="pools.rochaTime">20:00 – 21:30</span>
-      </div>
-      <div class="pool-price-tag">8<span class="pool-price-unit">€</span></div>
-      <p class="pool-desc" data-i18n="pools.rochaDesc">Categoría Rocha. Competición real, buen rollo también.</p>
-    </article>
+      <a class="pool-card" data-cat="masculina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_4a_masculina-240.avif 240w, assets/pools/opt/pool_4a_masculina-480.avif 480w, assets/pools/opt/pool_4a_masculina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_4a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4ª Categoría Masculina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
 
+      <a class="pool-card" data-cat="femenina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_4a_femenina-240.avif 240w, assets/pools/opt/pool_4a_femenina-480.avif 480w, assets/pools/opt/pool_4a_femenina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_4a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4ª Categoría Femenina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
+
+      <a class="pool-card" data-cat="masculina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_5a_masculina-240.avif 240w, assets/pools/opt/pool_5a_masculina-480.avif 480w, assets/pools/opt/pool_5a_masculina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_5a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5ª Categoría Masculina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
+
+      <a class="pool-card" data-cat="femenina" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_5a_femenina-240.avif 240w, assets/pools/opt/pool_5a_femenina-480.avif 480w, assets/pools/opt/pool_5a_femenina-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_5a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5ª Categoría Femenina · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
+
+      <a class="pool-card" data-cat="mixta" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_mixta-240.avif 240w, assets/pools/opt/pool_mixta-480.avif 480w, assets/pools/opt/pool_mixta-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_mixta-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool Mixta · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
+
+      <a class="pool-card" data-cat="rocha" role="listitem" data-cursor="Apuntarme"
+         href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">
+        <span class="pool-medallion">
+          <span class="pool-medallion-aura" aria-hidden="true"></span>
+          <picture>
+            <source type="image/avif" srcset="assets/pools/opt/pool_rocha-240.avif 240w, assets/pools/opt/pool_rocha-480.avif 480w, assets/pools/opt/pool_rocha-720.avif 720w" sizes="(max-width:768px) 70vw, 340px">
+            <img class="pool-medallion-img" src="assets/pools/opt/pool_rocha-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool Rocha · Eleva Pádel Pizarra">
+          </picture>
+        </span>
+        <span class="pool-cta-line"><span data-i18n="pools.join">Apuntarme</span></span>
+      </a>
+
+    </div>
   </div>
 
   <!-- Franja de beneficios compartidos (idénticos en todos los pools) -->
@@ -935,8 +998,8 @@
 
     <!-- Mitad izquierda: CTA reserva -->
     <div class="contact-left">
-      <svg class="contact-tri" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M50,4 L96,86 L4,86 Z"/>
+      <svg class="contact-tri" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17.5 74 L50 12 L82.5 74 M14 89 H86"/>
       </svg>
       <h2 id="contacto-heading" class="contact-title" data-reveal data-i18n-html="contact.headingHtml">
         Reserva<br><em>tu pista.</em>
@@ -955,7 +1018,7 @@
          data-i18n="contact.ctaWA">
         Únete a la comunidad WhatsApp
       </a>
-      <span class="contact-secondary contact-secondary--soon" data-cursor="próximamente" data-i18n="contact.ctaEvent">Reservar el club para evento privado</span>
+      <span class="contact-secondary contact-secondary--soon" data-cursor="próximamente" aria-disabled="true" data-i18n="contact.ctaEvent">Reservar el club para evento privado</span>
     </div>
 
     <!-- Mitad derecha: formulario -->
@@ -1037,8 +1100,8 @@
     <!-- Columna 1: Logo + Mapa -->
     <div>
       <div class="footer-logo">
-        <svg viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M15,2 L28,25 L2,25 Z"/>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
         </svg>
         <span class="footer-logo-name">ELEVA</span>
       </div>
@@ -1143,8 +1206,8 @@
      aria-label="Reservar pista en Eleva Padel Club"
      data-i18n-arialabel="fab.ariaLabel"
      data-cursor="reservar">
-    <svg viewBox="0 0 30 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M15,2 L28,25 L2,25 Z"/>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
     </svg>
   </a>
   <span class="fab-tooltip" aria-hidden="true" data-i18n="fab.tooltip">Reservar pista</span>
@@ -1156,9 +1219,9 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" defer></script>
 <script src="lib/gsap.min.js?v=20260613"          defer></script>
 <script src="lib/ScrollTrigger.min.js?v=20260613" defer></script>
-<script src="lib/manifest.js?v=20260613"          defer></script>
-<script src="lib/translations.js?v=20260613"      defer></script>
-<script src="js/main.js?v=20260613"               defer></script>
+<script src="lib/manifest.js?v=20260616"          defer></script>
+<script src="lib/translations.js?v=20260616"      defer></script>
+<script src="js/main.js?v=20260616"               defer></script>
 
 </body>
 </html>
