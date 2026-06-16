@@ -225,38 +225,75 @@
       min-width: 170px;
     }
 
-    /* ── LISTA DE DERECHOS ── */
+    /* Etiquetas tipo "pill" para celdas con valores cortos (evita cortes feos) */
+    .cell-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .cell-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(196, 168, 130, 0.08);
+      border: 1px solid rgba(196, 168, 130, 0.28);
+      border-radius: 2px;
+      padding: 0.18rem 0.42rem;
+      white-space: nowrap;
+    }
+
+    /* ── LISTA DE DERECHOS (rejilla de tarjetas) ── */
     .rights-list {
       list-style: none;
-      margin: 1rem 0 1.5rem;
+      margin: 1.75rem 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
     }
 
     .rights-list li {
       display: flex;
-      gap: 0.75rem;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid #222;
-      font-size: 0.9rem;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 1.15rem 1.25rem;
+      background: var(--black-mid);
+      border: 1px solid #2e2e2e;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.6;
       color: var(--beige);
       font-weight: 300;
+      transition: border-color 0.25s ease, background 0.25s ease;
     }
 
-    .rights-list li:last-child { border-bottom: none; }
+    .rights-list li:hover {
+      border-color: var(--gold-dim);
+      background: var(--black-soft);
+    }
+
+    /* Si el total es impar, la última tarjeta ocupa toda la fila para equilibrar */
+    .rights-list li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
     .rights-list .right-tag {
+      align-self: flex-start;
       font-family: var(--font-mono);
       font-size: 0.6rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--gold-dim);
-      background: #232323;
-      border: 1px solid #333;
+      color: var(--gold);
+      background: rgba(196, 168, 130, 0.08);
+      border: 1px solid rgba(196, 168, 130, 0.28);
       border-radius: 2px;
-      padding: 0.2rem 0.45rem;
+      padding: 0.25rem 0.5rem;
       white-space: nowrap;
-      align-self: flex-start;
-      margin-top: 0.15rem;
-      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .rights-list { grid-template-columns: 1fr; }
+      .rights-list li:last-child:nth-child(odd) { grid-column: auto; }
     }
 
     /* ── LISTA DE NORMAS / REGLAMENTO ── */
@@ -417,7 +454,7 @@
           </tr>
           <tr>
             <td>Teléfono / WhatsApp</td>
-            <td><a href="tel:+34659143103">+34 659 14 31 03</a></td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a> · <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a></td>
           </tr>
           <tr>
             <td>Actividad</td>
@@ -540,8 +577,8 @@
 
       <div class="notice-box">
         <strong>Importante:</strong> Para cualquier gestión de cancelación o solicitud de recuperación,
-        contacta con el club a través de WhatsApp al <a href="tel:+34659143103">+34 659 14 31 03</a>
-        con la mayor antelación posible.
+        contacta con el club a través de <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        o por teléfono al <a href="tel:+34659143103">+34 659 14 31 03</a> con la mayor antelación posible.
       </div>
 
     </section>
@@ -667,7 +704,7 @@
           </tr>
           <tr>
             <td>Contacto para privacidad</td>
-            <td><a href="tel:+34659143103">+34 659 14 31 03</a></td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a> · <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a></td>
           </tr>
         </tbody>
       </table>
@@ -971,7 +1008,7 @@
         <tbody>
           <tr>
             <td>Teléfono / WhatsApp</td>
-            <td><a href="tel:+34659143103">+34 659 14 31 03</a></td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a> · <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a></td>
           </tr>
           <tr>
             <td>Correo postal</td>
@@ -1060,7 +1097,12 @@
           <tr>
             <td>Google Fonts (Google LLC)</td>
             <td>Carga de tipografías para la correcta visualización del sitio web</td>
-            <td>Técnica / tercero</td>
+            <td>
+              <span class="cell-tags">
+                <span class="cell-tag">Técnica</span>
+                <span class="cell-tag">Tercero</span>
+              </span>
+            </td>
             <td>
               <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
                 Política de privacidad de Google

@@ -89,28 +89,28 @@ svg { display: block; }
   top: 0; left: 0;
   pointer-events: none;
   z-index: 9999;
-  /* mix-blend-mode va en ring/dot individualmente, no aquí:
-     si está en el contenedor, el texto de botones debajo de la label
-     aparece invertido creando la ilusión de una segunda línea de texto */
+  /* El blend va AQUÍ, en el contenedor. Si se pone en .cursor-dot/.cursor-ring
+     (hijos de este elemento fixed), el blend queda aislado dentro de #cursor y
+     NO mezcla con el fondo de la página → el cursor se quedaba siempre blanco.
+     En el contenedor sí mezcla contra las secciones: invierte de verdad. */
+  mix-blend-mode: difference;
 }
 .cursor-dot {
   position: absolute;
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--white-warm);
+  background: #fff;
   transform: translate(-50%, -50%);
   transition: transform .15s var(--ease-out), width .2s, height .2s;
-  mix-blend-mode: difference;
 }
 .cursor-ring {
   position: absolute;
   width: 36px; height: 36px;
   border-radius: 50%;
-  border: 1.5px solid var(--white-warm);
+  border: 1.5px solid #fff;
   transform: translate(-50%, -50%);
   transition: width .3s var(--ease-out), height .3s var(--ease-out), opacity .2s;
-  opacity: .6;
-  mix-blend-mode: difference;
+  opacity: .9;
 }
 .cursor-label {
   position: absolute;
@@ -119,16 +119,15 @@ svg { display: block; }
   font-size: .6rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--white-warm);
+  color: #fff;
   white-space: nowrap;
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity .2s, transform .2s;
-  text-shadow: 0 1px 4px rgba(0,0,0,.85);
   pointer-events: none;
 }
 #cursor.has-label .cursor-label { opacity: 1; transform: none; }
-#cursor.is-hovering .cursor-ring { width: 52px; height: 52px; opacity: .9; }
+#cursor.is-hovering .cursor-ring { width: 52px; height: 52px; opacity: 1; }
 #cursor.is-hovering .cursor-dot  { transform: translate(-50%,-50%) scale(0.5); }
 @media (hover: none) {
   #cursor { display: none; }
@@ -159,6 +158,8 @@ svg { display: block; }
   flex-direction: column;
   align-items: center;
   gap: 2.5rem;
+  padding: 0 1.5rem;
+  width: 100%;
   user-select: none;
 }
 
@@ -182,13 +183,15 @@ svg { display: block; }
 
 .splash-letters {
   display: flex;
+  justify-content: center;
   gap: .08em;
   font-family: var(--font-display);
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(2.4rem, 13vw, 7rem);
   font-weight: 300;
-  letter-spacing: .55em;
-  text-indent: .55em;
+  letter-spacing: .45em;
+  text-indent: .45em;
   color: var(--white-warm);
+  max-width: 100%;
 }
 .splash-letters span {
   display: inline-block;
@@ -226,7 +229,9 @@ svg { display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--container-pad);
+  /* Respeta el notch lateral en landscape (env() = 0 si no hay inset) */
+  padding-left: max(var(--container-pad), env(safe-area-inset-left));
+  padding-right: max(var(--container-pad), env(safe-area-inset-right));
   z-index: 200;
   transition: background .3s, backdrop-filter .3s;
 }
@@ -281,7 +286,7 @@ svg { display: block; }
   transition: fill .45s var(--ease-out);
 }
 .nav-logo:hover .nav-logo-tri path {
-  fill: #d8bd92;
+  fill: var(--gold-hover);
 }
 
 /* ── Wordmark: shimmer sin cortes ────────────────────────────
@@ -393,6 +398,13 @@ svg { display: block; }
   align-items: center;
   justify-content: center;
   gap: 2.5rem;
+  /* Respeta notch / home indicator y deja hueco bajo la barra de nav */
+  padding:
+    calc(var(--nav-h) + env(safe-area-inset-top))
+    max(1.5rem, env(safe-area-inset-right))
+    max(1.5rem, env(safe-area-inset-bottom))
+    max(1.5rem, env(safe-area-inset-left));
+  overflow-y: auto;
   opacity: 0;
   pointer-events: none;
   transition: opacity .3s;
@@ -441,8 +453,8 @@ svg { display: block; }
 /* ── 8. FAB TRIANGLE ───────────────────────────────────────────── */
 .fab-triangle {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  right: max(2rem, env(safe-area-inset-right));
   z-index: 150;
   display: flex;
   flex-direction: column;
@@ -554,7 +566,8 @@ svg { display: block; }
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 0 var(--container-pad);
+  padding-left: max(var(--container-pad), env(safe-area-inset-left));
+  padding-right: max(var(--container-pad), env(safe-area-inset-right));
   max-width: 900px;
 }
 .hero-kicker {
@@ -1051,7 +1064,7 @@ svg { display: block; }
   position: relative;
   overflow: hidden;
 }
-.section-academy .section-watermark { color: var(--gold); opacity: .07; }
+.section-academy .section-watermark { opacity: .07; }
 
 .academy-header {
   max-width: var(--container-max);
@@ -1328,7 +1341,7 @@ svg { display: block; }
   height: var(--section-pad);
 }
 
-/* ── 17. SECCIÓN 05 — GALERÍA ──────────────────────────────────── */
+/* ── 17. SECCIÓN 06 — GALERÍA ──────────────────────────────────── */
 .section-gallery {
   background: var(--black);
   padding: var(--section-pad) 0;
@@ -1534,6 +1547,13 @@ svg { display: block; }
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(196,168,130,.25);
 }
+/* Refuerzo para navegación por teclado: outline visible además del box-shadow */
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
 .form-group select { cursor: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A882' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
 .form-group select option { background: var(--black); color: var(--white-warm); }
 .form-group textarea { resize: vertical; min-height: 100px; }
@@ -1541,7 +1561,7 @@ svg { display: block; }
 .form-note {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
-  color: rgba(245,240,235,.35);
+  color: rgba(245,240,235,.55);
   letter-spacing: .05em;
   margin-top: .5rem;
 }
@@ -1715,7 +1735,7 @@ svg { display: block; }
   font-family: var(--font-mono);
   font-size: .6rem;
   letter-spacing: .08em;
-  color: rgba(245,240,235,.3);
+  color: rgba(245,240,235,.55);
 }
 .footer-legal-link { color: inherit; border-bottom: 1px solid rgba(245,240,235,.15); }
 .footer-legal-link:hover { border-color: rgba(245,240,235,.4); }
@@ -1724,7 +1744,7 @@ svg { display: block; }
   font-family: var(--font-mono);
   font-size: .6rem;
   letter-spacing: .08em;
-  color: rgba(245,240,235,.3);
+  color: rgba(245,240,235,.55);
 }
 .footer-credit a {
   color: rgba(196,168,130,.6);
@@ -1775,13 +1795,15 @@ svg { display: block; }
   .nav-overlay { display: flex; }
   .brand-mark { display: none; }
   .fab-triangle { bottom: 1.5rem; right: 1.5rem; }
-  .hero-ctas { flex-direction: column; }
+  .hero-ctas { flex-direction: column; align-items: stretch; }
+  .hero-ctas .btn { width: 100%; justify-content: center; }
   .contact-split { grid-template-columns: 1fr; }
-  .contact-left { border-right: none; border-bottom: 1px solid rgba(196,168,130,.12); min-height: auto; }
+  .contact-left { border-right: none; border-bottom: 1px solid rgba(196,168,130,.12); }
   .contact-info { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; text-align: center; }
-  .pools-quote { flex-direction: column; }
+  .pools-quote { flex-direction: column; align-items: flex-start; gap: 1.75rem; }
+  .pools-quote .btn { width: 100%; justify-content: center; }
 
   /* Bobina → scroll-snap horizontal nativo en móvil */
   .pools-reel {
@@ -1825,6 +1847,12 @@ svg { display: block; }
   .academy-card-desc        { line-height: 1.8; color: rgba(245,240,235,.82); }
   .academy-includes li      { color: rgba(245,240,235,.78); }
   .club-def dd              { line-height: 1.65; }
+
+  /* ── EQUIPO móvil: gap más compacto y jerarquía ── */
+  .team-header { margin-bottom: 2.5rem; }
+  .team-grid { gap: 2.75rem; }
+  .team-photo-wrap { max-width: 280px; }
+  .team-name { font-size: 1.4rem; }
 
   /* Tap targets mínimos de 44px para links de footer */
   .footer-links a {
@@ -1913,12 +1941,47 @@ svg { display: block; }
     width: 100%;
     justify-content: center;
   }
+
+  /* ── CONTACTO móvil: submit a ancho completo (mejor tap target) ── */
+  .form-submit { align-self: stretch; width: 100%; justify-content: center; }
+  /* Padding seguro respetando notch lateral en las dos columnas */
+  .contact-left,
+  .contact-right {
+    padding-left: max(var(--container-pad), env(safe-area-inset-left));
+    padding-right: max(var(--container-pad), env(safe-area-inset-right));
+  }
 }
 
 @media (max-width: 480px) {
   .contact-info { grid-template-columns: 1fr; }
   .club-collage { height: 300px; }
   .hero-title { letter-spacing: -.02em; }
+}
+
+/* ── Móvil pequeño (≤360px): evita desbordes y aprieta espaciados ── */
+@media (max-width: 360px) {
+  /* El offset de la 2ª línea del hero podía empujar texto fuera del viewport */
+  .hero-title-offset { margin-left: 1.25rem; }
+  /* Banner torneo: el flag + texto + CTA en columna apretada */
+  .torneo-banner-inner { gap: 8px 12px; }
+  /* Tarifas de pista: que la descripción no rompa el ancho */
+  .service-rates { font-size: 0.74rem; }
+}
+
+/* ── Móvil en LANDSCAPE corto: el hero a pantalla completa no debe
+      cortar título + CTAs. Reducimos altura mínima y tipografía. ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  #hero {
+    min-height: 420px;
+    padding-bottom: clamp(2rem, 8vh, 4rem);
+  }
+  .hero-title { font-size: clamp(2.4rem, 9vw, 4rem); }
+  .hero-kicker { margin-bottom: .75rem; }
+  .hero-tagline { margin-bottom: 1.25rem; }
+  /* El indicador de scroll vertical estorba en landscape corto */
+  .hero-scroll { display: none; }
+  /* La bobina y contacto a 100dvh quedan altos: permitimos crecer */
+  .contact-split { min-height: 0; }
 }
 
 /* ── 21. REDUCED MOTION ────────────────────────────────────────── */
@@ -2026,9 +2089,19 @@ svg { display: block; }
   /* Sobreescribe cursor:none de .btn — iOS Safari necesita cursor:pointer
      para despachar click events en <a> y <button> sin interacción nativa */
   .btn, a, button { cursor: pointer; touch-action: manipulation; }
+  /* Elementos clicables que NO son a/button/.btn y tenían cursor:none.
+     .team-card y .sponsor-row no son enlaces (cursor por defecto),
+     .form-group select sí es interactivo → pointer. */
+  .team-card        { cursor: default; }
+  .sponsor-row      { cursor: default; }
+  .sponsor-row[href] { cursor: pointer; }
+  .form-group select { cursor: pointer; }
   /* En táctil el :hover no se dispara: la CTA de los medallones debe
      verse siempre al 100% (cubre también la rejilla de reduced-motion). */
   .pool-cta-line { opacity: 1; }
+  /* La aura del medallón sólo aparecía en :hover (nunca en táctil).
+     La forzamos visible y suave para consistencia con la versión desktop. */
+  .pool-medallion-aura { opacity: .5; transform: scale(1); }
 }
 @media (pointer: coarse) {
   /* Feedback visual en tap para dispositivos táctiles */
@@ -2041,6 +2114,10 @@ svg { display: block; }
 @media (forced-colors: active) {
   body   { cursor: auto; }
   button { cursor: pointer; }
+  a, .btn { cursor: pointer; }
+  .team-card, .sponsor-row { cursor: default; }
+  .sponsor-row[href] { cursor: pointer; }
+  .form-group select { cursor: pointer; }
   #cursor { display: none; }
 }
 
@@ -2050,7 +2127,7 @@ svg { display: block; }
 .torneo-banner {
   background: var(--gold);
   color: var(--black);
-  padding: 11px 24px;
+  padding: 11px max(24px, env(safe-area-inset-right)) 11px max(24px, env(safe-area-inset-left));
   text-align: center;
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -2371,10 +2448,10 @@ svg { display: block; }
   font-size: clamp(0.8rem, 1.5vw, 1rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(245,240,235,0.22);
+  color: rgba(245,240,235,0.4);
 }
 .sponsor-row-badge--soon {
-  color: rgba(245,240,235,0.22);
+  color: rgba(245,240,235,0.4);
   opacity: 1;
   border: 1px dashed rgba(245,240,235,0.18);
   padding: 4px 10px;

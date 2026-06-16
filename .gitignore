@@ -11,3 +11,6 @@ Thumbs.db
 
 # Dependencias / build
 node_modules/
+
+# Vercel CLI (credenciales locales de proyecto)
+.vercel/

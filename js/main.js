@@ -173,6 +173,7 @@
       overlay.addEventListener('keydown', function (e) {
         if (e.key !== 'Tab' || !overlay.classList.contains('is-open')) return;
         var focusable = overlay.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
         var first = focusable[0];
         var last  = focusable[focusable.length - 1];
         if (e.shiftKey) {
@@ -538,20 +539,10 @@
   function initGSAPExtras() {
     if (!window.gsap || !window.ScrollTrigger) return;
 
-    /* Footer marquee: pequeño efecto parallax sutil */
-    var footerMarquee = $('.footer-marquee');
-    if (footerMarquee) {
-      gsap.to(footerMarquee, {
-        x: -80,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '#footer',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 2
-        }
-      });
-    }
+    /* (El parallax del footer-marquee se eliminó: la animación CSS
+       `marquee-run` —origen "animation" en la cascada— siempre prevalece
+       sobre el transform inline de GSAP, por lo que el efecto nunca era
+       visible.) */
 
     /* Academy cards: entrada más expresiva (reemplaza initReveals para estos) */
     var acCards = $$('.academy-card');
@@ -609,7 +600,6 @@
   function initAurora() {
     if (isTouch()) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
 
     var orb = document.createElement('div');
     orb.className = 'aurora-orb';

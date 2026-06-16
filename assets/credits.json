@@ -147,6 +147,13 @@
       "source": "Foto cedida por el club",
       "license": "—",
       "credit": "Eleva Padel Club"
+    },
+    {
+      "file": "og.jpg",
+      "description": "Imagen Open Graph / redes sociales",
+      "source": "Sustituir con foto real del club",
+      "license": "—",
+      "credit": "Eleva Padel Club"
     }
   ]
 }

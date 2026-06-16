@@ -72,9 +72,9 @@ Las imágenes de los pools están en `assets/pools/opt/` ya optimizadas en vario
 Cuando cambies cualquier archivo (fotos, textos, colores…), los navegadores a veces guardan la versión antigua. Para forzar la actualización, abre `index.html` y cambia la versión en el `?v=` de los archivos:
 
 ```html
-<link rel="stylesheet" href="css/main.css?v=20260612b">   ← cambia la versión
-<script src="lib/manifest.js?v=20260612b" defer></script>  ← cambia la versión
-<script src="js/main.js?v=20260612b"     defer></script>  ← cambia la versión
+<link rel="stylesheet" href="css/main.css?v=20260616">   ← cambia la versión
+<script src="lib/manifest.js?v=20260616" defer></script>  ← cambia la versión
+<script src="js/main.js?v=20260616"     defer></script>  ← cambia la versión
 ```
 
 Usa la fecha de hoy en formato YYYYMMDD (por ejemplo, `20260715`).

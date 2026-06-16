@@ -9,6 +9,9 @@
   <meta name="color-scheme" content="dark">
 
   <!-- Canónica y SEO -->
+  <!-- i18n ES/EN/NL se conmuta por JS sobre una única URL (sin rutas por idioma),
+       por lo que solo procede hreflang x-default. Si en el futuro se generan rutas
+       /en/ y /nl/, añadir aquí un hreflang por idioma. -->
   <link rel="canonical" href="https://eleva-padel-pizarra.vercel.app/">
   <link rel="alternate" hreflang="x-default" href="https://eleva-padel-pizarra.vercel.app/">
 
@@ -49,12 +52,17 @@
       "addressRegion": "Málaga",
       "addressCountry": "ES"
     },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 36.769391,
+      "longitude": -4.709363
+    },
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
         "opens": "09:00",
-        "closes": "00:00"
+        "closes": "23:59"
       }
     ],
     "sameAs": ["https://instagram.com/elevapadelpizarra"]
@@ -69,6 +77,8 @@
     "name": "I Torneo Eleva Padel Pizarra",
     "startDate": "2026-06-24",
     "endDate": "2026-06-28",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "description": "Primer torneo oficial de Eleva Padel Club. 7 categorías, 25€/jugador, Welcome Pack incluido.",
     "location": {
       "@type": "SportsActivityLocation",
@@ -104,13 +114,15 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
-  <link rel="stylesheet" href="css/main.css?v=20260616">
+  <link rel="stylesheet" href="css/main.css?v=20260616e">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
     <style>
       #splash { display: none !important; }
       [data-reveal] { opacity: 1 !important; transform: none !important; }
+      /* Sin JS el cursor personalizado no se inicializa: restaurar cursor nativo */
+      body, a, button, .btn, .team-card, .sponsor-row, .form-group select { cursor: auto !important; }
     </style>
   </noscript>
 </head>
@@ -374,7 +386,7 @@
         </div>
         <div class="club-def">
           <dt data-i18n="club.tournaments">Torneos</dt>
-          <dd data-i18n-html="club.tournamentsDesc">SNP Viernes 21:30 · 4ª Masc. Viernes 20:20<br>Mixta Jueves 20:00 · Rocha Martes 20:00</dd>
+          <dd data-i18n-html="club.tournamentsDesc">Pools por categoría: SNP · 4ª Masc. · Mixta · Rocha<br>Horarios variables — plazas por WhatsApp</dd>
         </div>
       </dl>
     </div>
@@ -971,7 +983,7 @@
       </div>
     </div>
 
-    <!-- Lane 3:, velocidad rápida -->
+    <!-- Lane 3: velocidad rápida -->
     <div class="gallery-lane lane-3">
       <div class="gallery-strip">
         <div class="gallery-img gi-12" role="img" aria-label="Jugadoras en partido"      data-i18n-arialabel="gallery.img12"></div>
@@ -1217,11 +1229,11 @@
      SCRIPTS — todo diferido, sin type="module"
 ════════════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" defer></script>
-<script src="lib/gsap.min.js?v=20260613"          defer></script>
-<script src="lib/ScrollTrigger.min.js?v=20260613" defer></script>
+<script src="lib/gsap.min.js?v=20260616"          defer></script>
+<script src="lib/ScrollTrigger.min.js?v=20260616" defer></script>
 <script src="lib/manifest.js?v=20260616"          defer></script>
 <script src="lib/translations.js?v=20260616"      defer></script>
-<script src="js/main.js?v=20260616"               defer></script>
+<script src="js/main.js?v=20260616d"              defer></script>
 
 </body>
 </html>
