@@ -8,6 +8,8 @@ Thumbs.db
 # Editores
 *.swp
 *~
+.vscode/
+.claude/
 
 # Dependencias / build
 node_modules/

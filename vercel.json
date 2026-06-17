@@ -38,6 +38,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/((?!assets|css|js|lib|favicon|robots\\.txt|sitemap\\.xml|privacidad\\.html).*)", "destination": "/index.html" }
+    { "source": "/((?!assets|css|js|lib|favicon|robots\\.txt|sitemap\\.xml|privacidad).*)", "destination": "/index.html" }
   ]
 }

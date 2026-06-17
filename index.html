@@ -114,7 +114,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
-  <link rel="stylesheet" href="css/main.css?v=20260616e">
+  <link rel="stylesheet" href="css/main.css?v=20260617">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
@@ -386,7 +386,7 @@
         </div>
         <div class="club-def">
           <dt data-i18n="club.tournaments">Torneos</dt>
-          <dd data-i18n-html="club.tournamentsDesc">Pools por categoría: SNP · 4ª Masc. · Mixta · Rocha<br>Horarios variables — plazas por WhatsApp</dd>
+          <dd data-i18n-html="club.tournamentsDesc">Pools por categoría: SNP · 3ª · 4ª · 5ª · Mixta · Rocha<br>Horarios variables — plazas por WhatsApp</dd>
         </div>
       </dl>
     </div>
@@ -486,7 +486,7 @@
           <h3 class="service-title" data-i18n="services.title3">Pools</h3>
           <p class="service-subtitle" data-i18n="services.sub3">Compite toda la semana.</p>
           <p class="service-desc" data-i18n="services.desc3">
-            Pools por categoría: SNP, 4ª, Mixta, Rocha.
+            Pools por categoría: SNP, 3ª, 4ª, 5ª, Mixta y Rocha.
             Precio fijo, buen rollo garantizado.
             Liga interna y torneos para todos los niveles.
           </p>
@@ -854,6 +854,15 @@
     </div>
   </div>
 
+  <!-- Pista de deslizamiento — sólo táctil: incita a swipear e indica que
+       hay más insignias. Se oculta tras el primer scroll (initPools). -->
+  <div class="pools-swipe" id="pools-swipe" aria-hidden="true">
+    <span class="pools-swipe-rail">
+      <span class="pools-swipe-thumb"></span>
+    </span>
+    <span class="pools-swipe-label" data-i18n="pools.swipe">Desliza · 9 insignias</span>
+  </div>
+
   <!-- Franja de beneficios compartidos (idénticos en todos los pools) -->
   <div class="pools-perks" data-reveal>
     <span class="pools-perks-label" data-i18n="pools.perksLabel">Todos los pools incluyen</span>
@@ -1030,7 +1039,7 @@
          data-i18n="contact.ctaWA">
         Únete a la comunidad WhatsApp
       </a>
-      <span class="contact-secondary contact-secondary--soon" data-cursor="próximamente" aria-disabled="true" data-i18n="contact.ctaEvent">Reservar el club para evento privado</span>
+      <span class="contact-secondary contact-secondary--soon" data-cursor="próximamente" data-i18n="contact.ctaEvent">Reservar el club para evento privado</span>
     </div>
 
     <!-- Mitad derecha: formulario -->
@@ -1196,7 +1205,7 @@
       <p class="footer-legal">
       &copy; 2026 Eleva Padel Club · Pizarra, Málaga ·
       Créditos de imágenes en <a href="assets/credits.json" class="footer-legal-link">credits.json</a> ·
-      <a href="privacidad.html" class="footer-legal-link" data-i18n-html="footer.legalLink">Aviso Legal &amp; Privacidad</a>
+      <a href="/privacidad" class="footer-legal-link" data-i18n-html="footer.legalLink">Aviso Legal &amp; Privacidad</a>
     </p>
     <p class="footer-credit">
       <span data-i18n="footer.designCredit">Diseño web por</span>
@@ -1233,7 +1242,7 @@
 <script src="lib/ScrollTrigger.min.js?v=20260616" defer></script>
 <script src="lib/manifest.js?v=20260616"          defer></script>
 <script src="lib/translations.js?v=20260616"      defer></script>
-<script src="js/main.js?v=20260616d"              defer></script>
+<script src="js/main.js?v=20260617"              defer></script>
 
 </body>
 </html>

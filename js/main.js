@@ -65,6 +65,7 @@
     var dot   = cursor.querySelector('.cursor-dot');
     var ring  = cursor.querySelector('.cursor-ring');
     var label = cursor.querySelector('.cursor-label');
+    if (!dot || !ring || !label) return;
 
     var mx = window.innerWidth / 2;
     var my = window.innerHeight / 2;
@@ -103,7 +104,10 @@
     });
 
     document.addEventListener('mouseout', function (e) {
-      if (!e.target.closest('[data-cursor]') || !e.relatedTarget || !e.relatedTarget.closest('[data-cursor]')) {
+      /* Solo retira la etiqueta al salir realmente de un elemento con
+         data-cursor (no al moverse entre sus hijos ni al salir de otros). */
+      var fromCursor = e.target.closest('[data-cursor]');
+      if (fromCursor && (!e.relatedTarget || e.relatedTarget.closest('[data-cursor]') !== fromCursor)) {
         cursor.classList.remove('has-label');
       }
       if (e.target.closest('a, button') && (!e.relatedTarget || !e.relatedTarget.closest('a, button'))) {
@@ -122,14 +126,20 @@
 
     if (!nav) return;
 
-    /* Scroll state */
+    /* Scroll state — throttled vía rAF (coherente con initHero/initPools) */
     var scrolled = false;
+    var navTicking = false;
     window.addEventListener('scroll', function () {
-      var now = window.scrollY > 60;
-      if (now !== scrolled) {
-        scrolled = now;
-        nav.classList.toggle('nav-scrolled', now);
-      }
+      if (navTicking) return;
+      navTicking = true;
+      requestAnimationFrame(function () {
+        var now = window.scrollY > 60;
+        if (now !== scrolled) {
+          scrolled = now;
+          nav.classList.toggle('nav-scrolled', now);
+        }
+        navTicking = false;
+      });
     }, { passive: true });
 
     /* Burger menu */
@@ -323,7 +333,9 @@
                + timeout 10s de seguridad
   ──────────────────────────────────────────────────────────────── */
   function initReveals() {
-    var els = $$('[data-reveal]');
+    /* .academy-card se excluye: las controla initGSAPExtras (GSAP) para una
+       entrada más expresiva, evitando que ambas lógicas las animen. */
+    var els = $$('[data-reveal]:not(.academy-card)');
     if (!els.length) return;
 
     /* 1. Ocultar inicialmente vía JS (no CSS) para no romper sin JS */
@@ -539,18 +551,11 @@
   function initGSAPExtras() {
     if (!window.gsap || !window.ScrollTrigger) return;
 
-    /* (El parallax del footer-marquee se eliminó: la animación CSS
-       `marquee-run` —origen "animation" en la cascada— siempre prevalece
-       sobre el transform inline de GSAP, por lo que el efecto nunca era
-       visible.) */
-
-    /* Academy cards: entrada más expresiva (reemplaza initReveals para estos) */
+    /* Academy cards: entrada más expresiva con GSAP. Se excluyen de
+       initReveals (selector :not(.academy-card)) para evitar doble animación. */
     var acCards = $$('.academy-card');
     if (acCards.length) {
       acCards.forEach(function (card) {
-        /* Anula el data-reveal para que GSAP tome el control */
-        card.removeAttribute('data-reveal');
-        delete card.dataset.revealPending;
         card.style.transition = 'none';
         card.style.opacity = '0';
         card.style.transform = 'translateY(40px)';
@@ -814,8 +819,14 @@
       reel.style.scrollSnapType = 'x mandatory';
       cards.forEach(function (c) { c.style.scrollSnapAlign = 'center'; });
       var ticking = false;
+      var swipeHint = document.getElementById('pools-swipe');
       applyFocus();
       reel.addEventListener('scroll', function () {
+        /* Tras el primer deslizamiento real, retiramos la pista de swipe:
+           ya ha cumplido su función de incitar al gesto. */
+        if (swipeHint && reel.scrollLeft > 8) {
+          swipeHint.classList.add('is-hidden');
+        }
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(function () { applyFocus(); ticking = false; });
