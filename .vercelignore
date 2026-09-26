@@ -6,5 +6,6 @@ presupuesto/
 # Plantilla de alta de clubes: material interno, no una página pública
 clubs/
 
-# Documentación del repo
+# Documentación del repo (no son páginas públicas)
 README.md
+HANDOFF-AUDITORIA.md

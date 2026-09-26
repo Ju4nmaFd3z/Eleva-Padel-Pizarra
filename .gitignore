@@ -19,3 +19,6 @@ node_modules/
 
 # Presupuesto y estrategia interna (no versionar)
 presupuesto/
+
+# Documento de traspaso entre sesiones: contexto interno, repo público
+HANDOFF-AUDITORIA.md
