@@ -9,3 +9,10 @@ clubs/
 # Documentación del repo (no son páginas públicas)
 README.md
 HANDOFF-AUDITORIA.md
+
+# Registro interno de procedencia y licencias de las imágenes (incluye notas
+# como «consentimiento pendiente de documentar»): no es una página pública
+assets/credits.json
+
+# Herramientas de desarrollo (servidor local tipo Vercel)
+tools/

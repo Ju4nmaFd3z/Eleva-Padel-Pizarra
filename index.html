@@ -9,7 +9,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eleva Pádel · Marca de clubes de pádel</title>
+  <title data-i18n="home.metaTitle">Eleva Pádel · Marca de clubes de pádel</title>
   <meta name="description" content="Eleva Pádel: marca de clubes de pádel con identidad propia, web multiidioma ES/EN/NL, reservas y comunidad. Primera sede en Pizarra, Málaga.">
   <meta name="theme-color" content="#1A1A1A">
   <meta name="color-scheme" content="dark">
@@ -55,30 +55,25 @@
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+34659143103",
-      "contactType": "sales",
-      "availableLanguage": ["es", "en", "nl"]
+      "contactType": "sales"
     },
     "subOrganization": {
       "@type": "SportsActivityLocation",
       "@id": "https://eleva-padel-pizarra.vercel.app/pizarra#club",
       "name": "Eleva Padel Club",
-      "url": "https://eleva-padel-pizarra.vercel.app/pizarra",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Pizarra",
-        "addressRegion": "Málaga",
-        "addressCountry": "ES"
-      }
+      "url": "https://eleva-padel-pizarra.vercel.app/pizarra"
     }
   }
   </script>
 
   <!-- Fonts (solo CSS, sin JS externo) -->
   <script>try{if(sessionStorage.getItem('eleva-splash-seen')==='1'){document.documentElement.className+=' splash-seen'}}catch(e){}</script>
-  <link rel="stylesheet" href="css/fonts.css?v=20260926">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
+  <link rel="stylesheet" href="css/fonts.css?v=20260927">
+  <link rel="icon" href="favicon.ico" sizes="48x48">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <link rel="stylesheet" href="css/main.css?v=20260926">
+  <link rel="stylesheet" href="css/main.css?v=20260927">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
@@ -97,7 +92,7 @@
 <div class="grain" aria-hidden="true"></div>
 
 <!-- SPLASH -->
-<div id="splash" role="status" aria-label="Cargando Eleva Pádel">
+<div id="splash" role="status" aria-label="Cargando Eleva Pádel" data-i18n-arialabel="home.splashLabel">
   <div class="splash-inner">
     <div class="splash-triangle" aria-hidden="true">
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -184,9 +179,7 @@
 </div>
 
 <!-- MARCA LATERAL FIJA -->
-<div class="brand-mark" aria-hidden="true">
-  ELEVA · PÁDEL · NACE EN PIZARRA
-</div>
+<div class="brand-mark" aria-hidden="true" data-i18n="home.brandMark">ELEVA · PÁDEL · NACE EN PIZARRA</div>
 
 <!-- ════════════════════════════════════════════════════════════
      HERO · "Índice de la Red"
@@ -198,7 +191,7 @@
 ════════════════════════════════════════════════════════════ -->
 <main id="contenido">
 
-<section id="hero" class="home-hero2" aria-label="Eleva Pádel — red de clubes de pádel">
+<section id="hero" class="home-hero2" aria-label="Eleva Pádel — red de clubes de pádel" data-i18n-arialabel="home.hero.ariaLabel">
 
   <!-- Constelación de la red · ancla = Pizarra (ÚNICA sede real).
        Antes había 7 nodos cerrados entre sí: se leía como "7 sedes
@@ -237,9 +230,11 @@
             data-i18n-arialabel="home.hero.titleSr" aria-label="Eleva tu club, tu marca, tu comunidad y tu pádel.">
           <span class="home-hero2-brand">Eleva</span>
           <span class="home-hero2-rotator" aria-hidden="true">
-            <span class="home-rot is-active" data-i18n="home.hero.rot1">tu club.</span>
+            <!-- La palabra más larga va primero y activa: si aparece después,
+                 el navegador la cuenta como un LCP nuevo (~7,6 s en móvil lento) -->
+            <span class="home-rot is-active" data-i18n="home.hero.rot3">tu comunidad.</span>
+            <span class="home-rot" data-i18n="home.hero.rot1">tu club.</span>
             <span class="home-rot" data-i18n="home.hero.rot2">tu marca.</span>
-            <span class="home-rot" data-i18n="home.hero.rot3">tu comunidad.</span>
             <span class="home-rot" data-i18n="home.hero.rot4">tu pádel.</span>
           </span>
         </h1>
@@ -315,7 +310,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section id="manifiesto" class="home-manifesto" aria-labelledby="manifiesto-heading">
   <div class="home-manifesto-inner">
-    <span class="section-watermark" aria-hidden="true">01</span>
+    <span class="section-watermark" aria-hidden="true" data-n="01"></span>
     <span class="section-label" data-i18n="home.manifesto.label">Manifiesto</span>
     <h2 id="manifiesto-heading" class="home-manifesto-heading" data-reveal data-i18n-html="home.manifesto.headingHtml">
       El pádel no necesita más pistas.<br>Necesita más <em>criterio</em>.
@@ -370,7 +365,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section id="unirse" class="home-steps" aria-labelledby="unirse-heading">
   <div class="home-steps-header">
-    <span class="section-watermark" aria-hidden="true">03</span>
+    <span class="section-watermark" aria-hidden="true" data-n="03"></span>
     <span class="section-label" data-i18n="home.steps.label">Cómo unir tu club</span>
     <h2 id="unirse-heading" class="home-steps-title" data-reveal data-i18n-html="home.steps.headingHtml">
       De tu club a la red<br><em>en cuatro pasos.</em>
@@ -446,7 +441,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section id="red" class="home-network" aria-labelledby="red-heading">
   <div class="home-network-header">
-    <span class="section-watermark" aria-hidden="true">05</span>
+    <span class="section-watermark" aria-hidden="true" data-n="05"></span>
     <span class="section-label" data-i18n="home.network.label">La Red</span>
     <h2 id="red-heading" class="home-network-title" data-reveal data-i18n="home.network.heading">Donde ya se juega distinto.</h2>
     <p class="home-network-sub" data-reveal data-reveal-delay="100" data-i18n="home.network.sub">
@@ -454,7 +449,7 @@
     </p>
   </div>
 
-  <!-- Sedes inyectadas por initLanding() (js/main.js) desde el array de clubes -->
+  <!-- Sedes inyectadas por renderNetwork() (js/main.js) desde HOME_CLUBS -->
   <div class="home-network-grid" id="network-grid" role="list"></div>
 </section>
 
@@ -493,8 +488,8 @@
 
 <footer id="footer" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
   <div class="footer-marquee" aria-hidden="true">
-    <span class="footer-marquee-inner">Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp;</span>
-    <span class="footer-marquee-inner">Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp;</span>
+    <span class="footer-marquee-inner" data-text="Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp;"></span>
+    <span class="footer-marquee-inner" data-text="Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp;"></span>
   </div>
 
   <div class="footer-grid">
@@ -549,28 +544,30 @@
       <a href="https://juanma-dev-portfolio.vercel.app" target="_blank" rel="noopener noreferrer" data-cursor="ver">Juanma Fernández</a>
     </p>
   </div>
+  <!-- FAB dentro del <footer>: así queda en un landmark (axe "region");
+       es position:fixed, el lugar en el DOM no cambia dónde se ve -->
+  <!-- FAB — triángulo flotante · unir club -->
+  <div class="fab-triangle">
+    <a href="https://wa.me/34659143103"
+       target="_blank" rel="noopener noreferrer"
+       class="js-wa-b2b"
+       aria-label="Unir mi club a Eleva Pádel"
+       data-i18n-arialabel="home.fab.ariaLabel"
+       data-cursor="WhatsApp">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
+      </svg>
+    </a>
+    <span class="fab-tooltip" aria-hidden="true" data-i18n="home.fab.tooltip">Unir mi club</span>
+  </div>
 </footer>
 
-<!-- FAB — triángulo flotante · unir club -->
-<div class="fab-triangle">
-  <a href="https://wa.me/34659143103"
-     target="_blank" rel="noopener noreferrer"
-     class="js-wa-b2b"
-     aria-label="Unir mi club a Eleva Pádel"
-     data-i18n-arialabel="home.fab.ariaLabel"
-     data-cursor="WhatsApp">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-    </svg>
-  </a>
-  <span class="fab-tooltip" aria-hidden="true" data-i18n="home.fab.tooltip">Unir mi club</span>
-</div>
 
 <!-- SCRIPTS — sin manifest (la landing no carga datos de club) ni GSAP
      (la landing no usa scroll horizontal/pin: su constelación es CSS puro
      y los efectos —rotador, magnético, contadores— van en vanilla JS). -->
-<script src="js/translations.js?v=20260926"      defer></script>
-<script src="js/main.js?v=20260926"               defer></script>
+<script src="js/translations.js?v=20260927"      defer></script>
+<script src="js/main.js?v=20260927"               defer></script>
 
 </body>
 </html>

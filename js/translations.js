@@ -28,31 +28,31 @@
         scroll: 'Scroll'
       },
       marquee: {
-        courts: '4 Pistas Outdoor', academy: 'Academia & Clases',
-        pools: 'Pools y Torneos', chill: 'Zona Chill-Out',
+        courts: 'Pistas de pádel', academy: 'Academia & Clases',
+        pools: 'Pools por categoría', chill: 'Zona Chill-Out',
         /* location/tag: valores por sede en el manifest del club */
         location: 'Eleva Pádel', tag: 'High Performance & Social Club'
       },
       club: {
         label: 'El Club', aside: 'ELEVA · PADEL CLUB',
         headingHtml: 'Un club con más futuro<br>que presente.',
-        courts: 'Pistas', courtsDesc: '4 outdoor panorámicas con iluminación LED',
+        courts: 'Pistas', courtsDesc: 'Pistas de pádel con reserva online',
         schedule: 'Horario', scheduleValue: 'Consultar horario', bookings: 'Reservas',
         community: 'Comunidad', communityLink: 'Grupo WhatsApp activo',
-        tournaments: 'Torneos',
-        tournamentsDesc: 'Pools y torneos por categoría<br>Horarios variables — plazas por WhatsApp'
+        tournaments: 'Competición',
+        tournamentsDesc: 'Pools por categoría<br>Horarios variables — plazas por WhatsApp'
       },
       services: {
         srHeading: 'Servicios de Eleva Padel Club',
-        cat1: 'Instalaciones', title1: 'Pistas', sub1: 'Juega. A cualquier hora.',
-        desc1: '4 pistas outdoor de cristal panorámico con iluminación LED de última generación. Reserva online en Vola o por teléfono.',
+        cat1: 'Instalaciones', title1: 'Pistas', sub1: 'Juega. Reserva en un minuto.',
+        desc1: 'Reserva online en Vola o por teléfono.',
         rate1dt: '1h antes de 17h', rate2dt: '1h30 antes de 17h',
         rate3dt: '1h desde 17h',    rate4dt: '1h30 desde 17h',
         cta1: 'Reservar pista',
         cat2: 'Formación', title2: 'Academia', sub2: 'Sube de nivel de verdad.',
         desc2: 'Grupos de 2 a 4 personas y 1h de técnica real. Clases para todos los niveles, desde iniciación hasta competición.',
         cta2: 'Consultar plazas',
-        cat3: 'Competición', title3: 'Pools', sub3: 'Compite toda la semana.',
+        cat3: 'Competición', title3: 'Pools', sub3: 'Compite en tu categoría.',
         desc3: 'Pools por categoría, con precio fijo y buen rollo garantizado. Los horarios varían: consulta el próximo por WhatsApp.',
         cta3: 'Unirse al grupo',
         cat4: 'Ambiente', title4: 'Chill-Out', sub4: 'El partido acaba, la tarde no.',
@@ -88,16 +88,16 @@
         /* role1/bio1: por sede en el manifest del club (aquí, valor neutro) */
         role1: 'Monitora',
         bio1: 'Monitora del club y referente técnico de la academia.',
-        role2: 'Coordinadora de Pádel',
-        bio2: 'Coordinadora de todo lo relacionado con el pádel en el club. Alma organizativa de la competición y la academia.'
+        role2: 'Coordinación',
+        bio2: 'Coordinación del pádel en el club: competición y academia.'
       },
       pools: {
-        label: 'Pools & Torneos',
-        headingHtml: 'Compite<br>toda la semana.',
+        label: 'Pools',
+        headingHtml: 'Compite<br>en tu categoría.',
         perksLabel: 'Todos los pools incluyen',
-        include: '8€ por jugador · Bolas nuevas · 1h30 · Horario a consultar por WhatsApp',
+        include: 'Bolas nuevas · Horario a consultar por WhatsApp',
         prizeLabel: 'Premio ganadores',
-        prize: 'Camiseta BullPadel con el logo del club',
+        prize: 'Consultar en el club',
         quote: '«Hay lugares con más futuro que presente.»',
         cta:   'Consultar horario del próximo pool',
         join:  'Consultar horario',
@@ -114,16 +114,8 @@
         collab: 'Colaborador',
       },
       gallery: {
-        heading: 'El club.', subtitle: 'Nuestras instalaciones',
-        ariaLabel: 'Galería de imágenes del club',
-        img1: 'Pistas al atardecer', img2: 'Detalle de cristal y malla',
-        img3: 'Pelota en acción', img4: 'Pala de pádel',
-        img5: 'Zona chill-out', img6: 'Iluminación LED nocturna',
-        img7: 'Jugadores en partido', img8: 'Logo del club',
-        img9: 'Vista de pistas', img10: 'Entrada al club', img11: 'Red central',
-        img12: 'Jugadoras en partido', img13: 'Pala Bullpadel',
-        img14: 'Pista con reflejos LED', img15: 'Grupo de jugadores',
-        img16: 'Atardecer sobre las pistas'
+        heading: 'El club.', subtitle: 'Imágenes ilustrativas', pause: 'Pausar', play: 'Reanudar',
+        ariaLabel: 'Galería de imágenes',
       },
       contact: {
         headingHtml: 'Reserva<br><em>tu pista.</em>',
@@ -140,26 +132,36 @@
         submitBtn: 'Enviar por WhatsApp',
         formNote: 'Te redirige a WhatsApp con los datos ya rellenados. Te contestamos lo antes posible.',
         infoPhone: 'Teléfono', infoInstagram: 'Instagram',
-        infoAddress: 'Dirección', infoSchedule: 'Horario'
+        infoAddress: 'Dirección', infoSchedule: 'Horario',
+        errRequired: 'Rellena este campo.',
+        errLevel: 'Selecciona tu nivel.',
+        errPhone: 'Escribe un teléfono válido (solo números, espacios o +).',
+        privacyNoteHtml: 'Responsable: Eleva Padel Club. Finalidad: responder a tu consulta por WhatsApp. Tus derechos y el resto de información, en el <a href="../privacidad.html">aviso legal y privacidad</a>.',
+        dataNoticeHtml: 'No se han podido cargar las tarifas, los pools ni el equipo. Escríbenos por WhatsApp y te informamos.'
       },
       footer: {
         claim: 'Pádel elevado a otro nivel.',
-        mapTitle: 'Cómo llegar', mapLink: 'Ver en Google Maps',
+        mapTitle: 'Cómo llegar', mapLink: 'Ver en Google Maps', mapAria: 'Ver la ubicación en Google Maps',
         contactTitle: 'Contacto',
         phoneLabel: 'Teléfono / WhatsApp',
         reservasLabel: 'Reservas', reservasLink: 'App Vola Plus',
         communityLabel: 'Comunidad', communityLink: 'Grupo WhatsApp',
         navTitle: 'El Club',
         navClub: 'El Club', navServices: 'Servicios', navAcademy: 'Academia',
-        navPools: 'Pools & Torneos', navGallery: 'Galería',
+        navPools: 'Pools', navGallery: 'Galería',
         navContact: 'Contacto', navBook: 'Reservar pista',
         designCredit: 'Diseño web por',
         legalLink: 'Aviso Legal &amp; Privacidad',
         ariaLabel: 'Pie de página'
       },
       fab: { tooltip: 'Reservar pista', ariaLabel: 'Reservar pista en Eleva Padel Club' },
+      splash: { label: 'Cargando Eleva Padel Club' },
+      meta:   { title: 'Eleva Padel Club' },
       /* ── LANDING B2B (raíz /) ── */
       home: {
+        metaTitle: 'Eleva Pádel · Marca de clubes de pádel',
+        splashLabel: 'Cargando Eleva Pádel',
+        brandMark: 'ELEVA · PÁDEL · NACE EN PIZARRA',
         waB2B: 'Hola, tengo un club/academia de pádel y me gustaría saber más sobre unirme a Eleva Pádel.',
         nav: {
           logoLabel: 'Eleva Pádel — inicio',
@@ -170,6 +172,7 @@
         hero: {
           kicker: 'MARCA DE CLUBES DE PÁDEL · NACE EN PIZARRA',
           index: 'La Red',
+          ariaLabel: 'Eleva Pádel — red de clubes de pádel',
           rot1: 'tu club.', rot2: 'tu marca.', rot3: 'tu comunidad.', rot4: 'tu pádel.',
           titleSr: 'Eleva tu club, tu marca, tu comunidad y tu pádel.',
           anchorCity: 'Pizarra · Málaga',
@@ -179,8 +182,8 @@
           ctaSecondary: 'Ver una sede'
         },
         marquee: {
-          brand: 'Marca premium', multilang: 'Web multiidioma ES · EN · NL',
-          booking: 'Reservas online', tournaments: 'Torneos & Pools',
+          brand: 'Marca propia', multilang: 'Web multiidioma ES · EN · NL',
+          booking: 'Reservas online', tournaments: 'Pools por categoría',
           community: 'Comunidad', expansion: 'Red en construcción'
         },
         manifesto: {
@@ -191,7 +194,7 @@
         value: {
           label: 'Qué es Eleva',
           headingHtml: 'Una red,<br>no una franquicia rígida.',
-          p1: 'Eleva es una marca de pádel que empieza en Pizarra. Aportamos identidad, tecnología y una web propia multiidioma; tú mantienes tu club, tu equipo y tu esencia.',
+          p1: 'Eleva es una marca de pádel que empieza en Pizarra. Aportamos identidad, una web propia multiidioma y el enlace con tu plataforma de reservas; tú mantienes tu club, tu equipo y tu esencia.',
           p2: 'Juntos elevamos el estándar: la experiencia que vive el jugador, la imagen que proyecta tu club y la comunidad que lo sostiene.',
           stat1: 'Sede activa', stat2: 'Idiomas de serie', stat3: 'Año de fundación'
         },
@@ -201,19 +204,19 @@
           s1Title: 'Hablamos',   s1Desc: 'Nos cuentas cómo es tu club y qué buscas. Sin compromiso.',
           s2Title: 'Diseñamos',  s2Desc: 'Adaptamos la identidad Eleva a tu sede: web, marca y presencia digital.',
           s3Title: 'Lanzamos',   s3Desc: 'Publicamos tu club en la red con reservas, comunidad y multiidioma.',
-          s4Title: 'Crecemos',   s4Desc: 'Torneos, captación y una marca que trabaja para ti cada día.'
+          s4Title: 'Crecemos',   s4Desc: 'Te ayudamos a arrancar con lo que ya funciona en Pizarra: pools, comunidad y comunicación.'
         },
         benefits: {
           label: 'Beneficios de la red',
           headingHtml: 'Todo lo que un club necesita<br>para <em>destacar</em>.',
           b1Title: 'Identidad cuidada',       b1Desc: 'Una identidad coherente en web, redes y pista que diferencia tu club desde el primer vistazo.',
           b2Title: 'Web propia multiidioma',  b2Desc: 'Tu sede con página propia en ES · EN · NL, lista para captar a cualquier jugador.',
-          b3Title: 'Captación y comunidad',   b3Desc: 'Te acompañamos para dar a conocer tu club y convertir jugadores sueltos en comunidad.',
+          b3Title: 'Comunidad',               b3Desc: 'Te ayudamos a convertir jugadores sueltos en comunidad: grupo de WhatsApp, pools y comunicación.',
           b4Title: 'Tecnología y reservas',   b4Desc: 'Enlazamos tu plataforma de reservas online y cuidamos la experiencia digital de principio a fin.',
-          b5Title: 'Torneos y eventos',       b5Desc: 'Formatos de torneo y pools listos para activar, con el respaldo y la comunicación de la marca.'
+          b5Title: 'Pools y eventos',         b5Desc: 'El formato de pools que ya funciona en Pizarra, adaptado a tu club.'
         },
         network: {
-          label: 'La Red', heading: 'Donde ya se juega distinto.',
+          label: 'La Red', heading: 'Donde ya se juega Eleva.',
           sub: 'Empezamos en Pizarra. Tu club puede ser el próximo.',
           statusLive: 'Primera sede', statusSoon: 'Próximamente',
           visit: 'Ver sede',
@@ -264,36 +267,36 @@
       hero: {
         /* club-agnostic: Pizarra overrides it in pizarra/manifest.js (i18n) */
         kicker: 'PADEL CLUB · OUTDOOR COURTS',
-        tagline: 'Padel elevated to another level.',
+        tagline: 'Padel taken to the next level.',
         ctaPrimary: 'Book a court', ctaSecondary: 'Discover the club',
         scroll: 'Scroll'
       },
       marquee: {
-        courts: '4 Outdoor Courts', academy: 'Academy & Classes',
-        pools: 'Pools & Tournaments', chill: 'Chill-Out Zone',
+        courts: 'Padel courts', academy: 'Academy & Classes',
+        pools: 'Pools by category', chill: 'Chill-Out Zone',
         /* location/tag: per-venue values in the club manifest */
         location: 'Eleva Pádel', tag: 'High Performance & Social Club'
       },
       club: {
         label: 'The Club', aside: 'ELEVA · PADEL CLUB',
         headingHtml: 'A club with more future<br>than present.',
-        courts: 'Courts', courtsDesc: '4 panoramic outdoor courts with LED lighting',
+        courts: 'Courts', courtsDesc: 'Padel courts with online booking',
         schedule: 'Hours', scheduleValue: 'Check opening hours', bookings: 'Bookings',
         community: 'Community', communityLink: 'Active WhatsApp group',
-        tournaments: 'Tournaments',
-        tournamentsDesc: 'Pools and tournaments by category<br>Variable schedule — spots via WhatsApp'
+        tournaments: 'Competition',
+        tournamentsDesc: 'Pools by category<br>Variable schedule — spots via WhatsApp'
       },
       services: {
         srHeading: 'Services at Eleva Padel Club',
-        cat1: 'Facilities', title1: 'Courts', sub1: 'Play. Any time.',
-        desc1: '4 panoramic glass outdoor courts with state-of-the-art LED lighting. Book online on Vola or by phone.',
-        rate1dt: '1h before 5 PM', rate2dt: '1h30 before 5 PM',
-        rate3dt: '1h from 5 PM',   rate4dt: '1h30 from 5 PM',
+        cat1: 'Facilities', title1: 'Courts', sub1: 'Play. Book in a minute.',
+        desc1: 'Book online on Vola or by phone.',
+        rate1dt: '60 min before 5 pm', rate2dt: '90 min before 5 pm',
+        rate3dt: '60 min from 5 pm',   rate4dt: '90 min from 5 pm',
         cta1: 'Book a court',
         cat2: 'Training', title2: 'Academy', sub2: 'Level up for real.',
-        desc2: 'Groups of 2 to 4 people and 1h of real technique. Classes for all levels, from beginner to competition.',
+        desc2: 'Groups of 2 to 4 people, in 1-hour sessions focused on real technique. Classes for all levels, from beginner to competition.',
         cta2: 'Check availability',
-        cat3: 'Competition', title3: 'Pools', sub3: 'Compete all week long.',
+        cat3: 'Competition', title3: 'Pools', sub3: 'Compete in your category.',
         desc3: 'Pools by category, with a fixed price and a great atmosphere guaranteed. Schedules vary: ask about the next one on WhatsApp.',
         cta3: 'Join the group',
         cat4: 'Atmosphere', title4: 'Chill-Out', sub4: 'The match ends, the evening doesn\'t.',
@@ -328,18 +331,18 @@
         headingHtml: 'The people<br><em>behind the club.</em>',
         /* role1/bio1: per venue in the club manifest (neutral default here) */
         role1: 'Coach',
-        bio1: 'Club coach and technical reference of the academy.',
-        role2: 'Padel Coordinator',
-        bio2: 'Coordinator of everything padel-related at the club. The organisational soul of the competition and academy.'
+        bio1: 'Club coach and technical lead of the academy.',
+        role2: 'Coordination',
+        bio2: 'Padel coordination at the club: competition and academy.'
       },
       pools: {
-        label: 'Pools & Tournaments',
-        headingHtml: 'Compete<br>all week long.',
+        label: 'Pools',
+        headingHtml: 'Compete<br>in your category.',
         perksLabel: 'All pools include',
-        include: '€8 per player · New balls · 1h30 · Schedule to be confirmed via WhatsApp',
+        include: 'New balls · Schedule to be confirmed via WhatsApp',
         prizeLabel: 'Winners’ prize',
-        prize: 'BullPadel shirt with the club logo',
-        quote: '«There are places with more future than present.»',
+        prize: 'Ask at the club',
+        quote: '“There are places with more future than present.”',
         cta:   'Ask about the next pool',
         join:  'Check the schedule',
         swipe: 'Swipe · {n} badges'
@@ -355,16 +358,8 @@
         collab: 'Partner',
       },
       gallery: {
-        heading: 'The club.', subtitle: 'Our facilities',
-        ariaLabel: 'Club photo gallery',
-        img1: 'Courts at sunset', img2: 'Glass and mesh detail',
-        img3: 'Ball in action', img4: 'Padel racket',
-        img5: 'Chill-out area', img6: 'Night LED lighting',
-        img7: 'Players in a match', img8: 'Club logo',
-        img9: 'Court overview', img10: 'Club entrance', img11: 'Centre net',
-        img12: 'Female players in a match', img13: 'Bullpadel racket',
-        img14: 'Court with LED reflections', img15: 'Group of players',
-        img16: 'Sunset over the courts'
+        heading: 'The club.', subtitle: 'Illustrative images', pause: 'Pause', play: 'Play',
+        ariaLabel: 'Image gallery',
       },
       contact: {
         headingHtml: 'Book<br><em>your court.</em>',
@@ -381,26 +376,36 @@
         submitBtn: 'Send via WhatsApp',
         formNote: 'Redirects you to WhatsApp with your details pre-filled. We reply as soon as we can.',
         infoPhone: 'Phone', infoInstagram: 'Instagram',
-        infoAddress: 'Address', infoSchedule: 'Hours'
+        infoAddress: 'Address', infoSchedule: 'Hours',
+        errRequired: 'Please fill in this field.',
+        errLevel: 'Please select your level.',
+        errPhone: 'Enter a valid phone number (digits, spaces or + only).',
+        privacyNoteHtml: 'Controller: Eleva Padel Club. Purpose: to answer your enquiry on WhatsApp. Your rights and further information are in the <a href="../privacidad.html">legal notice and privacy policy</a> (in Spanish).',
+        dataNoticeHtml: 'The club’s rates, pools and team could not be loaded. Message us on WhatsApp and we will tell you.'
       },
       footer: {
-        claim: 'Padel elevated to another level.',
-        mapTitle: 'How to get here', mapLink: 'View on Google Maps',
+        claim: 'Padel taken to the next level.',
+        mapTitle: 'How to get here', mapLink: 'View on Google Maps', mapAria: 'See the location on Google Maps',
         contactTitle: 'Contact',
         phoneLabel: 'Phone / WhatsApp',
         reservasLabel: 'Bookings', reservasLink: 'Vola Plus App',
         communityLabel: 'Community', communityLink: 'WhatsApp Group',
         navTitle: 'The Club',
         navClub: 'The Club', navServices: 'Services', navAcademy: 'Academy',
-        navPools: 'Pools & Tournaments', navGallery: 'Gallery',
+        navPools: 'Pools', navGallery: 'Gallery',
         navContact: 'Contact', navBook: 'Book a court',
         designCredit: 'Web design by',
         legalLink: 'Legal Notice &amp; Privacy',
         ariaLabel: 'Page footer'
       },
       fab: { tooltip: 'Book a court', ariaLabel: 'Book a court at Eleva Padel Club' },
+      splash: { label: 'Loading Eleva Padel Club' },
+      meta:   { title: 'Eleva Padel Club' },
       /* ── LANDING B2B (root /) ── */
       home: {
+        metaTitle: 'Eleva Pádel · A padel club brand',
+        splashLabel: 'Loading Eleva Pádel',
+        brandMark: 'ELEVA · PADEL · BORN IN PIZARRA',
         waB2B: 'Hi, I run a padel club/academy and I would like to know more about joining Eleva Pádel.',
         nav: {
           logoLabel: 'Eleva Pádel — home',
@@ -411,6 +416,7 @@
         hero: {
           kicker: 'A PADEL CLUB BRAND · BORN IN PIZARRA',
           index: 'The Network',
+          ariaLabel: 'Eleva Pádel — a network of padel clubs',
           rot1: 'your club.', rot2: 'your brand.', rot3: 'your community.', rot4: 'your padel.',
           titleSr: 'Eleva your club, your brand, your community and your padel.',
           anchorCity: 'Pizarra · Málaga',
@@ -420,8 +426,8 @@
           ctaSecondary: 'See a location'
         },
         marquee: {
-          brand: 'Premium brand', multilang: 'Multilingual site ES · EN · NL',
-          booking: 'Online booking', tournaments: 'Tournaments & Pools',
+          brand: 'Own brand', multilang: 'Multilingual site ES · EN · NL',
+          booking: 'Online booking', tournaments: 'Pools by category',
           community: 'Community', expansion: 'A network in the making'
         },
         manifesto: {
@@ -432,7 +438,7 @@
         value: {
           label: 'What Eleva is',
           headingHtml: 'A network,<br>not a rigid franchise.',
-          p1: 'Eleva is a padel brand starting out in Pizarra. We bring identity, technology and a dedicated multilingual website; you keep your club, your team and your essence.',
+          p1: 'Eleva is a padel brand starting out in Pizarra. We bring identity, a dedicated multilingual website and the link to your booking platform; you keep your club, your team and your essence.',
           p2: 'Together we raise the standard: the experience your players live, the image your club projects and the community that sustains it.',
           stat1: 'Active location', stat2: 'Languages built in', stat3: 'Founded'
         },
@@ -442,19 +448,19 @@
           s1Title: 'We talk',    s1Desc: 'Tell us about your club and what you’re looking for. No commitment.',
           s2Title: 'We design',  s2Desc: 'We adapt the Eleva identity to your venue: website, brand and digital presence.',
           s3Title: 'We launch',  s3Desc: 'We publish your club in the network with booking, community and multilingual support.',
-          s4Title: 'We grow',    s4Desc: 'Tournaments, player acquisition and a brand that works for you every day.'
+          s4Title: 'We grow',    s4Desc: 'We help you get going with what already works in Pizarra: pools, community and communication.'
         },
         benefits: {
           label: 'Network benefits',
           headingHtml: 'Everything a club needs<br>to <em>stand out</em>.',
           b1Title: 'A considered identity', b1Desc: 'One coherent identity across web, social and court that sets your club apart at first glance.',
           b2Title: 'Your own multilingual site', b2Desc: 'Your venue with its own page in ES · EN · NL, ready to reach any player.',
-          b3Title: 'Reach & community',      b3Desc: 'We help you get your club known and turn one-off players into a community.',
+          b3Title: 'Community',              b3Desc: 'We help you turn one-off players into a community: WhatsApp group, pools and communication.',
           b4Title: 'Technology & booking',   b4Desc: 'We link your online booking platform and look after the digital experience end to end.',
-          b5Title: 'Tournaments & events',   b5Desc: 'Tournament and pool formats ready to activate, backed by the brand’s support and comms.'
+          b5Title: 'Pools & events',         b5Desc: 'The pool format that already works in Pizarra, adapted to your club.'
         },
         network: {
-          label: 'The Network', heading: 'Where the game already feels different.',
+          label: 'The Network', heading: 'Where Eleva is already played.',
           sub: 'We started in Pizarra. Your club could be next.',
           statusLive: 'First location', statusSoon: 'Coming soon',
           visit: 'View location',
@@ -510,33 +516,33 @@
         scroll: 'Scroll'
       },
       marquee: {
-        courts: '4 Buitenbanen', academy: 'Academie & Lessen',
-        pools: 'Pools en Toernooien', chill: 'Chill-out Zone',
+        courts: 'Padelbanen', academy: 'Academie & Lessen',
+        pools: 'Pools per categorie', chill: 'Chill-out Zone',
         /* location/tag: waarden per locatie in het clubmanifest */
         location: 'Eleva Pádel', tag: 'High Performance & Social Club'
       },
       club: {
         label: 'De Club', aside: 'ELEVA · PADEL CLUB',
         headingHtml: 'Een club met meer toekomst<br>dan heden.',
-        courts: 'Banen', courtsDesc: '4 panoramische buitenbanen met LED-verlichting',
+        courts: 'Banen', courtsDesc: 'Padelbanen met online reserveren',
         schedule: 'Openingstijden', scheduleValue: 'Openingstijden op aanvraag', bookings: 'Reserveringen',
         community: 'Community', communityLink: 'Actieve WhatsApp-groep',
-        tournaments: 'Toernooien',
-        tournamentsDesc: 'Pools en toernooien per categorie<br>Wisselende tijden — plaatsen via WhatsApp'
+        tournaments: 'Competitie',
+        tournamentsDesc: 'Pools per categorie<br>Wisselende tijden — plaatsen via WhatsApp'
       },
       services: {
         srHeading: 'Diensten van Eleva Padel Club',
-        cat1: 'Faciliteiten', title1: 'Banen', sub1: 'Spelen. Op elk moment.',
-        desc1: '4 panoramische glazen buitenbanen met geavanceerde LED-verlichting. Reserveer online via Vola of telefonisch.',
-        rate1dt: '1u voor 17u', rate2dt: '1u30 voor 17u',
-        rate3dt: '1u vanaf 17u', rate4dt: '1u30 vanaf 17u',
+        cat1: 'Faciliteiten', title1: 'Banen', sub1: 'Spelen. In een minuut geboekt.',
+        desc1: 'Reserveer online via Vola of telefonisch.',
+        rate1dt: '60 min vóór 17.00 uur', rate2dt: '90 min vóór 17.00 uur',
+        rate3dt: '60 min vanaf 17.00 uur', rate4dt: '90 min vanaf 17.00 uur',
         cta1: 'Baan boeken',
         cat2: 'Training', title2: 'Academie', sub2: 'Echt een niveau hoger.',
-        desc2: 'Groepen van 2 tot 4 personen en 1u echte techniek. Lessen voor alle niveaus, van beginners tot competitie.',
+        desc2: 'Groepen van 2 tot 4 personen, in lessen van 1 uur gericht op echte techniek. Lessen voor alle niveaus, van beginner tot competitie.',
         cta2: 'Beschikbaarheid checken',
-        cat3: 'Competitie', title3: 'Pools', sub3: 'Speel competitie, de hele week.',
+        cat3: 'Competitie', title3: 'Pools', sub3: 'Speel in je eigen categorie.',
         desc3: 'Pools per categorie, met een vaste prijs en een goede sfeer gegarandeerd. De tijden wisselen: vraag de volgende op via WhatsApp.',
-        cta3: 'Deelnemen aan de groep',
+        cta3: 'Word lid van de groep',
         cat4: 'Sfeer', title4: 'Chill-Out', sub4: 'Het spel stopt, de avond niet.',
         desc4: 'Ontspanningszone met verfrissingen en koude drankjes na het spel. Waar de volgende teams worden gevormd en de beste gesprekken plaatsvinden.',
         cta4: 'Route'
@@ -544,7 +550,7 @@
       academy: {
         label: 'Academie',
         headingHtml: 'Train serieus.<br><em>Verbeter echt.</em>',
-        level1: 'Beginners', card1Title: 'Begin goed vanaf nul.',
+        level1: 'Beginner', card1Title: 'Begin goed vanaf nul.',
         card1Desc: 'Leer de juiste techniek vanaf de eerste slag. Geen slechte gewoonten, solide basis.',
         inc1a: 'Technische grondslagen', inc1b: 'Beweging en positionering', inc1c: 'Regels en scoring',
         level2: 'Halfgevorderd', card2Title: 'Consolideer techniek en tactiek.',
@@ -554,8 +560,8 @@
         card3Desc: 'Voor degenen die al spelen en resultaten willen. Analyse, strategie, competitie.',
         inc3a: 'Spelanalyse', inc3b: 'Toernooivoorbereiding', inc3c: 'Wedstrijdstrategie',
         ratesLabel: 'Tarieven Academie',
-        pricingAdultsTitle: 'Volwassenen Academie',
-        pricingJuniorTitle: 'Junior Academie',
+        pricingAdultsTitle: 'Volwassenenacademie',
+        pricingJuniorTitle: 'Jeugdacademie',
         pricingPrivateTitle: 'Privélessen',
         adults1dt: 'Groep van 4 · 1 dag/week', adults2dt: 'Groep van 3 · 1 dag/week', adults3dt: 'Groep van 2 · 1 dag/week',
         junior1dt: '5–9 jaar · 1 dag/week', junior2dt: '5–9 jaar · 2 dagen/week',
@@ -569,21 +575,21 @@
         headingHtml: 'De mensen<br><em>achter de club.</em>',
         /* role1/bio1: per locatie in het clubmanifest (hier een neutrale waarde) */
         role1: 'Coach',
-        bio1: 'Clubcoach en technisch referentiepunt van de academie.',
-        role2: 'Padelcoördinator',
-        bio2: 'Coördinator van alles wat met padel te maken heeft bij de club. De organisatorische ziel van de competitie en academie.'
+        bio1: 'Clubcoach en technisch boegbeeld van de academie.',
+        role2: 'Coördinatie',
+        bio2: 'Coördinatie van het padel in de club: competitie en academie.'
       },
       pools: {
-        label: 'Pools & Toernooien',
-        headingHtml: 'Speel competitie<br>de hele week.',
-        perksLabel: 'Alle pools omvatten',
-        include: '€8 per speler · Nieuwe ballen · 1u30 · Tijden op aanvraag via WhatsApp',
+        label: 'Pools',
+        headingHtml: 'Speel in je<br>eigen categorie.',
+        perksLabel: 'Bij elke pool inbegrepen',
+        include: 'Nieuwe ballen · Tijden op aanvraag via WhatsApp',
         prizeLabel: 'Prijs voor de winnaars',
-        prize: 'BullPadel-shirt met het clublogo',
-        quote: '«Er zijn plaatsen met meer toekomst dan heden.»',
-        cta:   'Vraag de tijden van de volgende pool',
+        prize: 'Vraag het bij de club',
+        quote: '„Er zijn plaatsen met meer toekomst dan heden.”',
+        cta:   'Vraag de volgende pool aan',
         join:  'Tijden opvragen',
-        swipe: 'Veeg · {n} badges'
+        swipe: 'Swipe · {n} badges'
       },
       sponsors: {
         label: 'Sponsors',
@@ -596,16 +602,8 @@
         collab: 'Partner',
       },
       gallery: {
-        heading: 'De club.', subtitle: 'Onze faciliteiten',
-        ariaLabel: 'Fotogalerij van de club',
-        img1: 'Banen bij zonsondergang', img2: 'Detail van glas en gaas',
-        img3: 'Bal in actie', img4: 'Padelracket',
-        img5: 'Chill-out zone', img6: 'Nachtelijke LED-verlichting',
-        img7: 'Spelers in een wedstrijd', img8: 'Clublogo',
-        img9: 'Baanoverzicht', img10: 'Ingang van de club', img11: 'Middennet',
-        img12: 'Speelsters in een wedstrijd', img13: 'Bullpadel racket',
-        img14: 'Baan met LED-reflecties', img15: 'Groep spelers',
-        img16: 'Zonsondergang over de banen'
+        heading: 'De club.', subtitle: 'Illustratieve beelden', pause: 'Pauzeren', play: 'Afspelen',
+        ariaLabel: 'Fotogalerij',
       },
       contact: {
         headingHtml: 'Boek<br><em>jouw baan.</em>',
@@ -622,26 +620,36 @@
         submitBtn: 'Verzenden via WhatsApp',
         formNote: 'Je wordt doorgestuurd naar WhatsApp met je gegevens al ingevuld. We reageren zo snel mogelijk.',
         infoPhone: 'Telefoon', infoInstagram: 'Instagram',
-        infoAddress: 'Adres', infoSchedule: 'Openingstijden'
+        infoAddress: 'Adres', infoSchedule: 'Openingstijden',
+        errRequired: 'Vul dit veld in.',
+        errLevel: 'Selecteer je niveau.',
+        errPhone: 'Vul een geldig telefoonnummer in (alleen cijfers, spaties of +).',
+        privacyNoteHtml: 'Verwerkingsverantwoordelijke: Eleva Padel Club. Doel: je vraag via WhatsApp beantwoorden. Je rechten en meer informatie staan in de <a href="../privacidad.html">juridische kennisgeving en privacyverklaring</a> (in het Spaans).',
+        dataNoticeHtml: 'De tarieven, pools en het team van de club konden niet worden geladen. Stuur ons een WhatsApp-bericht, dan vertellen we het je.'
       },
       footer: {
         claim: 'Padel naar een hoger niveau.',
-        mapTitle: 'Route', mapLink: 'Bekijken op Google Maps',
+        mapTitle: 'Route', mapLink: 'Bekijken op Google Maps', mapAria: 'Bekijk de locatie op Google Maps',
         contactTitle: 'Contact',
         phoneLabel: 'Telefoon / WhatsApp',
         reservasLabel: 'Reserveringen', reservasLink: 'Vola Plus App',
         communityLabel: 'Community', communityLink: 'WhatsApp-groep',
         navTitle: 'De Club',
         navClub: 'De Club', navServices: 'Diensten', navAcademy: 'Academie',
-        navPools: 'Pools & Toernooien', navGallery: 'Galerij',
+        navPools: 'Pools', navGallery: 'Galerij',
         navContact: 'Contact', navBook: 'Baan boeken',
         designCredit: 'Webdesign door',
         legalLink: 'Juridische kennisgeving &amp; Privacy',
         ariaLabel: 'Paginavoettekst'
       },
       fab: { tooltip: 'Baan boeken', ariaLabel: 'Baan boeken bij Eleva Padel Club' },
+      splash: { label: 'Eleva Padel Club wordt geladen' },
+      meta:   { title: 'Eleva Padel Club' },
       /* ── LANDING B2B (root /) ── */
       home: {
+        metaTitle: 'Eleva Pádel · Een padelclubmerk',
+        splashLabel: 'Eleva Pádel wordt geladen',
+        brandMark: 'ELEVA · PADEL · ONTSTAAN IN PIZARRA',
         waB2B: 'Hallo, ik heb een padelclub/academie en ik wil graag meer weten over aansluiten bij Eleva Pádel.',
         nav: {
           logoLabel: 'Eleva Pádel — home',
@@ -652,6 +660,7 @@
         hero: {
           kicker: 'EEN PADELCLUBMERK · ONTSTAAN IN PIZARRA',
           index: 'Het Netwerk',
+          ariaLabel: 'Eleva Pádel — een netwerk van padelclubs',
           rot1: 'je club.', rot2: 'je merk.', rot3: 'je community.', rot4: 'je padel.',
           titleSr: 'Eleva je club, je merk, je community en je padel.',
           anchorCity: 'Pizarra · Málaga',
@@ -661,8 +670,8 @@
           ctaSecondary: 'Bekijk een locatie'
         },
         marquee: {
-          brand: 'Premium merk', multilang: 'Meertalige site ES · EN · NL',
-          booking: 'Online reserveren', tournaments: 'Toernooien & Pools',
+          brand: 'Eigen merk', multilang: 'Meertalige site ES · EN · NL',
+          booking: 'Online reserveren', tournaments: 'Pools per categorie',
           community: 'Community', expansion: 'Netwerk in opbouw'
         },
         manifesto: {
@@ -673,7 +682,7 @@
         value: {
           label: 'Wat is Eleva',
           headingHtml: 'Een netwerk,<br>geen starre franchise.',
-          p1: 'Eleva is een padelmerk dat begint in Pizarra. Wij leveren identiteit, technologie en een eigen meertalige website; jij behoudt je club, je team en je eigenheid.',
+          p1: 'Eleva is een padelmerk dat begint in Pizarra. Wij leveren identiteit, een eigen meertalige website en de koppeling met je reserveringsplatform; jij behoudt je club, je team en je eigenheid.',
           p2: 'Samen verhogen we de standaard: de beleving van de speler, de uitstraling van je club en de community die het draagt.',
           stat1: 'Actieve locatie', stat2: 'Talen standaard', stat3: 'Opgericht'
         },
@@ -683,19 +692,19 @@
           s1Title: 'We praten',    s1Desc: 'Vertel ons over je club en wat je zoekt. Vrijblijvend.',
           s2Title: 'We ontwerpen', s2Desc: 'We passen de Eleva-identiteit aan op jouw locatie: website, merk en digitale aanwezigheid.',
           s3Title: 'We lanceren',  s3Desc: 'We publiceren je club in het netwerk met reserveringen, community en meertaligheid.',
-          s4Title: 'We groeien',   s4Desc: 'Toernooien, ledenwerving en een merk dat elke dag voor je werkt.'
+          s4Title: 'We groeien',   s4Desc: 'We helpen je op weg met wat in Pizarra al werkt: pools, community en communicatie.'
         },
         benefits: {
           label: 'Voordelen van het netwerk',
           headingHtml: 'Alles wat een club nodig heeft<br>om op te <em>vallen</em>.',
           b1Title: 'Een verzorgde identiteit', b1Desc: 'Eén samenhangende identiteit op web, social en baan die je club meteen onderscheidt.',
           b2Title: 'Eigen meertalige site',  b2Desc: 'Je locatie met een eigen pagina in ES · EN · NL, klaar om elke speler te bereiken.',
-          b3Title: 'Bereik & community',     b3Desc: 'We helpen je je club bekend te maken en losse spelers om te zetten in een community.',
+          b3Title: 'Community',              b3Desc: 'We helpen je losse spelers om te zetten in een community: WhatsApp-groep, pools en communicatie.',
           b4Title: 'Technologie & reserveren', b4Desc: 'We koppelen je online reserveringsplatform en verzorgen de digitale beleving van begin tot eind.',
-          b5Title: 'Toernooien & events',    b5Desc: 'Toernooi- en poolformats klaar om te activeren, met de steun en communicatie van het merk.'
+          b5Title: 'Pools & events',         b5Desc: 'Het poolformat dat in Pizarra al werkt, aangepast aan jouw club.'
         },
         network: {
-          label: 'Het Netwerk', heading: 'Waar het spel al anders voelt.',
+          label: 'Het Netwerk', heading: 'Waar Eleva al gespeeld wordt.',
           sub: 'We begonnen in Pizarra. Jouw club kan de volgende zijn.',
           statusLive: 'Eerste locatie', statusSoon: 'Binnenkort',
           visit: 'Bekijk locatie',
@@ -703,25 +712,25 @@
         },
         cta: {
           label: 'Contact',
-          headingHtml: 'Klaar om je club<br><em>te laten stijgen?</em>',
+          headingHtml: 'Klaar om je club<br><em>naar een hoger niveau te tillen?</em>',
           text: 'Vertel ons over je project. We reageren zo snel mogelijk via WhatsApp.',
           ctaPrimary: 'Chat via WhatsApp', ctaSecondary: 'Bekijk een locatie'
         },
         footer: {
-          claim: 'Padel naar een hoger niveau, één club per keer.',
+          claim: 'Padel naar een hoger niveau, club voor club.',
           sedeLabel: 'Eerste locatie', navTitle: 'Ontdek'
         },
         fab: { tooltip: 'Mijn club aanmelden', ariaLabel: 'Mijn club aanmelden bij Eleva Pádel' }
       },
       wa: {
-        academia: 'Hallo, ik heb interesse in de beschikbare plaatsen bij Eleva Padel Club Academy.',
-        prueba:   'Hallo, ik wil graag informatie over de lessen van Eleva Padel Club Academy: groepen, niveaus en tijden.',
+        academia: 'Hallo, ik heb interesse in de beschikbare plaatsen bij de academie van Eleva Padel Club.',
+        prueba:   'Hallo, ik wil graag informatie over de lessen van de academie van Eleva Padel Club: groepen, niveaus en tijden.',
         pool:     'Hallo! Kunnen jullie me de tijden van de volgende pool bij Eleva Padel Club doorgeven en of er nog plaatsen zijn? 🎾',
-        contact:  'Hallo, ik heb interesse in informatie over Eleva Padel Club Academy.',
+        contact:  'Hallo, ik heb interesse in informatie over de academie van Eleva Padel Club.',
         event:    'Hallo, ik wil graag informatie over het boeken van Eleva Padel Club voor een privé-evenement.',
       },
       /* Eenheden en labels die de render uit het manifest injecteert */
-      unit:   { month: '€/maand', pp: '€/pp' },
+      unit:   { month: '€/maand', pp: '€ p.p.' },
       label:  { court: 'Baan' },
       /* Labels voor de aangepaste cursor (data-cursor) */
       cursor: {

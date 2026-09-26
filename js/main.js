@@ -90,10 +90,15 @@
     return (d && d.i18n) || null;
   }
 
+  /* Solo propiedades PROPIAS: con un valor manipulado en localStorage
+     ('toString', '__proto__'…) g[l] devolvía algo del prototipo y la
+     página acababa con <html lang="toString">. */
+  function hasOwn(o, k) { return !!o && Object.prototype.hasOwnProperty.call(o, k); }
   function hasLang(l) {
+    if (typeof l !== 'string') return false;
     var g = window.__ELEVA_I18N__ || {};
     var c = clubI18n();
-    return !!(g[l] || (c && c[l]));
+    return !!((hasOwn(g, l) && g[l]) || (hasOwn(c, l) && c[l]));
   }
 
   /* tr(clave [, idioma] [, fallback]) */
@@ -208,7 +213,17 @@
     var rx = mx, ry = my;
     var rafId = null;
 
+    /* Oculto hasta el primer movimiento real: antes el anillo aparecía
+       quieto en el centro de la pantalla hasta que se movía el ratón. */
+    cursor.style.opacity = '0';
+    var cursorShown = false;
+
     document.addEventListener('mousemove', function (e) {
+      if (!cursorShown) {
+        cursorShown = true;
+        rx = e.clientX; ry = e.clientY;          /* sin arrastre desde el centro */
+        cursor.style.opacity = '';
+      }
       mx = e.clientX;
       my = e.clientY;
       dot.style.left = mx + 'px';
@@ -323,6 +338,7 @@
         if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
         overlay.classList.remove('is-open');
         burger.classList.remove('is-open');
+        nav.classList.remove('nav-menu-open');
         burger.setAttribute('aria-expanded', 'false');
         burger.setAttribute('aria-label', burgerLabel('nav.menuOpen', 'Abrir menú'));
         document.body.style.overflow = '';
@@ -350,6 +366,7 @@
           if (firstFocusable) firstFocusable.focus();
         });
         burger.classList.add('is-open');
+        nav.classList.add('nav-menu-open');     /* barra opaca sobre el menú */
         burger.setAttribute('aria-expanded', 'true');
         burger.setAttribute('aria-label', burgerLabel('nav.menuClose', 'Cerrar menú'));
         document.body.style.overflow = 'hidden';
@@ -397,7 +414,40 @@
           closeOverlay();
         }
       });
+
+      /* Cierra al pasar a escritorio (girar la tablet, agrandar la ventana):
+         el burger desaparece por encima de 1024px y el menú se quedaba
+         abierto a pantalla completa sin ningún botón para cerrarlo. */
+      var burgerMQ = window.matchMedia('(max-width: 1024px)');
+      var onBurgerMQ = function (e) {
+        if (!e.matches && overlay.classList.contains('is-open')) closeOverlay();
+      };
+      if (burgerMQ.addEventListener) burgerMQ.addEventListener('change', onBurgerMQ);
+      else if (burgerMQ.addListener) burgerMQ.addListener(onBurgerMQ);
     }
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+     FAB — oculto mientras se ve el hero (que ya tiene el mismo CTA) y
+     cuando el pie está en pantalla: ahí tapaba botones del hero, el
+     enlace legal y los datos de contacto.
+  ──────────────────────────────────────────────────────────────── */
+  function initFab() {
+    var fab = $('.fab-triangle');
+    if (!fab || !('IntersectionObserver' in window)) return;
+    var zones = [document.getElementById('hero'), document.getElementById('contacto'),
+                 document.querySelector('footer')].filter(Boolean);
+    if (!zones.length) return;
+    var visible = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { visible[en.target.id || en.target.tagName] = en.isIntersecting; });
+      var hide = Object.keys(visible).some(function (k) { return visible[k]; });
+      fab.classList.toggle('is-hidden', hide);
+      /* Oculto = fuera del orden de tabulación */
+      var a = fab.querySelector('a');
+      if (a) { if (hide) a.setAttribute('tabindex', '-1'); else a.removeAttribute('tabindex'); }
+    }, { threshold: 0 });
+    zones.forEach(function (z) { io.observe(z); });
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -486,13 +536,16 @@
 
     killCtx(servicesCtx);
     var ctx = servicesCtx = newCtx();
+    /* Modo en la sección: .is-pinned (escritorio con GSAP) o .is-carousel
+       (móvil/tablet táctil). Sin ninguna de las dos —sin JS, sin GSAP o con
+       prefers-reduced-motion— el CSS apila las tarjetas en vertical y las
+       cuatro se leen con el scroll normal (antes solo se veía la primera). */
+    var section = sticky.closest('.section-services');
     ctx.cleanup.push(function () {
       sticky.style.position  = '';
       sticky.style.minHeight = '';
-      track.style.overflowX  = '';
-      track.style.scrollSnapType = '';
       clearTransform(track);
-      cards.forEach(function (c) { c.style.scrollSnapAlign = ''; });
+      if (section) section.classList.remove('is-pinned', 'is-carousel');
       var dots = document.querySelector('.services-dots');
       if (dots && dots.parentNode) dots.parentNode.removeChild(dots);
     });
@@ -504,6 +557,7 @@
                  (isTouch() && window.matchMedia('(max-width: 1024px)').matches);
 
     if (mobile) {
+      if (section) section.classList.add('is-carousel');
       /* Crear dots de navegación */
       var dotsWrap = document.createElement('div');
       dotsWrap.className = 'services-dots';
@@ -538,14 +592,12 @@
        GSAP: el pin + scrub horizontal es movimiento disparado por scroll y
        no debe ejecutarse (antes se ignoraba la preferencia). */
     if (!window.gsap || !window.ScrollTrigger || prefersReducedMotion()) {
-      /* Fallback sin GSAP: CSS snap horizontal */
-      track.style.overflowX = 'scroll';
-      track.style.scrollSnapType = 'x mandatory';
-      cards.forEach(function (c) { c.style.scrollSnapAlign = 'start'; });
+      /* Fallback: tarjetas apiladas (CSS por defecto, sin clase de modo) */
       cards.forEach(function (c) { c.classList.add('icon-drawn'); });
       return;
     }
 
+    if (section) section.classList.add('is-pinned');
     gsap.registerPlugin(ScrollTrigger);
 
     /* GSAP necesita position static aquí — él gestiona el fixed */
@@ -730,16 +782,19 @@
 
     grid.innerHTML = data.team.map(function (m, i) {
       var delay     = i > 0 ? ' data-reveal-delay="' + (i * 120) + '"' : '';
-      var photoStyle = m.photo
-        ? ' style="' + attr('background-image:url("' + cssUrl(m.photo) + '");background-size:cover;background-position:top center;') + '"'
-        : '';
+      /* Con foto: fondo perezoso (data-bg, ver initLazyBackgrounds).
+         Sin foto: monograma con la inicial — el rectángulo vacío de antes
+         parecía una imagen que no había cargado. */
+      var initial = String(m.name || '').trim().charAt(0).toUpperCase();
+      var photo = m.photo
+        ? '<div class="team-photo" aria-hidden="true" data-bg="' + attr(m.photo) + '"></div>'
+        : '<div class="team-photo team-photo--empty" aria-hidden="true">' +
+            '<span class="team-photo-initial">' + text(initial) + '</span></div>';
       var roleAttr = m.roleKey ? ' data-i18n="' + attr(m.roleKey) + '"' : '';
       var bioAttr  = m.bioKey  ? ' data-i18n="' + attr(m.bioKey)  + '"' : '';
       return '' +
         '<div class="team-card" data-reveal' + delay + '>' +
-          '<div class="team-photo-wrap">' +
-            '<div class="team-photo" aria-hidden="true"' + photoStyle + '></div>' +
-          '</div>' +
+          '<div class="team-photo-wrap">' + photo + '</div>' +
           '<div class="team-info">' +
             '<h3 class="team-name">' + text(m.name) + '</h3>' +
             '<span class="team-role"' + roleAttr + '>' + text(m.role) + '</span>' +
@@ -850,6 +905,14 @@
       $$(selector).forEach(function (a) { a.setAttribute('href', url); });
     }
     setAll('a[href*="vola.plus"]', b.volaReservas);
+    /* Enlaces cuyo TEXTO es la propia URL de reservas (ficha del club): el
+       href cambiaba por sede pero el texto seguía mostrando la de Pizarra */
+    if (b.volaReservas) {
+      $$('a[href]').forEach(function (a) {
+        if (a.children.length || a.getAttribute('href') !== b.volaReservas) return;
+        if (/^\s*vola\.plus\//.test(a.textContent)) a.textContent = b.volaReservas.replace(/^https?:\/\//, '');
+      });
+    }
     setAll('a[href*="chat.whatsapp.com"]', b.whatsappCommunity);
     setAll('a[href*="maps.app.goo.gl"], a[href*="google.com/maps"], a[href*="maps.google"]', b.mapsUrl);
 
@@ -900,122 +963,62 @@
     initGalleryLazy(data);
   }
 
-  /* ── MAPA (Leaflet, footer) ──────────────────────────────────────
-     Leaflet (≈160 KB entre JS y CSS) ya NO se carga en el HTML: el mapa
-     vive en el pie, así que se pide solo cuando se acerca a la pantalla.
-     Misma convención de rutas que el resto: prefijo '../' desde la página
-     del club, que funciona con y sin barra final. Al ser mismo origen, la
-     CSP ('self') permite inyectarlo. */
-  var LIB_BASE  = '../lib/';
-  var LEAFLET_V = '20260926';   /* subir solo si se actualiza Leaflet */
-
-  function ensureLeaflet(cb) {
-    if (typeof L !== 'undefined') { cb(); return; }
-    if (ensureLeaflet.pending) { ensureLeaflet.pending.push(cb); return; }
-    ensureLeaflet.pending = [cb];
-
-    var css = document.createElement('link');
-    css.rel = 'stylesheet';
-    css.href = LIB_BASE + 'leaflet.min.css?v=' + LEAFLET_V;
-    document.head.appendChild(css);
-
-    var js = document.createElement('script');
-    js.src = LIB_BASE + 'leaflet.min.js?v=' + LEAFLET_V;
-    js.async = true;
-    js.onload = function () {
-      var queue = ensureLeaflet.pending || [];
-      ensureLeaflet.pending = null;
-      queue.forEach(function (fn) { safe(fn, 'leaflet-listo'); });
-    };
-    js.onerror = function () {
-      ensureLeaflet.pending = null;
-      console.warn('[Eleva] Leaflet no se pudo cargar: se mantiene el enlace de "cómo llegar".');
-    };
-    document.head.appendChild(js);
-  }
-
+  /* ── MAPA (footer) ───────────────────────────────────────────────
+     Plano ESTÁTICO autoalojado (brand.mapImage, un SVG generado una vez con
+     clubs/_plantilla/generar-mapa.js a partir de datos de OpenStreetMap).
+     Sustituye a Leaflet + teselas de CARTO: CARTO empezó a exigir clave y
+     cada tesela salía como "API KEY REQUIRED". Ahora no hay terceros en
+     ejecución, ni librería de 160 KB, ni teselas que puedan caerse.
+     El plano entero es un enlace a Google Maps (brand.mapsUrl).
+     Atribución obligatoria por la licencia ODbL de OpenStreetMap. */
   function initMap(brand) {
     var mapEl = document.getElementById('footer-map');
-    if (!mapEl) return;
-    /* Ya montado (p. ej. tras un cambio de modo móvil/escritorio): montar
-       dos veces sobre el mismo nodo hace que Leaflet lance
-       "Map container is already initialized" y perderíamos el mapa. */
-    if (mapEl.classList.contains('leaflet-container')) return;
-
-    /* Coordenadas: comprobación NUMÉRICA real. Con `geo.lat || …` un club
-       en lat:0 (ecuador) caía al valor por defecto y mostraba Pizarra. */
-    var geo = brand.geo || {};
-    var lat = finiteNum(geo.lat); if (lat === null) lat = finiteNum(brand.mapLat);
-    var lng = finiteNum(geo.lng); if (lng === null) lng = finiteNum(brand.mapLng);
-    if (lat === null || lng === null) {
-      warnOnce('initMap: brand.geo.lat/lng no son números finitos — se mantiene el enlace de "cómo llegar" en lugar de pintar un mapa equivocado.');
+    if (!mapEl || mapEl.getAttribute('data-map') === 'ready') return;
+    if (!brand.mapImage) {
+      warnOnce('initMap: el manifest no define brand.mapImage — se mantiene el enlace de "cómo llegar".');
       return;
     }
-
-    /* Conservar el enlace de fallback a Google Maps por si Leaflet falla */
-    var mapFallback = mapEl.innerHTML;
-
-    function buildMap() {
-      if (typeof L === 'undefined' || mapEl.classList.contains('leaflet-container')) return;
-      try {
-      mapEl.innerHTML = '';
-      var leafMap = L.map(mapEl, {
-        center: [lat, lng],
-        zoom: 16,
-        zoomControl: false,
-        scrollWheelZoom: false,
-        dragging: false,
-        attributionControl: true      /* obligatorio por licencia OSM/CARTO */
-      });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        subdomains: 'abcd',
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-      }).addTo(leafMap);
-      if (leafMap.attributionControl && leafMap.attributionControl.setPrefix) {
-        leafMap.attributionControl.setPrefix('');   /* sin la bandera de Leaflet: compacto */
-      }
-      /* Estilo discreto sin tocar el CSS (propiedad de otro agente): se
-         aplica en línea sobre el control que Leaflet acaba de crear. */
-      var attribEl = mapEl.querySelector('.leaflet-control-attribution');
-      if (attribEl) {
-        attribEl.style.cssText =
-          'background:rgba(0,0,0,.45);color:rgba(255,255,255,.5);' +
-          'font-size:9px;line-height:1.5;padding:0 4px;border-radius:2px 0 0 0;';
-        $$('a', attribEl).forEach(function (a) { a.style.color = 'rgba(255,255,255,.65)'; });
-      }
-      var dot = L.divIcon({
-        html: '<div style="width:12px;height:12px;border-radius:50%;background:#C4A882;box-shadow:0 0 0 3px rgba(196,168,130,.25)"></div>',
-        className: '',
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
-      L.marker([lat, lng], { icon: dot }).addTo(leafMap);
-      } catch (mapErr) {
-        /* Restaurar el enlace de "cómo llegar" si el mapa no pudo montarse */
-        mapEl.innerHTML = mapFallback;
-        console.warn('[Eleva] initMap: Leaflet no pudo montarse, se restaura el enlace de Google Maps:', mapErr);
-      }
-    }
-
-    /* El mapa está en el pie: se pide Leaflet cuando se acerca a la pantalla */
-    if ('IntersectionObserver' in window) {
-      var mapIO = new IntersectionObserver(function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-          if (entries[i].isIntersecting) {
-            mapIO.disconnect();
-            ensureLeaflet(buildMap);
-            return;
-          }
-        }
-      }, { rootMargin: '400px' });
-      mapIO.observe(mapEl);
-    } else {
-      ensureLeaflet(buildMap);
-    }
+    var href = brand.mapsUrl || (mapEl.querySelector('a') || {}).href || '#';
+    mapEl.innerHTML =
+      '<a class="footer-map-link" href="' + attr(href) + '" target="_blank" rel="noopener noreferrer" ' +
+         'data-cursor="ver" data-i18n-arialabel="footer.mapAria" aria-label="' +
+         attr(tr('footer.mapAria', null, 'Ver la ubicación del club en Google Maps')) + '">' +
+        '<img class="footer-map-img" src="' + attr(brand.mapImage) + '" alt="" ' +
+             'width="1200" height="480" loading="lazy" decoding="async">' +
+      '</a>' +
+      '<span class="footer-map-attrib">© <a href="https://www.openstreetmap.org/copyright" ' +
+        'target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors</span>';
+    mapEl.setAttribute('data-map', 'ready');
   }
 
-  /* ── GALERÍA — carga PEREZOSA (antes: 16 imágenes / ~2.1 MB con
+  /* ── FONDOS PEREZOSOS — [data-bg] (fotos del equipo, collage del club)
+     Un background CSS no admite loading="lazy": se asigna cuando el
+     elemento se acerca a la pantalla (antes se descargaban ~270 KB de
+     fotos fuera de pantalla en la carga inicial). */
+  var bgIO = null;
+  function applyBg(el) {
+    var src = el.getAttribute('data-bg');
+    if (!src) return;
+    el.removeAttribute('data-bg');
+    el.style.backgroundImage = 'url("' + cssUrl(src) + '")';
+  }
+  function initLazyBackgrounds() {
+    var els = $$('[data-bg]');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) { els.forEach(applyBg); return; }
+    if (!bgIO) {
+      bgIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          bgIO.unobserve(en.target);
+          applyBg(en.target);
+        });
+      }, { rootMargin: '600px 0px' });
+    }
+    els.forEach(function (el) { bgIO.observe(el); });
+  }
+
+  /* ── GALERÍA — carga PEREZOSA (antes: todas las fotos con
         new Image() en la carga, antes de que nada fuera visible) ─── */
   function initGalleryLazy(data) {
     if (!data || !Array.isArray(data.gallery) || !data.gallery.length) return;
@@ -1059,7 +1062,27 @@
     els.forEach(function (el) { io.observe(el); });
   }
 
-  /* ── HORARIO — brand.schedule del manifest gana sobre la traducción ── */
+  /* ── GALERÍA — botón pausar/reanudar (WCAG 2.2.2: contenido que se
+        mueve solo durante más de 5 s necesita un control para pararlo) ── */
+  function initGalleryToggle() {
+    var btn   = $('.gallery-toggle');
+    var lanes = $('.gallery-lanes');
+    if (!btn || !lanes) return;
+    function sync() {
+      var paused = lanes.classList.contains('is-paused');
+      btn.setAttribute('aria-pressed', String(paused));
+      btn.setAttribute('data-i18n', paused ? 'gallery.play' : 'gallery.pause');
+      btn.textContent = tr(paused ? 'gallery.play' : 'gallery.pause', null, paused ? 'Reanudar' : 'Pausar');
+    }
+    btn.addEventListener('click', function () {
+      lanes.classList.toggle('is-paused');
+      sync();
+    });
+    sync();
+  }
+
+  /* ── HORARIO — orden: i18n del club (club.scheduleValue en el idioma
+        activo) → brand.schedule (sin traducir) → traducción global ── */
   function renderSchedule() {
     var el = document.getElementById('info-schedule');
     if (!el) return;
@@ -1088,8 +1111,44 @@
     var form = document.getElementById('contact-form');
     if (!form) return;
 
+    /* El botón llega disabled en el HTML (sin JS no debe enviarse nada) */
+    var submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = false;
+
+    /* Validación con mensajes en el IDIOMA DE LA PÁGINA (las burbujas
+       nativas salen en el idioma del navegador) y sin aceptar campos con
+       solo espacios, que antes pasaban el `required` sin ningún aviso. */
+    var PHONE_OK = /^[0-9 +()\-]{6,20}$/;
+    function fieldError(el) {
+      var v = (el.value || '').trim();
+      if (el.required && !v) return tr(el.tagName === 'SELECT' ? 'contact.errLevel' : 'contact.errRequired', null, 'Rellena este campo.');
+      if (el.name === 'telefono' && v && (!PHONE_OK.test(v) || v.replace(/\D/g, '').length < 6)) {
+        return tr('contact.errPhone', null, 'Escribe un teléfono válido.');
+      }
+      return '';
+    }
+    $$('input, select, textarea', form).forEach(function (el) {
+      el.addEventListener('input',  function () { el.setCustomValidity(''); });
+      el.addEventListener('change', function () { el.setCustomValidity(''); });
+      el.addEventListener('invalid', function () {
+        var msg = fieldError(el);
+        if (msg) el.setCustomValidity(msg);
+      });
+    });
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      /* Primer campo con error: mensaje traducido + foco */
+      var fields = $$('#f-nombre, #f-telefono, #f-nivel', form);
+      for (var f = 0; f < fields.length; f++) {
+        var err = fieldError(fields[f]);
+        if (err) {
+          fields[f].setCustomValidity(err);
+          if (fields[f].reportValidity) fields[f].reportValidity(); else fields[f].focus();
+          return;
+        }
+      }
 
       var data  = window.__ELEVA__;
       var phone = ((data && data.brand && data.brand.phone) || '').toString().replace(/\D/g, '');
@@ -1119,47 +1178,41 @@
       var byKey    = (token && LEVEL_KEYS[token]) ? tr(LEVEL_KEYS[token]) : undefined;
       var nivelTxt = (byKey !== undefined ? byKey : (opt && opt.textContent) || nivel).toString().trim();
 
-      /* Foco al primer campo vacío obligatorio */
-      if (!nombre || !telefono || !nivel) {
-        var requiredIds = ['f-nombre', 'f-telefono', 'f-nivel'];
-        for (var i = 0; i < requiredIds.length; i++) {
-          var fld = document.getElementById(requiredIds[i]);
-          if (fld && !fld.value.trim()) { fld.focus(); break; }
-        }
-        return;
-      }
-
       /* Validar que el teléfono del club esté configurado antes de abrir WhatsApp.
          La regex se parametriza desde el manifest (brand.phoneRegex) para
          soportar clubes internacionales; fallback genérico E.164 si falta. */
       var phoneRegex = phoneRegexOf((data && data.brand)) || /^\d{6,15}$/;
       if (!phone || !phoneRegex.test(phone)) {
         console.error('[Eleva] Teléfono no configurado/ inválido en manifest.js');
+        /* El visitante también lo ve: antes el botón no hacía nada */
+        var notice = document.getElementById('club-data-notice');
+        if (notice) { notice.hidden = false; notice.scrollIntoView({ block: 'center' }); }
         return;
       }
 
-      /* Etiquetas LIMPIAS para el mensaje: los <label> del formulario dicen
-         "Mensaje (opcional)" y eso acababa literalmente en el WhatsApp.
-         Si el agente de contenido añade las claves contact.waLabel*, se usan;
-         si no, se limpia el paréntesis final de la etiqueta del formulario. */
-      function cleanLabel(waKey, formKey, fallback) {
-        var v = tr(waKey);
-        if (v === undefined) v = tr(formKey, null, fallback);
-        return String(v).replace(/\s*[（(][^)）]*[)）]\s*$/, '').trim();
-      }
-
+      /* Etiquetas del mensaje: las del formulario (contact.labelMessage es
+         "Mensaje"; el "(opcional)" vive en su propia clave) */
       var msg =
         tr('wa.contact', null, 'Hola, me interesa información sobre la academia de Eleva Padel Club.') + '\n\n' +
-        cleanLabel('contact.waLabelName',  'contact.labelName',  'Nombre')   + ': ' + nombre   + '\n' +
-        cleanLabel('contact.waLabelPhone', 'contact.labelPhone', 'Teléfono') + ': ' + telefono + '\n' +
-        cleanLabel('contact.waLabelLevel', 'contact.labelLevel', 'Nivel')    + ': ' + nivelTxt;
+        tr('contact.labelName',  null, 'Nombre')   + ': ' + nombre   + '\n' +
+        tr('contact.labelPhone', null, 'Teléfono') + ': ' + telefono + '\n' +
+        tr('contact.labelLevel', null, 'Nivel')    + ': ' + nivelTxt;
       if (mensaje) {
-        msg += '\n' + cleanLabel('contact.waLabelMessage', 'contact.labelMessage', 'Mensaje') + ': ' + mensaje;
+        msg += '\n' + tr('contact.labelMessage', null, 'Mensaje') + ': ' + mensaje;
       }
 
+      /* window.open con 'noopener' devuelve SIEMPRE null (no sirve para
+         detectar un bloqueo) y no lanza: se abre la pestaña con un enlace
+         temporal con rel=noopener, que los navegadores no bloquean al venir
+         de un clic del usuario. */
       var url = waURL(phone, msg);
-      try { window.open(url, '_blank', 'noopener'); }
-      catch (ex) { window.location.href = url; }
+      var link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
     });
   }
 
@@ -1335,8 +1388,9 @@
     var word = tr('label.court', null, 'Pista');
     cells.forEach(function (el) {
       var n = el.getAttribute('data-court') || '';
+      /* Sin aria-label: no está permitido en un <span> genérico y el
+         texto visible ("Pista 01") ya es lo que lee el lector de pantalla. */
       el.innerHTML = text(word) + ' <em>' + text(n) + '</em>';
-      el.setAttribute('aria-label', word + ' ' + n);
     });
   }
 
@@ -1348,7 +1402,9 @@
     }
     currentLang = lang;
 
-    setStoredLang(lang);                       /* nunca lanza (ventana privada) */
+    /* El idioma NO se guarda aquí: solo cuando el usuario lo elige con un
+       .lang-btn (initI18n). Así localStorage solo contiene una preferencia
+       expresada por el usuario, como describe privacidad.html. */
     document.documentElement.setAttribute('lang', lang);
 
     /* Texto plano */
@@ -1400,7 +1456,7 @@
       var btnPool   = document.getElementById('btn-pool');
       var btnEvent  = document.getElementById('btn-event');
       if (btnAcad)   btnAcad.href   = waURL(phone, tr('wa.academia', lang, 'Hola, me interesa consultar plazas de la academia de Eleva Padel Club.'));
-      if (btnPrueba) btnPrueba.href = waURL(phone, tr('wa.prueba',   lang, 'Hola, me interesa una sesión de prueba en la academia de Eleva Padel Club.'));
+      if (btnPrueba) btnPrueba.href = waURL(phone, tr('wa.prueba',   lang, 'Hola, me gustaría información sobre las clases de la academia de Eleva Padel Club.'));
       if (btnPool)   btnPool.href   = waURL(phone, tr('wa.pool',     lang, '¡Hola! Me gustaría apuntarme al próximo pool de Eleva Padel Club 🎾'));
       if (btnEvent)  btnEvent.href  = waURL(phone, tr('wa.event',    lang, 'Hola, me gustaría información para reservar Eleva Padel Club para un evento privado.'));
     }
@@ -1430,7 +1486,10 @@
 
     $$('.lang-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        applyLang(btn.getAttribute('data-lang'));
+        var l = btn.getAttribute('data-lang');
+        if (!hasLang(l)) return;
+        applyLang(l);
+        setStoredLang(l);                      /* nunca lanza (ventana privada) */
       });
     });
   }
@@ -1626,7 +1685,7 @@
 
     /* Un único tramo 1:1 (sin "hold" final): el recorrido es igual de suave
        al principio (primera insignia) que al final (Rocha), sin zona muerta. */
-    ctx.tweens.push(gsap.to(track, {
+    var reelTween = gsap.to(track, {
       x: function () { return -getDistance(); },
       ease: 'none',
       scrollTrigger: {
@@ -1639,8 +1698,24 @@
         invalidateOnRefresh: true,
         onUpdate: applyFocus
       }
-    }));
+    });
+    ctx.tweens.push(reelTween);
     applyFocus();
+
+    /* Teclado: al tabular a una insignia, desplazar el scroll hasta el punto
+       del pin en que queda CENTRADA. Antes el foco caía en medallones casi
+       fuera de pantalla (10–14 % visibles), además desenfocados. */
+    cards.forEach(function (card) {
+      card.addEventListener('focusin', function () {
+        var st = reelTween.scrollTrigger;
+        if (!st) return;
+        var vw = document.documentElement.clientWidth;
+        var target = Math.min(getDistance(), Math.max(0, card.offsetLeft + card.offsetWidth / 2 - vw / 2));
+        var dist = getDistance() || 1;
+        var y = st.start + (st.end - st.start) * (target / dist);
+        window.scrollTo(0, Math.round(y));
+      }, ctx.opts);
+    });
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -1685,9 +1760,7 @@
       var statusEl = isLive
         ? '<span class="home-club-status" data-i18n="home.network.statusLive">Primera sede</span>'
         : '<span class="home-club-status home-club-status--soon" data-i18n="home.network.statusSoon">Próximamente</span>';
-      var media = c.img
-        ? ' style="' + attr('background-image:url("' + cssUrl(c.img) + '")') + '"'
-        : '';
+      var media = c.img ? ' data-bg="' + attr(c.img) + '"' : '';   /* perezoso: initLazyBackgrounds */
       var linkTxt = isLive
         ? '<span class="home-club-link"><span data-i18n="home.network.visit">Ver sede</span> →</span>'
         : '';
@@ -1790,7 +1863,8 @@
         el.dataset.counted = '1';
         var target = parseInt(el.getAttribute('data-count'), 10) || 0;
         var raw    = el.getAttribute('data-raw') === '1';   /* años: sin separador */
-        if (reduce) { el.textContent = raw ? String(target) : target.toLocaleString('es-ES'); return; }
+        /* Los años (data-raw) no se animan: contar de 0 a 2026 quedaba raro */
+        if (reduce || raw) { el.textContent = raw ? String(target) : target.toLocaleString('es-ES'); return; }
         var dur = 1200, start = null;
         var step = function (ts) {
           if (!start) start = ts;
@@ -1817,13 +1891,32 @@
      de un club quedaba vacía con la consola limpia. Un único aviso claro.
   ──────────────────────────────────────────────────────────────── */
   function checkManifest() {
-    if (window.__ELEVA__) return;
+    if (window.__ELEVA__) { checkManifestSlug(); return; }
     var needed = ['#pools-track', '.team-grid', '.sponsors-list', '.academy-rates-grid', '#footer-map'];
     var found  = needed.filter(function (sel) { return !!$(sel); });
     if (!found.length) return;          /* la landing no espera manifest */
     console.warn('[Eleva] manifest ausente: window.__ELEVA__ no está definido, pero esta página tiene contenedores de club (' +
       found.join(', ') + '). Pools, equipo, patrocinadores, tarifas y mapa quedarán vacíos. ' +
       'Comprueba que el <script src="…/manifest.js"> carga (ruta correcta y sin 404) antes de js/main.js.');
+    /* Aviso VISIBLE para el visitante (el mismo que ve quien navega sin JS):
+       sin él, la página salía sin tarifas ni pools y sin ninguna explicación. */
+    var notice = document.getElementById('club-data-notice');
+    if (notice) notice.hidden = false;
+  }
+
+  /* Manifest de OTRA sede: al copiar /pizarra para crear /marbella es fácil
+     dejar <script src="../pizarra/manifest.js">. La página se pinta entera
+     con los datos de Pizarra y sin ningún error: se avisa en consola. */
+  function checkManifestSlug() {
+    var tag = $('script[src*="manifest.js"]');
+    if (!tag) return;
+    var m = (tag.getAttribute('src') || '').match(/([^\/.]+)\/manifest\.js/);
+    var parts = location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
+    var pageSlug = parts[parts.length - 1];
+    if (m && pageSlug && m[1] !== pageSlug) {
+      console.warn('[Eleva] Esta página es /' + pageSlug + ' pero carga el manifest de "' + m[1] +
+        '" (' + tag.getAttribute('src') + '). Cambia el <script> a ../' + pageSlug + '/manifest.js.');
+    }
   }
 
   /* ────────────────────────────────────────────────────────────────
@@ -1880,6 +1973,7 @@
     safe(initSplash,        'splash');
     safe(initCursor,        'cursor');
     safe(initNav,           'nav');
+    safe(initFab,           'fab');
     safe(initHero,          'hero');
     safe(initAurora,        'aurora');
     safe(initCollage,       'collage');
@@ -1894,7 +1988,9 @@
     safe(initReveals,       'reveals');       /* observa los [data-reveal] nuevos */
     safe(initServices,      'services');
     safe(initManifest,      'manifest');
+    safe(initLazyBackgrounds, 'lazyBackgrounds'); /* equipo + collage: tras renderTeam */
     safe(initContact,       'contact');
+    safe(initGalleryToggle, 'galleryToggle');
     safe(initTeamCards,     'teamCards');
     safe(initPools,         'pools');
     safe(initLandingHero,   'landingHero');    /* landing: rotador hero + parallax constelación */

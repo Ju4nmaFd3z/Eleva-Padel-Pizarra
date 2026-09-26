@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eleva Padel Club · Pizarra, Málaga</title>
+  <title data-i18n="meta.title">Eleva Padel Club · Pizarra, Málaga</title>
   <meta name="description" content="Eleva Padel Club: 4 pistas outdoor con luz LED, academia, pools por categoría y zona chill-out en Pizarra, Málaga. Reserva online en Vola Plus.">
   <meta name="theme-color" content="#1A1A1A">
   <meta name="color-scheme" content="dark">
@@ -82,10 +82,12 @@
   <script>try{if(sessionStorage.getItem('eleva-splash-seen')==='1'){document.documentElement.className+=' splash-seen'}}catch(e){}</script>
   <!-- El hero es un background CSS: se precarga para que no espere al CSS -->
   <link rel="preload" as="image" href="../assets/img/hero.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="../css/fonts.css?v=20260926">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
+  <link rel="stylesheet" href="../css/fonts.css?v=20260927">
+  <link rel="icon" href="../favicon.ico" sizes="48x48">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 
-  <link rel="stylesheet" href="../css/main.css?v=20260926">
+  <link rel="stylesheet" href="../css/main.css?v=20260927">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
   <noscript>
@@ -109,7 +111,7 @@
 <!-- ════════════════════════════════════════════════════════════
      SPLASH
 ════════════════════════════════════════════════════════════ -->
-<div id="splash" role="status" aria-label="Cargando Eleva Padel Club">
+<div id="splash" role="status" aria-label="Cargando Eleva Padel Club" data-i18n-arialabel="splash.label">
   <div class="splash-inner">
     <div class="splash-triangle" aria-hidden="true">
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -155,7 +157,7 @@
   </a>
 
   <ul class="nav-links" role="list">
-    <li><a href="../index.html" class="nav-back" data-cursor="volver" aria-label="Volver a Eleva Pádel"><span data-i18n="nav.network">Volver a Eleva</span></a></li>
+    <li><a href="../index.html" class="nav-back" data-cursor="volver"><span data-i18n="nav.network">Volver a Eleva</span></a></li>
     <li><a href="#club"      data-num="01" data-cursor="ver"   data-i18n="nav.club">El Club</a></li>
     <li><a href="#servicios" data-num="02" data-cursor="ver"   data-i18n="nav.services">Servicios</a></li>
     <li><a href="#academia"  data-num="03" data-cursor="ver"   data-i18n="nav.academy">Academia</a></li>
@@ -225,7 +227,7 @@
   <div class="hero-overlay" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <p class="hero-kicker" data-reveal data-i18n="hero.kicker">PADEL CLUB · 4 PISTAS OUTDOOR · PIZARRA · MÁLAGA</p>
+    <p class="hero-kicker" data-reveal data-i18n="hero.kicker">PADEL CLUB&nbsp;· 4 PISTAS OUTDOOR&nbsp;· PIZARRA&nbsp;· MÁLAGA</p>
     <h1 class="hero-title" data-reveal data-reveal-delay="100">
       <span class="hero-title-line">Eleva</span>
       <span class="hero-title-line hero-title-offset">Padel Club.</span>
@@ -250,6 +252,14 @@
     <div class="hero-scroll-line"></div>
   </div>
 </section>
+
+<!-- Aviso visible si faltan los datos del club: sin JS (noscript) o si el
+     manifest no carga (main.js quita el hidden). Antes la página salía sin
+     tarifas, pools ni equipo y sin ninguna explicación. -->
+<noscript>
+  <p class="club-data-notice">Para ver las tarifas, los pools y el equipo necesitas JavaScript. También puedes escribirnos por WhatsApp al <a href="https://wa.me/34659143103">+34 659 14 31 03</a>.</p>
+</noscript>
+<p class="club-data-notice" id="club-data-notice" role="status" hidden data-i18n-html="contact.dataNoticeHtml">No se han podido cargar las tarifas, los pools ni el equipo. Escríbenos por WhatsApp y te informamos.</p>
 
 <!-- ════════════════════════════════════════════════════════════
      MARQUEE STRIP
@@ -296,20 +306,20 @@
     <!-- Collage de fotos -->
     <div class="club-collage" aria-hidden="true">
       <div class="club-photo club-photo-1">
-        <div class="club-photo-inner"></div>
+        <div class="club-photo-inner" data-bg="../assets/img/club-01.jpg"></div>
         <div class="club-tape">EST. 2026</div>
       </div>
       <div class="club-photo club-photo-2">
-        <div class="club-photo-inner"></div>
+        <div class="club-photo-inner" data-bg="../assets/img/club-02.jpg"></div>
       </div>
       <div class="club-photo club-photo-3">
-        <div class="club-photo-inner"></div>
+        <div class="club-photo-inner" data-bg="../assets/img/club-03.jpg"></div>
       </div>
     </div>
 
     <!-- Contenido -->
     <div class="club-content">
-      <span class="section-watermark" aria-hidden="true">01</span>
+      <span class="section-watermark" aria-hidden="true" data-n="01"></span>
       <span class="section-label" data-i18n="club.label">El Club</span>
 
       <div class="club-aside" aria-hidden="true" data-i18n="club.aside">EST · 2026 · PIZARRA · MÁLAGA</div>
@@ -365,10 +375,10 @@
   <h2 id="servicios-heading" class="sr-only" data-i18n="services.srHeading">Servicios de Eleva Padel Club</h2>
 
   <div class="services-sticky" id="services-sticky">
-    <div class="services-track" id="services-track" role="list">
+    <div class="services-track" id="services-track">
 
       <!-- CARD 1: Pistas (fondo negro) -->
-      <article class="service-card card-dark" role="listitem">
+      <article class="service-card card-dark">
         <div class="service-left">
           <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke="var(--gold)" stroke-linecap="round" stroke-linejoin="round">
             <!-- Límite exterior de la pista (orientación portrait = top-down real) -->
@@ -406,7 +416,7 @@
       </article>
 
       <!-- CARD 2: Academia (fondo beige) -->
-      <article class="service-card card-light" role="listitem">
+      <article class="service-card card-light">
         <div class="service-left">
           <svg class="service-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="color:var(--black)">
             <path fill="currentColor" d="M7.725 17.775q-.75-.3-1.325-.875l-4.225-4.25q-.575-.575-.875-1.312T1 9.825t.3-1.512T2.175 7L5 4.175Q5.575 3.6 6.313 3.3T7.825 3t1.513.3t1.312.875L14.9 8.4q.575.575.875 1.325t.3 1.525t-.3 1.513t-.875 1.312l-.7.7l5.1 5.1q.3.3.3.713t-.3.712t-.712.3t-.713-.3l-5.1-5.1l-.7.7q-.575.575-1.312.875t-1.513.3t-1.525-.3M5.175 11.1q.325 0 .538-.212t.212-.538t-.212-.537t-.538-.213t-.537.213t-.213.537t.213.538t.537.212m1.6-1.575q.325 0 .538-.212t.212-.538t-.213-.537t-.537-.213t-.537.213t-.213.537t.213.538t.537.212m.175 3.35q.325 0 .538-.213t.212-.537t-.213-.537t-.537-.213t-.537.213t-.213.537t.213.538t.537.212m1.4-4.95q.325 0 .538-.213t.212-.537t-.213-.537t-.537-.213t-.537.213t-.213.537t.213.538t.537.212m.2 3.375q.325 0 .537-.213t.213-.537t-.213-.537T8.55 9.8t-.537.213t-.213.537t.213.538t.537.212m.15 3.35q.325 0 .538-.213t.212-.537t-.212-.537t-.538-.213t-.537.213t-.213.537t.213.538t.537.212m1.425-4.95q.325 0 .538-.213t.212-.537t-.213-.537t-.537-.213t-.537.213t-.213.537t.213.538t.537.212m.175 3.35q.325 0 .538-.213t.212-.537t-.213-.537t-.537-.213t-.537.213t-.213.537t.213.538t.537.212m1.6-1.6q.325 0 .538-.212t.212-.538t-.213-.537t-.537-.213t-.537.213t-.213.537t.213.538t.537.212M19.5 9q-1.45 0-2.475-1.025T16 5.5t1.025-2.475T19.5 2t2.475 1.025T23 5.5t-1.025 2.475T19.5 9"/>
@@ -434,7 +444,7 @@
       </article>
 
       <!-- CARD 3: Pools (fondo negro) -->
-      <article class="service-card card-dark" role="listitem">
+      <article class="service-card card-dark">
         <div class="service-left">
           <svg class="service-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="color:var(--gold)">
             <path fill="currentColor" d="M56.6 9.4H47V4.8c0-1.7-1.4-3.1-3.1-3.1H20.1c-1.7 0-3.1 1.4-3.1 3.1v4.6H7.4c-1.8 0-3.1 1.3-3.1 3.1v.8c0 7.4 5.5 13.5 12.7 14.6v.3c0 7.4 5.5 13.6 12.7 14.7v14.9h-7.9c-1.2 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3h20.4c1.2 0 2.3-1 2.3-2.3s-1-2.3-2.3-2.3h-7.9v-15c3.2-.5 6.2-1.9 8.5-4.3c2.8-2.8 4.3-6.5 4.2-10.4v-.3c7.2-1.1 12.7-7.2 12.7-14.6v-.8c0-1.7-1.3-3-3.1-3M8.8 13.9H17v9.4c-4.5-.9-7.9-4.8-8.2-9.4m33.7 14.3c0 2.7-1 5.3-2.9 7.2c-2 2-4.7 3.1-7.6 3.1c-5.8 0-10.5-4.6-10.5-10.3V6.3h21zm4.5-4.9v-9.4h8.2c-.3 4.6-3.7 8.5-8.2 9.4"/>
@@ -462,7 +472,7 @@
       </article>
 
       <!-- CARD 4: Chill-Out (fondo beige) -->
-      <article class="service-card card-light" role="listitem">
+      <article class="service-card card-light">
         <div class="service-left">
           <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" stroke="var(--black)" stroke-linecap="round" stroke-linejoin="round">
             <!-- Vaso -->
@@ -502,7 +512,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section id="academia" class="section-academy" aria-labelledby="academia-heading">
   <div class="academy-header">
-    <span class="section-watermark" aria-hidden="true">03</span>
+    <span class="section-watermark" aria-hidden="true" data-n="03"></span>
     <span class="section-label" data-i18n="academy.label">Academia</span>
     <h2 id="academia-heading" class="academy-title" data-reveal data-i18n-html="academy.headingHtml">
       Entrena en serio.<br><em>Mejora de verdad.</em>
@@ -602,7 +612,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section id="equipo" class="section-team" aria-labelledby="equipo-heading">
   <div class="team-header">
-    <span class="section-watermark" aria-hidden="true">04</span>
+    <span class="section-watermark" aria-hidden="true" data-n="04"></span>
     <span class="section-label" data-i18n="team.label">El Equipo</span>
     <h2 id="equipo-heading" class="team-title" data-reveal data-i18n-html="team.headingHtml">
       Las personas<br><em>detrás del club.</em>
@@ -619,7 +629,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section id="pools" class="section-pools" aria-labelledby="pools-heading">
   <div class="pools-header">
-    <span class="section-watermark" aria-hidden="true">05</span>
+    <span class="section-watermark" aria-hidden="true" data-n="05"></span>
     <span class="section-label" data-i18n="pools.label">Pools &amp; Torneos</span>
     <h2 id="pools-heading" class="pools-title" data-reveal data-i18n-html="pools.headingHtml">
       Compite<br>toda la semana.
@@ -693,69 +703,61 @@
   </div>
 </section>
 
-<!-- Franja beige separadora entre patrocinadores y galería -->
-<div class="section-beige-strip" aria-hidden="true"></div>
-
 <!-- ════════════════════════════════════════════════════════════
      SECCIÓN 06 — GALERÍA
+     Fotos ilustrativas (de banco): el subtítulo lo dice. Las descripciones
+     (gallery.imgN) viven en el i18n del manifest de la sede.
 ════════════════════════════════════════════════════════════ -->
 <section id="galeria" class="section-gallery" aria-labelledby="galeria-heading">
   <div class="gallery-header">
     <h2 id="galeria-heading" class="gallery-title" data-reveal data-i18n="gallery.heading">El club.</h2>
-    <span class="gallery-subtitle" aria-hidden="true" data-i18n="gallery.subtitle">Pizarra · Málaga · Est. 2026</span>
+    <span class="gallery-subtitle" data-i18n="gallery.subtitle">Imágenes ilustrativas</span>
+    <button type="button" class="gallery-toggle" aria-pressed="false" data-i18n="gallery.pause">Pausar</button>
   </div>
 
-  <div class="gallery-lanes" role="group" aria-label="Galería de imágenes del club" data-i18n-arialabel="gallery.ariaLabel">
+  <div class="gallery-lanes" role="group" aria-label="Galería de imágenes" data-i18n-arialabel="gallery.ariaLabel">
     <!-- Lane 1: velocidad normal -->
     <div class="gallery-lane lane-1">
       <div class="gallery-strip">
-        <div class="gallery-img gi-1"  role="img" aria-label="Pistas al atardecer"        data-i18n-arialabel="gallery.img1"></div>
-        <div class="gallery-img gi-2"  role="img" aria-label="Detalle de cristal y malla" data-i18n-arialabel="gallery.img2"></div>
-        <div class="gallery-img gi-3"  role="img" aria-label="Pelota en acción"           data-i18n-arialabel="gallery.img3"></div>
-        <div class="gallery-img gi-4"  role="img" aria-label="Pala de pádel"              data-i18n-arialabel="gallery.img4"></div>
-        <div class="gallery-img gi-5"  role="img" aria-label="Zona chill-out"             data-i18n-arialabel="gallery.img5"></div>
-        <div class="gallery-img gi-6"  role="img" aria-label="Iluminación LED nocturna"   data-i18n-arialabel="gallery.img6"></div>
+        <div class="gallery-img gi-1" role="img" aria-label="Palas y bolas sobre una pista azul" data-i18n-arialabel="gallery.img1"></div>
+        <div class="gallery-img gi-2" role="img" aria-label="Palas de pádel rodeadas de bolas" data-i18n-arialabel="gallery.img2"></div>
+        <div class="gallery-img gi-3" role="img" aria-label="Jugador golpeando de revés" data-i18n-arialabel="gallery.img3"></div>
+        <div class="gallery-img gi-4" role="img" aria-label="Jugador en posición de espera" data-i18n-arialabel="gallery.img4"></div>
         <!-- Duplicados para loop continuo -->
-        <div class="gallery-img gi-1"  aria-hidden="true"></div>
-        <div class="gallery-img gi-2"  aria-hidden="true"></div>
-        <div class="gallery-img gi-3"  aria-hidden="true"></div>
-        <div class="gallery-img gi-4"  aria-hidden="true"></div>
-        <div class="gallery-img gi-5"  aria-hidden="true"></div>
-        <div class="gallery-img gi-6"  aria-hidden="true"></div>
+        <div class="gallery-img gi-1" aria-hidden="true"></div>
+        <div class="gallery-img gi-2" aria-hidden="true"></div>
+        <div class="gallery-img gi-3" aria-hidden="true"></div>
+        <div class="gallery-img gi-4" aria-hidden="true"></div>
       </div>
     </div>
 
     <!-- Lane 2: ←, velocidad lenta -->
     <div class="gallery-lane lane-2">
       <div class="gallery-strip">
-        <div class="gallery-img gi-7"  role="img" aria-label="Jugadores en partido" data-i18n-arialabel="gallery.img7"></div>
-        <div class="gallery-img gi-8"  role="img" aria-label="Logo del club"        data-i18n-arialabel="gallery.img8"></div>
-        <div class="gallery-img gi-9"  role="img" aria-label="Vista de pistas"      data-i18n-arialabel="gallery.img9"></div>
-        <div class="gallery-img gi-10" role="img" aria-label="Entrada al club"      data-i18n-arialabel="gallery.img10"></div>
-        <div class="gallery-img gi-11" role="img" aria-label="Red central"          data-i18n-arialabel="gallery.img11"></div>
+        <div class="gallery-img gi-5" role="img" aria-label="Jugadora devolviendo una bola baja" data-i18n-arialabel="gallery.img5"></div>
+        <div class="gallery-img gi-6" role="img" aria-label="Pareja preparada para jugar" data-i18n-arialabel="gallery.img6"></div>
+        <div class="gallery-img gi-7" role="img" aria-label="Dos palas sobre la pista" data-i18n-arialabel="gallery.img7"></div>
+        <div class="gallery-img gi-8" role="img" aria-label="Pala y bola junto a la red" data-i18n-arialabel="gallery.img8"></div>
         <!-- Duplicados para loop continuo -->
-        <div class="gallery-img gi-7"  aria-hidden="true"></div>
-        <div class="gallery-img gi-8"  aria-hidden="true"></div>
-        <div class="gallery-img gi-9"  aria-hidden="true"></div>
-        <div class="gallery-img gi-10" aria-hidden="true"></div>
-        <div class="gallery-img gi-11" aria-hidden="true"></div>
+        <div class="gallery-img gi-5" aria-hidden="true"></div>
+        <div class="gallery-img gi-6" aria-hidden="true"></div>
+        <div class="gallery-img gi-7" aria-hidden="true"></div>
+        <div class="gallery-img gi-8" aria-hidden="true"></div>
       </div>
     </div>
 
     <!-- Lane 3: velocidad rápida -->
     <div class="gallery-lane lane-3">
       <div class="gallery-strip">
-        <div class="gallery-img gi-12" role="img" aria-label="Jugadoras en partido"      data-i18n-arialabel="gallery.img12"></div>
-        <div class="gallery-img gi-13" role="img" aria-label="Pala Bullpadel"            data-i18n-arialabel="gallery.img13"></div>
-        <div class="gallery-img gi-14" role="img" aria-label="Pista con reflejos LED"   data-i18n-arialabel="gallery.img14"></div>
-        <div class="gallery-img gi-15" role="img" aria-label="Grupo de jugadores"       data-i18n-arialabel="gallery.img15"></div>
-        <div class="gallery-img gi-16" role="img" aria-label="Atardecer sobre las pistas" data-i18n-arialabel="gallery.img16"></div>
-        <!-- Duplicados -->
+        <div class="gallery-img gi-9" role="img" aria-label="Saludo antes del partido" data-i18n-arialabel="gallery.img9"></div>
+        <div class="gallery-img gi-10" role="img" aria-label="Jugador preparando la volea" data-i18n-arialabel="gallery.img10"></div>
+        <div class="gallery-img gi-11" role="img" aria-label="Bola sobre una pala, en blanco y negro" data-i18n-arialabel="gallery.img11"></div>
+        <div class="gallery-img gi-12" role="img" aria-label="Jugadora en pleno golpe" data-i18n-arialabel="gallery.img12"></div>
+        <!-- Duplicados para loop continuo -->
+        <div class="gallery-img gi-9" aria-hidden="true"></div>
+        <div class="gallery-img gi-10" aria-hidden="true"></div>
+        <div class="gallery-img gi-11" aria-hidden="true"></div>
         <div class="gallery-img gi-12" aria-hidden="true"></div>
-        <div class="gallery-img gi-13" aria-hidden="true"></div>
-        <div class="gallery-img gi-14" aria-hidden="true"></div>
-        <div class="gallery-img gi-15" aria-hidden="true"></div>
-        <div class="gallery-img gi-16" aria-hidden="true"></div>
       </div>
     </div>
   </div>
@@ -811,7 +813,7 @@
         </div>
         <div class="form-group">
           <label for="f-telefono" data-i18n="contact.labelPhone">Teléfono</label>
-          <input type="tel" id="f-telefono" name="telefono" placeholder="600 000 000" required autocomplete="tel" data-i18n-ph="contact.phPhone">
+          <input type="tel" id="f-telefono" name="telefono" placeholder="600 000 000" required autocomplete="tel" inputmode="tel" pattern="[0-9 +()\-]{6,20}" data-i18n-ph="contact.phPhone">
         </div>
         <div class="form-group">
           <label for="f-nivel" data-i18n="contact.labelLevel">Nivel</label>
@@ -834,12 +836,20 @@
           <label for="f-mensaje"><span data-i18n="contact.labelMessage">Mensaje</span> <span data-i18n="contact.optional">(opcional)</span></label>
           <textarea id="f-mensaje" name="mensaje" placeholder="¿Algo que quieras añadir?" data-i18n-ph="contact.phMessage"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary form-submit" data-cursor="enviar" data-i18n="contact.submitBtn">
+        <!-- disabled hasta que initContact() lo activa: sin JS, el envío
+             nativo hacía GET /pizarra?nombre=…&telefono=… (datos personales
+             en la URL y en los logs del hosting) -->
+        <button type="submit" class="btn btn-primary form-submit" data-cursor="enviar" data-i18n="contact.submitBtn" disabled>
           Enviar por WhatsApp
         </button>
+        <noscript>
+          <p class="form-note">Para enviar este formulario necesitas JavaScript. Escríbenos directamente por WhatsApp al <a href="https://wa.me/34659143103">+34 659 14 31 03</a>.</p>
+        </noscript>
         <p class="form-note" data-i18n-html="contact.formNote">
           Te redirige a WhatsApp con los datos ya rellenados. Te contestamos lo antes posible.
         </p>
+        <!-- Primera capa informativa (RGPD art. 13 / guía AEPD de información por capas) -->
+        <p class="form-privacy" data-i18n-html="contact.privacyNoteHtml">Responsable: Eleva Padel Club. Finalidad: responder a tu consulta por WhatsApp. Tus derechos y el resto de información, en el <a href="../privacidad.html">aviso legal y privacidad</a>.</p>
       </form>
     </div>
 
@@ -874,15 +884,16 @@
   </div>
 </section>
 
+</main>
+
 <!-- ════════════════════════════════════════════════════════════
      FOOTER
 ════════════════════════════════════════════════════════════ -->
-</main>
 
 <footer id="footer" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
   <div class="footer-marquee" aria-hidden="true">
-    <span class="footer-marquee-inner">Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp;</span>
-    <span class="footer-marquee-inner">Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp;</span>
+    <span class="footer-marquee-inner" data-text="Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp;"></span>
+    <span class="footer-marquee-inner" data-text="Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp;"></span>
   </div>
 
   <div class="footer-grid">
@@ -897,7 +908,7 @@
       <p class="footer-claim" data-i18n="footer.claim">Pádel elevado a otro nivel · Pizarra, Málaga.</p>
       <div class="footer-col-title" data-i18n="footer.mapTitle">Cómo llegar</div>
       <div class="footer-map-placeholder" id="footer-map">
-        <a href="https://maps.app.goo.gl/Up8sTtpszHeQTqwJ7"
+        <a class="footer-map-fallback" href="https://maps.app.goo.gl/Up8sTtpszHeQTqwJ7"
            target="_blank" rel="noopener noreferrer"
            data-cursor="ver"
            data-i18n="footer.mapLink">
@@ -972,7 +983,6 @@
   <div class="footer-bottom">
       <p class="footer-legal">
       &copy; 2026 Eleva Padel Club · Pizarra, Málaga ·
-      Créditos de imágenes en <a href="../assets/credits.json" class="footer-legal-link">credits.json</a> ·
       <a href="../privacidad.html" class="footer-legal-link" data-i18n-html="footer.legalLink">Aviso Legal &amp; Privacidad</a>
     </p>
     <p class="footer-credit">
@@ -984,32 +994,30 @@
       </a>
     </p>
   </div>
+  <!-- FAB dentro del <footer>: así queda en un landmark (axe "region");
+       es position:fixed, el lugar en el DOM no cambia dónde se ve -->
+  <div class="fab-triangle">
+    <a href="https://vola.plus/app-link/club/1498"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Reservar pista en Eleva Padel Club"
+       data-i18n-arialabel="fab.ariaLabel"
+       data-cursor="reservar">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
+      </svg>
+    </a>
+    <span class="fab-tooltip" aria-hidden="true" data-i18n="fab.tooltip">Reservar pista</span>
+  </div>
 </footer>
-
-<!-- ════════════════════════════════════════════════════════════
-     FAB — TRIÁNGULO FLOTANTE RESERVAR
-════════════════════════════════════════════════════════════ -->
-<div class="fab-triangle">
-  <a href="https://vola.plus/app-link/club/1498"
-     target="_blank" rel="noopener noreferrer"
-     aria-label="Reservar pista en Eleva Padel Club"
-     data-i18n-arialabel="fab.ariaLabel"
-     data-cursor="reservar">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-    </svg>
-  </a>
-  <span class="fab-tooltip" aria-hidden="true" data-i18n="fab.tooltip">Reservar pista</span>
-</div>
 
 <!-- ════════════════════════════════════════════════════════════
      SCRIPTS — todo diferido, sin type="module"
 ════════════════════════════════════════════════════════════ -->
-<script src="../lib/gsap.min.js?v=20260926"          defer></script>
-<script src="../lib/ScrollTrigger.min.js?v=20260926" defer></script>
-<script src="../pizarra/manifest.js?v=20260926"   defer></script>
-<script src="../js/translations.js?v=20260926"      defer></script>
-<script src="../js/main.js?v=20260926"               defer></script>
+<script src="../lib/gsap.min.js?v=20260927"          defer></script>
+<script src="../lib/ScrollTrigger.min.js?v=20260927" defer></script>
+<script src="../pizarra/manifest.js?v=20260927"   defer></script>
+<script src="../js/translations.js?v=20260927"      defer></script>
+<script src="../js/main.js?v=20260927"               defer></script>
 
 </body>
 </html>

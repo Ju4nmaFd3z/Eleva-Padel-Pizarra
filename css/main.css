@@ -57,6 +57,10 @@ html {
 /* Anclas: compensa la nav fija cuando el salto NO pasa por initSmoothScroll
    (recarga con #hash, botón atrás, foco a un id). */
 section[id] { scroll-margin-top: var(--nav-h); }
+/* Titulares equilibrados: sin palabras huérfanas en móvil (p. ej. «necesita»
+   sola en una línea tras un <br> fijo) */
+h1, h2 { text-wrap: balance; }
+@media (max-width: 480px) { .home-landing h2 br { display: none; } }
 
 body {
   font-family: var(--font-body);
@@ -304,6 +308,9 @@ html.splash-seen #splash { display: none !important; }
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(196,168,130,.12);
 }
+/* Menú móvil abierto: la barra pasa a opaca (el overlay empieza debajo).
+   Después de .nav-scrolled para ganarle con la misma especificidad. */
+#main-nav.nav-menu-open { background: var(--black); }
 
 /* ── NAV LOGO ────────────────────────────────────────────────── */
 
@@ -464,7 +471,9 @@ html.splash-seen #splash { display: none !important; }
 .nav-overlay {
   display: none;
   position: fixed;
-  inset: 0;
+  /* Empieza BAJO la barra de navegación: con inset:0, al hacer scroll
+     dentro del menú los enlaces pasaban por debajo del logo y la X. */
+  inset: var(--nav-h) 0 0 0;
   background: var(--black);
   z-index: 190;
   flex-direction: column;
@@ -475,10 +484,13 @@ html.splash-seen #splash { display: none !important; }
      hacerle scroll. Se declara `center` antes como fallback. */
   justify-content: center;
   justify-content: safe center;
-  gap: 2.5rem;
-  /* Respeta notch / home indicator y deja hueco bajo la barra de nav */
+  /* Tamaños ligados a la ALTURA de la ventana: con 56 px fijos el menú no
+     cabía en tablet (768×1024, 1024×768) y «Reservar» y los idiomas
+     quedaban fuera de pantalla sin ninguna pista de que hubiera más. */
+  gap: clamp(.35rem, 1.6vh, 2rem);
+  /* Respeta el home indicator */
   padding:
-    calc(var(--nav-h) + env(safe-area-inset-top))
+    1rem
     max(1.5rem, env(safe-area-inset-right))
     max(1.5rem, env(safe-area-inset-bottom))
     max(1.5rem, env(safe-area-inset-left));
@@ -505,7 +517,8 @@ html.splash-seen #splash { display: none !important; }
 }
 .nav-overlay a {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-size: clamp(1.2rem, min(8vw, 4.4vh), 3.5rem);
+  line-height: 1.15;
   font-weight: 300;
   color: var(--white-warm);
   letter-spacing: .05em;
@@ -524,28 +537,39 @@ html.splash-seen #splash { display: none !important; }
   text-transform: uppercase;
   margin-top: 1rem;
 }
-/* Viewports cortos (iPhone SE/8 en vertical): con 8 enlaces + CTA + idioma
-   el contenido medía ~825 px contra 667 px de alto. Comprimimos gap y
-   tipografía para que quepa sin scroll; si aún no cabe, `safe center`
-   deja el scroll operativo con el primer enlace alcanzable. */
+/* Viewports cortos: CTA e idiomas más compactos */
 @media (max-height: 760px) {
-  .nav-overlay { gap: 1.1rem; }
-  .nav-overlay a { font-size: clamp(1.4rem, 5.5vw, 2rem); }
   .nav-overlay .nav-overlay-cta { font-size: var(--t-xs); margin-top: .5rem; padding: .7rem 1.6rem; }
-  .nav-overlay-lang { padding-top: 10px; margin-top: 10px; }
 }
+/* Muy cortos (iPhone SE 1ª gen., 320×568): enlaces sin relleno vertical */
 @media (max-height: 620px) {
-  .nav-overlay { gap: .6rem; }
-  .nav-overlay a { font-size: 1.25rem; }
+  .nav-overlay a { padding: 0; }
+  .nav-overlay .nav-overlay-cta { margin-top: .25rem; padding: .55rem 1.4rem; }
+}
+/* Móvil apaisado: el menú se reparte en columnas (flex en columna con
+   wrap) en vez de obligar a hacer scroll para llegar a Reservar/idiomas */
+@media (max-height: 500px) and (orientation: landscape) {
+  .nav-overlay {
+    flex-wrap: wrap;
+    align-content: center;
+    column-gap: 3.5rem;
+    row-gap: .15rem;
+  }
+  .nav-overlay .nav-overlay-cta { margin-top: .35rem; }
 }
 
 /* ── 7. BRAND MARK (lateral fijo) ──────────────────────────────── */
+/* Texto VERTICAL pegado al borde derecho. Antes era una línea horizontal
+   girada 90° sobre su centro: quedaba ~148 px hacia dentro y se montaba
+   sobre textos, precios, botones y campos del formulario. Con
+   writing-mode ocupa ~12 px junto al borde, fuera de la columna de
+   contenido (--container-max + --container-pad). */
 .brand-mark {
   position: fixed;
-  right: 0;
+  right: max(10px, env(safe-area-inset-right));
   top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  transform-origin: center;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
   z-index: 100;
   pointer-events: none;
   font-family: var(--font-mono);
@@ -567,6 +591,15 @@ html.splash-seen #splash { display: none !important; }
   flex-direction: column;
   align-items: center;
   gap: .5rem;
+  transition: opacity .3s ease, visibility .3s, transform .3s ease;
+}
+/* main.js lo oculta mientras se ve el hero (que ya tiene el mismo CTA) y
+   al llegar al pie: ahí tapaba "Descubrir el club", el enlace legal y
+   los botones de contacto. */
+.fab-triangle.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
 }
 .fab-triangle a {
   display: flex;
@@ -585,7 +618,7 @@ html.splash-seen #splash { display: none !important; }
 .fab-triangle svg path { fill: var(--gold); transition: fill .25s; }
 .fab-tooltip {
   font-family: var(--font-mono);
-  font-size: .55rem;
+  font-size: .75rem;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -613,6 +646,18 @@ html.splash-seen #splash { display: none !important; }
   touch-action: manipulation;
 }
 .btn:hover { transform: translateY(-1px); }
+/* En móvil un botón puede partir en dos líneas: con nowrap, textos largos
+   (NL «Vraag de tijden van de volgende pool») se salían del botón y
+   creaban scroll horizontal a 320 px. */
+@media (max-width: 480px) {
+  .btn {
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+    line-height: 1.45;
+    text-wrap: balance;
+  }
+}
 .btn-primary {
   background: var(--gold);
   color: var(--black);
@@ -724,7 +769,7 @@ html.splash-seen #splash { display: none !important; }
 }
 .hero-scroll span {
   font-family: var(--font-mono);
-  font-size: .55rem;
+  font-size: .75rem;
   letter-spacing: .2em;
   text-transform: uppercase;
   color: rgba(245,240,235,.4);
@@ -830,21 +875,20 @@ html.splash-seen #splash { display: none !important; }
   background-size: cover;
   background-position: center;
 }
-/* Fotos del club */
+/* Fotos del club: llegan por JS como fondo perezoso ([data-bg] en el HTML).
+   El degradado es el color de espera y el respaldo sin JS. */
+.club-photo-inner { background-repeat: no-repeat; }
 .club-photo-1 .club-photo-inner {
-  background:
-    url('../assets/img/club-01.jpg') center/cover no-repeat,
-    linear-gradient(135deg, #7B4C2A 0%, #C4893E 45%, #E8C97B 100%);
+  background-color: #7B4C2A;
+  background-image: linear-gradient(135deg, #7B4C2A 0%, #C4893E 45%, #E8C97B 100%);
 }
 .club-photo-2 .club-photo-inner {
-  background:
-    url('../assets/img/club-02.jpg') center/cover no-repeat,
-    linear-gradient(45deg, #2D3748 0%, #4A5568 50%, #718096 100%);
+  background-color: #2D3748;
+  background-image: linear-gradient(45deg, #2D3748 0%, #4A5568 50%, #718096 100%);
 }
 .club-photo-3 .club-photo-inner {
-  background:
-    url('../assets/img/club-03.jpg') center/cover no-repeat,
-    linear-gradient(160deg, #5C3D1F 0%, #C4A882 65%, #F5E8D0 100%);
+  background-color: #5C3D1F;
+  background-image: linear-gradient(160deg, #5C3D1F 0%, #C4A882 65%, #F5E8D0 100%);
 }
 .club-tape {
   position: absolute;
@@ -878,6 +922,9 @@ html.splash-seen #splash { display: none !important; }
   user-select: none;
   z-index: 0;
 }
+/* El número va en un pseudo-elemento (data-n): es pura decoración y así no
+   cuenta como texto para los comprobadores de contraste */
+.section-watermark::before { content: attr(data-n); }
 .section-label {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
@@ -972,6 +1019,31 @@ html.splash-seen #splash { display: none !important; }
 }
 .service-card.card-dark  { background: var(--black); color: var(--white-warm); }
 .service-card.card-light { background: var(--beige); color: var(--black); }
+
+/* Escritorio SIN pin (sin JS, sin GSAP o con prefers-reduced-motion):
+   tarjetas apiladas en vertical. El carril horizontal no se puede
+   desplazar sin el scrub de GSAP y solo se veía la primera tarjeta.
+   main.js marca .is-pinned (GSAP) o .is-carousel (táctil) en la sección. */
+@media (min-width: 769px) {
+  .section-services:not(.is-pinned):not(.is-carousel) .services-sticky {
+    position: static;
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+  .section-services:not(.is-pinned):not(.is-carousel) .services-track {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .section-services:not(.is-pinned):not(.is-carousel) .service-card {
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: min(100dvh, 720px);
+  }
+}
 
 .service-left {
   display: flex;
@@ -1506,10 +1578,6 @@ html.splash-seen #splash { display: none !important; }
   margin-top: 1rem;
 }
 
-.section-beige-strip {
-  background: var(--beige);
-  height: var(--section-pad);
-}
 
 /* ── 17. SECCIÓN 06 — GALERÍA ──────────────────────────────────── */
 .section-gallery {
@@ -1524,8 +1592,9 @@ html.splash-seen #splash { display: none !important; }
   padding: 0 var(--container-pad);
   margin-bottom: 3rem;
   display: flex;
+  flex-wrap: wrap;             /* a 320 px el título se partía en dos líneas */
   align-items: baseline;
-  gap: 1.5rem;
+  gap: .75rem 1.5rem;
 }
 .gallery-title {
   font-family: var(--font-display);
@@ -1537,9 +1606,26 @@ html.splash-seen #splash { display: none !important; }
   font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: .15em;
-  color: var(--gold);
-  opacity: .7;
+  color: var(--gold);        /* sin opacity: con .7 quedaba en 4,42:1 */
 }
+/* Pausar/reanudar la galería en movimiento (WCAG 2.2.2) */
+.gallery-toggle {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--white-warm);
+  background: transparent;
+  border: 1px solid rgba(245,240,235,.3);
+  border-radius: 2px;
+  padding: .55rem 1rem;
+  min-height: 44px;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.gallery-toggle:hover { border-color: var(--gold); color: var(--gold); }
+.gallery-lanes.is-paused .gallery-strip { animation-play-state: paused; }
 
 .gallery-lanes {
   display: flex;
@@ -1560,7 +1646,8 @@ html.splash-seen #splash { display: none !important; }
 .lane-2 .gallery-strip { animation: lane-left  42s linear infinite; }
 .lane-3 .gallery-strip { animation: lane-right 22s linear infinite; }
 
-.gallery-lane:hover .gallery-strip { animation-play-state: paused; }
+.gallery-lane:hover .gallery-strip,
+.gallery-lane:focus-within .gallery-strip { animation-play-state: paused; }
 
 @keyframes lane-right {
   from { transform: translateX(0); }
@@ -1603,10 +1690,7 @@ html.splash-seen #splash { display: none !important; }
 .gi-10 { background-color: #E8E0D8; background-image: linear-gradient(90deg,#E8E0D8,#C4A882,#8B7355); }
 .gi-11 { background-color: #2D1F0A; background-image: linear-gradient(135deg,#2D1F0A,#5C3D1F,#C4893E); }
 .gi-12 { background-color: #C4A882; background-image: linear-gradient(160deg,#C4A882,#E8DDD0,#8B7355); }
-.gi-13 { background-color: #1A1A1A; background-image: linear-gradient(90deg,#1A1A1A,#3D2010,#7B5030); }
-.gi-14 { background-color: #1A2030; background-image: linear-gradient(180deg,#1A2030,#2A3545,#6B8090); }
-.gi-15 { background-color: #8B7355; background-image: linear-gradient(135deg,#8B7355,#C4A882,#E8DDD0); }
-.gi-16 { background-color: #1A0A0A; background-image: linear-gradient(160deg,#1A0A0A,#5C2010,#C4703E,#E8C97B); }
+/* (gi-13…16 retirados: la galería tiene 12 fotos) */
 
 /* Las fotos reales (inline style) sobreescriben los gradientes CSS automáticamente */
 
@@ -1657,15 +1741,6 @@ html.splash-seen #splash { display: none !important; }
   transition: opacity .25s;
 }
 .contact-secondary:hover { opacity: 1; }
-
-/* "Próximamente": antes opacity .35 (1.9:1). Se distingue por color apagado
-   (crema en lugar de dorado) en vez de por opacidad, y sigue legible. */
-.contact-secondary--soon {
-  color: rgba(245,240,235,.62);
-  opacity: 1;
-  cursor: default;
-}
-.contact-secondary--soon:hover { color: rgba(245,240,235,.62); opacity: 1; }
 
 .contact-right {
   padding: clamp(4rem, 8vw, 7rem) var(--container-pad);
@@ -1731,6 +1806,26 @@ html.splash-seen #splash { display: none !important; }
 .form-group select option { background: var(--black); color: var(--white-warm); }
 .form-group textarea { resize: vertical; min-height: 100px; }
 .form-submit { align-self: flex-start; }
+/* Primera capa informativa de privacidad bajo el formulario */
+.form-privacy {
+  font-size: .8rem;
+  line-height: 1.6;
+  color: rgba(245,240,235,.72);
+}
+.form-privacy a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+/* Aviso de datos del club no disponibles (sin JS o sin manifest) */
+.club-data-notice {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 1.25rem var(--container-pad);
+  background: var(--beige);
+  color: var(--black);
+  font-size: var(--t-sm);
+  text-align: center;
+}
+.club-data-notice[hidden] { display: none; }
+.club-data-notice a { color: var(--gold-ink); text-decoration: underline; }
+.contact-form .form-submit:disabled { opacity: .55; cursor: not-allowed; }
 .form-note {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
@@ -1756,12 +1851,10 @@ html.splash-seen #splash { display: none !important; }
 }
 .contact-info-label {
   font-family: var(--font-mono);
-  /* mínimo legible: .6rem eran 9,6px */
-  font-size: .72rem;
+  font-size: .75rem;           /* 12px mínimo (.72rem daba 11,5px) */
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: .7;
 }
 .contact-info-value {
   font-family: var(--font-mono);
@@ -1793,6 +1886,8 @@ html.splash-seen #splash { display: none !important; }
   margin-bottom: 5rem;
   user-select: none;
 }
+/* Texto decorativo en pseudo-elemento (data-text), como las marcas de agua */
+.footer-marquee-inner::before { content: attr(data-text); }
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr;
@@ -1833,8 +1928,9 @@ html.splash-seen #splash { display: none !important; }
   font-weight: 300;
 }
 .footer-map-placeholder {
+  position: relative;
   height: 160px;
-  background: rgba(196,168,130,.06);
+  background: #1c1b1a;
   border: 1px solid rgba(196,168,130,.12);
   border-radius: 3px;
   overflow: hidden;
@@ -1842,19 +1938,35 @@ html.splash-seen #splash { display: none !important; }
   align-items: center;
   justify-content: center;
 }
-.footer-map-placeholder a {
+/* Enlace de respaldo (sin JS o sin brand.mapImage) */
+.footer-map-fallback {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: .1em;
   color: var(--gold);
   text-transform: uppercase;
 }
-/* Leaflet overrides */
-.footer-map-placeholder .leaflet-container {
-  width: 100%; height: 100%;
-  background: #1a1a1a;
-  border-radius: 3px;
+/* Plano estático (brand.mapImage): todo el recuadro enlaza a Google Maps */
+.footer-map-link { display: block; width: 100%; height: 100%; }
+.footer-map-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity .25s;
 }
+.footer-map-link:hover .footer-map-img { opacity: .85; }
+.footer-map-attrib {
+  position: absolute;
+  right: 0; bottom: 0;
+  padding: 2px 6px;
+  font-size: .75rem;
+  line-height: 1.4;
+  color: rgba(245,240,235,.8);
+  background: rgba(15,15,15,.75);
+  border-top-left-radius: 3px;
+}
+.footer-map-attrib a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .footer-links {
   display: flex;
   flex-direction: column;
@@ -1889,8 +2001,15 @@ html.splash-seen #splash { display: none !important; }
   font-size: var(--t-sm);
   color: rgba(245,240,235,.65);
 }
-.footer-contact-item .val a { color: inherit; border-bottom: 1px solid rgba(196,168,130,.2); }
-.footer-contact-item .val a:hover { color: var(--gold); border-color: var(--gold); }
+.footer-contact-item .val a {
+  color: inherit;
+  /* text-decoration y no border-bottom: en móvil el área táctil de 44 px
+     separaba la raya ~20 px del texto y parecía una línea divisoria */
+  text-decoration: underline;
+  text-decoration-color: rgba(196,168,130,.35);
+  text-underline-offset: 4px;
+}
+.footer-contact-item .val a:hover { color: var(--gold); text-decoration-color: var(--gold); }
 
 .footer-bottom {
   border-top: 1px solid rgba(196,168,130,.1);
@@ -1909,8 +2028,13 @@ html.splash-seen #splash { display: none !important; }
   letter-spacing: .08em;
   color: rgba(245,240,235,.55);
 }
-.footer-legal-link { color: inherit; border-bottom: 1px solid rgba(245,240,235,.15); }
-.footer-legal-link:hover { border-color: rgba(245,240,235,.4); }
+.footer-legal-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(245,240,235,.3);
+  text-underline-offset: 4px;
+}
+.footer-legal-link:hover { text-decoration-color: rgba(245,240,235,.6); }
 
 .footer-credit {
   font-family: var(--font-mono);
@@ -2025,14 +2149,18 @@ html.splash-seen #splash { display: none !important; }
   .academy-card-desc        { line-height: 1.8; color: rgba(245,240,235,.82); }
   .academy-includes li      { color: rgba(245,240,235,.78); }
   .club-def dd              { line-height: 1.65; }
-  /* Etiquetas cortas (Pistas, Horario…): 140px desperdiciaba ancho y apretaba
-     el valor en móvil. Reducimos la columna del término. */
-  .club-def                 { grid-template-columns: 104px 1fr; gap: .4rem 1rem; }
+  /* Columna del término: 140px desperdiciaba ancho en móvil, pero 104px no
+     bastaba en NL («Openingstijden» ≈130px, «Reserveringen» ≈120px) y el
+     término se metía bajo el valor. 8.5rem cabe en los tres idiomas. */
+  .club-def                 { grid-template-columns: 8.5rem minmax(0, 1fr); gap: .4rem 1rem; }
+  .club-def dd              { overflow-wrap: anywhere; }
 
-  /* ── EQUIPO móvil: gap más compacto y jerarquía ── */
-  .team-header { margin-bottom: 2.5rem; }
-  .team-grid { gap: 2.75rem; }
-  .team-photo-wrap { max-width: 280px; }
+  /* ── EQUIPO móvil: gap más compacto y jerarquía.
+     Con #equipo: las reglas base de equipo se declaran MÁS ABAJO en el
+     archivo y, con la misma especificidad, anulaban estas. ── */
+  #equipo .team-header { margin-bottom: 2.5rem; }
+  #equipo .team-grid { gap: 2.75rem; }
+  #equipo .team-photo-wrap { max-width: 280px; }
 
   /* Tap targets mínimos de 44px para links de footer */
   .footer-links a {
@@ -2042,12 +2170,11 @@ html.splash-seen #splash { display: none !important; }
     align-items: center;
   }
   .footer-contact-item .val a {
-    display: inline-block;
-    padding: .5rem 0;
+    display: inline-flex;
+    align-items: center;
     min-height: 44px;
-    line-height: 44px;
   }
-  .footer-map-placeholder a {
+  .footer-map-fallback {
     min-height: 44px;
     display: flex;
     align-items: center;
@@ -2109,10 +2236,17 @@ html.splash-seen #splash { display: none !important; }
 /* ── Móvil en LANDSCAPE corto: el hero a pantalla completa no debe
       cortar título + CTAs. Reducimos altura mínima y tipografía. ── */
 @media (max-height: 500px) and (orientation: landscape) {
+  /* height:auto + padding-top: con 100dvh fijo y el contenido alineado
+     abajo, la línea «Padel club · 4 pistas…» acababa bajo la cabecera */
   #hero {
-    min-height: 420px;
+    height: auto;
+    min-height: max(420px, 100dvh);
+    padding-top: calc(var(--nav-h) + 1rem);
     padding-bottom: clamp(2rem, 8vh, 4rem);
   }
+  /* CTAs en fila: apilados empujaban el contenido hacia arriba */
+  .hero-ctas { flex-direction: row; align-items: center; }
+  .hero-ctas .btn { width: auto; }
   .hero-title { font-size: clamp(2.4rem, 9vw, 4rem); }
   .hero-kicker { margin-bottom: .75rem; }
   .hero-tagline { margin-bottom: 1.25rem; }
@@ -2123,7 +2257,9 @@ html.splash-seen #splash { display: none !important; }
   /* Landing: su hero tiene un min-height:640px propio (mayor especificidad que
      #hero) que en landscape corto forzaba un hero desproporcionado y cortaba
      el título/CTAs. Lo rebajamos igual que el hero del club. */
-  .home-landing #hero.home-hero2 {
+  /* body.… sube la especificidad: la regla base (más abajo en el archivo)
+     anulaba esta con la misma especificidad */
+  body.home-landing #hero.home-hero2 {
     min-height: 460px;
     padding-top: calc(var(--nav-h) + 1rem);
     padding-bottom: 2rem;
@@ -2139,6 +2275,12 @@ html.splash-seen #splash { display: none !important; }
   .grain {
     animation: none;
   }
+  /* Misma especificidad que .lane-N .gallery-strip (0,2,0): antes la regla
+     de arriba (0,1,0) perdía y la galería seguía moviéndose */
+  .gallery-lane .gallery-strip { animation: none; }
+  /* Parada, la galería se recorre a mano; el botón de pausa sobra */
+  .gallery-lane { overflow-x: auto; scrollbar-width: thin; }
+  .gallery-toggle { display: none; }
   .splash-letters span,
   .triangle-path,
   .splash-bar {
@@ -2368,9 +2510,30 @@ html.splash-seen #splash { display: none !important; }
   width: 100%;
   height: 100%;
   background: linear-gradient(160deg, #2e2e2e 0%, #1a1a1a 100%);
+  /* La foto llega por JS (background-image perezoso); tras el shorthand */
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
   transition: transform 0.7s cubic-bezier(0.16,1,0.3,1),
               filter  0.55s ease;
   filter: saturate(0.75) brightness(0.82);
+}
+/* Sin foto: monograma con la inicial, en vez de un rectángulo vacío que
+   parecía una imagen rota */
+.team-photo--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: none;
+}
+.team-photo-initial {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(4rem, 9vw, 6.5rem);
+  line-height: 1;
+  color: var(--gold);
+  opacity: .55;
 }
 .team-card:hover .team-photo {
   transform: scale(1.07);
@@ -2541,10 +2704,10 @@ html.splash-seen #splash { display: none !important; }
   font-size: clamp(1.6rem, 4vw, 2.9rem);
   font-weight: 300;
   color: rgba(245,240,235,0.6);
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.05;
+  /* Sin elipsis: «Kocsa Obras y Ser…» o «Bar La Herra…» cortaban el nombre
+     de un patrocinador en móvil. Si no cabe, pasa a la línea siguiente. */
+  overflow-wrap: anywhere;
   transition: color 0.3s ease, letter-spacing 0.4s cubic-bezier(0.16,1,0.3,1);
 }
 .sponsor-row:not(.sponsor-row--soon):hover .sponsor-row-name {
@@ -2585,10 +2748,14 @@ html.splash-seen #splash { display: none !important; }
 }
 
 @media (max-width: 600px) {
+  /* Sin el hueco derecho de escritorio: las filas llegan al borde del
+     contenedor y las líneas separadoras ya no acaban antes que el texto */
+  .sponsors-list { padding-right: 0; }
   .sponsor-row {
-    grid-template-columns: 70px 1fr;
+    grid-template-columns: 70px minmax(0, 1fr);
     gap: 1rem;
   }
+  .sponsor-row-name { font-size: clamp(1.45rem, 7vw, 1.9rem); }
   .sponsor-row-badge { display: none; }
 }
 
@@ -2607,14 +2774,12 @@ html.splash-seen #splash { display: none !important; }
   display: contents;
 }
 .service-rates dt { color: rgba(245,240,235,0.55); }
-.card-light .service-rates dt { color: rgba(26,26,26,0.72); }
 .service-rates dd {
   font-weight: 600;
   color: var(--gold);
   text-align: right;
   margin: 0;
 }
-.card-light .service-rates dd { color: var(--black); }
 
 /* ════════════════════════════════════════════════════════════════
    34. PRECIOS DE ACADEMIA
@@ -2856,9 +3021,9 @@ html.splash-seen #splash { display: none !important; }
   display: flex;
   gap: 6px;
   justify-content: center;
-  padding: 16px 0 0;
+  padding: clamp(6px, 1.4vh, 16px) 0 0;
   border-top: 1px solid rgba(245,240,235,0.08);
-  margin-top: 16px;
+  margin-top: clamp(4px, 1.4vh, 16px);
 }
 .nav-overlay-lang .lang-btn {
   font-size: 0.9rem;
@@ -2938,19 +3103,8 @@ html.splash-seen #splash { display: none !important; }
 .home-net-links path:nth-child(4) { animation-delay: .36s; }
 .home-net-links path:nth-child(5) { animation-delay: .48s; }
 .home-net-links path:nth-child(6) { animation-delay: .60s; }
-.home-net-links path:nth-child(7) { animation-delay: .72s; }
-.home-net-links path:nth-child(8) { animation-delay: .84s; }
-.home-net-links path:nth-child(9) { animation-delay: .96s; }
 @keyframes net-draw { to { stroke-dashoffset: 0; } }
 
-.home-net-nodes circle {
-  fill: var(--gold);
-  opacity: .55;
-  animation: net-twinkle 3.4s ease-in-out infinite;
-}
-.home-net-nodes circle:nth-child(2n) { animation-delay: .8s; }
-.home-net-nodes circle:nth-child(3n) { animation-delay: 1.6s; }
-@keyframes net-twinkle { 0%,100% { opacity: .35; } 50% { opacity: .95; } }
 
 .home-net-anchor .home-net-tri {
   fill: var(--gold);
@@ -3056,8 +3210,9 @@ html.splash-seen #splash { display: none !important; }
 /* Leyenda del nodo ancla */
 .home-hero2-legend {
   display: flex;
+  flex-wrap: wrap;             /* a 320 px partía «Sede / activa» en dos */
   align-items: center;
-  gap: .7rem;
+  gap: .4rem .7rem;
   margin-top: clamp(1.75rem, 4vw, 2.75rem);
   font-family: var(--font-mono);
   font-size: var(--t-xs);
@@ -3071,6 +3226,8 @@ html.splash-seen #splash { display: none !important; }
   background: var(--gold);
   box-shadow: 0 0 0 4px rgba(196,168,130,.16);
 }
+.home-legend-city,
+.home-legend-status { white-space: nowrap; }
 .home-legend-city { color: var(--white-warm); }
 .home-legend-sep { color: var(--gold); }
 
@@ -3211,7 +3368,9 @@ html.splash-seen #splash { display: none !important; }
   font-weight: 400;
   font-size: var(--t-2xl);
   color: var(--white-warm);
-  margin-top: auto;
+  /* Arriba y fijo: con margin-top:auto los títulos quedaban a distinta
+     altura según las líneas de cada descripción */
+  margin-top: 1.25rem;
 }
 .home-step-desc {
   font-size: var(--t-sm);
@@ -3484,7 +3643,6 @@ a.home-club--cta:hover .home-club-link { color: var(--gold); }
 /* ── REDUCED MOTION ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .home-net-links path { animation: none; stroke-dashoffset: 0; }
-  .home-net-nodes circle { animation: none; opacity: .6; }
   .home-net-pulse { animation: none; }
   .home-rot { transition: none; }
   /* El rotador se congela en la primera palabra (JS no cicla en reduced-motion) */

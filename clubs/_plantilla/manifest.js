@@ -7,17 +7,18 @@
 
      1. Copia /pizarra/ a una carpeta de PRIMER NIVEL con el slug del club
         (p. ej. /marbella/): su index.html y su manifest.js.
-     2. Edita el SEO estático del <head> de ese index.html.
-     3. Ajusta el <script src="../<slug>/manifest.js?v=…"> del index
+     2. Ajusta el <script src="../<slug>/manifest.js?v=…"> del index
         (el prefijo "../<slug>/" es obligatorio: ver más abajo).
+     3. Edita lo estático de ese index.html (SEO, splash, marca lateral, pie…).
      4. Rellena este manifest con los datos reales, incluido el bloque i18n.
-     5. Añade la sede a HOME_CLUBS en js/main.js y la URL a sitemap.xml.
+     5. Genera el plano del pie: clubs/_plantilla/generar-mapa.js.
+     6. Añade la sede a HOME_CLUBS en js/main.js y la URL a sitemap.xml.
 
    RUTAS DE ASSETS: se resuelven contra el DOCUMENTO del club
    (…/<slug>/index.html), por eso llevan el prefijo "../" para llegar a los
-   assets compartidos de la raíz. Ese prefijo funciona en file:// y en Vercel
-   con y sin barra final. NO uses rutas absolutas "/assets/…": rompen en
-   file://. Y ojo con el <script> del manifest: "manifest.js" a secas se
+   assets compartidos de la raíz. Ese prefijo funciona en local y en Vercel
+   con y sin barra final. NO uses rutas absolutas "/assets/…": rompen al
+   abrir el HTML en local. Y ojo con el <script> del manifest: "manifest.js" a secas se
    resuelve como "/manifest.js" cuando Vercel sirve la página en /<slug>
    (sin barra final), así que SIEMPRE "../<slug>/manifest.js".
 
@@ -38,7 +39,7 @@
    brand:    { name, legalName, phone, phoneCountry, phoneRegex,
                phoneDisplayPrefix, address, geo:{lat,lng},
                instagram:{url,handle}, whatsappCommunity, volaReservas,
-               mapsUrl, schedule }
+               mapsUrl, schedule, mapImage }
    pools:    [ { cat, img, alt } ]
    team:     [ { name, photo?, roleKey|role, bioKey|bio } ]
    sponsors: [ { court, name, badgeKey|badge }        // fila con pista propia
@@ -51,7 +52,8 @@
    gallery:  [ "../assets/img/…" ]     // el índice corresponde a .gi-N del HTML
 
    CAMPOS QUE HOY NO LEE NADIE (puramente documentales): brand.name,
-   brand.legalName, brand.phoneCountry y `torneo`. Si algún día hace falta
+   brand.legalName, brand.phoneCountry, brand.geo (coordenadas para generar
+   el plano) y `torneo`. Si algún día hace falta
    un banner de evento, hay que implementarlo en js/main.js primero.
    ========================================================= */
 (function () {
@@ -65,7 +67,7 @@
       phoneRegex:         '^34\\d{9}$',       // validación. NL móvil: '^31\\d{9}$'
       phoneDisplayPrefix: '+34',              // NL → '+31'
       address:            'Calle Ejemplo 1 · 00000 Ciudad, Provincia',
-      geo:                { lat: 36.700000, lng: -4.400000 },  // sin coords válidas no se pinta mapa
+      geo:                { lat: 36.700000, lng: -4.400000 },  // para generar-mapa.js
       instagram:          { url: 'https://instagram.com/tu_club', handle: '@tu_club' },
       whatsappCommunity:  'https://chat.whatsapp.com/XXXXXXXXXXXXXXX',
       volaReservas:       'https://vola.plus/app-link/club/0000',
@@ -73,6 +75,8 @@
       // Se usa si el club no define club.scheduleValue en su bloque i18n.
       // Con i18n propio es mejor allí, para que se traduzca.
       schedule:           'L–D · 9:00–00:00',
+      // Plano del pie: node clubs/_plantilla/generar-mapa.js <lat> <lng> assets/maps/<slug>.svg
+      mapImage:           '../assets/maps/tu-club.svg',
     },
 
     /* cat controla el color (css/main.css → --pool-accent): 'masculina',
@@ -91,6 +95,7 @@
       // a claves definidas en el bloque i18n de abajo.
       { name: 'Nombre Apellido', photo: '../assets/img/team-ejemplo.jpg',
         roleKey: 'team.role1', bioKey: 'team.bio1' },
+      // Sin foto (photo:null) se pinta un monograma con la inicial.
       // Alternativa sin traducir: { name:'…', photo:null, role:'Monitor', bio:'…' },
     ],
 
@@ -119,39 +124,66 @@
       ],
     },
 
-    /* Cadenas PROPIAS de esta sede, en los tres idiomas. Copia de
-       pizarra/manifest.js la lista completa de claves que conviene
-       sobrescribir (ciudad, horario, claim, equipo…). */
+    /* Cadenas PROPIAS de esta sede, en los tres idiomas. La lista completa
+       de claves que hay que sobrescribir está en el README de esta carpeta
+       («Claves que una sede debe sobrescribir siempre»). */
     i18n: {
       es: {
+        'meta.title':         'Eleva Padel Club · Ciudad, Provincia',
         'hero.kicker':        'PADEL CLUB · N PISTAS · CIUDAD · PROVINCIA',
+        'marquee.courts':     'N Pistas',
         'marquee.location':   'Ciudad, Provincia',
+        'club.courtsDesc':    'N pistas …',
         'club.scheduleValue': 'L–D · 9:00–00:00',
+        'services.desc1':     'N pistas … Reserva online en Vola o por teléfono.',
+        'pools.include':      '8€ por jugador · Bolas nuevas · 1h30 · Horario a consultar por WhatsApp',
+        'pools.prize':        'Premio del club',
+        'gallery.subtitle':   'Imágenes ilustrativas · Ciudad, Provincia',
+        'gallery.img1':       'Descripción de lo que se ve en la foto 1',
         'footer.claim':       'Claim propio del club.',
         'team.role1':         'Monitor · Coordinador',
         'team.bio1':          'Breve biografía.',
+        'sponsors.sub':       'Texto sobre los patrocinadores del club.',
       },
       en: {
+        'meta.title':         'Eleva Padel Club · City, Province',
         'hero.kicker':        'PADEL CLUB · N COURTS · CITY · PROVINCE',
+        'marquee.courts':     'N Courts',
         'marquee.location':   'City, Province',
-        'club.scheduleValue': 'Mon–Sun · 9:00–midnight',
+        'club.courtsDesc':    'N courts …',
+        'club.scheduleValue': 'Mon–Sun · 9 am–midnight',
+        'services.desc1':     'N courts … Book online on Vola or by phone.',
+        'pools.include':      '€8 per player · New balls · 90 min · Schedule to be confirmed via WhatsApp',
+        'pools.prize':        'Club prize',
+        'gallery.subtitle':   'Illustrative images · City, Province',
+        'gallery.img1':       'Description of what photo 1 shows',
         'footer.claim':       'Club claim.',
         'team.role1':         'Coach · Coordinator',
         'team.bio1':          'Short bio.',
+        'sponsors.sub':       'About the club sponsors.',
       },
       nl: {
+        'meta.title':         'Eleva Padel Club · Stad, Provincie',
         'hero.kicker':        'PADELCLUB · N BANEN · STAD · PROVINCIE',
+        'marquee.courts':     'N Banen',
         'marquee.location':   'Stad, Provincie',
-        'club.scheduleValue': 'Ma–Zo · 9:00–00:00',
+        'club.courtsDesc':    'N banen …',
+        'club.scheduleValue': 'Ma–Zo · 9.00–24.00 uur',
+        'services.desc1':     'N banen … Reserveer online via Vola of telefonisch.',
+        'pools.include':      '€ 8 per speler · Nieuwe ballen · 90 min · Tijden op aanvraag via WhatsApp',
+        'pools.prize':        'Clubprijs',
+        'gallery.subtitle':   'Illustratieve beelden · Stad, Provincie',
+        'gallery.img1':       'Beschrijving van wat foto 1 laat zien',
         'footer.claim':       'Claim van de club.',
         'team.role1':         'Trainer · Coördinator',
         'team.bio1':          'Korte biografie.',
+        'sponsors.sub':       'Over de sponsors van de club.',
       },
     },
 
     gallery: [
-      '../assets/img/gallery-01.jpg',
-      // … hasta 16 (el índice corresponde a .gi-N del HTML)
+      '../assets/img/tu-club-galeria-01.jpg',
+      // … una entrada por foto; el índice corresponde a .gi-N del HTML
     ],
 
   };

@@ -22,7 +22,7 @@
    i18n POR SEDE (bloque `i18n` al final de este archivo): las cadenas que
    son PROPIAS de este club (ciudad, horario, claim, bio de su monitora…)
    viven aquí, no en js/translations.js. Orden de resolución en el motor:
-       window.__ELEVA__.i18n[lang][clave]  →  translations[lang][clave]  →  translations.es[clave]
+       i18n del club[lang] → translations[lang] → i18n del club.es → translations.es
    Así una segunda sede no hereda "PIZARRA · MÁLAGA". Las claves se declaran
    planas ("hero.kicker") y se expanden también a objetos anidados, de modo
    que ambos accesos funcionan: i18n.es['hero.kicker'] y i18n.es.hero.kicker.
@@ -76,6 +76,9 @@
       volaReservas:       'https://vola.plus/app-link/club/1498',
       mapsUrl:            'https://maps.app.goo.gl/Up8sTtpszHeQTqwJ7',
       schedule:           'L–D · 9:00–00:00',
+      /* Plano estático del pie, generado con:
+         node clubs/_plantilla/generar-mapa.js 36.769391 -4.709363 assets/maps/pizarra.svg */
+      mapImage:           '../assets/maps/pizarra.svg',
     },
 
     /* ── POOLS (9) ───────────────────────────────────────────
@@ -106,7 +109,7 @@
       },
       {
         name:    'Maripaz',
-        photo:   null,                 // sin foto → medallón vacío
+        photo:   null,                 // sin foto → monograma con la inicial
         roleKey: 'team.role2',
         bioKey:  'team.bio2',
       },
@@ -176,21 +179,23 @@
        porque de él dependen banner, CTA y datos estructurados.         */
     torneo: null,
 
-    /* ── GALERÍA (índice = .gi-N en el HTML) ─────────────────── */
+    /* ── GALERÍA (índice = .gi-N en el HTML) ───────────────────
+       Fotos ILUSTRATIVAS de banco (ver assets/credits.json), no del club:
+       la galería lo dice en su subtítulo. Descripciones (gallery.imgN) en
+       el bloque i18n: describen lo que se ve, sin atribuirlo al club.
+       Se retiraron gallery-04 (pista cubierta: contradecía «4 pistas
+       outdoor»), gallery-09 (casi idéntica a la 02) y gallery-12/13
+       (marca de terceros en primer plano).                              */
     gallery: [
       '../assets/img/gallery-01.jpg',
       '../assets/img/gallery-02.jpg',
       '../assets/img/gallery-03.jpg',
-      '../assets/img/gallery-04.jpg',
       '../assets/img/gallery-05.jpg',
       '../assets/img/gallery-06.jpg',
       '../assets/img/gallery-07.jpg',
       '../assets/img/gallery-08.jpg',
-      '../assets/img/gallery-09.jpg',
       '../assets/img/gallery-10.jpg',
       '../assets/img/gallery-11.jpg',
-      '../assets/img/gallery-12.jpg',
-      '../assets/img/gallery-13.jpg',
       '../assets/img/gallery-14.jpg',
       '../assets/img/gallery-15.jpg',
       '../assets/img/gallery-16.jpg',
@@ -205,48 +210,108 @@
     i18n: expand({
 
       es: {
-        'hero.kicker':          'PADEL CLUB · 4 PISTAS OUTDOOR · PIZARRA · MÁLAGA',
+        'meta.title':           'Eleva Padel Club · Pizarra, Málaga',
+        'hero.kicker':          'PADEL CLUB\u00a0· 4 PISTAS OUTDOOR\u00a0· PIZARRA\u00a0· MÁLAGA',
+        'marquee.courts':       '4 Pistas Outdoor',
         'marquee.location':     'Pizarra, Málaga',
         'marquee.tag':          'High Performance & Social Club',
         'club.aside':           'EST · 2026 · PIZARRA · MÁLAGA',
+        'club.courtsDesc':      '4 outdoor panorámicas con iluminación LED',
         'club.scheduleValue':   'L–D · 9:00–00:00',
         'club.tournamentsDesc': 'Pools por categoría: SNP · 3ª · 4ª · 5ª · Mixta · Rocha<br>Horarios variables — plazas por WhatsApp',
-        'gallery.subtitle':     'Pizarra · Málaga · Est. 2026',
+        'services.desc1':       '4 pistas outdoor de cristal panorámico con iluminación LED. Reserva online en Vola o por teléfono.',
+        'services.desc3':       'Pools por categoría: SNP, 3ª, 4ª, 5ª, Mixta y Rocha. 8€ por jugador, buen rollo garantizado. Los horarios varían: consulta el próximo por WhatsApp.',
+        'pools.include':        '8€ por jugador · Bolas nuevas · 1h30 · Horario a consultar por WhatsApp',
+        'pools.prize':          'Camiseta BullPadel',
+        'gallery.subtitle':     'Imágenes ilustrativas · Pizarra, Málaga',
+        'gallery.img1':         'Palas y bolas sobre una pista azul',
+        'gallery.img2':         'Palas de pádel rodeadas de bolas',
+        'gallery.img3':         'Jugador golpeando de revés',
+        'gallery.img4':         'Jugador en posición de espera',
+        'gallery.img5':         'Jugadora devolviendo una bola baja',
+        'gallery.img6':         'Pareja preparada para jugar',
+        'gallery.img7':         'Dos palas sobre la pista',
+        'gallery.img8':         'Pala y bola junto a la red',
+        'gallery.img9':         'Saludo antes del partido',
+        'gallery.img10':        'Jugador preparando la volea',
+        'gallery.img11':        'Bola sobre una pala, en blanco y negro',
+        'gallery.img12':        'Jugadora en pleno golpe',
         'footer.claim':         'Pádel elevado a otro nivel · Pizarra, Málaga.',
         'team.role1':           'Monitora · Jugadora Profesional',
         'team.bio1':            'Jugadora de pádel profesional e imagen del club. Referente técnico de la academia de Eleva Padel Club.',
-        'services.desc3':       'Pools por categoría: SNP, 3ª, 4ª, 5ª, Mixta y Rocha. 8€ por jugador, buen rollo garantizado. Los horarios varían: consulta el próximo por WhatsApp.',
-        'sponsors.sub':         'Estas empresas apostaron por el proyecto cuando era solo una idea. Son los cimientos reales del club, y las pistas llevan su nombre.'
+        'team.role2':           'Coordinadora de Pádel',
+        'team.bio2':            'Coordinadora de todo lo relacionado con el pádel en el club. Alma organizativa de la competición y la academia.',
+        'sponsors.sub':         'Estas empresas apostaron por el proyecto cuando era solo una idea. Son los cimientos reales del club, y cuatro de ellas dan nombre a nuestras pistas.'
       },
 
       en: {
-        'hero.kicker':          'PADEL CLUB · 4 OUTDOOR COURTS · PIZARRA · MÁLAGA',
+        'meta.title':           'Eleva Padel Club · Pizarra, Málaga',
+        'hero.kicker':          'PADEL CLUB\u00a0· 4 OUTDOOR COURTS\u00a0· PIZARRA\u00a0· MÁLAGA',
+        'marquee.courts':       '4 Outdoor Courts',
         'marquee.location':     'Pizarra, Málaga',
         'marquee.tag':          'High Performance & Social Club',
         'club.aside':           'EST · 2026 · PIZARRA · MÁLAGA',
-        'club.scheduleValue':   'Mon–Sun · 9:00–midnight',
+        'club.courtsDesc':      '4 panoramic outdoor courts with LED lighting',
+        'club.scheduleValue':   'Mon–Sun · 9 am–midnight',
         'club.tournamentsDesc': 'Pools by category: SNP · 3rd · 4th · 5th · Mixed · Rocha<br>Variable schedule — spots via WhatsApp',
-        'gallery.subtitle':     'Pizarra · Málaga · Est. 2026',
-        'footer.claim':         'Padel elevated to another level · Pizarra, Málaga.',
-        'team.role1':           'Coach · Professional Player',
-        'team.bio1':            'Professional padel player and the face of the club. Technical reference of the Eleva Padel Club academy.',
+        'services.desc1':       '4 panoramic glass outdoor courts with LED lighting. Book online on Vola or by phone.',
         'services.desc3':       'Pools by category: SNP, 3rd, 4th, 5th, Mixed and Rocha. €8 per player, great atmosphere guaranteed. Schedules vary: ask about the next one on WhatsApp.',
-        'sponsors.sub':         'These companies backed the project when it was just an idea. They are the real foundations of the club, and the courts bear their name.'
+        'pools.include':        '€8 per player · New balls · 90 min · Schedule to be confirmed via WhatsApp',
+        'pools.prize':          'BullPadel shirt',
+        'gallery.subtitle':     'Illustrative images · Pizarra, Málaga',
+        'gallery.img1':         'Rackets and balls on a blue court',
+        'gallery.img2':         'Padel rackets surrounded by balls',
+        'gallery.img3':         'Player hitting a backhand',
+        'gallery.img4':         'Player in the ready position',
+        'gallery.img5':         'Player returning a low ball',
+        'gallery.img6':         'A pair getting ready to play',
+        'gallery.img7':         'Two rackets on the court',
+        'gallery.img8':         'Racket and ball by the net',
+        'gallery.img9':         'Handshake before the match',
+        'gallery.img10':        'Player preparing a volley',
+        'gallery.img11':        'Ball on a racket, in black and white',
+        'gallery.img12':        'Player mid-shot',
+        'footer.claim':         'Padel taken to the next level · Pizarra, Málaga.',
+        'team.role1':           'Coach · Professional Player',
+        'team.bio1':            'Professional padel player and the face of the club. Technical lead of the Eleva Padel Club academy.',
+        'team.role2':           'Padel Coordinator',
+        'team.bio2':            'Coordinates everything padel-related at the club. The organisational soul of the competition and the academy.',
+        'sponsors.sub':         'These companies backed the project when it was just an idea. They are the real foundations of the club, and four of them give their names to our courts.'
       },
 
       nl: {
-        'hero.kicker':          'PADEL CLUB · 4 BUITENBANEN · PIZARRA · MÁLAGA',
+        'meta.title':           'Eleva Padel Club · Pizarra, Málaga',
+        'hero.kicker':          'PADEL CLUB\u00a0· 4 BUITENBANEN\u00a0· PIZARRA\u00a0· MÁLAGA',
+        'marquee.courts':       '4 Buitenbanen',
         'marquee.location':     'Pizarra, Málaga',
         'marquee.tag':          'High Performance & Social Club',
         'club.aside':           'OPGERICHT · 2026 · PIZARRA · MÁLAGA',
-        'club.scheduleValue':   'Ma–Zo · 9:00–00:00',
+        'club.courtsDesc':      '4 panoramische buitenbanen met LED-verlichting',
+        'club.scheduleValue':   'Ma–Zo · 9.00–24.00 uur',
         'club.tournamentsDesc': 'Pools per categorie: SNP · 3e · 4e · 5e · Gemengd · Rocha<br>Wisselende tijden — plaatsen via WhatsApp',
-        'gallery.subtitle':     'Pizarra · Málaga · Opgericht 2026',
+        'services.desc1':       '4 panoramische glazen buitenbanen met LED-verlichting. Reserveer online via Vola of telefonisch.',
+        'services.desc3':       'Pools per categorie: SNP, 3e, 4e, 5e, Gemengd en Rocha. € 8 per speler, een goede sfeer gegarandeerd. De tijden wisselen: vraag de volgende op via WhatsApp.',
+        'pools.include':        '€ 8 per speler · Nieuwe ballen · 90 min · Tijden op aanvraag via WhatsApp',
+        'pools.prize':          'BullPadel-shirt',
+        'gallery.subtitle':     'Illustratieve beelden · Pizarra, Málaga',
+        'gallery.img1':         'Rackets en ballen op een blauwe baan',
+        'gallery.img2':         'Padelrackets omringd door ballen',
+        'gallery.img3':         'Speler slaat een backhand',
+        'gallery.img4':         'Speler in wachthouding',
+        'gallery.img5':         'Speelster retourneert een lage bal',
+        'gallery.img6':         'Een koppel klaar om te spelen',
+        'gallery.img7':         'Twee rackets op de baan',
+        'gallery.img8':         'Racket en bal bij het net',
+        'gallery.img9':         'Handdruk voor de wedstrijd',
+        'gallery.img10':        'Speler bereidt een volley voor',
+        'gallery.img11':        'Bal op een racket, in zwart-wit',
+        'gallery.img12':        'Speelster midden in een slag',
         'footer.claim':         'Padel naar een hoger niveau · Pizarra, Málaga.',
         'team.role1':           'Coach · Professionele Speelster',
-        'team.bio1':            'Professionele padelspeelster en het gezicht van de club. Technisch referentiepunt van de Eleva Padel Club academie.',
-        'services.desc3':       'Pools per categorie: SNP, 3e, 4e, 5e, Gemengd en Rocha. €8 per speler, een goede sfeer gegarandeerd. De tijden wisselen: vraag de volgende op via WhatsApp.',
-        'sponsors.sub':         'Deze bedrijven geloofden in het project toen het nog een idee was. Zij zijn het echte fundament van de club, en de banen dragen hun naam.'
+        'team.bio1':            'Professionele padelspeelster en het gezicht van de club. Technisch boegbeeld van de academie van Eleva Padel Club.',
+        'team.role2':           'Padelcoördinator',
+        'team.bio2':            'Coördineert alles wat met padel te maken heeft in de club. De organisatorische ziel van de competitie en de academie.',
+        'sponsors.sub':         'Deze bedrijven geloofden in het project toen het nog een idee was. Zij zijn het echte fundament van de club, en vier van hen geven hun naam aan onze banen.'
       }
 
     }),
