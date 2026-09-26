@@ -1756,7 +1756,8 @@ html.splash-seen #splash { display: none !important; }
 }
 .contact-info-label {
   font-family: var(--font-mono);
-  font-size: .6rem;
+  /* mínimo legible: .6rem eran 9,6px */
+  font-size: .72rem;
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--gold);
@@ -2324,7 +2325,8 @@ html.splash-seen #splash { display: none !important; }
 }
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* min(): evita desbordar por debajo de ~308px (p. ej. Galaxy Fold) */
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 56px;
   max-width: 720px;
 }

@@ -900,10 +900,47 @@
     initGalleryLazy(data);
   }
 
-  /* ── MAPA (Leaflet, footer) ──────────────────────────────────── */
+  /* ── MAPA (Leaflet, footer) ──────────────────────────────────────
+     Leaflet (≈160 KB entre JS y CSS) ya NO se carga en el HTML: el mapa
+     vive en el pie, así que se pide solo cuando se acerca a la pantalla.
+     Misma convención de rutas que el resto: prefijo '../' desde la página
+     del club, que funciona con y sin barra final. Al ser mismo origen, la
+     CSP ('self') permite inyectarlo. */
+  var LIB_BASE  = '../lib/';
+  var LEAFLET_V = '20260926';   /* subir solo si se actualiza Leaflet */
+
+  function ensureLeaflet(cb) {
+    if (typeof L !== 'undefined') { cb(); return; }
+    if (ensureLeaflet.pending) { ensureLeaflet.pending.push(cb); return; }
+    ensureLeaflet.pending = [cb];
+
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = LIB_BASE + 'leaflet.min.css?v=' + LEAFLET_V;
+    document.head.appendChild(css);
+
+    var js = document.createElement('script');
+    js.src = LIB_BASE + 'leaflet.min.js?v=' + LEAFLET_V;
+    js.async = true;
+    js.onload = function () {
+      var queue = ensureLeaflet.pending || [];
+      ensureLeaflet.pending = null;
+      queue.forEach(function (fn) { safe(fn, 'leaflet-listo'); });
+    };
+    js.onerror = function () {
+      ensureLeaflet.pending = null;
+      console.warn('[Eleva] Leaflet no se pudo cargar: se mantiene el enlace de "cómo llegar".');
+    };
+    document.head.appendChild(js);
+  }
+
   function initMap(brand) {
     var mapEl = document.getElementById('footer-map');
-    if (!mapEl || typeof L === 'undefined') return;
+    if (!mapEl) return;
+    /* Ya montado (p. ej. tras un cambio de modo móvil/escritorio): montar
+       dos veces sobre el mismo nodo hace que Leaflet lance
+       "Map container is already initialized" y perderíamos el mapa. */
+    if (mapEl.classList.contains('leaflet-container')) return;
 
     /* Coordenadas: comprobación NUMÉRICA real. Con `geo.lat || …` un club
        en lat:0 (ecuador) caía al valor por defecto y mostraba Pizarra. */
@@ -917,7 +954,10 @@
 
     /* Conservar el enlace de fallback a Google Maps por si Leaflet falla */
     var mapFallback = mapEl.innerHTML;
-    try {
+
+    function buildMap() {
+      if (typeof L === 'undefined' || mapEl.classList.contains('leaflet-container')) return;
+      try {
       mapEl.innerHTML = '';
       var leafMap = L.map(mapEl, {
         center: [lat, lng],
@@ -951,10 +991,27 @@
         iconAnchor: [6, 6]
       });
       L.marker([lat, lng], { icon: dot }).addTo(leafMap);
-    } catch (mapErr) {
-      /* Restaurar el enlace de "cómo llegar" si el mapa no pudo montarse */
-      mapEl.innerHTML = mapFallback;
-      console.warn('[Eleva] initMap: Leaflet no pudo montarse, se restaura el enlace de Google Maps:', mapErr);
+      } catch (mapErr) {
+        /* Restaurar el enlace de "cómo llegar" si el mapa no pudo montarse */
+        mapEl.innerHTML = mapFallback;
+        console.warn('[Eleva] initMap: Leaflet no pudo montarse, se restaura el enlace de Google Maps:', mapErr);
+      }
+    }
+
+    /* El mapa está en el pie: se pide Leaflet cuando se acerca a la pantalla */
+    if ('IntersectionObserver' in window) {
+      var mapIO = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            mapIO.disconnect();
+            ensureLeaflet(buildMap);
+            return;
+          }
+        }
+      }, { rootMargin: '400px' });
+      mapIO.observe(mapEl);
+    } else {
+      ensureLeaflet(buildMap);
     }
   }
 

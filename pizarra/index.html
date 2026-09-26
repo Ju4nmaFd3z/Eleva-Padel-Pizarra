@@ -80,10 +80,11 @@
 
   <!-- Fonts (solo CSS, sin JS externo) -->
   <script>try{if(sessionStorage.getItem('eleva-splash-seen')==='1'){document.documentElement.className+=' splash-seen'}}catch(e){}</script>
+  <!-- El hero es un background CSS: se precarga para que no espere al CSS -->
+  <link rel="preload" as="image" href="../assets/img/hero.jpg" fetchpriority="high">
   <link rel="stylesheet" href="../css/fonts.css?v=20260926">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
 
-  <link rel="stylesheet" href="../lib/leaflet.min.css?v=20260926">
   <link rel="stylesheet" href="../css/main.css?v=20260926">
 
   <!-- Fallback: si JS no carga, todo el contenido es visible -->
@@ -98,7 +99,7 @@
 </head>
 <body>
 
-<a href="#hero" class="skip-link" data-i18n="skip.link">Saltar al contenido principal</a>
+<a href="#contenido" class="skip-link" data-i18n="skip.link">Saltar al contenido principal</a>
 
 <!-- ════════════════════════════════════════════════════════════
      GRAIN TEXTURE OVERLAY
@@ -115,14 +116,14 @@
         <path class="triangle-path" d="M17.5 74 L50 12 L82.5 74 M14 89 H86"/>
       </svg>
     </div>
-    <div class="splash-letters" aria-label="ELEVA">
+    <div class="splash-letters" role="img" aria-label="ELEVA">
       <span aria-hidden="true">E</span>
       <span aria-hidden="true">L</span>
       <span aria-hidden="true">E</span>
       <span aria-hidden="true">V</span>
       <span aria-hidden="true">A</span>
     </div>
-    <div class="splash-sub" role="text" aria-label="Pizarra">
+    <div class="splash-sub">
       <span class="splash-sub-rule" aria-hidden="true"></span>
       <span class="splash-sub-text">Pizarra</span>
       <span class="splash-sub-rule" aria-hidden="true"></span>
@@ -172,7 +173,7 @@
     Reservar
   </a>
 
-  <div class="lang-switch" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
+  <div class="lang-switch" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
     <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
     <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
@@ -200,7 +201,7 @@
      data-i18n="nav.bookCourt">
     Reservar pista
   </a>
-  <div class="nav-overlay-lang" aria-label="Seleccionar idioma" data-i18n-arialabel="nav.langLabel">
+  <div class="nav-overlay-lang" role="group" aria-label="Seleccionar idioma" data-i18n-arialabel="nav.langLabel">
     <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
     <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
@@ -217,6 +218,8 @@
 <!-- ════════════════════════════════════════════════════════════
      HERO
 ════════════════════════════════════════════════════════════ -->
+<main id="contenido">
+
 <section id="hero" class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-overlay" aria-hidden="true"></div>
@@ -702,7 +705,7 @@
     <span class="gallery-subtitle" aria-hidden="true" data-i18n="gallery.subtitle">Pizarra · Málaga · Est. 2026</span>
   </div>
 
-  <div class="gallery-lanes" aria-label="Galería de imágenes del club" data-i18n-arialabel="gallery.ariaLabel">
+  <div class="gallery-lanes" role="group" aria-label="Galería de imágenes del club" data-i18n-arialabel="gallery.ariaLabel">
     <!-- Lane 1: velocidad normal -->
     <div class="gallery-lane lane-1">
       <div class="gallery-strip">
@@ -874,6 +877,8 @@
 <!-- ════════════════════════════════════════════════════════════
      FOOTER
 ════════════════════════════════════════════════════════════ -->
+</main>
+
 <footer id="footer" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
   <div class="footer-marquee" aria-hidden="true">
     <span class="footer-marquee-inner">Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp; Eleva Padel Club &nbsp;·&nbsp;</span>
@@ -1000,7 +1005,6 @@
 <!-- ════════════════════════════════════════════════════════════
      SCRIPTS — todo diferido, sin type="module"
 ════════════════════════════════════════════════════════════ -->
-<script src="../lib/leaflet.min.js?v=20260926" defer></script>
 <script src="../lib/gsap.min.js?v=20260926"          defer></script>
 <script src="../lib/ScrollTrigger.min.js?v=20260926" defer></script>
 <script src="../pizarra/manifest.js?v=20260926"   defer></script>
