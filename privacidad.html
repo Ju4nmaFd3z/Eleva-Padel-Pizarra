@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aviso Legal, Privacidad y Normas · Eleva Padel Club</title>
-  <meta name="description" content="Aviso legal, política de privacidad y normas de uso de Eleva Padel Club, Pizarra (Málaga).">
+  <title>Aviso Legal, Privacidad y Normas · Eleva Pádel</title>
+  <meta name="description" content="Aviso legal, política de cancelaciones, normas del club, política de privacidad y política de cookies de Eleva Pádel (marca) y de Eleva Padel Club · Pizarra, Málaga.">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#1A1A1A">
   <meta name="color-scheme" content="dark">
   <link rel="canonical" href="https://eleva-padel-pizarra.vercel.app/privacidad">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z' fill='%23C4A882'/></svg>">
 
-  <!-- Google Fonts — mismas que la web principal -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <!-- Tipografías autoalojadas (sin CDN de Google) — mismas que la web principal -->
+  <link rel="stylesheet" href="css/fonts.css?v=20260926">
 
   <style>
     /* ── TOKENS ── */
@@ -72,6 +70,28 @@
     .back-link:hover { gap: 0.75rem; text-decoration: none; }
     .back-link .arrow { font-size: 1rem; line-height: 1; }
 
+    /* Esta página se enlaza desde la landing de marca (/) y desde el club
+       (/pizarra): se ofrecen los dos destinos, sin JS ni detección de origen. */
+    .back-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.75rem;
+      margin-bottom: 3rem;
+    }
+    .back-nav .back-link { margin-bottom: 0; }
+
+    /* Sub-epígrafe dentro de un apartado (mono, discreto) */
+    section h4 {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: var(--gold-dim);
+      margin-top: 1.9rem;
+      margin-bottom: 0.65rem;
+    }
+
     /* ── HEADER DEL DOCUMENTO ── */
     .doc-header {
       border-bottom: 1px solid #333;
@@ -99,7 +119,7 @@
 
     .doc-header .meta {
       font-size: 0.8rem;
-      color: var(--gray);
+      color: rgba(245, 240, 235, 0.62);
       font-family: var(--font-mono);
       letter-spacing: 0.04em;
     }
@@ -116,10 +136,10 @@
 
     .toc-title {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--gray);
+      color: rgba(245, 240, 235, 0.62);
       margin-bottom: 0.9rem;
     }
 
@@ -198,10 +218,10 @@
     .data-table th {
       text-align: left;
       font-family: var(--font-mono);
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--gray);
+      color: rgba(245, 240, 235, 0.62);
       padding: 0.6rem 1rem;
       border-bottom: 1px solid #2E2E2E;
       font-weight: 400;
@@ -365,7 +385,7 @@
       border-top: 1px solid #2A2A2A;
       padding-top: 2rem;
       font-size: 0.78rem;
-      color: var(--gray);
+      color: rgba(245, 240, 235, 0.62);
       font-family: var(--font-mono);
       letter-spacing: 0.04em;
       text-align: center;
@@ -391,17 +411,23 @@
 
   <div class="page-wrap">
 
-    <!-- VOLVER AL CLUB -->
-    <a href="index.html" class="back-link">
-      <span class="arrow">←</span>
-      <span>Volver al club</span>
-    </a>
+    <!-- VOLVER — esta página se enlaza desde la marca (/) y desde el club (/pizarra) -->
+    <nav class="back-nav" aria-label="Volver">
+      <a href="index.html" class="back-link">
+        <span class="arrow">←</span>
+        <span>Eleva Pádel · marca</span>
+      </a>
+      <a href="pizarra/index.html" class="back-link">
+        <span class="arrow">←</span>
+        <span>Club de Pizarra</span>
+      </a>
+    </nav>
 
     <!-- CABECERA DEL DOCUMENTO -->
     <header class="doc-header">
       <p class="eyebrow">Documentación legal</p>
       <h1>Aviso Legal, Privacidad<br>&amp; Normas del Club</h1>
-      <p class="meta">Última actualización: Junio 2026 &nbsp;·&nbsp; Eleva Padel Club · Pizarra, Málaga</p>
+      <p class="meta">Última actualización: 26 de septiembre de 2026 &nbsp;·&nbsp; Eleva Pádel (marca) &amp; Eleva Padel Club · Pizarra, Málaga</p>
     </header>
 
     <!-- ÍNDICE -->
@@ -412,6 +438,7 @@
         <li><a href="#cancelaciones">Política de Cancelaciones</a></li>
         <li><a href="#normas">Normas del Club</a></li>
         <li><a href="#privacidad">Política de Privacidad</a></li>
+        <li><a href="#fuera-web">Datos que tratamos fuera de la web</a></li>
         <li><a href="#cookies">Política de Cookies</a></li>
       </ol>
     </nav>
@@ -430,6 +457,40 @@
         de este sitio web.
       </p>
 
+      <h3>A qué páginas y a qué actividades se aplica este documento</h3>
+
+      <p>
+        Este documento cubre el <strong>conjunto del sitio web</strong> y las <strong>dos actividades</strong>
+        que se desarrollan a través de él, ambas del mismo titular:
+      </p>
+
+      <ul class="rules-list" role="list" aria-label="Ámbito de aplicación del documento">
+        <li>
+          <span class="bullet">/</span>
+          <span><strong>Eleva Pádel — landing de marca.</strong> Página dirigida a <strong>dueños y
+          responsables de otros clubes y academias de pádel</strong> que quieran incorporarse a la red Eleva
+          Pádel. Es una actividad entre profesionales: no se comercializan en ella servicios deportivos, solo
+          se facilita el contacto por WhatsApp para explorar esa incorporación.</span>
+        </li>
+        <li>
+          <span class="bullet">/pizarra</span>
+          <span><strong>Eleva Padel Club · Pizarra (Málaga).</strong> Web de la primera sede: instalaciones,
+          academia, pools, tarifas y contacto. Es la actividad dirigida a jugadores, alumnos y socios.</span>
+        </li>
+        <li>
+          <span class="bullet">/privacidad</span>
+          <span><strong>Esta página</strong>, enlazada desde las dos anteriores.</span>
+        </li>
+      </ul>
+
+      <p>
+        Las <strong>Secciones II y III</strong> (cancelaciones y normas) se refieren exclusivamente al club de
+        Pizarra. Las <strong>Secciones I, IV, V y VI</strong> se aplican a las dos actividades. Cuando un
+        apartado solo afecte a una de ellas, se indica expresamente. Si en el futuro se incorporan nuevas sedes
+        a la red, cada una tendrá su propia página y quedará cubierta por este mismo documento salvo indicación
+        en contrario.
+      </p>
+
       <h3>Datos del titular</h3>
 
       <table class="data-table" aria-label="Datos identificativos del titular">
@@ -442,7 +503,7 @@
         <tbody>
           <tr>
             <td>Denominación comercial</td>
-            <td>Eleva Padel Club</td>
+            <td>Eleva Pádel (marca) · Eleva Padel Club (sede de Pizarra)</td>
           </tr>
           <tr>
             <td>Régimen jurídico</td>
@@ -458,7 +519,12 @@
           </tr>
           <tr>
             <td>Actividad</td>
-            <td>Club deportivo de pádel: instalaciones, academia y competición</td>
+            <td>
+              (a) Club deportivo de pádel: instalaciones, academia y competición, en Pizarra (Málaga).
+              (b) Desarrollo de la marca <strong>Eleva Pádel</strong> y captación de clubes y academias
+              interesados en incorporarse a la red (actividad entre profesionales, sin venta directa
+              al consumidor).
+            </td>
           </tr>
           <tr>
             <td>Sitio web</td>
@@ -466,7 +532,11 @@
           </tr>
           <tr>
             <td>Alojamiento web</td>
-            <td>Vercel Inc., 340 Pine Street, Suite 701, San Francisco, CA 94104 (EE.UU.)</td>
+            <td>
+              Vercel Inc. (Estados Unidos). Su domicilio social vigente en cada momento es el que figura en su
+              <a href="https://vercel.com/legal/privacy-notice" target="_blank" rel="noopener noreferrer">política de privacidad</a>;
+              a fecha de esta actualización, 440 N Barranca Avenue #4133, Covina, CA 91723 (EE. UU.).
+            </td>
           </tr>
         </tbody>
       </table>
@@ -576,9 +646,18 @@
       </ul>
 
       <div class="notice-box">
+        <strong>Reservas hechas en VOLA:</strong> las reservas de pista realizadas a través de la plataforma
+        externa <a href="https://vola.plus" target="_blank" rel="noopener noreferrer">VOLA</a> están sujetas,
+        además, a las condiciones de uso y de cancelación de esa plataforma. Si tienes dudas sobre el plazo
+        aplicable a tu reserva, consúltalo con el club antes de reservar.
+      </div>
+
+      <div class="notice-box">
         <strong>Importante:</strong> Para cualquier gestión de cancelación o solicitud de recuperación,
         contacta con el club a través de <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         o por teléfono al <a href="tel:+34659143103">+34 659 14 31 03</a> con la mayor antelación posible.
+        El club no dispone de canal de correo electrónico: todas las gestiones se atienden por teléfono,
+        por WhatsApp o en persona.
       </div>
 
     </section>
@@ -640,6 +719,14 @@
           <span class="bullet">—</span>
           <span>Los <strong>menores de edad</strong> deberán estar en todo momento supervisados por un adulto responsable fuera de las actividades organizadas por el club. El club no asume responsabilidad de custodia sobre menores no inscritos en actividades dirigidas.</span>
         </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>La <strong>inscripción de un menor</strong> en la escuela o en cualquier actividad dirigida la realiza siempre su <strong>padre, madre o tutor legal</strong>, que facilita los datos de contacto y autoriza la participación. Cómo se tratan esos datos se explica en la <a href="#fuera-web">Sección V</a>.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>La <strong>publicación de imágenes de menores</strong> en las redes sociales del club requiere <strong>autorización escrita previa</strong> del padre, madre o tutor legal, revocable en cualquier momento (ver <a href="#fuera-web">Sección V</a>).</span>
+        </li>
       </ul>
 
       <h3>Organización de actividades</h3>
@@ -692,11 +779,15 @@
         <tbody>
           <tr>
             <td>Responsable</td>
-            <td>Titular de Eleva Padel Club (actividad no sujeta a inscripción registral obligatoria). La identificación completa del responsable está disponible a solicitud mediante los canales de contacto indicados en el apartado 4.8.</td>
+            <td>Titular de Eleva Padel Club y de la marca Eleva Pádel (actividad no sujeta a inscripción registral obligatoria). La identificación completa del responsable —nombre o razón social y NIF— está disponible a solicitud mediante los canales de contacto indicados en el apartado 4.8.</td>
           </tr>
           <tr>
             <td>Denominación comercial</td>
-            <td>Eleva Padel Club</td>
+            <td>Eleva Pádel · Eleva Padel Club</td>
+          </tr>
+          <tr>
+            <td>Ámbito</td>
+            <td>Un mismo responsable para las dos actividades descritas en la Sección I: el club de Pizarra y la marca Eleva Pádel (captación de clubes).</td>
           </tr>
           <tr>
             <td>Domicilio</td>
@@ -704,7 +795,7 @@
           </tr>
           <tr>
             <td>Contacto para privacidad</td>
-            <td><a href="tel:+34659143103">+34 659 14 31 03</a> · <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a></td>
+            <td><a href="tel:+34659143103">+34 659 14 31 03</a> · <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a> · en persona en las instalaciones del club</td>
           </tr>
         </tbody>
       </table>
@@ -714,41 +805,92 @@
       <h3>4.2 Datos recabados y canales de obtención</h3>
 
       <p>
-        Este sitio web no dispone de formularios propios que almacenen datos en ninguna base de datos,
-        ni de área privada, ni de registro de usuarios. No recabamos datos personales a través de la
-        web de forma directa ni automatizada.
+        Este sitio web es <strong>estático</strong>: no tiene servidor de aplicación propio, ni base de datos,
+        ni área privada, ni registro de usuarios. <strong>Ningún dato personal se almacena en servidores del
+        responsable</strong>, sencillamente porque no existen.
       </p>
 
-      <p>
-        El único canal de contacto habilitado en la web es un botón que abre <strong>WhatsApp</strong>.
-        Cuando el usuario hace clic y decide enviar un mensaje, la comunicación se realiza
-        íntegramente a través de la plataforma de WhatsApp (Meta Platforms Ireland Limited). En ese
-        momento, WhatsApp puede recopilar los datos que el propio usuario facilite voluntariamente
-        en el chat —nombre del perfil de WhatsApp, número de teléfono y el contenido del mensaje—.
-        El responsable solo accede a esa información en el contexto de la conversación.
-      </p>
+      <h4>Formulario de contacto de /pizarra</h4>
 
       <p>
-        Adicionalmente, esta web carga las tipografías mediante <strong>Google Fonts</strong>,
-        un servicio externo de Google LLC. Al acceder a la página, el navegador del usuario realiza
-        una petición a los servidores de Google (googleapis.com / fonts.gstatic.com), lo que puede
-        implicar la transmisión de la dirección IP del usuario y datos técnicos del navegador a
-        Google. El responsable no controla ni almacena esa información; su tratamiento queda sujeto
-        exclusivamente a la política de privacidad de Google.
+        La web del club incluye un <strong>formulario de información sobre la academia</strong> con cuatro
+        campos: <em>nombre</em>, <em>teléfono</em> y <em>nivel de juego</em> (obligatorios) y un
+        <em>mensaje</em> libre (opcional). Es importante entender cómo funciona, porque no se comporta como un
+        formulario convencional:
       </p>
 
+      <ul class="rules-list" role="list" aria-label="Funcionamiento del formulario de contacto">
+        <li>
+          <span class="bullet">01</span>
+          <span>Al pulsar el botón de envío, el formulario <strong>no envía nada a ningún servidor</strong>: no
+          hay destino al que enviarlo. El propio navegador del usuario compone con esos campos un mensaje de
+          texto y abre <strong>WhatsApp</strong> en su dispositivo con el mensaje ya redactado.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span>El mensaje <strong>solo se envía si el usuario lo envía él mismo</strong> desde WhatsApp. Antes
+          puede revisarlo, modificarlo o descartarlo. Si no lo envía, el club nunca ve esos datos.</span>
+        </li>
+        <li>
+          <span class="bullet">03</span>
+          <span>Lo escrito en el formulario <strong>no se guarda en ningún sitio</strong>: ni en el servidor
+          (no hay), ni en el navegador. Al recargar o cerrar la página se pierde.</span>
+        </li>
+        <li>
+          <span class="bullet">04</span>
+          <span>A partir del envío, esos datos viajan y se conservan <strong>dentro de WhatsApp</strong>
+          (Meta Platforms Ireland Ltd.) y en el teléfono del club, igual que cualquier otra conversación.</span>
+        </li>
+      </ul>
+
       <p>
-        El proveedor de alojamiento <strong>Vercel Inc.</strong> puede registrar, de forma automática,
-        datos de acceso técnicos (dirección IP, fecha y hora de la solicitud, URL visitada, código de
-        respuesta HTTP) en sus registros de servidor, en cumplimiento de sus propias obligaciones
-        operativas y de seguridad.
+        El resto de botones de contacto del sitio —WhatsApp directo, grupo de comunidad de WhatsApp, Instagram
+        y el enlace de reservas de VOLA— son <strong>enlaces salientes</strong>: abren la aplicación o el sitio
+        del tercero. Desde ese momento, el tratamiento lo realiza ese tercero como responsable independiente.
       </p>
+
+      <h4>Landing de marca (/)</h4>
+
+      <p>
+        La landing de marca no tiene formularios. Sus botones abren <strong>WhatsApp</strong> con un mensaje
+        prerredactado de dueño de club interesado. Si el usuario lo envía, el responsable trata los datos
+        profesionales que comparta en la conversación (nombre, teléfono, club o academia y contenido del
+        mensaje) con el único fin de valorar y gestionar esa posible incorporación a la red.
+      </p>
+
+      <h4>Datos que se generan por el simple hecho de visitar la web</h4>
+
+      <ul class="rules-list" role="list" aria-label="Datos técnicos de la visita">
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>Vercel Inc.</strong>, proveedor de alojamiento, puede registrar automáticamente datos
+          de acceso técnicos (dirección IP, fecha y hora de la solicitud, URL visitada, código de respuesta
+          HTTP, agente de usuario) en sus registros de servidor, para sus propias obligaciones operativas y
+          de seguridad.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>CARTO.</strong> El mapa del pie de la web del club se dibuja con teselas servidas
+          desde <em>*.basemaps.cartocdn.com</em>, sobre datos cartográficos de <strong>OpenStreetMap</strong>.
+          Cuando ese mapa se muestra, el navegador del usuario solicita esas imágenes directamente a dichos
+          servidores, lo que <strong>revela su dirección IP y datos técnicos del navegador a CARTO</strong>.
+          Es la única conexión a un tercero que se produce sin que el usuario haga clic en nada.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>Las tipografías y las librerías están autoalojadas</strong> en este dominio. Desde
+          septiembre de 2026 la web <strong>ya no carga Google Fonts</strong> ni ninguna librería desde un CDN
+          externo (Leaflet, el motor del mapa, también se sirve desde aquí). <strong>No se envía ningún dato
+          a Google ni a jsDelivr.</strong></span>
+        </li>
+      </ul>
 
       <div class="notice-box">
-        <strong>Resumen:</strong> No guardamos ningún dato personal en servidores propios. Si nos
-        escribes por WhatsApp, tratamos únicamente los datos que tú mismo compartas en esa conversación,
-        y solo para responderte. Los datos técnicos que puedan registrar Google o Vercel están sujetos
-        a sus propias políticas de privacidad.
+        <strong>Resumen:</strong> no guardamos ningún dato personal en servidores propios, porque no tenemos
+        servidor donde guardarlos. El formulario del club no envía nada por sí solo: prepara un mensaje de
+        WhatsApp que tú decides enviar o no. Si nos escribes, tratamos únicamente lo que compartas en esa
+        conversación, y solo para responderte. Los únicos terceros que pueden registrar datos técnicos al
+        cargar la página son Vercel (alojamiento) y CARTO (teselas del mapa).
       </div>
 
 
@@ -766,16 +908,41 @@
           <tr>
             <td>Atención al usuario</td>
             <td>
-              Responder a consultas, solicitudes de información sobre el club, reservas de pistas
-              o inscripciones en actividades que el usuario nos remite voluntariamente a través
-              de WhatsApp.
+              Responder a consultas, solicitudes de información sobre el club, reservas de pista o
+              inscripciones en actividades que el usuario nos remite voluntariamente por WhatsApp
+              o por teléfono.
+            </td>
+          </tr>
+          <tr>
+            <td>Contacto de marca (clubes)</td>
+            <td>
+              Valorar y gestionar el interés de dueños de clubes o academias en incorporarse a la red
+              Eleva Pádel, a partir del contacto que ellos inician por WhatsApp desde la landing.
+            </td>
+          </tr>
+          <tr>
+            <td>Gestión de alumnos y socios</td>
+            <td>
+              Inscribir y organizar a los participantes en la academia, la escuela, las clases y los pools;
+              formar grupos por nivel; avisar de cambios de horario, suspensiones por lluvia y recuperaciones;
+              y cobrar y facturar las cuotas cuando proceda. Se detalla en la
+              <a href="#fuera-web">Sección V</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>Difusión de la actividad</td>
+            <td>
+              Publicar fotografías y vídeos de la actividad del club en sus redes sociales, con el
+              consentimiento de las personas identificables o la autorización escrita de sus padres o tutores
+              si son menores. Se detalla en la <a href="#fuera-web">Sección V</a>.
             </td>
           </tr>
           <tr>
             <td>Funcionamiento del sitio</td>
             <td>
-              Carga de tipografías mediante Google Fonts para la correcta visualización de la web
-              y prestación del servicio de alojamiento por Vercel Inc.
+              Prestación del servicio de alojamiento web por Vercel Inc. y carga de las teselas del mapa de
+              ubicación desde los servidores de CARTO. Las tipografías y el resto del código se sirven desde
+              este mismo dominio, sin terceros.
             </td>
           </tr>
         </tbody>
@@ -794,12 +961,12 @@
         </thead>
         <tbody>
           <tr>
-            <td>Atención de consultas por WhatsApp</td>
+            <td>Atención de consultas por WhatsApp o teléfono</td>
             <td>
               <strong>Consentimiento del interesado</strong> (Art. 6.1.a RGPD): el usuario
-              inicia de forma libre y voluntaria la conversación de WhatsApp, lo que implica
-              el consentimiento para que el responsable trate los datos compartidos en dicha
-              conversación con el fin de atender su consulta.
+              inicia de forma libre y voluntaria la conversación, lo que implica el consentimiento
+              para que el responsable trate los datos compartidos en ella con el fin de atender su
+              consulta.
             </td>
           </tr>
           <tr>
@@ -811,10 +978,53 @@
             </td>
           </tr>
           <tr>
-            <td>Google Fonts (carga de tipografías)</td>
+            <td>Inscripción y prestación del servicio deportivo</td>
             <td>
-              <strong>Interés legítimo</strong> (Art. 6.1.f RGPD): correcta visualización
-              y experiencia de usuario en el sitio web.
+              <strong>Ejecución de un contrato</strong> (Art. 6.1.b RGPD): los datos de alumnos, socios y
+              participantes son necesarios para prestar el servicio solicitado (plaza en un grupo, clase,
+              pool, torneo o alquiler de pista).
+            </td>
+          </tr>
+          <tr>
+            <td>Inscripción de menores de 14 años</td>
+            <td>
+              <strong>Consentimiento del titular de la patria potestad o tutela</strong> (Art. 6.1.a
+              en relación con el Art. 8 RGPD y con el <strong>Art. 7 de la LOPDGDD</strong>, que fija en
+              <strong>14 años</strong> la edad a partir de la cual el menor puede consentir por sí mismo).
+              Por debajo de esa edad, la inscripción y el consentimiento los presta el padre, madre o
+              tutor legal.
+            </td>
+          </tr>
+          <tr>
+            <td>Publicación de imágenes en redes sociales</td>
+            <td>
+              <strong>Consentimiento expreso</strong> (Art. 6.1.a RGPD) de la persona identificable o
+              <strong>autorización escrita</strong> del padre, madre o tutor si se trata de un menor,
+              conforme además a la <strong>Ley Orgánica 1/1982</strong>, de protección civil del derecho al
+              honor, a la intimidad personal y familiar y a la propia imagen.
+            </td>
+          </tr>
+          <tr>
+            <td>Facturación y obligaciones fiscales</td>
+            <td>
+              <strong>Cumplimiento de una obligación legal</strong> (Art. 6.1.c RGPD): normativa tributaria
+              y contable aplicable a la actividad.
+            </td>
+          </tr>
+          <tr>
+            <td>Contacto de dueños de clubes (marca)</td>
+            <td>
+              <strong>Consentimiento</strong> (Art. 6.1.a RGPD) al iniciar la conversación e
+              <strong>interés legítimo</strong> (Art. 6.1.f RGPD) en desarrollar la red de clubes de la
+              marca, en un contexto estrictamente profesional.
+            </td>
+          </tr>
+          <tr>
+            <td>Mapa de ubicación (teselas de CARTO)</td>
+            <td>
+              <strong>Interés legítimo</strong> (Art. 6.1.f RGPD): mostrar al visitante dónde está
+              físicamente el club. Es una conexión técnica necesaria para dibujar el mapa; no se utiliza
+              para identificar ni perfilar a nadie.
             </td>
           </tr>
           <tr>
@@ -822,6 +1032,14 @@
             <td>
               <strong>Interés legítimo</strong> (Art. 6.1.f RGPD): seguridad, integridad
               y correcto funcionamiento del servicio de alojamiento web.
+            </td>
+          </tr>
+          <tr>
+            <td>Idioma elegido y marca de «presentación ya vista»</td>
+            <td>
+              <strong>Art. 22.2 LSSI-CE</strong>: almacenamiento estrictamente técnico y de preferencias
+              solicitado por el propio usuario, <strong>exento del deber de consentimiento</strong>.
+              Ver la <a href="#cookies">Sección VI</a>.
             </td>
           </tr>
         </tbody>
@@ -832,10 +1050,11 @@
       <h3>4.5 Destinatarios y comunicaciones a terceros</h3>
 
       <p>
-        No cedemos datos personales a terceros con fines comerciales, publicitarios ni de ningún otro
-        tipo ajeno a la prestación del servicio solicitado, salvo en los supuestos descritos a
-        continuación, derivados del propio funcionamiento de los servicios que utilizamos y que el
-        usuario activa o acepta implícitamente al navegar por el sitio web:
+        No cedemos datos personales a terceros con fines comerciales, publicitarios ni de ningún otro tipo
+        ajeno a la prestación del servicio solicitado. Los únicos terceros que intervienen son los que se
+        enumeran a continuación, derivados del propio funcionamiento de los servicios que utilizamos: unos
+        actúan como <strong>proveedores o encargados</strong> del responsable y otros como
+        <strong>responsables independientes</strong> a los que el propio usuario acude al hacer clic.
       </p>
 
       <table class="data-table" aria-label="Destinatarios de datos">
@@ -849,33 +1068,65 @@
           <tr>
             <td>WhatsApp / Meta Platforms Ireland Ltd.</td>
             <td>
-              Plataforma de mensajería a través de la cual el usuario contacta con el club de
-              forma voluntaria. El tratamiento de datos en WhatsApp se rige por la
+              Plataforma de mensajería a través de la cual el usuario contacta voluntariamente con el club o
+              con la marca, y en la que funciona el grupo de comunidad del club. Actúa como responsable
+              independiente. El tratamiento de datos en WhatsApp se rige por la
               <a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener noreferrer">política de privacidad de WhatsApp/Meta (EEA)</a>.
             </td>
           </tr>
           <tr>
-            <td>Google LLC (Google Fonts)</td>
+            <td>Instagram / Meta Platforms Ireland Ltd.</td>
             <td>
-              Servicio de tipografías en línea. La dirección IP del usuario puede ser transmitida
-              a servidores de Google al cargar la página. Consulta la
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">política de privacidad de Google</a>.
+              Red social en la que el club publica su actividad
+              (<a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a>).
+              Las imágenes publicadas y las interacciones de los usuarios las trata también Meta como
+              responsable independiente, conforme a la
+              <a href="https://privacycenter.instagram.com/policy" target="_blank" rel="noopener noreferrer">política de privacidad de Instagram</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>VOLA (vola.plus)</td>
+            <td>
+              Plataforma externa de reserva de pistas a la que el usuario accede desde el botón de reservas.
+              Al hacerlo abandona esta web: la cuenta, la reserva y el pago se gestionan en
+              <a href="https://vola.plus" target="_blank" rel="noopener noreferrer">VOLA</a>, que actúa como
+              responsable independiente conforme a sus propias condiciones y política de privacidad. El club
+              accede únicamente a la información de reserva que la plataforma le muestra.
+            </td>
+          </tr>
+          <tr>
+            <td>CARTO (teselas del mapa)</td>
+            <td>
+              Servidores de teselas (<em>*.basemaps.cartocdn.com</em>) desde los que el navegador descarga las
+              imágenes del mapa del pie de página, basadas en datos de
+              <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>.
+              La dirección IP del visitante llega a esos servidores al mostrarse el mapa. Consulta la
+              <a href="https://carto.com/privacy" target="_blank" rel="noopener noreferrer">política de privacidad de CARTO</a>.
             </td>
           </tr>
           <tr>
             <td>Vercel Inc. (alojamiento web)</td>
             <td>
-              Proveedor de alojamiento de este sitio web. Vercel puede registrar datos de
-              acceso técnicos en sus registros de servidor. Consulta la
-              <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">política de privacidad de Vercel</a>.
+              Proveedor de alojamiento de este sitio web. Vercel puede registrar datos de acceso técnicos en
+              sus registros de servidor. Consulta la
+              <a href="https://vercel.com/legal/privacy-notice" target="_blank" rel="noopener noreferrer">política de privacidad de Vercel</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>Asesoría y administraciones públicas</td>
+            <td>
+              Cuando exista obligación legal, los datos de facturación pueden comunicarse a la asesoría fiscal
+              o contable del titular y a la Administración tributaria u otras administraciones públicas
+              competentes.
             </td>
           </tr>
         </tbody>
       </table>
 
       <p>
-        En ningún caso vendemos, alquilamos ni compartimos tus datos con terceros para
-        sus propias finalidades comerciales o de marketing.
+        En ningún caso vendemos, alquilamos ni compartimos tus datos con terceros para sus propias
+        finalidades comerciales o de marketing. Tampoco realizamos perfilado ni decisiones
+        automatizadas con efectos jurídicos.
       </p>
 
 
@@ -883,10 +1134,9 @@
       <h3>4.6 Transferencias internacionales de datos</h3>
 
       <p>
-        Algunos de los proveedores mencionados están radicados o procesan datos en Estados Unidos u
-        otros países fuera del Espacio Económico Europeo (EEE). En tales casos, las transferencias
-        internacionales de datos están amparadas en las siguientes garantías adecuadas, conforme
-        al Capítulo V del RGPD:
+        Algunos de los proveedores mencionados están radicados o procesan datos en Estados Unidos u otros
+        países fuera del Espacio Económico Europeo (EEE). En tales casos, las transferencias internacionales
+        de datos se amparan en las garantías del Capítulo V del RGPD que se indican a continuación:
       </p>
 
       <table class="data-table" aria-label="Transferencias internacionales de datos">
@@ -898,21 +1148,13 @@
         </thead>
         <tbody>
           <tr>
-            <td>Meta Platforms / WhatsApp</td>
+            <td>Meta Platforms (WhatsApp e Instagram)</td>
             <td>
               Marco de Privacidad de Datos UE–EE.UU. (EU-U.S. Data Privacy Framework, DPF),
               adoptado mediante Decisión de Adecuación de la Comisión Europea de 10 de julio
               de 2023 (C/2023/4745); y, con carácter subsidiario, Cláusulas Contractuales Tipo
               (SCCs) aprobadas por la Comisión Europea mediante Decisión de Ejecución
-              (UE) 2021/914.
-            </td>
-          </tr>
-          <tr>
-            <td>Google LLC</td>
-            <td>
-              Marco de Privacidad de Datos UE–EE.UU. (EU-U.S. Data Privacy Framework, DPF) y
-              Cláusulas Contractuales Tipo (SCCs) según la Decisión de Ejecución
-              (UE) 2021/914 de la Comisión Europea.
+              (UE) 2021/914. El responsable en el EEE es Meta Platforms Ireland Ltd.
             </td>
           </tr>
           <tr>
@@ -920,6 +1162,27 @@
             <td>
               Cláusulas Contractuales Tipo (SCCs) incorporadas en el Adendo de Protección de
               Datos (<em>Data Processing Addendum</em>) de Vercel Inc.
+            </td>
+          </tr>
+          <tr>
+            <td>CARTO (teselas del mapa)</td>
+            <td>
+              El titular <strong>no mantiene relación contractual</strong> con CARTO: se trata de un servicio
+              público de teselas que el navegador del visitante solicita directamente, por lo que el titular
+              no puede aportar garantías propias de transferencia. Si el servidor que atiende la petición
+              estuviera fuera del EEE, el tratamiento de esos datos técnicos quedaría sujeto exclusivamente a
+              la <a href="https://carto.com/privacy" target="_blank" rel="noopener noreferrer">política de privacidad de CARTO</a>.
+              Quien prefiera evitar esa conexión puede bloquear el dominio <em>*.basemaps.cartocdn.com</em>
+              en su navegador: el mapa no se dibujará y en su lugar se mostrará un enlace a Google Maps, sin
+              que se pierda ninguna otra funcionalidad.
+            </td>
+          </tr>
+          <tr>
+            <td>VOLA (vola.plus)</td>
+            <td>
+              Responsable independiente. Las transferencias que pueda realizar se rigen por sus propias
+              condiciones y política de privacidad, que el usuario acepta al utilizar la plataforma de
+              reservas.
             </td>
           </tr>
         </tbody>
@@ -936,18 +1199,38 @@
       <h3>4.7 Plazos de conservación</h3>
 
       <p>
-        Los datos que compartas con nosotros a través de WhatsApp se conservarán únicamente durante
-        el tiempo necesario para atender tu consulta o gestión. Una vez atendida, los datos se
-        mantendrán durante el plazo mínimo exigido por la legislación aplicable según la naturaleza
-        de la comunicación; con carácter general, no más de <strong>3 años</strong> desde el último
-        contacto, salvo que la ley imponga un plazo diferente (por ejemplo, en materia fiscal
-        o contractual).
+        <strong>Consultas por WhatsApp o teléfono.</strong> Los datos que compartas se conservan únicamente
+        durante el tiempo necesario para atender tu consulta o gestión. Una vez atendida, se mantienen
+        durante el plazo mínimo exigido por la legislación aplicable según la naturaleza de la comunicación;
+        con carácter general, no más de <strong>3 años</strong> desde el último contacto, salvo que la ley
+        imponga un plazo diferente.
       </p>
 
       <p>
-        Los registros de acceso generados automáticamente por Vercel y los datos técnicos que
-        pudiera tratar Google con motivo de la carga de tipografías están sujetos a los plazos
-        de retención propios de cada proveedor, sobre los que el responsable no ejerce control.
+        <strong>Alumnos, socios y participantes.</strong> Los datos de inscripción se conservan mientras dure
+        la relación con el club y, después, bloqueados, durante los plazos de prescripción de las acciones que
+        pudieran derivarse: con carácter general <strong>4 años</strong> en materia tributaria y hasta
+        <strong>6 años</strong> en materia contable y mercantil. Los datos de contacto de quien ya no participa
+        en ninguna actividad se eliminan una vez transcurridos esos plazos.
+      </p>
+
+      <p>
+        <strong>Imágenes publicadas en redes sociales.</strong> Se mantienen publicadas mientras el club
+        conserve el perfil y no se retire el consentimiento. Al retirarlo, la publicación se elimina del perfil
+        del club con la mayor rapidez posible; el club no puede garantizar la eliminación de copias que
+        terceros hubieran descargado o compartido previamente.
+      </p>
+
+      <p>
+        <strong>Datos técnicos de terceros.</strong> Los registros de acceso generados automáticamente por
+        Vercel y los datos técnicos que CARTO pueda registrar al servir las teselas del mapa están sujetos a
+        los plazos de retención propios de cada proveedor, sobre los que el responsable no ejerce control.
+      </p>
+
+      <p>
+        <strong>Almacenamiento en tu navegador.</strong> El idioma elegido permanece en tu dispositivo hasta
+        que borres los datos del sitio; la marca de «presentación ya vista» se borra sola al cerrar la
+        pestaña. Ver la <a href="#cookies">Sección VI</a>.
       </p>
 
 
@@ -1011,6 +1294,10 @@
             <td><a href="tel:+34659143103">+34 659 14 31 03</a> · <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a></td>
           </tr>
           <tr>
+            <td>En persona</td>
+            <td>En las instalaciones del club, en horario de apertura: Pasaje de Jerez S/N, 29560 Pizarra, Málaga</td>
+          </tr>
+          <tr>
             <td>Correo postal</td>
             <td>Eleva Padel Club, Pasaje de Jerez S/N, 29560 Pizarra, Málaga</td>
           </tr>
@@ -1042,16 +1329,213 @@
 
 
     <!-- ════════════════════════════════════════════════════════════
-         V. POLÍTICA DE COOKIES
+         V. DATOS QUE TRATAMOS FUERA DE LA WEB
+         ════════════════════════════════════════════════════════════ -->
+    <section id="fuera-web">
+      <p class="section-label">Sección V — RGPD, LOPDGDD Art. 7 &amp; LO 1/1982</p>
+      <h2>Datos que tratamos fuera de la web</h2>
+
+      <p>
+        La mayor parte de los datos personales que maneja el club <strong>no llegan por la web</strong>, sino
+        del día a día: apuntarse a la escuela, entrar en el grupo de WhatsApp o salir en una foto. Esta sección
+        explica, en lenguaje claro, qué ocurre con ellos.
+      </p>
+
+      <h3>5.1 Inscripciones en la academia, la escuela y las actividades</h3>
+
+      <p>
+        Cuando alguien se apunta a la academia, a la escuela, a clases particulares, a un pool o a un torneo,
+        el club recoge los datos mínimos para poder organizarlo: <strong>nombre y apellidos, teléfono de
+        contacto, nivel de juego, grupo y horario</strong> y, cuando proceda, los datos necesarios para
+        <strong>cobrar y facturar</strong> la cuota. La inscripción se hace en persona, por teléfono o por
+        WhatsApp.
+      </p>
+
+      <ul class="rules-list" role="list" aria-label="Tratamiento de los datos de inscripción">
+        <li>
+          <span class="bullet">—</span>
+          <span>Esos datos se usan <strong>solo</strong> para prestar el servicio: formar los grupos, avisar de
+          cambios de horario, suspensiones por lluvia y recuperaciones, y llevar el control de pagos.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>No se usan para publicidad</strong>, no se ceden a terceros ajenos al servicio y no se
+          incluyen en ninguna lista de envío comercial.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>El club puede pedir información <strong>relevante para la seguridad de la práctica</strong>
+          (por ejemplo, una lesión o una alergia). Facilitarla es voluntario; si se facilita, se trata con
+          acceso limitado a los entrenadores que lo necesiten y se elimina al terminar la relación.</span>
+        </li>
+      </ul>
+
+      <h3>5.2 Menores de edad: escuela junior (5–9 años y 10 años en adelante)</h3>
+
+      <p>
+        La escuela junior del club trabaja con <strong>niños y niñas desde los 5 años</strong>, en los tramos
+        de <strong>5 a 9</strong> y de <strong>10 años en adelante</strong>. Eso significa que buena parte de la
+        escuela infantil está formada por <strong>menores de 14 años</strong>, a quienes la ley da una
+        protección reforzada.
+      </p>
+
+      <ul class="rules-list" role="list" aria-label="Tratamiento de datos de menores">
+        <li>
+          <span class="bullet">01</span>
+          <span>El <strong>artículo 7 de la LOPDGDD</strong> establece que el consentimiento del menor de
+          <strong>14 años</strong> no basta por sí solo: debe prestarlo su <strong>padre, madre o tutor
+          legal</strong>. Por eso el club exige que la inscripción de cualquier menor de 14 años la realice y
+          firme una persona con la patria potestad o la tutela.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span>Del menor se recogen los datos <strong>mínimos</strong>: nombre y apellidos, edad o fecha de
+          nacimiento y nivel de juego. El <strong>teléfono de contacto es el del adulto responsable</strong>,
+          no el del menor.</span>
+        </li>
+        <li>
+          <span class="bullet">03</span>
+          <span>El padre, madre o tutor puede en cualquier momento <strong>acceder, rectificar, limitar o
+          suprimir</strong> los datos de su hijo o hija y <strong>retirar</strong> cualquier autorización
+          concedida, por los canales del apartado 4.8.</span>
+        </li>
+        <li>
+          <span class="bullet">04</span>
+          <span>La información sobre el menor se facilita <strong>únicamente</strong> a quien ostente la patria
+          potestad o la tutela. Si existe una resolución judicial que limite ese acceso, debe comunicarse al
+          club por escrito.</span>
+        </li>
+      </ul>
+
+      <h3>5.3 Grupo de comunidad de WhatsApp</h3>
+
+      <p>
+        El club mantiene un <strong>grupo o comunidad de WhatsApp</strong> para avisar de pools, horarios,
+        partidos y novedades. Entrar es <strong>totalmente voluntario</strong>: se accede mediante un enlace de
+        invitación y nadie es añadido sin pedirlo.
+      </p>
+
+      <div class="notice-box">
+        <strong>Lo que debes saber antes de entrar:</strong> en un grupo de WhatsApp, <strong>los demás
+        miembros pueden ver tu número de teléfono y el nombre y la foto de tu perfil</strong>, y tú los suyos.
+        Eso es así por el funcionamiento propio de WhatsApp y el club no puede evitarlo ni controlarlo. El club
+        tampoco puede responder del uso que otro miembro haga de ese número (guardarlo, escribirte por privado,
+        etc.). Si prefieres que tu número no sea visible para el resto de jugadores, <strong>no entres en el
+        grupo</strong>: pide que te avisen por WhatsApp individual o por teléfono.
+      </div>
+
+      <ul class="rules-list" role="list" aria-label="Normas del grupo de WhatsApp">
+        <li>
+          <span class="bullet">—</span>
+          <span>Puedes <strong>salir del grupo en cualquier momento</strong> desde la propia aplicación, sin dar
+          explicaciones y sin que eso afecte a tu plaza ni a tus reservas. También puedes pedir al club que te
+          saque.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>El club usa el grupo <strong>solo para información del club</strong>. No comparte en él datos
+          personales de nadie (listados, teléfonos, importes) ni lo utiliza para publicidad de terceros.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>Está prohibido <strong>extraer los números del grupo</strong> para fines propios o comerciales,
+          y difundir fuera de él el contenido o los datos de otros miembros. El club puede expulsar a quien lo
+          haga.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span>Los grupos relativos a la escuela infantil se gestionan con los <strong>padres o
+          tutores</strong>, no con los menores.</span>
+        </li>
+      </ul>
+
+      <h3>5.4 Fotografías y vídeos en Instagram y otras redes</h3>
+
+      <p>
+        El club publica fotografías y vídeos de su actividad (pools, torneos, clases, instalaciones) en
+        <a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a>.
+        La imagen de una persona es un <strong>dato personal</strong> y, además, está protegida como derecho
+        fundamental por la <strong>Ley Orgánica 1/1982</strong>, de protección civil del derecho al honor, a la
+        intimidad personal y familiar y a la propia imagen.
+      </p>
+
+      <ul class="rules-list" role="list" aria-label="Derechos de imagen">
+        <li>
+          <span class="bullet">01</span>
+          <span><strong>Personas adultas identificables:</strong> el club publica su imagen con su
+          <strong>consentimiento</strong>. Ese consentimiento es libre, puede darse para una publicación
+          concreta o de forma general, y <strong>puede retirarse en cualquier momento</strong> sin
+          consecuencia alguna.</span>
+        </li>
+        <li>
+          <span class="bullet">02</span>
+          <span><strong>Menores de edad:</strong> publicar la imagen de un menor requiere
+          <strong>autorización escrita previa del padre, madre o tutor legal</strong>, específica para ese uso.
+          Sin esa autorización firmada, el club no publica la imagen del menor: ni en foto de grupo, ni en
+          vídeo, ni en <em>stories</em>. La autorización es revocable en cualquier momento.</span>
+        </li>
+        <li>
+          <span class="bullet">03</span>
+          <span><strong>Nunca</strong> se publican junto a la imagen de un menor datos que permitan localizarlo
+          (horario exacto de su clase, colegio, apellidos completos) ni se etiqueta su perfil personal.</span>
+        </li>
+        <li>
+          <span class="bullet">04</span>
+          <span><strong>Cómo pedir que se retire una foto:</strong> basta con decírselo al club por WhatsApp,
+          por teléfono o en persona, indicando cuál es la publicación. Se retirará del perfil del club
+          <strong>sin necesidad de justificar el motivo</strong> y con la mayor rapidez posible.</span>
+        </li>
+        <li>
+          <span class="bullet">05</span>
+          <span><strong>Un límite honesto:</strong> una vez publicada en una red social, una imagen puede haber
+          sido vista, descargada o compartida por terceros. El club puede retirarla de su perfil, pero
+          <strong>no puede garantizar</strong> que desaparezca de copias ajenas a su control ni de las cachés
+          de la propia plataforma.</span>
+        </li>
+        <li>
+          <span class="bullet">06</span>
+          <span>Si un tercero graba o publica imágenes por su cuenta dentro de las instalaciones, responde él
+          de esa publicación. El club pide que no se graben clases ni partidos de otras personas sin su
+          permiso, y muy especialmente si aparecen menores.</span>
+        </li>
+      </ul>
+
+      <h3>5.5 Pools, torneos y resultados</h3>
+
+      <p>
+        Si participas en un pool, una liga o un torneo del club, <strong>tu nombre, tu categoría y tus
+        resultados</strong> pueden aparecer en cuadros, emparejamientos, clasificaciones y publicaciones del
+        club, incluidas sus redes sociales: es inherente a la competición. No se publican tu teléfono ni ningún
+        otro dato de contacto. Si prefieres no aparecer con tu nombre completo, indícalo al inscribirte y se
+        buscará una alternativa.
+      </p>
+
+      <h3>5.6 Tus derechos también aquí</h3>
+
+      <p>
+        Todos los derechos de la <a href="#privacidad">Sección IV</a> (acceso, rectificación, supresión,
+        oposición, limitación, portabilidad y retirada del consentimiento) se ejercen igual respecto de estos
+        datos y por los mismos canales del apartado 4.8: teléfono, WhatsApp, en persona en el club o por correo
+        postal.
+      </p>
+
+    </section>
+
+    <hr class="divider">
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         VI. POLÍTICA DE COOKIES
          ════════════════════════════════════════════════════════════ -->
     <section id="cookies">
-      <p class="section-label">Sección V — LSSI-CE Art. 22.2 &amp; RGPD</p>
+      <p class="section-label">Sección VI — LSSI-CE Art. 22.2 &amp; RGPD</p>
       <h2>Política de Cookies</h2>
 
       <p>
-        Esta política informa sobre el uso de cookies y tecnologías similares en el sitio web de
-        Eleva Padel Club, en cumplimiento del artículo 22.2 de la Ley 34/2002, de Servicios de
-        la Sociedad de la Información y del Comercio Electrónico (LSSI-CE), y del RGPD.
+        Esta política informa sobre el uso de cookies y tecnologías similares en el sitio web de Eleva Pádel
+        —tanto en la landing de marca como en la web del club— en cumplimiento del artículo 22.2 de la
+        Ley 34/2002, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE),
+        y del RGPD.
       </p>
 
       <h3>¿Qué son las cookies?</h3>
@@ -1064,24 +1548,83 @@
         tener efectos equivalentes.
       </p>
 
-      <h3>Uso de cookies en este sitio</h3>
+      <h3>Qué usa esta web (y qué no)</h3>
 
       <p>
-        <strong>Eleva Padel Club no utiliza cookies propias</strong> de ningún tipo: no instalamos
-        cookies de sesión, de análisis de tráfico, de personalización ni de publicidad en el
-        dispositivo del usuario. No empleamos ninguna herramienta de analítica web (Google
-        Analytics, Matomo, etc.) ni de publicidad comportamental.
+        <strong>Esta web no utiliza cookies.</strong> Ni propias ni de terceros: no se instalan cookies de
+        sesión, de análisis de tráfico, de personalización ni de publicidad. <strong>No usamos ninguna
+        herramienta de analítica</strong> (Google Analytics, Matomo, Vercel Analytics o similares),
+        <strong>ninguna herramienta de publicidad</strong> y <strong>ningún píxel, etiqueta o identificador de
+        seguimiento</strong>. No perfilamos a los visitantes ni medimos su comportamiento.
       </p>
 
       <p>
-        Sin embargo, este sitio web carga las tipografías mediante <strong>Google Fonts</strong>,
-        un servicio de Google LLC. Al acceder a la página, el navegador del usuario establece
-        una conexión con los servidores de Google (googleapis.com / fonts.gstatic.com) para
-        descargar los archivos de fuentes. Esta conexión puede dar lugar al registro de datos
-        técnicos por parte de Google (dirección IP, información del navegador) y, en función de
-        la configuración del navegador y de la sesión existente con Google, al acceso o creación
-        de identificadores de tercero. Este tratamiento escapa al control del responsable de este
-        sitio web.
+        Lo que sí hace la web es guardar <strong>dos datos técnicos mínimos en tu propio navegador</strong>,
+        que nunca salen de tu dispositivo y a los que el club no tiene acceso:
+      </p>
+
+      <table class="data-table" aria-label="Almacenamiento local utilizado">
+        <thead>
+          <tr>
+            <th>Clave</th>
+            <th>Dónde y cuánto dura</th>
+            <th>Para qué sirve</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>eleva-lang</td>
+            <td><em>localStorage</em>. Permanece hasta que borres los datos de sitio en tu navegador.</td>
+            <td>Recordar el idioma que has elegido (español, inglés o neerlandés) para no volver al español en
+            cada visita.</td>
+            <td>
+              <span class="cell-tags">
+                <span class="cell-tag">Preferencia</span>
+                <span class="cell-tag">Propia</span>
+                <span class="cell-tag">Exenta</span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>eleva-splash-seen</td>
+            <td><em>sessionStorage</em>. Se borra sola al cerrar la pestaña o el navegador.</td>
+            <td>Recordar que ya has visto la animación de presentación, para no repetírtela al navegar entre
+            páginas durante la misma visita.</td>
+            <td>
+              <span class="cell-tags">
+                <span class="cell-tag">Técnica</span>
+                <span class="cell-tag">Propia</span>
+                <span class="cell-tag">Exenta</span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Las dos son <strong>almacenamiento estrictamente técnico y de preferencias del propio usuario</strong>
+        y quedan <strong>exentas del deber de consentimiento</strong> del artículo 22.2 de la LSSI-CE, en los
+        términos de la <em>Guía sobre el uso de las cookies</em> de la Agencia Española de Protección de Datos:
+        no identifican a nadie, no se comparten con terceros, no salen de tu dispositivo y su única función es
+        respetar una elección que has hecho tú y no repetir una animación que ya has visto.
+      </p>
+
+      <div class="notice-box">
+        <strong>Por eso esta web no muestra ningún banner de cookies.</strong> Un aviso de consentimiento solo
+        es obligatorio cuando existen cookies o tecnologías equivalentes que lo requieren, y aquí no hay
+        ninguna; mostrarlo sin necesidad sería además confuso. Si en el futuro se incorporase cualquier
+        herramienta de analítica o de publicidad, se implantaría el mecanismo de consentimiento previo
+        correspondiente y se actualizaría este documento antes de activarla.
+      </div>
+
+      <h3>Conexiones a terceros al cargar la página</h3>
+
+      <p>
+        Todo el código y las tipografías de esta web se sirven <strong>desde su propio dominio</strong>: no hay
+        CDN externos. Desde septiembre de 2026 se retiraron <strong>Google Fonts</strong> (las tipografías están
+        autoalojadas) y <strong>jsDelivr</strong> (la librería del mapa, Leaflet, también es local). Queda una
+        única conexión externa automática:
       </p>
 
       <table class="data-table" aria-label="Tecnologías de terceros">
@@ -1095,8 +1638,10 @@
         </thead>
         <tbody>
           <tr>
-            <td>Google Fonts (Google LLC)</td>
-            <td>Carga de tipografías para la correcta visualización del sitio web</td>
+            <td>CARTO (*.basemaps.cartocdn.com)</td>
+            <td>Descarga de las imágenes (teselas) del mapa de ubicación del pie de página, sobre datos de
+            OpenStreetMap. No instala cookies en el dispositivo: lo que ocurre es que la petición de esas
+            imágenes revela la dirección IP y datos técnicos del navegador.</td>
             <td>
               <span class="cell-tags">
                 <span class="cell-tag">Técnica</span>
@@ -1104,22 +1649,46 @@
               </span>
             </td>
             <td>
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
-                Política de privacidad de Google
+              <a href="https://carto.com/privacy" target="_blank" rel="noopener noreferrer">
+                Política de privacidad de CARTO
               </a>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Cómo gestionar o bloquear las cookies de terceros</h3>
+      <p>
+        Los enlaces a <strong>WhatsApp</strong>, <strong>Instagram</strong> y <strong>VOLA</strong> no cargan
+        nada dentro de esta web: se activan solo cuando el usuario hace clic y, en ese momento, pasa a la
+        aplicación o al sitio de ese tercero, con sus propias cookies y políticas. Esta web <strong>no
+        incrusta</strong> reproductores, mapas de Google, <em>widgets</em> de redes sociales ni ningún otro
+        contenido de terceros.
+      </p>
+
+      <h3>Cómo bloquear estas conexiones o borrar lo guardado</h3>
 
       <p>
-        Puedes configurar tu navegador para bloquear cookies de terceros o eliminar las existentes.
-        Ten en cuenta que bloquear las conexiones a Google Fonts puede afectar a la apariencia
-        visual del sitio (las fuentes se mostrarán con tipografías del sistema), pero no alterará
-        su funcionalidad esencial. A continuación encontrarás los enlaces a la configuración de
-        cookies de los navegadores más habituales:
+        Puedes configurar tu navegador para bloquear cookies y conexiones de terceros o para borrar los datos
+        que los sitios guardan en tu dispositivo. Dos apuntes concretos para esta web:
+      </p>
+
+      <ul class="rules-list" role="list" aria-label="Cómo bloquear o borrar">
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>Para no conectar con CARTO:</strong> bloquea el dominio
+          <em>*.basemaps.cartocdn.com</em>. El mapa del pie no se dibujará y en su lugar aparecerá un enlace
+          «Ver en Google Maps»; el resto de la web funciona igual.</span>
+        </li>
+        <li>
+          <span class="bullet">—</span>
+          <span><strong>Para borrar el idioma guardado:</strong> usa la opción de tu navegador para eliminar
+          «cookies y datos de sitios» de este dominio, o navega en ventana privada, donde nada persiste. Tras
+          borrarlo, la web volverá a mostrarse en español.</span>
+        </li>
+      </ul>
+
+      <p>
+        Enlaces a la configuración de los navegadores más habituales:
       </p>
 
       <ul class="browser-list">
@@ -1138,10 +1707,10 @@
       </ul>
 
       <div class="notice-box">
-        <strong>En resumen:</strong> Esta web no instala ninguna cookie propia. El único tercero
-        que puede registrar datos técnicos al cargar la página es Google, a través del servicio
-        Google Fonts utilizado para las tipografías. No empleamos herramientas de analítica,
-        publicidad ni seguimiento de ningún tipo.
+        <strong>En resumen:</strong> esta web no usa ninguna cookie, ninguna analítica, ninguna publicidad y
+        ningún sistema de seguimiento, y por eso no muestra banner de cookies. Solo guarda en tu navegador el
+        idioma que has elegido y una marca de «presentación ya vista», ambas exentas de consentimiento. La
+        única conexión automática a un tercero es la descarga de las teselas del mapa desde CARTO.
       </div>
 
     </section>
@@ -1150,14 +1719,16 @@
 
     <!-- PIE DEL DOCUMENTO -->
     <footer class="doc-footer">
-      <p>Eleva Padel Club &nbsp;·&nbsp; Pasaje de Jerez S/N, 29560 Pizarra, Málaga</p>
+      <p>Eleva Pádel · Eleva Padel Club &nbsp;·&nbsp; Pasaje de Jerez S/N, 29560 Pizarra, Málaga</p>
       <p>
         <a href="tel:+34659143103">+34 659 14 31 03</a> &nbsp;·&nbsp;
+        <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp</a> &nbsp;·&nbsp;
         <a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a>
       </p>
-      <p style="margin-top: 0.5rem;">Última actualización: Junio 2026</p>
+      <p style="margin-top: 0.5rem;">Última actualización: 26 de septiembre de 2026</p>
       <p style="margin-top: 1rem;">
-        <a href="index.html">← Volver al club</a>
+        <a href="index.html">← Eleva Pádel · marca</a> &nbsp;·&nbsp;
+        <a href="pizarra/index.html">← Club de Pizarra</a>
       </p>
     </footer>
 

@@ -1,0 +1,10 @@
+# Documentos internos y de trabajo: nunca deben publicarse
+presupuesto/
+.claude/
+.vscode/
+
+# Plantilla de alta de clubes: material interno, no una página pública
+clubs/
+
+# Documentación del repo
+README.md

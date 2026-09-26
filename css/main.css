@@ -14,6 +14,14 @@
   --gray:       #7A7268;
   --black-mid:  #141414;
 
+  /* Tintas accesibles (WCAG AA ≥4.5:1) para texto sobre fondos CLAROS.
+     El dorado de marca sólo pasa AA sobre negro (7.68:1); sobre crema
+     (#F5F0EB) da 2.00:1 y sobre beige (#E8E0D8) 1.74:1, así que en
+     secciones claras se usa --gold-ink. Igual con el gris (3.63:1 sobre
+     beige) → --ink-soft. En fondos oscuros se mantiene el dorado puro. */
+  --gold-ink:   #7A5C33;   /* 4.72:1 sobre beige · 5.44:1 sobre crema */
+  --ink-soft:   #5F574E;   /* 5.43:1 sobre beige · 6.27:1 sobre crema */
+
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Inter', system-ui, -apple-system, sans-serif;
   --font-mono:    'Space Mono', 'Courier New', monospace;
@@ -46,20 +54,23 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Anclas: compensa la nav fija cuando el salto NO pasa por initSmoothScroll
+   (recarga con #hash, botón atrás, foco a un id). */
+section[id] { scroll-margin-top: var(--nav-h); }
+
 body {
   font-family: var(--font-body);
   font-size: var(--t-base);
   color: var(--white-warm);
   background: var(--black);
   overflow-x: hidden;
-  cursor: none;
 }
 
 body.touch-device { cursor: auto; }
 
 img, video { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
-button { border: none; background: none; font: inherit; cursor: none; }
+button { border: none; background: none; font: inherit; cursor: pointer; }
 button:focus-visible,
 a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 ul { list-style: none; }
@@ -137,6 +148,19 @@ svg { display: block; }
   a       { cursor: pointer; }
 }
 
+/* cursor:none SÓLO cuando el cursor personalizado se ha inicializado de
+   verdad (main.js añade .has-custom-cursor a <html>). Sin JS —o si falla—
+   el puntero nativo sigue visible y correcto. Los overrides equivalentes
+   para forced-colors / hover:none están más abajo con la misma
+   especificidad, y ganan por orden en la cascada. */
+html.has-custom-cursor body,
+html.has-custom-cursor button,
+html.has-custom-cursor a,
+html.has-custom-cursor .btn,
+html.has-custom-cursor .form-group select,
+html.has-custom-cursor .team-card,
+html.has-custom-cursor .sponsor-row { cursor: none; }
+
 /* ── 5. SPLASH ─────────────────────────────────────────────────── */
 #splash {
   position: fixed;
@@ -146,12 +170,18 @@ svg { display: block; }
   align-items: center;
   justify-content: center;
   z-index: 5000;
-  animation: splash-exit .6s var(--ease-cinematic) 4.5s forwards;
+  /* Tiempo total en pantalla ≈1.15 s (0.8 s de entrada + 0.35 s de salida).
+     main.js lo oculta a los 1000 ms; esta animación es la red de seguridad
+     si el JS no llega a ejecutarse. */
+  animation: splash-exit .35s var(--ease-cinematic) .8s forwards;
 }
 @keyframes splash-exit {
   to { opacity: 0; pointer-events: none; visibility: hidden; }
 }
 #splash.hidden { display: none; }
+/* Ya se mostró en esta sesión (main.js marca <html class="splash-seen">
+   leyendo sessionStorage): no se repite en cada navegación interna. */
+html.splash-seen #splash { display: none !important; }
 
 .splash-inner {
   display: flex;
@@ -177,7 +207,7 @@ svg { display: block; }
   stroke-miterlimit: 6;
   stroke-dasharray: 215;
   stroke-dashoffset: 215;
-  animation: draw-triangle 1.4s var(--ease-out) forwards;
+  animation: draw-triangle .5s var(--ease-out) forwards;
 }
 @keyframes draw-triangle { to { stroke-dashoffset: 0; } }
 
@@ -197,14 +227,47 @@ svg { display: block; }
   display: inline-block;
   opacity: 0;
   transform: translateY(28px);
-  animation: letter-rise .5s var(--ease-out) forwards;
+  animation: letter-rise .32s var(--ease-out) forwards;
 }
-.splash-letters span:nth-child(1) { animation-delay: .8s; }
-.splash-letters span:nth-child(2) { animation-delay: 1.0s; }
-.splash-letters span:nth-child(3) { animation-delay: 1.2s; }
-.splash-letters span:nth-child(4) { animation-delay: 1.4s; }
-.splash-letters span:nth-child(5) { animation-delay: 1.6s; }
+.splash-letters span:nth-child(1) { animation-delay: .12s; }
+.splash-letters span:nth-child(2) { animation-delay: .18s; }
+.splash-letters span:nth-child(3) { animation-delay: .24s; }
+.splash-letters span:nth-child(4) { animation-delay: .30s; }
+.splash-letters span:nth-child(5) { animation-delay: .36s; }
 @keyframes letter-rise { to { opacity: 1; transform: translateY(0); } }
+
+/* Sub-línea del splash: localidad del club (— PIZARRA —).
+   Solo aparece en páginas de club (la landing no incluye .splash-sub).
+   Cada club pone aquí su localidad al copiar la plantilla. */
+.splash-sub {
+  display: flex;
+  align-items: center;
+  gap: clamp(.7rem, 2.5vw, 1.25rem);
+  opacity: 0;
+  animation: splash-sub-in .3s var(--ease-out) .42s forwards;
+}
+.splash-sub-text {
+  font-family: var(--font-mono);
+  font-size: clamp(.68rem, 2vw, .92rem);
+  letter-spacing: .5em;
+  text-indent: .5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.splash-sub-rule {
+  width: clamp(22px, 6vw, 46px);
+  height: 1px;
+  background: rgba(196,168,130,.45);
+  transform: scaleX(0);
+  animation: splash-rule-in .3s var(--ease-out) .5s forwards;
+}
+@keyframes splash-sub-in  { to { opacity: 1; } }
+@keyframes splash-rule-in { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .splash-sub { opacity: 1; animation: none; }
+  .splash-sub-rule { transform: scaleX(1); animation: none; }
+}
 
 .splash-bar-wrap {
   width: clamp(120px, 30vw, 200px);
@@ -216,8 +279,8 @@ svg { display: block; }
   height: 100%;
   background: var(--gold);
   width: 0;
-  animation: bar-fill 3.6s ease forwards;
-  animation-delay: .5s;
+  animation: bar-fill .75s ease forwards;
+  animation-delay: .05s;
 }
 @keyframes bar-fill { to { width: 100%; } }
 
@@ -327,7 +390,7 @@ svg { display: block; }
 
 .nav-links {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.9rem;
   align-items: center;
 }
 .nav-links a {
@@ -351,6 +414,16 @@ svg { display: block; }
 }
 .nav-links a:hover { color: var(--white-warm); }
 .nav-links a:hover::after { opacity: 1; }
+
+/* Enlace de vuelta a la marca: agrupado junto al logo y separado de las secciones */
+.nav-links a.nav-back {
+  color: var(--gold);
+  padding-right: 1.4rem;
+  margin-right: .5rem;
+  border-right: 1px solid rgba(196,168,130,.28);
+}
+.nav-links a.nav-back:hover { color: var(--gold-hover); }
+.nav-links a.nav-back::after { content: none; }
 
 .nav-cta {
   font-family: var(--font-mono);
@@ -396,7 +469,12 @@ svg { display: block; }
   z-index: 190;
   flex-direction: column;
   align-items: center;
+  /* `safe center` centra mientras quepa y, cuando no cabe, se comporta como
+     flex-start: sin esto el desbordamiento cae ARRIBA del contenedor
+     centrado (primer enlace en top:-78px a 375×667) y no hay forma de
+     hacerle scroll. Se declara `center` antes como fallback. */
   justify-content: center;
+  justify-content: safe center;
   gap: 2.5rem;
   /* Respeta notch / home indicator y deja hueco bajo la barra de nav */
   padding:
@@ -405,11 +483,26 @@ svg { display: block; }
     max(1.5rem, env(safe-area-inset-bottom))
     max(1.5rem, env(safe-area-inset-left));
   overflow-y: auto;
+  overscroll-behavior: contain;
   opacity: 0;
+  /* visibility:hidden saca del orden de foco/hit-testing todo lo que hay
+     dentro mientras está cerrado (12-15 enlaces invisibles eran tabulables).
+     Se transiciona para que el fundido de salida siga viéndose. */
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity .3s;
+  /* `visibility 0s linear .3s` al cerrar: espera a que acabe el fundido y
+     entonces oculta. Al abrir, la regla .is-open la conmuta sin retardo ni
+     transición: si se transicionase, el focus() que hace initNav justo
+     después de añadir .is-open se descartaba (el elemento aún contaba como
+     invisible) y el primer enlace no recibía el foco. */
+  transition: opacity .3s, visibility 0s linear .3s;
 }
-.nav-overlay.is-open { opacity: 1; pointer-events: auto; }
+.nav-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .3s, visibility 0s;
+}
 .nav-overlay a {
   font-family: var(--font-display);
   font-size: clamp(2rem, 8vw, 3.5rem);
@@ -430,6 +523,20 @@ svg { display: block; }
   letter-spacing: .1em;
   text-transform: uppercase;
   margin-top: 1rem;
+}
+/* Viewports cortos (iPhone SE/8 en vertical): con 8 enlaces + CTA + idioma
+   el contenido medía ~825 px contra 667 px de alto. Comprimimos gap y
+   tipografía para que quepa sin scroll; si aún no cabe, `safe center`
+   deja el scroll operativo con el primer enlace alcanzable. */
+@media (max-height: 760px) {
+  .nav-overlay { gap: 1.1rem; }
+  .nav-overlay a { font-size: clamp(1.4rem, 5.5vw, 2rem); }
+  .nav-overlay .nav-overlay-cta { font-size: var(--t-xs); margin-top: .5rem; padding: .7rem 1.6rem; }
+  .nav-overlay-lang { padding-top: 10px; margin-top: 10px; }
+}
+@media (max-height: 620px) {
+  .nav-overlay { gap: .6rem; }
+  .nav-overlay a { font-size: 1.25rem; }
 }
 
 /* ── 7. BRAND MARK (lateral fijo) ──────────────────────────────── */
@@ -502,7 +609,7 @@ svg { display: block; }
   border-radius: 2px;
   transition: background .25s, color .25s, border-color .25s, transform .2s;
   white-space: nowrap;
-  cursor: none;
+  cursor: pointer;
   touch-action: manipulation;
 }
 .btn:hover { transform: translateY(-1px); }
@@ -745,7 +852,7 @@ svg { display: block; }
   background: var(--gold);
   color: var(--black);
   font-family: var(--font-mono);
-  font-size: .6rem;
+  font-size: .75rem;
   font-weight: 700;
   letter-spacing: .2em;
   padding: .35rem .9rem;
@@ -755,6 +862,9 @@ svg { display: block; }
 
 /* Club text side */
 .club-content { position: relative; padding-top: 1rem; }
+/* El dorado de marca sólo pasa AA sobre negro; en la sección clara la
+   etiqueta usa la tinta dorada oscura (5.44:1 sobre crema). */
+.section-club .section-label { color: var(--gold-ink); }
 .section-watermark {
   position: absolute;
   top: -1.5rem; left: -1rem;
@@ -795,7 +905,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--gray);
+  color: var(--ink-soft);
   border-left: 2px solid var(--gold);
   padding-left: 1rem;
   margin-bottom: 2rem;
@@ -822,14 +932,14 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--gray);
+  color: var(--ink-soft);
 }
 .club-def dd {
   font-size: var(--t-sm);
   color: var(--black);
 }
-.club-def dd a { color: var(--gold); border-bottom: 1px solid rgba(196,168,130,.3); }
-.club-def dd a:hover { border-color: var(--gold); }
+.club-def dd a { color: var(--gold-ink); border-bottom: 1px solid rgba(122,92,51,.4); }
+.club-def dd a:hover { border-color: var(--gold-ink); }
 
 /* ── 14. SECCIÓN 02 — SERVICIOS (scroll horizontal) ────────────── */
 .section-services {
@@ -878,27 +988,35 @@ svg { display: block; }
   margin-bottom: 2rem;
   opacity: .9;
 }
+/* Los iconos están DIBUJADOS por defecto: antes arrancaban en
+   stroke-dashoffset:1000 y sólo se veían cuando el JS añadía .icon-drawn,
+   así que sin JS/GSAP quedaban invisibles para siempre. Ahora el trazado
+   es el estado base y .icon-drawn sólo dispara la animación de dibujo. */
 .service-icon path,
 .service-icon rect,
 .service-icon ellipse,
 .service-icon line,
 .service-icon circle {
   stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  transition: stroke-dashoffset 1.6s var(--ease-out);
+  stroke-dashoffset: 0;
 }
 .service-card.icon-drawn .service-icon path,
 .service-card.icon-drawn .service-icon rect,
 .service-card.icon-drawn .service-icon ellipse,
 .service-card.icon-drawn .service-icon line,
 .service-card.icon-drawn .service-icon circle {
-  stroke-dashoffset: 0;
+  animation: icon-draw 1.6s var(--ease-out) both;
+}
+@keyframes icon-draw {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
 }
 .service-num {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: .2em;
-  opacity: .4;
+  /* .4 daba 3.4:1 sobre negro y 2.6:1 sobre beige */
+  opacity: .72;
 }
 
 .service-right {
@@ -915,7 +1033,7 @@ svg { display: block; }
   text-transform: uppercase;
   color: var(--gold);
 }
-.card-light .service-cat { color: var(--gray); }
+.card-light .service-cat { color: var(--ink-soft); }
 .service-title {
   font-family: var(--font-display);
   font-size: var(--t-4xl);
@@ -940,7 +1058,8 @@ svg { display: block; }
   font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: .2em;
-  opacity: .35;
+  /* .35 daba 3.0:1 sobre negro y 2.3:1 sobre beige */
+  opacity: .72;
   margin-top: .5rem;
 }
 
@@ -967,7 +1086,7 @@ svg { display: block; }
     touch-action: pan-x pan-y;
     overscroll-behavior-x: contain;
     height: auto;
-    min-height: 85vh;
+    min-height: 85dvh;
     scrollbar-width: none;
   }
   .services-track::-webkit-scrollbar { display: none; }
@@ -975,7 +1094,7 @@ svg { display: block; }
   .service-card {
     flex: 0 0 100%;
     width: 100%;
-    min-height: 85vh;
+    min-height: 85dvh;
     height: auto;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
@@ -1133,7 +1252,6 @@ svg { display: block; }
   color: rgba(245,240,235,.6);
 }
 .academy-includes {
-  list-style: none;
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -1264,11 +1382,12 @@ svg { display: block; }
   align-items: center;
   gap: .5rem;
   font-family: var(--font-mono);
-  font-size: .62rem;
+  font-size: .75rem;      /* 12px mínimo (antes 9.9px) */
   letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--pool-accent, var(--gold));
-  opacity: .7;
+  /* .7 dejaba los acentos mixta/rocha en 3.60:1 sobre #141414 */
+  opacity: .88;
   transition: opacity .4s var(--ease-out), letter-spacing .4s var(--ease-out);
 }
 .pool-card:hover .pool-cta-line { opacity: 1; letter-spacing: .32em; }
@@ -1310,10 +1429,10 @@ svg { display: block; }
 }
 .pools-swipe-label {
   font-family: var(--font-mono);
-  font-size: .6rem;
+  font-size: .75rem;      /* 12px mínimo (antes 9.6px) */
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: rgba(196,168,130,.62);
+  color: rgba(196,168,130,.85);   /* .62 → 3.7:1 sobre #141414 */
 }
 @keyframes pool-swipe-hint {
   0%   { left: 0; opacity: 0; }
@@ -1340,7 +1459,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(245,240,235,0.4);
+  color: rgba(245,240,235,0.62);   /* .4 → 3.4:1 */
   flex-shrink: 0;
 }
 .pools-perks-item {
@@ -1349,7 +1468,7 @@ svg { display: block; }
   color: rgba(245,240,235,0.68);
 }
 .pools-perks-dot {
-  color: rgba(245,240,235,0.25);
+  color: rgba(245,240,235,0.55);
   flex-shrink: 0;
 }
 .pools-perks-item--prize {
@@ -1383,7 +1502,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(26,26,26,0.5);
+  color: rgba(26,26,26,0.72);
   margin-top: 1rem;
 }
 
@@ -1534,16 +1653,19 @@ svg { display: block; }
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: .7;
+  opacity: .85;            /* .7 → 4.41:1 sobre #141414 */
   transition: opacity .25s;
 }
 .contact-secondary:hover { opacity: 1; }
 
+/* "Próximamente": antes opacity .35 (1.9:1). Se distingue por color apagado
+   (crema en lugar de dorado) en vez de por opacidad, y sigue legible. */
 .contact-secondary--soon {
-  opacity: .35;
+  color: rgba(245,240,235,.62);
+  opacity: 1;
   cursor: default;
 }
-.contact-secondary--soon:hover { opacity: .35; }
+.contact-secondary--soon:hover { color: rgba(245,240,235,.62); opacity: 1; }
 
 .contact-right {
   padding: clamp(4rem, 8vw, 7rem) var(--container-pad);
@@ -1605,7 +1727,7 @@ svg { display: block; }
   outline: 3px solid var(--gold);
   outline-offset: 2px;
 }
-.form-group select { cursor: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A882' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+.form-group select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C4A882' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
 .form-group select option { background: var(--black); color: var(--white-warm); }
 .form-group textarea { resize: vertical; min-height: 100px; }
 .form-submit { align-self: flex-start; }
@@ -1619,7 +1741,6 @@ svg { display: block; }
 
 /* Contact info strip */
 .contact-info {
-  grid-column: 1 / -1;
   border-top: 1px solid rgba(196,168,130,.12);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1760,7 +1881,7 @@ svg { display: block; }
   letter-spacing: .15em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: .6;
+  opacity: .85;            /* .6 → 3.4:1 sobre #0F0F0F */
   margin-bottom: .2rem;
 }
 .footer-contact-item .val {
@@ -1783,7 +1904,7 @@ svg { display: block; }
 }
 .footer-legal {
   font-family: var(--font-mono);
-  font-size: .6rem;
+  font-size: .75rem;      /* 12px mínimo (antes 9.6px) */
   letter-spacing: .08em;
   color: rgba(245,240,235,.55);
 }
@@ -1792,27 +1913,31 @@ svg { display: block; }
 
 .footer-credit {
   font-family: var(--font-mono);
-  font-size: .6rem;
+  font-size: .75rem;      /* 12px mínimo (antes 9.6px) */
   letter-spacing: .08em;
   color: rgba(245,240,235,.55);
 }
 .footer-credit a {
-  color: rgba(196,168,130,.6);
-  border-bottom: 1px solid rgba(196,168,130,.2);
+  color: rgba(196,168,130,.85);   /* .6 → 3.4:1 sobre #0F0F0F */
+  border-bottom: 1px solid rgba(196,168,130,.35);
   transition: color .2s;
 }
 .footer-credit a:hover { color: var(--gold); }
 
 /* ── 20. RESPONSIVE ────────────────────────────────────────────── */
 @media (max-width: 1024px) {
+  /* Nav: en tablet (≤1024) el menú completo no cabe —el club tiene 8 enlaces
+     + CTA + selector de idioma—, así que se colapsa a burger + overlay. Es
+     coherente con el breakpoint táctil ≤1024 que ya usan servicios y pools.
+     El overlay lo abre/cierra initNav por JS (display inline), así que no hace
+     falta forzar aquí su display. */
+  .nav-links, .nav-cta { display: none; }
+  .nav-burger { display: flex; }
+  #main-nav .lang-switch { display: none; }
+
   .club-grid { grid-template-columns: 1fr; }
   .club-collage { height: 380px; }
   .academy-grid { grid-template-columns: 1fr; gap: 1px; }
-  .academy-rates-grid { grid-template-columns: 1fr; }
-  .academy-rate-block { padding: 2rem 0; border-right: none; border-bottom: 1px solid rgba(196,168,130,.12); }
-  .academy-rate-block:last-child { border-bottom: none; }
-  .academy-rates-header { flex-direction: column; gap: .8rem; }
-  .academy-rates-sub { text-align: left; }
   .pool-card { flex-basis: clamp(200px, 30vw, 300px); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .contact-info { grid-template-columns: repeat(2, 1fr); }
@@ -1842,11 +1967,13 @@ svg { display: block; }
 }
 
 @media (max-width: 768px) {
-  .nav-links, .nav-cta { display: none; }
-  .nav-burger { display: flex; }
-  .nav-overlay { display: flex; }
+  /* (Se eliminó `.nav-overlay { display: flex }`: dejaba el overlay
+     renderizado y sus 12-15 enlaces enfocables con el menú cerrado.
+     initNav pone display:flex inline al abrir y none al cerrar.) */
   .brand-mark { display: none; }
   .fab-triangle { bottom: 1.5rem; right: 1.5rem; }
+  /* Indicador de scroll decorativo: el FAB ocupa la misma esquina en móvil */
+  .hero-scroll { display: none; }
   .hero-ctas { flex-direction: column; align-items: stretch; }
   .hero-ctas .btn { width: 100%; justify-content: center; }
   .contact-split { grid-template-columns: 1fr; }
@@ -1873,7 +2000,7 @@ svg { display: block; }
   .pools-aura { display: none; }
   /* CTA "Apuntarme" siempre visible y legible en táctil (el :hover no
      se dispara nunca con el dedo, quedaría atenuado al 70%). */
-  .pool-cta-line { opacity: 1; font-size: .68rem; }
+  .pool-cta-line { opacity: 1; }
   /* Pista de swipe: incita a deslizar e indica que hay más insignias */
   .pools-swipe { display: flex; }
 
@@ -1887,27 +2014,24 @@ svg { display: block; }
     --t-lg:  1.125rem;    /* 18px */
   }
 
-  /* Inputs al menos 16px → evita el auto-zoom de iOS Safari */
-  .form-group input,
-  .form-group select,
-  .form-group textarea { font-size: 1rem; }
-
   /* Tamaños que no usan tokens */
   .contact-info-label       { font-size: 0.8125rem; }
   .footer-legal,
-  .footer-credit            { font-size: 0.6875rem; } /* texto legal, admisible */
+  .footer-credit            { font-size: 0.75rem; } /* 12px mínimo (antes 11px) */
 
   /* Mayor line-height en textos densos */
   .service-desc             { line-height: 1.85; }
   .academy-card-desc        { line-height: 1.8; color: rgba(245,240,235,.82); }
   .academy-includes li      { color: rgba(245,240,235,.78); }
   .club-def dd              { line-height: 1.65; }
+  /* Etiquetas cortas (Pistas, Horario…): 140px desperdiciaba ancho y apretaba
+     el valor en móvil. Reducimos la columna del término. */
+  .club-def                 { grid-template-columns: 104px 1fr; gap: .4rem 1rem; }
 
   /* ── EQUIPO móvil: gap más compacto y jerarquía ── */
   .team-header { margin-bottom: 2.5rem; }
   .team-grid { gap: 2.75rem; }
   .team-photo-wrap { max-width: 280px; }
-  .team-name { font-size: 1.4rem; }
 
   /* Tap targets mínimos de 44px para links de footer */
   .footer-links a {
@@ -1929,91 +2053,32 @@ svg { display: block; }
     justify-content: center;
     padding: .5rem 1rem;
   }
-
-  /* ── TARIFAS ACADEMIA — REDISEÑO COMPLETO MÓVIL ──────────────── */
-  .academy-rates {
-    padding: 2.5rem 0 3rem;
-  }
-  .academy-rates-header {
-    padding: 0 var(--container-pad);
-    margin-bottom: 1.5rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: .55rem;
-  }
-  .academy-rates-label {
-    font-size: .72rem;
-    letter-spacing: .22em;
-  }
-  /* Mostramos el subtítulo en móvil: aporta contexto (plazas, monitores) */
-  .academy-rates-sub {
-    display: block;
-    text-align: left;
-    font-size: .66rem;
-    line-height: 1.65;
-    letter-spacing: .06em;
-    margin: 0;
-  }
-
-  .academy-rates-grid {
-    display: flex;
-    flex-direction: column;
-    gap: .85rem;
-    padding: 0 var(--container-pad);
-    border-top: none;
-    border-bottom: none;
-  }
-  /* Cada categoría como tarjeta autónoma, sin bordes heredados del grid */
-  .academy-rate-block {
-    background: rgba(255,255,255,.5);
-    border: 1px solid rgba(26,26,26,.08);
-    border-radius: 12px;
-    padding: 1.2rem 1.3rem 1.05rem;
-    border-right: none;
-  }
-  .academy-rate-block:not(:first-child) { padding-left: 1.3rem; }
-  .academy-rate-block:last-child { border-bottom: 1px solid rgba(26,26,26,.08); }
-
-  .academy-rate-cat {
-    font-size: .64rem;
-    letter-spacing: .2em;
-    margin: 0 0 .55rem;
-    padding-bottom: .7rem;
-    border-bottom: 1px solid rgba(196,168,130,.4);
-    color: var(--gold);
-  }
-  /* Grid 1fr/auto + centrado vertical: la descripción puede romper en
-     dos líneas y el precio se mantiene alineado a la derecha sin descuadre */
-  .academy-rate-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
+  /* Resto de targets táctiles que quedaban por debajo de 24px de alto.
+     Se usa inline-flex + min-height para no romper el aspecto de texto
+     en línea (subrayado fino) que tienen en escritorio. */
+  .contact-info-value a {
+    display: inline-flex;
     align-items: center;
-    column-gap: 1rem;
-    padding: .55rem 0;
-    border-bottom: 1px solid rgba(26,26,26,.07);
+    min-height: 44px;
+    padding: .4rem 0;
   }
-  .academy-rate-row:last-child { border-bottom: none; }
-  .academy-rate-desc {
-    font-size: .82rem;
-    color: rgba(26,26,26,.58);
-    line-height: 1.3;
+  .footer-legal-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: .4rem 0;
   }
-  .academy-rate-price {
-    font-size: 1.4rem;
-    line-height: 1;
-    justify-self: end;
-    white-space: nowrap;
+  .club-def dd a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: .4rem 0;
   }
-  .academy-rate-unit { font-size: .58rem; margin-left: .15em; }
-
-  .academy-rates-cta {
-    justify-content: center;
-    padding: 1.75rem var(--container-pad) 0;
-  }
-  .academy-rates-cta .btn {
-    width: 100%;
-    max-width: 380px;
-    justify-content: center;
+  .contact-secondary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: .5rem 0;
   }
 
   /* ── CONTACTO móvil: submit a ancho completo (mejor tap target) ── */
@@ -2036,14 +2101,8 @@ svg { display: block; }
 @media (max-width: 360px) {
   /* El offset de la 2ª línea del hero podía empujar texto fuera del viewport */
   .hero-title-offset { margin-left: 1.25rem; }
-  /* Banner torneo: el flag + texto + CTA en columna apretada */
-  .torneo-banner-inner { gap: 8px 12px; }
-  /* Tarifas de pista: que la descripción no rompa el ancho */
-  .service-rates { font-size: 0.74rem; }
-  /* Tarifas academia: apretamos para que precio + descripción respiren */
-  .academy-rate-desc { font-size: .78rem; }
-  .academy-rate-price { font-size: 1.25rem; }
-  .academy-rate-block { padding: 1.05rem 1.1rem .9rem; }
+  /* Ficha del club: en pantallas muy estrechas apilamos término y valor */
+  .club-def { grid-template-columns: 1fr; gap: .15rem; padding: .7rem 0; }
 }
 
 /* ── Móvil en LANDSCAPE corto: el hero a pantalla completa no debe
@@ -2060,10 +2119,19 @@ svg { display: block; }
   .hero-scroll { display: none; }
   /* La bobina y contacto a 100dvh quedan altos: permitimos crecer */
   .contact-split { min-height: 0; }
+  /* Landing: su hero tiene un min-height:640px propio (mayor especificidad que
+     #hero) que en landscape corto forzaba un hero desproporcionado y cortaba
+     el título/CTAs. Lo rebajamos igual que el hero del club. */
+  .home-landing #hero.home-hero2 {
+    min-height: 460px;
+    padding-top: calc(var(--nav-h) + 1rem);
+    padding-bottom: 2rem;
+  }
 }
 
 /* ── 21. REDUCED MOTION ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .marquee-track,
   .footer-marquee,
   .gallery-strip,
@@ -2080,6 +2148,17 @@ svg { display: block; }
     stroke-dashoffset: 0;
   }
   #splash { animation-delay: .1s; }
+  /* Los iconos de servicios ya están dibujados por defecto: la animación
+     de trazado sobra cuando se pide menos movimiento. */
+  .service-card.icon-drawn .service-icon path,
+  .service-card.icon-drawn .service-icon rect,
+  .service-card.icon-drawn .service-icon ellipse,
+  .service-card.icon-drawn .service-icon line,
+  .service-card.icon-drawn .service-icon circle { animation: none; }
+  /* Overlay de nav: sin fundido; visibility/opacity conmutan al instante
+     (el estado cerrado sigue siendo visibility:hidden → no enfocable). */
+  .nav-overlay,
+  .nav-overlay.is-open { transition: none; }
   .hero-bg { transform: none; transition: none; }
   .hero-scroll-line { animation: none; }
   /* Pista de swipe: sin desplazamiento; el thumb queda centrado y estático */
@@ -2175,6 +2254,15 @@ svg { display: block; }
   .team-card        { cursor: default; }
   .sponsor-row      { cursor: default; }
   .form-group select { cursor: pointer; }
+  /* Anula html.has-custom-cursor (misma especificidad, más abajo en el
+     archivo): en táctil el puntero nativo debe seguir siendo el correcto. */
+  html.has-custom-cursor body { cursor: auto; }
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor .btn,
+  html.has-custom-cursor .form-group select { cursor: pointer; }
+  html.has-custom-cursor .team-card,
+  html.has-custom-cursor .sponsor-row { cursor: default; }
   /* En táctil el :hover no se dispara: la CTA de los medallones debe
      verse siempre al 100% (cubre también la rejilla de reduced-motion). */
   .pool-cta-line { opacity: 1; }
@@ -2197,55 +2285,16 @@ svg { display: block; }
   .team-card, .sponsor-row { cursor: default; }
   .form-group select { cursor: pointer; }
   #cursor { display: none; }
+  /* Mismo motivo que en el bloque hover:none: gana por orden en cascada
+     sobre html.has-custom-cursor y devuelve el puntero nativo. */
+  html.has-custom-cursor body { cursor: auto; }
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor .btn,
+  html.has-custom-cursor .form-group select { cursor: pointer; }
+  html.has-custom-cursor .team-card,
+  html.has-custom-cursor .sponsor-row { cursor: default; }
 }
-
-/* ════════════════════════════════════════════════════════════════
-   29. TORNEO INAUGURAL BANNER
-════════════════════════════════════════════════════════════════ */
-.torneo-banner {
-  background: var(--gold);
-  color: var(--black);
-  padding: 11px max(24px, env(safe-area-inset-right)) 11px max(24px, env(safe-area-inset-left));
-  text-align: center;
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  position: relative;
-  z-index: 20;
-}
-.torneo-banner-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-.torneo-flag {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.7;
-  border: 1px solid currentColor;
-  padding: 2px 7px;
-  white-space: nowrap;
-}
-.torneo-text {
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-.torneo-cta {
-  color: var(--black);
-  text-decoration: none;
-  border-bottom: 1.5px solid currentColor;
-  font-weight: 700;
-  font-size: 0.76rem;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  transition: opacity 0.2s;
-}
-.torneo-cta:hover { opacity: 0.65; }
 
 /* ════════════════════════════════════════════════════════════════
    30. EQUIPO
@@ -2283,7 +2332,6 @@ svg { display: block; }
   display: flex;
   flex-direction: column;
   gap: 18px;
-  cursor: none;
 }
 .team-photo-wrap {
   width: 100%;
@@ -2380,7 +2428,7 @@ svg { display: block; }
 }
 .team-role {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.75rem;     /* 12px mínimo (antes 9.9px) */
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -2416,7 +2464,7 @@ svg { display: block; }
 }
 .sponsors-header .section-label {
   grid-column: 1 / -1;
-  color: rgba(245,240,235,0.35);
+  color: rgba(245,240,235,0.62);   /* .35 → 3.0:1 */
 }
 .sponsors-headline {
   font-family: var(--font-display);
@@ -2433,7 +2481,7 @@ svg { display: block; }
 .sponsors-sub {
   font-family: var(--font-body);
   font-size: 0.9rem;
-  color: rgba(245,240,235,0.45);
+  color: rgba(245,240,235,0.62);   /* .45 → 3.9:1 */
   line-height: 1.75;
   margin: 0;
   align-self: end;
@@ -2458,7 +2506,6 @@ svg { display: block; }
   padding: clamp(1.1rem, 2.5vw, 1.6rem) 0;
   border-bottom: 1px solid rgba(245,240,235,0.08);
   text-decoration: none;
-  cursor: none;
   transition: border-color 0.3s ease;
 }
 /* Gold line that expands from left on hover */
@@ -2476,16 +2523,16 @@ svg { display: block; }
 
 .sponsor-row-court {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.75rem;     /* 12px mínimo (antes 9.6px) */
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(245,240,235,0.3);
+  color: rgba(245,240,235,0.62);   /* .3 → 2.4:1 */
   white-space: nowrap;
   flex-shrink: 0;
 }
 .sponsor-row-court em {
   font-style: normal;
-  color: rgba(245,240,235,0.55);
+  color: var(--white-warm);
 }
 .sponsor-row-name {
   font-family: var(--font-display);
@@ -2504,11 +2551,11 @@ svg { display: block; }
 }
 .sponsor-row-badge {
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.75rem;     /* 12px mínimo (antes 8.8px) */
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.6;
+  opacity: 0.85;          /* .6 → 3.4:1 */
   text-align: right;
   white-space: nowrap;
   transition: opacity 0.3s ease;
@@ -2519,17 +2566,17 @@ svg { display: block; }
 .sponsor-row--soon { cursor: default; }
 .sponsor-row--soon .sponsor-row-court {
   letter-spacing: 0.22em;
-  color: rgba(245,240,235,0.18);
+  color: rgba(245,240,235,0.62);   /* .18 → 1.5:1 */
 }
 .sponsor-row--soon .sponsor-row-name {
   font-family: var(--font-mono);
   font-size: clamp(0.8rem, 1.5vw, 1rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(245,240,235,0.4);
+  color: rgba(245,240,235,0.62);   /* .4 → 3.4:1 en texto normal */
 }
 .sponsor-row-badge--soon {
-  color: rgba(245,240,235,0.4);
+  color: rgba(245,240,235,0.62);
   opacity: 1;
   border: 1px dashed rgba(245,240,235,0.18);
   padding: 4px 10px;
@@ -2558,7 +2605,7 @@ svg { display: block; }
   display: contents;
 }
 .service-rates dt { color: rgba(245,240,235,0.55); }
-.card-light .service-rates dt { color: rgba(26,26,26,0.5); }
+.card-light .service-rates dt { color: rgba(26,26,26,0.72); }
 .service-rates dd {
   font-weight: 600;
   color: var(--gold);
@@ -2588,7 +2635,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--gray);
+  color: var(--ink-soft);
   white-space: nowrap;
 }
 .academy-rates-sub {
@@ -2596,12 +2643,12 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: rgba(26,26,26,.35);
+  color: rgba(26,26,26,.72);
   margin: 0;
   text-align: right;
   line-height: 1.7;
 }
-.academy-rates-sub strong { color: rgba(26,26,26,.55); font-weight: 400; }
+.academy-rates-sub strong { color: var(--black); font-weight: 500; }
 .academy-rates-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2619,7 +2666,7 @@ svg { display: block; }
   font-size: var(--t-xs);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--gray);
+  color: var(--ink-soft);
   margin: 0 0 1.5rem;
 }
 .academy-rate-row {
@@ -2634,7 +2681,7 @@ svg { display: block; }
 .academy-rate-desc {
   font-family: var(--font-body);
   font-size: var(--t-sm);
-  color: rgba(26,26,26,.5);
+  color: rgba(26,26,26,.72);
   line-height: 1.4;
 }
 .academy-rate-price {
@@ -2649,7 +2696,8 @@ svg { display: block; }
   font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: .08em;
-  color: var(--gold);
+  /* el dorado puro da 1.74:1 sobre beige */
+  color: var(--gold-ink);
   margin-left: .2em;
   vertical-align: middle;
 }
@@ -2659,28 +2707,147 @@ svg { display: block; }
   padding-top: 2.5rem;
 }
 
+/* ── 34-bis. OVERRIDES RESPONSIVE DE TARIFAS / EQUIPO ──────────────
+   IMPORTANTE: estas reglas vivían en la sección 20 (RESPONSIVE, ~l.1917),
+   que está ANTES de las secciones 30-34. Con la misma especificidad, las
+   declaraciones base de abajo ganaban por orden de cascada y TODO el
+   rediseño móvil de tarifas quedaba anulado: en 375px la rejilla seguía
+   siendo de 3 columnas (con `1fr` de mínimo auto) y el tercer bloque
+   —"Clases particulares"— se salía del viewport y quedaba recortado por
+   `body{overflow-x:hidden}`. Se han movido aquí sin cambiar su contenido,
+   manteniendo el orden 1024 → 768 → 360. ───────────────────────────── */
+@media (max-width: 1024px) {
+  .academy-rates-grid { grid-template-columns: 1fr; }
+  .academy-rate-block { padding: 2rem 0; border-right: none; border-bottom: 1px solid rgba(196,168,130,.12); }
+  .academy-rate-block:last-child { border-bottom: none; }
+  .academy-rates-header { flex-direction: column; gap: .8rem; }
+  .academy-rates-sub { text-align: left; }
+}
+
+@media (max-width: 768px) {
+  /* ── TARIFAS ACADEMIA — REDISEÑO COMPLETO MÓVIL ──────────────── */
+  .academy-rates {
+    padding: 2.5rem 0 3rem;
+  }
+  .academy-rates-header {
+    padding: 0 var(--container-pad);
+    margin-bottom: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .55rem;
+  }
+  .academy-rates-label {
+    font-size: .75rem;   /* 12px mínimo */
+    letter-spacing: .22em;
+  }
+  /* Mostramos el subtítulo en móvil: aporta contexto (plazas, monitores) */
+  .academy-rates-sub {
+    display: block;
+    text-align: left;
+    font-size: .75rem;   /* 12px mínimo (antes 10.6px) */
+    line-height: 1.65;
+    letter-spacing: .06em;
+    margin: 0;
+  }
+
+  .academy-rates-grid {
+    display: flex;
+    flex-direction: column;
+    gap: .85rem;
+    padding: 0 var(--container-pad);
+    border-top: none;
+    border-bottom: none;
+  }
+  /* Cada categoría como tarjeta autónoma, sin bordes heredados del grid */
+  .academy-rate-block {
+    background: rgba(255,255,255,.5);
+    border: 1px solid rgba(26,26,26,.08);
+    border-radius: 12px;
+    padding: 1.2rem 1.3rem 1.05rem;
+    border-right: none;
+  }
+  .academy-rate-block:not(:first-child) { padding-left: 1.3rem; }
+  .academy-rate-block:last-child { border-bottom: 1px solid rgba(26,26,26,.08); }
+
+  .academy-rate-cat {
+    font-size: .75rem;   /* 12px mínimo (antes 10.2px) */
+    letter-spacing: .2em;
+    margin: 0 0 .55rem;
+    padding-bottom: .7rem;
+    border-bottom: 1px solid rgba(122,92,51,.45);
+    color: var(--gold-ink);
+  }
+  /* Grid 1fr/auto + centrado vertical: la descripción puede romper en
+     dos líneas y el precio se mantiene alineado a la derecha sin descuadre */
+  .academy-rate-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 1rem;
+    padding: .55rem 0;
+    border-bottom: 1px solid rgba(26,26,26,.07);
+  }
+  .academy-rate-row:last-child { border-bottom: none; }
+  .academy-rate-desc {
+    font-size: .82rem;
+    color: rgba(26,26,26,.72);
+    line-height: 1.3;
+  }
+  .academy-rate-price {
+    font-size: 1.4rem;
+    line-height: 1;
+    justify-self: end;
+    white-space: nowrap;
+  }
+  .academy-rate-unit { font-size: .75rem; margin-left: .15em; }  /* 12px mínimo */
+
+  .academy-rates-cta {
+    justify-content: center;
+    padding: 1.75rem var(--container-pad) 0;
+  }
+  .academy-rates-cta .btn {
+    width: 100%;
+    max-width: 380px;
+    justify-content: center;
+  }
+
+  /* ── EQUIPO móvil ── */
+  .team-name { font-size: 1.4rem; }
+}
+
+@media (max-width: 360px) {
+  /* Tarifas de pista: que la descripción no rompa el ancho */
+  .service-rates { font-size: 0.75rem; }  /* 12px mínimo */
+  /* Tarifas academia: apretamos para que precio + descripción respiren */
+  .academy-rate-desc { font-size: .78rem; }
+  .academy-rate-price { font-size: 1.25rem; }
+  .academy-rate-block { padding: 1.05rem 1.1rem .9rem; }
+}
+
 /* ════════════════════════════════════════════════════════════════
    35. LANG SWITCHER
 ════════════════════════════════════════════════════════════════ */
 .lang-switch {
   display: flex;
-  gap: 1px;
+  gap: 4px;
   align-items: center;
+  margin-left: .75rem;
 }
 .lang-btn {
   background: none;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: rgba(245,240,235,0.38);
-  padding: 4px 5px;
-  transition: color 0.2s;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: rgba(245,240,235,0.55);
+  padding: 7px 11px;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
   line-height: 1;
 }
-.lang-btn:hover { color: rgba(245,240,235,0.75); }
-.lang-btn.lang-active { color: var(--gold); }
-@media (max-width: 768px) { #main-nav .lang-switch { display: none; } }
+.lang-btn:hover { color: rgba(245,240,235,0.9); background: rgba(245,240,235,0.06); }
+.lang-btn.lang-active { color: var(--gold); border-color: rgba(196,168,130,0.4); }
+/* (El #main-nav .lang-switch ya se oculta en el bloque ≤1024px) */
 
 /* overlay lang switcher */
 .nav-overlay-lang {
@@ -2692,8 +2859,10 @@ svg { display: block; }
   margin-top: 16px;
 }
 .nav-overlay-lang .lang-btn {
-  font-size: 0.7rem;
-  padding: 6px 10px;
+  font-size: 0.9rem;
+  padding: 11px 16px;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 /* ── AURORA ORB ─────────────────────────────────────────────── */
@@ -2707,4 +2876,624 @@ svg { display: block; }
   opacity: 0;
   transition: opacity 1.5s, transform 0.5s;
   will-change: transform;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   36. LANDING B2B (raíz /)  ·  body.home-landing
+   Escaparate de marca. Reutiliza tokens, hero, marquee, footer.
+   Estilos propios prefijados .home-* para no colisionar con el club.
+════════════════════════════════════════════════════════════════ */
+
+/* ── HERO 2.0 · "Índice de la Red" ───────────────────────────────
+   Concepto de MARCA, distinto del hero del club (que es foto a sangre +
+   título serif centrado). Aquí: lienzo negro editorial, sin foto,
+   tipografía cinética a gran escala + constelación viva de sedes. */
+.home-landing #hero.home-hero2 {
+  position: relative;
+  /* min-height (no height fijo): en pantallas cortas o con los textos más
+     largos de EN/NL el contenido puede crecer en vez de recortarse bajo
+     overflow:hidden (evita ocultar el CTA principal de conversión). */
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding:
+    calc(var(--nav-h) + 2rem)
+    max(var(--container-pad), env(safe-area-inset-right))
+    4rem
+    max(var(--container-pad), env(safe-area-inset-left));
+  background:
+    radial-gradient(ellipse 85% 65% at 76% 32%, rgba(196,168,130,.10), transparent 62%),
+    radial-gradient(ellipse 60% 80% at 12% 88%, rgba(196,168,130,.05), transparent 60%),
+    var(--black);
+  overflow: hidden;
+}
+
+/* Constelación (SVG a sangre, detrás del contenido) */
+.home-net {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .95;
+  /* Se desvanece sobre la columna de texto (izquierda) para no solaparla */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, transparent 34%, #000 50%);
+          mask-image: linear-gradient(to right, transparent 0, transparent 34%, #000 50%);
+  transition: transform .6s var(--ease-out);
+  will-change: transform;
+}
+.home-net-links path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  opacity: .22;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: net-draw 1.6s var(--ease-out) forwards;
+}
+.home-net-links path:nth-child(2) { animation-delay: .12s; }
+.home-net-links path:nth-child(3) { animation-delay: .24s; }
+.home-net-links path:nth-child(4) { animation-delay: .36s; }
+.home-net-links path:nth-child(5) { animation-delay: .48s; }
+.home-net-links path:nth-child(6) { animation-delay: .60s; }
+.home-net-links path:nth-child(7) { animation-delay: .72s; }
+.home-net-links path:nth-child(8) { animation-delay: .84s; }
+.home-net-links path:nth-child(9) { animation-delay: .96s; }
+@keyframes net-draw { to { stroke-dashoffset: 0; } }
+
+.home-net-nodes circle {
+  fill: var(--gold);
+  opacity: .55;
+  animation: net-twinkle 3.4s ease-in-out infinite;
+}
+.home-net-nodes circle:nth-child(2n) { animation-delay: .8s; }
+.home-net-nodes circle:nth-child(3n) { animation-delay: 1.6s; }
+@keyframes net-twinkle { 0%,100% { opacity: .35; } 50% { opacity: .95; } }
+
+.home-net-anchor .home-net-tri {
+  fill: var(--gold);
+  filter: drop-shadow(0 0 12px rgba(196,168,130,.6));
+}
+.home-net-pulse {
+  fill: rgba(196,168,130,.16);
+  transform-origin: center;
+  animation: net-pulse 3s ease-in-out infinite;
+}
+@keyframes net-pulse {
+  0%,100% { transform: scale(.65); opacity: .55; }
+  50%     { transform: scale(1.2); opacity: .12; }
+}
+
+/* Rejilla editorial: índice vertical + contenido */
+.home-hero2-grid {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: center;
+  gap: 0 clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* Índice lateral vertical (mono) */
+.home-hero2-index {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  align-self: stretch;
+  padding: 2rem 0;
+}
+.home-idx-line { width: 1px; height: clamp(50px, 12vh, 130px); background: linear-gradient(var(--gold), transparent); }
+
+.home-hero2-content { min-width: 0; }
+
+.home-hero2-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: clamp(1rem, 3vw, 1.75rem);
+}
+
+/* Lockup tipográfico cinético */
+.home-hero2-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: .9;
+  letter-spacing: -.02em;
+  color: var(--white-warm);
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+.home-hero2-brand {
+  display: block;
+  font-size: clamp(3.6rem, 12vw, 9.5rem);
+  font-weight: 300;
+}
+.home-hero2-rotator {
+  display: block;
+  position: relative;
+  height: clamp(3.2rem, 10vw, 8.2rem);
+}
+.home-rot {
+  position: absolute;
+  left: 0; top: 0;
+  font-size: clamp(3.2rem, 10vw, 8.2rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(.4em);
+  filter: blur(6px);
+  transition: opacity .55s var(--ease-out), transform .55s var(--ease-out), filter .55s var(--ease-out);
+}
+.home-rot.is-active { opacity: 1; transform: none; filter: none; }
+
+.home-hero2-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: var(--t-xl);
+  color: rgba(245,240,235,.75);
+  max-width: 34ch;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+.home-hero2-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* Leyenda del nodo ancla */
+.home-hero2-legend {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(245,240,235,.62);   /* --gray daba 3.68:1 sobre negro */
+}
+.home-legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(196,168,130,.16);
+}
+.home-legend-city { color: var(--white-warm); }
+.home-legend-sep { color: var(--gold); }
+
+/* ── 01 MANIFIESTO (beige) ──────────────────────────────────────── */
+.home-manifesto {
+  position: relative;
+  background: var(--beige);
+  color: var(--black);
+  padding: var(--section-pad) var(--container-pad);
+  overflow: hidden;
+}
+.home-manifesto-inner {
+  position: relative;
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+.home-manifesto .section-watermark { color: var(--black); opacity: .05; top: -3rem; }
+.home-manifesto .section-label { color: var(--ink-soft); }
+.home-manifesto-heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--t-4xl);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  max-width: 16ch;
+  margin: .5rem 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+.home-manifesto-heading em { font-style: italic; color: var(--gold-ink); }
+.home-manifesto-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: var(--t-xl);
+  line-height: 1.5;
+  color: rgba(26,26,26,.72);
+  max-width: 46ch;
+}
+
+/* ── 02 QUÉ ES ELEVA (dark, dos columnas) ───────────────────────── */
+.home-value {
+  background: var(--black);
+  padding: var(--section-pad) var(--container-pad);
+  border-top: 1px solid rgba(196,168,130,.12);
+}
+.home-value-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+.home-value-heading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--t-3xl);
+  line-height: 1.1;
+  color: var(--white-warm);
+  margin-top: .75rem;
+}
+.home-value-body p {
+  font-size: var(--t-lg);
+  line-height: 1.7;
+  color: rgba(245,240,235,.72);
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(196,168,130,.18);
+}
+.home-stat { display: flex; flex-direction: column; gap: .35rem; }
+.home-stat-num {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  line-height: 1;
+  color: var(--gold);
+}
+.home-stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(245,240,235,.62);   /* --gray daba 3.68:1 sobre negro */
+}
+
+/* ── 03 CÓMO UNIR TU CLUB (pasos) ───────────────────────────────── */
+.home-steps {
+  position: relative;
+  background: var(--black-mid);
+  padding: var(--section-pad) var(--container-pad);
+}
+.home-steps-header { max-width: var(--container-max); margin: 0 auto 3.5rem; position: relative; }
+.home-steps .section-watermark { opacity: .06; }
+.home-steps-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--t-3xl);
+  line-height: 1.1;
+  color: var(--white-warm);
+  position: relative; z-index: 1;
+}
+.home-steps-title em { font-style: italic; color: var(--gold); }
+.home-steps-grid {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(196,168,130,.14);
+  border: 1px solid rgba(196,168,130,.14);
+}
+.home-step {
+  background: var(--black);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  min-height: 240px;
+  transition: background .4s var(--ease-out);
+}
+.home-step:hover { background: #191512; }
+.home-step-num {
+  font-family: var(--font-mono);
+  font-size: var(--t-sm);
+  color: var(--gold);
+  letter-spacing: .1em;
+}
+.home-step-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--t-2xl);
+  color: var(--white-warm);
+  margin-top: auto;
+}
+.home-step-desc {
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: rgba(245,240,235,.62);
+}
+
+/* ── 04 BENEFICIOS (cards) ──────────────────────────────────────── */
+.home-benefits {
+  background: var(--black);
+  padding: var(--section-pad) var(--container-pad);
+  border-top: 1px solid rgba(196,168,130,.12);
+}
+.home-benefits-header { max-width: var(--container-max); margin: 0 auto 3rem; }
+.home-benefits-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--t-3xl);
+  line-height: 1.1;
+  color: var(--white-warm);
+  margin-top: .75rem;
+}
+.home-benefits-title em { font-style: italic; color: var(--gold); }
+.home-benefits-grid {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+.home-benefit {
+  border: 1px solid rgba(196,168,130,.16);
+  border-radius: 3px;
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  background: linear-gradient(160deg, rgba(196,168,130,.05), transparent 60%);
+  transition: border-color .35s var(--ease-out), transform .35s var(--ease-out);
+}
+.home-benefit:hover { border-color: rgba(196,168,130,.45); transform: translateY(-4px); }
+.home-benefit--wide { grid-column: span 2; }
+.home-benefit-idx {
+  font-size: 1.1rem;
+  color: var(--gold);
+  opacity: .8;
+}
+.home-benefit-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-xl);
+  color: var(--white-warm);
+}
+.home-benefit-desc {
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: rgba(245,240,235,.64);
+}
+
+/* ── 05 LA RED / SEDES (grid escalable) ─────────────────────────── */
+.home-network {
+  position: relative;
+  background: var(--beige);
+  color: var(--black);
+  padding: var(--section-pad) var(--container-pad);
+  overflow: hidden;
+}
+.home-network-header { max-width: var(--container-max); margin: 0 auto 3rem; position: relative; }
+.home-network .section-watermark { color: var(--black); opacity: .05; }
+.home-network .section-label { color: var(--ink-soft); }
+.home-network-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--t-3xl);
+  line-height: 1.1;
+  position: relative; z-index: 1;
+}
+.home-network-sub {
+  font-size: var(--t-lg);
+  color: rgba(26,26,26,.72);
+  margin-top: 1rem;
+  max-width: 40ch;
+}
+.home-network-grid {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.home-club {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--black);
+  color: var(--white-warm);
+  border: 1px solid rgba(26,26,26,.12);
+  transition: transform .45s var(--ease-out), box-shadow .45s var(--ease-out);
+}
+a.home-club:hover { transform: translateY(-6px); box-shadow: 0 24px 60px -30px rgba(26,26,26,.5); }
+.home-club-media {
+  position: relative;
+  flex: 1;
+  min-height: 190px;
+  background-size: cover;
+  background-position: center;
+}
+.home-club-media::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,26,26,.85) 0%, rgba(26,26,26,.15) 60%, transparent 100%);
+}
+.home-club-status {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: .75rem;      /* 12px mínimo (antes 9.3px) */
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--gold);
+  padding: .35rem .7rem;
+  border-radius: 2px;
+}
+.home-club-status--soon { background: transparent; color: var(--gold); border: 1px solid rgba(196,168,130,.55); }
+.home-club-body {
+  position: relative;
+  z-index: 2;
+  padding: 1.4rem 1.5rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.home-club-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--t-xl);
+}
+.home-club-city {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.home-club-link {
+  margin-top: .75rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(245,240,235,.85);
+  display: inline-flex;
+  gap: .5rem;
+  transition: gap .3s var(--ease-out), color .25s;
+}
+a.home-club:hover .home-club-link { gap: .9rem; color: var(--gold); }
+/* Tarjeta "tu club aquí" (invitación) */
+.home-club--cta {
+  background: transparent;
+  color: var(--black);
+  border: 1px dashed rgba(26,26,26,.28);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  min-height: 320px;
+}
+a.home-club--cta:hover { border-color: var(--gold); background: rgba(196,168,130,.08); box-shadow: none; }
+.home-club--cta .home-club-tri { width: 40px; margin-bottom: 1rem; }
+.home-club--cta .home-club-tri path { fill: var(--gold); }
+.home-club--cta .home-club-name { color: var(--black); }
+.home-club--cta .home-club-link { color: var(--black); }
+a.home-club--cta:hover .home-club-link { color: var(--gold); }
+
+/* ── 06 CTA FINAL B2B ───────────────────────────────────────────── */
+.home-cta {
+  position: relative;
+  background: var(--black);
+  padding: clamp(6rem, 12vw, 10rem) var(--container-pad);
+  text-align: center;
+  overflow: hidden;
+  border-top: 1px solid rgba(196,168,130,.12);
+}
+.home-cta-tri {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(320px, 55vw, 780px);
+  height: auto;
+  opacity: .05;
+  pointer-events: none;
+}
+.home-cta-tri path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.home-cta .section-label { position: relative; z-index: 1; }
+.home-cta-title {
+  position: relative; z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--t-4xl);
+  line-height: 1.05;
+  color: var(--white-warm);
+  margin: 1rem 0 1.25rem;
+}
+.home-cta-title em { font-style: italic; color: var(--gold); }
+.home-cta-text {
+  position: relative; z-index: 1;
+  font-size: var(--t-lg);
+  color: rgba(245,240,235,.66);
+  max-width: 44ch;
+  margin: 0 auto 2.5rem;
+}
+.home-cta-actions {
+  position: relative; z-index: 1;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── LANDING · footer claim tono marca ──────────────────────────── */
+.home-landing .footer-claim { max-width: 26ch; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .home-value-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .home-steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .home-benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .home-network-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+  /* Hero: se oculta el índice vertical y la constelación pasa a fondo sutil */
+  .home-hero2-grid { grid-template-columns: 1fr; }
+  .home-hero2-index { display: none; }
+  .home-net { opacity: .45; }
+}
+@media (max-width: 768px) {
+  .home-network-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .home-steps-grid { grid-template-columns: 1fr; }
+  .home-benefits-grid { grid-template-columns: 1fr; }
+  .home-benefit--wide { grid-column: span 1; }
+  .home-stats { gap: 1rem; }
+  .home-net { opacity: .3; }
+}
+@media (max-width: 480px) {
+  .home-stats { grid-template-columns: 1fr; gap: .75rem; }
+  .home-step { min-height: 0; }
+}
+@media (max-width: 360px) {
+  /* Evita que la palabra más larga del rotador ("tu comunidad.") se recorte
+     en pantallas muy estrechas: el mínimo del clamp (3.2rem) desbordaba. */
+  .home-hero2-brand   { font-size: clamp(2.9rem, 15vw, 3.6rem); }
+  .home-hero2-rotator { height: clamp(2.5rem, 12.8vw, 3.2rem); }
+  .home-rot           { font-size: clamp(2.5rem, 12.8vw, 3.2rem); }
+}
+
+/* ── REDUCED MOTION ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .home-net-links path { animation: none; stroke-dashoffset: 0; }
+  .home-net-nodes circle { animation: none; opacity: .6; }
+  .home-net-pulse { animation: none; }
+  .home-rot { transition: none; }
+  /* El rotador se congela en la primera palabra (JS no cicla en reduced-motion) */
+}
+
+/* ── INPUTS EN TÁCTIL ───────────────────────────────────────────────
+   ≥16px en cualquier puntero grueso (no solo ≤768px): iOS Safari hace
+   zoom al enfocar un input <16px, y un iPhone en landscape o un iPad
+   superan los 768px de ancho. Se ancla al tipo de puntero, no al ancho. */
+@media (pointer: coarse) {
+  .form-group input,
+  .form-group select,
+  .form-group textarea { font-size: 16px; }
 }

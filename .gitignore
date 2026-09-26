@@ -16,3 +16,6 @@ node_modules/
 
 # Vercel CLI (credenciales locales de proyecto)
 .vercel/
+
+# Presupuesto y estrategia interna (no versionar)
+presupuesto/
