@@ -185,7 +185,7 @@ navegadores pueden seguir usando la versión antigua. Para forzar la
 actualización se usa un **cache-buster**: el `?v=` que acompaña a cada archivo
 en el HTML.
 
-**Convención: `?v=YYYYMMDD` con la fecha del cambio. Valor actual: `20260927`.**
+**Convención: `?v=YYYYMMDD` con la fecha del cambio (si hay más de un cambio el mismo día, se añade una letra: `20260927b`). Valor actual: `20260927b`.**
 
 Hay que subirlo **en los cuatro HTML**, y con **el mismo número en todos** (si
 no, el mismo archivo se cachea dos veces):

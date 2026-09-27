@@ -43,14 +43,6 @@
       "status": "provisional — sustituir por foto real del club"
     },
     {
-      "file": "gallery-04.jpg",
-      "description": "Pista CUBIERTA (contradice «4 pistas outdoor»)",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "RETIRADA de la web el 27-09-2026 — sin uso; se puede borrar del repo"
-    },
-    {
       "file": "gallery-05.jpg",
       "description": "Jugador en posición de espera (estudio)",
       "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
@@ -83,14 +75,6 @@
       "status": "provisional — sustituir por foto real del club"
     },
     {
-      "file": "gallery-09.jpg",
-      "description": "Palas HEAD: casi idéntica a gallery-02",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "RETIRADA de la web el 27-09-2026 — sin uso; se puede borrar del repo"
-    },
-    {
       "file": "gallery-10.jpg",
       "description": "Pala y bola junto a la red",
       "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
@@ -105,22 +89,6 @@
       "license": "Unsplash License / Pexels License",
       "credit": "Autor no identificado individualmente (ver _origen_urls)",
       "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-12.jpg",
-      "description": "Red con cartel SIDESPIN en primer plano (marca de terceros)",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "RETIRADA de la web el 27-09-2026 — sin uso; se puede borrar del repo"
-    },
-    {
-      "file": "gallery-13.jpg",
-      "description": "Red con cartel SIDESPIN en primer plano (marca de terceros)",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "RETIRADA de la web el 27-09-2026 — sin uso; se puede borrar del repo"
     },
     {
       "file": "gallery-14.jpg",
