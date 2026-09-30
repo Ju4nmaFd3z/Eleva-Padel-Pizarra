@@ -10,6 +10,11 @@ Guía de uso completa en `README.md`; alta de sedes en `clubs/_plantilla/README.
 - `/pizarra` → `pizarra/index.html` + `pizarra/manifest.js` (el club)
 - `/privacidad` → `privacidad.html` (legal, CSS propio, sin JS) · `404.html`
 
+## Modo mantenimiento (`middleware.js`: 503 + `Retry-After` + noindex en todo)
+- Activar: variable `MANTENIMIENTO=1` en Vercel (Production) + Redeploy.
+- Desactivar: borrar la variable o ponerla a `0` + Redeploy.
+- Saltárselo: `?acceso=<MANTENIMIENTO_CLAVE>` (cookie `eleva-acceso`, 30 días). La clave nunca va al repo.
+
 ## Reglas que no se rompen
 1. **Rutas relativas con `../`** en la página del club, y el manifest SIEMPRE como
    `../<slug>/manifest.js`: Vercel sirve `/pizarra` sin barra final, así que
@@ -28,7 +33,7 @@ Guía de uso completa en `README.md`; alta de sedes en `clubs/_plantilla/README.
 6. **i18n ES/EN/NL**: `js/translations.js` (común, valores neutros) debe tener
    las mismas claves en los tres idiomas (hoy 283). Lo propio de una sede va en el
    bloque `i18n` de su manifest. Orden: club[lang] → común[lang] → club.es → común.es.
-7. **Cache-buster** `?v=YYYYMMDD` (hoy `20260927b`) igual en todos los `<link>`
+7. **Cache-buster** `?v=YYYYMMDD` (hoy `20260930`) igual en todos los `<link>`
    y `<script>` de los 4 HTML; subirlo al cambiar CSS/JS/manifest.
 8. **No inventar datos del club.** Si un dato no está confirmado, no se publica.
 

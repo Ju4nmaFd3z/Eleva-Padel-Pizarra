@@ -139,7 +139,7 @@ configuración adicional.
 
 Sube el `?v=YYYYMMDD` de **todos** los `<link>` y `<script>` del nuevo
 `index.html` (y del resto de HTML si has tocado algo compartido), usando **el
-mismo número en todas las páginas**. Valor actual: `20260927b`. Detalle completo
+mismo número en todas las páginas**. Valor actual: `20260930`. Detalle completo
 en el `README.md` de la raíz.
 
 ### 10. Revisar `/privacidad`

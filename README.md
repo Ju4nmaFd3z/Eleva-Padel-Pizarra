@@ -45,6 +45,23 @@ página 404.
 
 ---
 
+## Modo mantenimiento
+
+Lo gestiona `middleware.js` (raíz): con el modo activo, todas las rutas
+responden **503** con `Retry-After` y `noindex` y muestran una página sencilla
+con los canales de contacto.
+
+- **Activar:** en Vercel → Settings → Environment Variables, añade
+  `MANTENIMIENTO` = `1` (Production) y haz **Redeploy** del último despliegue.
+- **Desactivar:** borra la variable (o ponla a `0`) y haz **Redeploy**.
+- **Saltártelo:** abre cualquier URL con `?acceso=<clave>`, donde `<clave>` es
+  el valor de la variable `MANTENIMIENTO_CLAVE` (nunca en el repo: es público).
+  Deja la cookie `eleva-acceso` durante 30 días.
+
+En local: `MANTENIMIENTO=1 MANTENIMIENTO_CLAVE=prueba node tools/servidor-local.js`.
+
+---
+
 ## Publicar en Vercel
 
 **Publica siempre desde Git.** Es la forma correcta y la más segura:
@@ -185,7 +202,7 @@ navegadores pueden seguir usando la versión antigua. Para forzar la
 actualización se usa un **cache-buster**: el `?v=` que acompaña a cada archivo
 en el HTML.
 
-**Convención: `?v=YYYYMMDD` con la fecha del cambio (si hay más de un cambio el mismo día, se añade una letra: `20260927b`). Valor actual: `20260927b`.**
+**Convención: `?v=YYYYMMDD` con la fecha del cambio (si hay más de un cambio el mismo día, se añade una letra: `20260930`). Valor actual: `20260930`.**
 
 Hay que subirlo **en los cuatro HTML**, y con **el mismo número en todos** (si
 no, el mismo archivo se cachea dos veces):
@@ -231,6 +248,7 @@ Eleva-Padel-Pizarra/
 ├── privacidad.html       ← aviso legal, privacidad, normas y cookies (noindex)
 ├── 404.html              ← página de error (rutas absolutas: se sirve en cualquier URL)
 ├── favicon.ico · apple-touch-icon.png   ← iconos que los navegadores piden en la raíz
+├── middleware.js         ← modo mantenimiento (Routing Middleware de Vercel)
 ├── pizarra/
 │   ├── index.html        ← web del club (/pizarra)
 │   └── manifest.js       ← datos del club (teléfono, mapa, pools, i18n propio…)
@@ -287,7 +305,8 @@ mandar los datos en la URL). Está explicado así en `/privacidad`.
 **¿La web usa cookies o analítica?**
 No. Solo guarda en el navegador el idioma **cuando el usuario lo elige**
 (`eleva-lang`) y una marca de "presentación ya vista" (`eleva-splash-seen`).
-Por eso no hay banner de cookies. Si algún día se añade analítica, hay que poner
+La única cookie es `eleva-acceso`, y solo la recibe quien usa la clave del modo
+mantenimiento. Por eso no hay banner de cookies. Si algún día se añade analítica, hay que poner
 banner **y** actualizar `/privacidad`.
 
 **El club no tiene email, ¿es un olvido?**
@@ -297,4 +316,4 @@ dirección de correo en ninguna página.
 
 ---
 
-*Diseño web por Juanma Fernández · [juanma-dev-portfolio.vercel.app](https://juanma-dev-portfolio.vercel.app)*
+*Desarrollado por [Biznaga Consulting](https://biznagaconsulting.es/)*

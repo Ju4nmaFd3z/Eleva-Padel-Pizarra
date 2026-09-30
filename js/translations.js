@@ -150,7 +150,7 @@
         navClub: 'El Club', navServices: 'Servicios', navAcademy: 'Academia',
         navPools: 'Pools', navGallery: 'Galería',
         navContact: 'Contacto', navBook: 'Reservar pista',
-        designCredit: 'Diseño web por',
+        credit: 'Desarrollado por',
         legalLink: 'Aviso Legal &amp; Privacidad',
         ariaLabel: 'Pie de página'
       },
@@ -394,7 +394,7 @@
         navClub: 'The Club', navServices: 'Services', navAcademy: 'Academy',
         navPools: 'Pools', navGallery: 'Gallery',
         navContact: 'Contact', navBook: 'Book a court',
-        designCredit: 'Web design by',
+        credit: 'Developed by',
         legalLink: 'Legal Notice &amp; Privacy',
         ariaLabel: 'Page footer'
       },
@@ -638,7 +638,7 @@
         navClub: 'De Club', navServices: 'Diensten', navAcademy: 'Academie',
         navPools: 'Pools', navGallery: 'Galerij',
         navContact: 'Contact', navBook: 'Baan boeken',
-        designCredit: 'Webdesign door',
+        credit: 'Ontwikkeld door',
         legalLink: 'Juridische kennisgeving &amp; Privacy',
         ariaLabel: 'Paginavoettekst'
       },

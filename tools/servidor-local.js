@@ -10,21 +10,25 @@
      · lo que lista .vercelignore no existe
      · 404.html con código 404 para todo lo demás
      · rutas SENSIBLES a mayúsculas (como Vercel, no como macOS)
+     · middleware.js (modo mantenimiento): el mismo archivo que usa Vercel
 
    Por qué no vale abrir el HTML con doble clic ni
    `python3 -m http.server`: ambos resuelven /pizarra como
    /pizarra/ y esconden el bug clásico de este proyecto (una ruta
    relativa como "manifest.js" que en Vercel apunta a /manifest.js).
 
-   Herramienta de desarrollo: Node 18+ sin dependencias.
+   Herramienta de desarrollo: Node 22+ sin dependencias.
    No se publica (tools/ está en .vercelignore).
 
    Uso, desde la raíz del repo:
      node tools/servidor-local.js          → http://localhost:3000
      node tools/servidor-local.js 8080     → otro puerto
+   Con el modo mantenimiento activo (bash):
+     MANTENIMIENTO=1 MANTENIMIENTO_CLAVE=prueba node tools/servidor-local.js
    ========================================================= */
 'use strict';
 const http = require('http');
+const { pathToFileURL } = require('url');
 const fs = require('fs');
 const path = require('path');
 
@@ -76,7 +80,19 @@ function send(res, code, rel, reqPath) {
   res.end(fs.readFileSync(path.join(ROOT, rel)));
 }
 
-http.createServer((req, res) => {
+/* Igual que en Vercel: si middleware.js devuelve una Response, se envía
+   tal cual; si no devuelve nada, la petición sigue su curso. */
+async function runMiddleware(req, res, middleware) {
+  const out = await middleware(new Request(new URL(req.url, 'http://localhost:' + PORT), {
+    method: req.method, headers: req.headers
+  }));
+  if (!out) return false;
+  res.writeHead(out.status, Object.fromEntries(out.headers));
+  res.end(Buffer.from(await out.arrayBuffer()));
+  return true;
+}
+
+function serve(req, res) {
   const u = new URL(req.url, 'http://localhost');
   const p = decodeURIComponent(u.pathname);
   const redirect = to => { res.writeHead(308, { Location: to + u.search }); res.end(); };
@@ -97,7 +113,16 @@ http.createServer((req, res) => {
 
   if (file) return send(res, 200, file, p);
   send(res, 404, '404.html', p);
-}).listen(PORT, () => {
-  console.log(`Eleva · servidor local tipo Vercel en http://localhost:${PORT}`);
-  console.log(`  Landing: http://localhost:${PORT}/   ·   Club: http://localhost:${PORT}/pizarra`);
+}
+
+import(pathToFileURL(path.join(ROOT, 'middleware.js')).href).then(({ default: middleware }) => {
+  http.createServer((req, res) => {
+    runMiddleware(req, res, middleware)
+      .then(done => { if (!done) serve(req, res); })
+      .catch(err => { console.error(err); res.writeHead(500); res.end(); });
+  }).listen(PORT, () => {
+    console.log(`Eleva · servidor local tipo Vercel en http://localhost:${PORT}`);
+    console.log(`  Landing: http://localhost:${PORT}/   ·   Club: http://localhost:${PORT}/pizarra`);
+    if (process.env.MANTENIMIENTO === '1') console.log('  Modo mantenimiento ACTIVO');
+  });
 });
