@@ -54,21 +54,32 @@ const PAGINA = `<!DOCTYPE html>
     text-align: center;
   }
   main { max-width: 30rem; }
+  .logo { display: block; width: clamp(4rem, 18vw, 5.5rem); height: auto; margin: 0 auto 1.25rem; }
   h1 { font-size: clamp(1.75rem, 7vw, 2.5rem); line-height: 1.15; margin: 0 0 .75rem; }
   p { margin: 0 0 1.5rem; color: var(--suave); }
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
   a { color: var(--oro); }
   ul a {
-    display: inline-flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     min-height: 44px; padding: .5rem 1rem;
     border: 1px solid var(--oro); border-radius: 4px; text-decoration: none;
   }
   ul a:hover, ul a:focus-visible { background: var(--oro); color: var(--fondo); }
   footer { margin-top: 3rem; font-size: .875rem; color: var(--suave); }
+  /* Móvil en horizontal: todo en una pantalla */
+  @media (max-height: 30rem) and (orientation: landscape) {
+    .logo { width: 3rem; margin-bottom: .75rem; }
+    h1 { margin-bottom: .25rem; }
+    p { margin-bottom: 1rem; }
+    main { max-width: 44rem; }
+    ul { grid-auto-flow: column; }
+    footer { margin-top: 1.5rem; }
+  }
 </style>
 </head>
 <body>
 <main>
+  <svg class="logo" viewBox="20 16 60 69" role="img" aria-label="Logo de Eleva Pádel" xmlns="http://www.w3.org/2000/svg"><path d="M50 16 L20 70 L26 70 L50 27 L74 70 L80 70 Z M20 80 H80 V85 H20 Z" fill="#C4A882"/></svg>
   <h1>Eleva Pádel</h1>
   <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos o llamarnos.</p>
   <ul>
