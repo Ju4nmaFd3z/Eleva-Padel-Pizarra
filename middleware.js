@@ -14,6 +14,8 @@
    tools/servidor-local.js carga este mismo archivo.
    ========================================================= */
 
+export const config = { runtime: 'nodejs' };
+
 const COOKIE = 'eleva-acceso';
 const DIAS_COOKIE = 30;
 const RETRY_AFTER = '3600';
