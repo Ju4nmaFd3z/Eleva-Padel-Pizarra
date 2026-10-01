@@ -1,0 +1,2 @@
+# Los hooks se ejecutan con sh/node: siempre con fin de línea LF
+tools/hooks/* text eol=lf

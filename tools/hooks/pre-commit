@@ -1,0 +1,19 @@
+#!/bin/sh
+# Hook pre-commit: genera el HTML de los clubes y valida el sitio.
+# Activar: git config core.hooksPath tools/hooks
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+node tools/generar.js > /dev/null || { echo "pre-commit: tools/generar.js ha fallado"; exit 1; }
+
+# Si el generador ha cambiado algún HTML de club, el commit se para para que
+# lo revises y lo añadas (git add) antes de volver a intentarlo.
+if ! git diff --quiet -- '*/index.html'; then
+  echo "pre-commit: tools/generar.js ha actualizado HTML sin añadir al commit:"
+  git diff --name-only -- '*/index.html' | sed 's/^/  /'
+  echo "Revísalo, haz git add y vuelve a hacer el commit."
+  exit 1
+fi
+
+node tools/validar.js > /tmp/eleva-validar.txt 2>&1 || { cat /tmp/eleva-validar.txt; exit 1; }
+grep -q "AVISOS:" /tmp/eleva-validar.txt && sed -n '/AVISOS:/,/^$/p' /tmp/eleva-validar.txt
+exit 0

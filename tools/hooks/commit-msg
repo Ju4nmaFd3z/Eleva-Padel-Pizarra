@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+/* Hook commit-msg: rechaza mensajes fuera de la convención de CONTRIBUTING.md.
+   Activar: git config core.hooksPath tools/hooks */
+'use strict';
+const fs = require('fs');
+
+const archivo = process.argv[2];
+const crudo = fs.readFileSync(archivo, 'utf8');
+/* Fuera comentarios de Git y el diff de --verbose */
+const lineas = crudo.split(/\r?\n/);
+const corte = lineas.findIndex(l => l.startsWith('# ------------------------ >8'));
+const msg = (corte >= 0 ? lineas.slice(0, corte) : lineas).filter(l => !l.startsWith('#'));
+while (msg.length && !msg[msg.length - 1].trim()) msg.pop();
+
+const resumen = (msg[0] || '').trim();
+const errores = [];
+
+/* Commits que crea Git solo (merge, revert, fixup): se dejan pasar si cumplen el formato básico */
+if (/^(fixup|squash|amend)! /.test(resumen)) process.exit(0);
+
+const TIPOS = ['feat', 'fix', 'content', 'style', 'refactor', 'perf', 'a11y', 'i18n', 'docs', 'build', 'chore', 'revert'];
+const AMBITOS = ['marca', 'pizarra', 'mantenimiento', 'legal', 'seo', 'tools', 'deploy'];
+const m = resumen.match(/^([a-z0-9]+)(?:\(([^)]+)\))?(!)?: (.+)$/);
+
+if (!m) {
+  errores.push('El resumen debe tener la forma «tipo(ámbito): resumen» o «tipo: resumen».');
+} else {
+  const [, tipo, ambito, , texto] = m;
+  if (!TIPOS.includes(tipo)) errores.push(`Tipo «${tipo}» no válido. Usa: ${TIPOS.join(', ')}.`);
+  if (ambito && !AMBITOS.includes(ambito)) errores.push(`Ámbito «${ambito}» no válido. Usa: ${AMBITOS.join(', ')}.`);
+  if (/^[A-ZÁÉÍÓÚÑ]/.test(texto)) errores.push('El resumen empieza en minúscula («añade…», no «Añade…»).');
+  if (/\.\s*$/.test(texto)) errores.push('El resumen va sin punto final.');
+  if (/^(update|updates|cambios?|arreglos?|wip|varios|fix|fixes|misc)\b/i.test(texto.trim())) {
+    errores.push('Resumen vacío: di qué cambia en concreto.');
+  }
+  if (texto.trim().split(/\s+/).length < 3) errores.push('El resumen es demasiado corto: di qué cambia en concreto.');
+}
+if (resumen.length > 72) errores.push(`El resumen tiene ${resumen.length} caracteres (máximo 72).`);
+if (msg.length > 1 && msg[1].trim()) errores.push('Deja una línea en blanco entre el resumen y el cuerpo.');
+msg.slice(2).forEach((l, i) => {
+  if (l.length > 72 && !/^https?:\/\//.test(l.trim())) errores.push(`La línea ${i + 3} del cuerpo pasa de 72 caracteres.`);
+});
+
+const todo = msg.join('\n');
+if (/co-authored-by:/i.test(todo)) errores.push('Sin líneas Co-Authored-By de herramientas de IA.');
+if (/generated with/i.test(todo)) errores.push('Sin firmas «Generated with».');
+if (/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(todo)) errores.push('Sin emojis.');
+if (/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(todo)) errores.push('Sin direcciones de email en el mensaje.');
+if (/PENDIENTE_(CLUB|MARCA)\s*[:=]\s*\S/.test(todo)) errores.push('Parece que el mensaje incluye un dato pendiente: los valores sin confirmar no van en los commits.');
+
+if (errores.length) {
+  console.error('\nMensaje de commit rechazado (ver CONTRIBUTING.md):\n  - ' + errores.join('\n  - ') + '\n');
+  process.exit(1);
+}
