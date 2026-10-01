@@ -25,7 +25,9 @@ const LIBRES = new Set([
   '/favicon.ico',
   '/apple-touch-icon.png',
   '/assets/img/favicon.svg',
-  '/robots.txt'
+  '/robots.txt',
+  '/assets/marcas/whatsapp-glifo-blanco.svg',
+  '/assets/marcas/instagram-glifo-blanco.svg'
 ]);
 
 const CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; " +
@@ -65,7 +67,8 @@ const PAGINA = `<!DOCTYPE html>
     min-height: 44px; padding: .5rem 1rem;
     border: 1px solid var(--oro); border-radius: 4px; text-decoration: none;
   }
-  ul a:hover, ul a:focus-visible { background: var(--oro); color: var(--fondo); }
+  ul a { gap: .625rem; }
+  ul a:hover, ul a:focus-visible { border-color: var(--texto); }
   footer { margin-top: 3rem; font-size: .875rem; color: var(--suave); }
   /* Móvil en horizontal: todo en una pantalla */
   @media (max-height: 30rem) and (orientation: landscape) {
@@ -84,8 +87,8 @@ const PAGINA = `<!DOCTYPE html>
   <h1>Eleva Pádel</h1>
   <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos.</p>
   <ul>
-    <li><a href="https://wa.me/34659143103" rel="noopener noreferrer">WhatsApp +34 659 14 31 03</a></li>
-    <li><a href="https://instagram.com/elevapadelpizarra" rel="noopener noreferrer">Instagram @elevapadelpizarra</a></li>
+    <li><a href="https://wa.me/34659143103" rel="noopener noreferrer"><img src="/assets/marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="">WhatsApp +34 659 14 31 03</a></li>
+    <li><a href="https://instagram.com/elevapadelpizarra" rel="noopener noreferrer"><img src="/assets/marcas/instagram-glifo-blanco.svg" width="20" height="20" alt="">Instagram @elevapadelpizarra</a></li>
   </ul>
 </main>
 <footer>
