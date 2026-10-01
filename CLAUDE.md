@@ -99,9 +99,10 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   peticiones seguidas: no es un fallo del sitio.
 
 ## Estado del rediseño (octubre 2026)
-Bloques 1 (limpieza), 2 (datos, estructura y generador) y 3 (CSS mobile-first) hechos
-en la rama `rediseno`. Siguen: 4 iconos, 5 textos en español (a revisión), 6 EN/NL,
-7 legal y 8 QA con otro agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
+Hechos en la rama `rediseno`: 1 limpieza, 2 datos, estructura y generador, 3 CSS
+mobile-first y 4 iconos. En curso: bloque «web viva» (movimiento, interacción y 3D;
+propuestas en ramas `propuesta-*` antes de implementar). Siguen: 5 textos en español
+(a revisión), 6 EN/NL, 7 legal y 8 QA con otro agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
 documentado en `CHANGELOG.md` (plan aprobado, ver memoria; el repo no tiene forks a
 01/10/2026; los commits van con la identidad de Git actual del propietario, por
 decisión suya). Pendientes del cliente y de
