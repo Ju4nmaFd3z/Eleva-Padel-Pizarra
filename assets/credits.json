@@ -1,182 +1,45 @@
 {
-  "_note": "Estado de las imágenes del sitio. Las marcadas como provisionales son fotos de banco (Unsplash / Pexels) usadas como marcador mientras no hay fotos reales del club: NO son fotografías de las instalaciones de Eleva Pádel y no deben presentarse como tales. Pendiente: sustituirlas por fotografías propias del club. Las descripciones de este archivo describen lo que se ve en cada foto (revisadas el 27-09-2026). Este archivo es un registro interno: no se publica (.vercelignore).",
-  "_licencias": "Unsplash License y Pexels License: uso comercial permitido y sin atribución obligatoria; no permiten dar a entender que la persona o la marca que aparece respalda el producto. Revisar esta condición al redactar los pies de foto.",
-  "_origen_urls": [
-    "https://images.unsplash.com/photo-1510846699902-9211b99dac11",
-    "https://images.unsplash.com/photo-1646649851800-48dba35edc76",
-    "https://images.unsplash.com/photo-1646649853703-7645147474ba",
-    "https://images.unsplash.com/photo-1646651105454-6c167ea6f83b",
-    "https://images.unsplash.com/photo-1658723826297-fe4d1b1e6600",
-    "https://images.unsplash.com/photo-1689942963385-f5bd03f3b270",
-    "https://images.unsplash.com/photo-1709587824751-dd30420f5cf3",
-    "https://images.unsplash.com/photo-1709587825135-80b00570c355",
-    "https://images.unsplash.com/photo-1709587825415-814c2d7cfce7",
-    "https://images.unsplash.com/photo-1761644541691-2a746c638881",
-    "https://images.pexels.com/photos/31012869/pexels-photo-31012869.jpeg",
-    "https://images.pexels.com/photos/32474981/pexels-photo-32474981.jpeg",
-    "https://images.pexels.com/photos/35248286/pexels-photo-35248286.jpeg",
-    "https://images.pexels.com/photos/36227708/pexels-photo-36227708.jpeg"
-  ],
+  "_note": "Registro interno de las imágenes que existen en el sitio (no se publica: .vercelignore). Actualizado el 01-10-2026.",
   "images": [
     {
-      "file": "gallery-01.jpg",
-      "description": "Palas y bolas sobre una pista azul",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-02.jpg",
-      "description": "Palas de pádel (marca HEAD) rodeadas de bolas",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-03.jpg",
-      "description": "Jugador golpeando de revés",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-05.jpg",
-      "description": "Jugador en posición de espera (estudio)",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-06.jpg",
-      "description": "Jugadora devolviendo una bola baja",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-07.jpg",
-      "description": "Pareja preparada para jugar",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-08.jpg",
-      "description": "Dos palas sobre la pista",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-10.jpg",
-      "description": "Pala y bola junto a la red",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-11.jpg",
-      "description": "Saludo antes del partido",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-14.jpg",
-      "description": "Jugador preparando la volea",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-15.jpg",
-      "description": "Bola sobre una pala, en blanco y negro",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "gallery-16.jpg",
-      "description": "Jugadora en pleno golpe",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
       "file": "hero.jpg",
-      "description": "Hero — pistas con luz dorada",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
+      "description": "Jugador de pádel de espaldas golpeando la bola en una pista cubierta, en blanco y negro. Al fondo se lee un rótulo de cerveza (marca de terceros).",
+      "source": "Banco de imágenes (Unsplash o Pexels), origen sin identificar",
       "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
+      "credit": "Autor no identificado",
+      "status": "provisional: excepción acordada con el cliente; se usa sin rotular como ilustrativa. Sustituir por foto real cuando llegue (CONFIRMAR.md)."
     },
     {
-      "file": "club-01.jpg",
-      "description": "El Club — foto 1",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "club-02.jpg",
-      "description": "El Club — foto 2",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "club-03.jpg",
-      "description": "El Club — foto 3",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
+      "file": "og-pizarra.jpg",
+      "description": "Recorte 800×420 de hero.jpg reescalado a 1200×630 para redes sociales",
+      "source": "Derivada de hero.jpg",
+      "license": "La de hero.jpg",
+      "credit": "Autor no identificado",
+      "status": "provisional: sigue a hero.jpg"
     },
     {
       "file": "team-lorena.jpg",
-      "description": "Lorena Vano — monitora y jugadora profesional",
+      "description": "Lorena Vano",
       "source": "Foto cedida por el club",
-      "license": "Cesión del club (consentimiento de la persona retratada: pendiente de documentar)",
-      "credit": "Eleva Padel Club",
+      "license": "Cesión del club con consentimiento de la persona retratada (confirmado por el cliente el 30-09-2026)",
+      "credit": "Eleva Pádel Pizarra",
       "status": "propia"
     },
     {
-      "file": "og.jpg",
-      "description": "Imagen Open Graph / redes sociales",
-      "source": "Banco de imágenes (Unsplash / Pexels) — provisional",
-      "license": "Unsplash License / Pexels License",
-      "credit": "Autor no identificado individualmente (ver _origen_urls)",
-      "status": "provisional — sustituir por foto real del club"
-    },
-    {
-      "file": "../maps/pizarra.svg",
-      "description": "Plano de situación del club (pie de /pizarra)",
-      "source": "Generado con clubs/_plantilla/generar-mapa.js a partir de datos de OpenStreetMap",
-      "license": "ODbL (Open Database License)",
-      "credit": "© OpenStreetMap contributors — la atribución se muestra bajo el mapa",
-      "status": "definitivo"
+      "file": "../pools/opt/pool_*",
+      "description": "Insignias de los pools del club (9), en AVIF 240/480/720 y JPEG 480",
+      "source": "Material del club",
+      "license": "PENDIENTE_CLUB: autoría y licencia",
+      "credit": "PENDIENTE_CLUB",
+      "status": "reales"
     },
     {
       "file": "favicon.svg (+ /favicon.ico, /apple-touch-icon.png)",
-      "description": "Icono del sitio: triángulo de la marca",
-      "source": "Propio (derivado del logotipo del sitio)",
-      "license": "Propia",
+      "description": "Icono del sitio: símbolo del logotipo (triángulo sobre una barra)",
+      "source": "Redibujado para la web; no procede del vectorial original",
+      "license": "Propia del cliente",
       "credit": "Eleva Pádel",
-      "status": "definitivo"
+      "status": "revisar: no coincide en proporciones con el logotipo de las insignias; PENDIENTE_CLUB el vectorial original"
     }
   ]
 }
