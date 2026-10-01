@@ -48,6 +48,30 @@
       "license": "Propio del cliente",
       "credit": "Eleva Pádel",
       "status": "definitivo: único origen del logo en la web"
+    },
+    {
+      "file": "../icons/lucide.svg",
+      "description": "Iconos de interfaz (menu, x, map-pin, external-link, arrow-right, arrow-left, clock) reunidos en un sprite, sin modificar",
+      "source": "Lucide 1.49.0 (github.com/lucide-icons/lucide)",
+      "license": "ISC; los derivados de Feather (x, arrow-left, arrow-right, external-link, clock), MIT. Texto completo en assets/icons/LICENSE-lucide.txt",
+      "credit": "Lucide Icons and Contributors; Cole Bemis (Feather)",
+      "status": "definitivo"
+    },
+    {
+      "file": "../marcas/whatsapp-glifo-{blanco,negro}.svg",
+      "description": "Glifo oficial de WhatsApp, copiado sin modificar (Digital_Glyph_White/Black_RGB_2026.svg)",
+      "source": "WhatsApp Brand Resource Center (meta.com/brand/resources/whatsapp), descargado el 01-10-2026",
+      "license": "Recursos de marca de Meta: sin modificar diseño ni colores, nunca en lugar de la palabra WhatsApp y nunca como elemento principal",
+      "credit": "WhatsApp es una marca de Meta",
+      "status": "definitivo"
+    },
+    {
+      "file": "../marcas/instagram-glifo-{blanco,negro}.svg",
+      "description": "Glifo oficial de Instagram, copiado sin modificar (Instagram_Glyph_White/Black.svg)",
+      "source": "Instagram Brand Resources (meta.com/brand/resources/instagram), IG_brand_asset_pack_2023, descargado el 01-10-2026",
+      "license": "Recursos de marca de Meta: sin modificar, siempre junto al nombre o la cuenta",
+      "credit": "Instagram es una marca de Meta",
+      "status": "definitivo"
     }
   ]
 }
