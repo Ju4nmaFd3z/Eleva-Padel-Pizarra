@@ -108,9 +108,6 @@ No dice qué cambia, no tiene tipo y empieza en mayúscula.
 
 ## Identidad del autor
 
-El repo es público y el email de cada commit es visible. Usa el email noreply de
-GitHub en la configuración local del repo:
-
-```sh
-git config user.email "<id>+<usuario>@users.noreply.github.com"
-```
+Los commits van con la identidad de Git del propietario del proyecto, tal como
+está configurada. Es una decisión suya: no se cambia la configuración de Git
+(ni la global ni la del repo).
