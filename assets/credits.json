@@ -1,5 +1,5 @@
 {
-  "_note": "Registro interno de las imágenes que existen en el sitio (no se publica: .vercelignore). Actualizado el 01-10-2026.",
+  "_note": "Registro interno de las imágenes que existen en el sitio (no se publica: .vercelignore). Actualizado el 01-10-2026 (bloque 2).",
   "images": [
     {
       "file": "hero.jpg",
@@ -34,12 +34,20 @@
       "status": "reales"
     },
     {
+      "file": "../maps/pizarra.svg",
+      "description": "Plano de situación del club (contacto de /pizarra), generado con clubs/_plantilla/generar-mapa.js desde las coordenadas confirmadas el 30-09-2026",
+      "source": "OpenStreetMap",
+      "license": "ODbL (Open Database License)",
+      "credit": "© OpenStreetMap contributors (se muestra bajo el plano)",
+      "status": "definitivo"
+    },
+    {
       "file": "favicon.svg (+ /favicon.ico, /apple-touch-icon.png)",
-      "description": "Icono del sitio: símbolo del logotipo (triángulo sobre una barra)",
-      "source": "Redibujado para la web; no procede del vectorial original",
-      "license": "Propia del cliente",
+      "description": "Logo oficial de la web (triángulo sobre una barra). favicon.ico y apple-touch-icon.png se renderizan desde el SVG",
+      "source": "Diseñado por Juanma Fernández (Biznaga Consulting) y aprobado por el club",
+      "license": "Propio del cliente",
       "credit": "Eleva Pádel",
-      "status": "revisar: no coincide en proporciones con el logotipo de las insignias; PENDIENTE_CLUB el vectorial original"
+      "status": "definitivo: único origen del logo en la web"
     }
   ]
 }

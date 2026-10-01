@@ -25,6 +25,12 @@
       ciudad: 'Pizarra, Málaga'
     },
 
+    /* Para el JSON-LD (tools/generar.js) */
+    seo: {
+      descripcion: 'Club de pádel con 4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga.',
+      imagen:      'assets/img/og-pizarra.jpg'
+    },
+
     contacto: {
       whatsapp:        '34659143103',          /* solo dígitos, con prefijo */
       whatsappDisplay: '+34 659 14 31 03',
@@ -33,9 +39,10 @@
       comunidad:       'https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE',
       reservas:        'https://vola.plus/app-link/club/1498',
       direccion:       'Pasaje Jerez s/n · 29560 Pizarra, Málaga',
+      direccionPostal: { streetAddress: 'Pasaje Jerez s/n', postalCode: '29560', addressLocality: 'Pizarra', addressRegion: 'Málaga', addressCountry: 'ES' },
       mapsUrl:         'https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5',
-      geo:             PENDIENTE_CLUB,         /* coordenadas: sin plano ni JSON-LD geo */
-      mapImage:        PENDIENTE_CLUB,
+      geo:             { lat: 36.76933415706922, lng: -4.709440122747979, verificado: '2026-09-30', fuente: 'Juanma' },
+      mapImage:        '../assets/maps/pizarra.svg',   /* generado con clubs/_plantilla/generar-mapa.js */
       horario:         PENDIENTE_CLUB
     },
 
@@ -148,10 +155,14 @@
       { nombre: 'Maripaz',     foto: null,                            rol: PENDIENTE_CLUB, bio: null }  /* sin bio: decidido */
     ],
 
-    /* Resto de patrocinadores y tipo de colaboración: PENDIENTE_CLUB */
-    patrocinadores: [
-      { nombre: 'Bar Restaurante La Herradura', tipo: PENDIENTE_CLUB }
-    ],
+    /* No se pinta hasta tener la lista completa confirmada (no se publica
+       una lista parcial). Tipo de colaboración: PENDIENTE_CLUB. */
+    patrocinadores: {
+      listaCompleta: PENDIENTE_CLUB,
+      items: [
+        { nombre: 'Bar Restaurante La Herradura', tipo: PENDIENTE_CLUB }
+      ]
+    },
 
     colaborar: PENDIENTE_CLUB,                 /* bloque «Colaborar con el club»: no se pinta hasta confirmarlo */
 

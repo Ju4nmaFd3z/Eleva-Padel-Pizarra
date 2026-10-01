@@ -17,6 +17,7 @@
   window.__ELEVA__ = {
 
     sede: { slug: PENDIENTE_CLUB, nombre: PENDIENTE_CLUB, ciudad: PENDIENTE_CLUB },
+    seo:  { descripcion: PENDIENTE_CLUB, imagen: PENDIENTE_CLUB },   /* para el JSON-LD */
 
     contacto: {
       whatsapp:        PENDIENTE_CLUB,   /* solo dígitos con prefijo, p. ej. 34XXXXXXXXX */
@@ -26,8 +27,9 @@
       comunidad:       PENDIENTE_CLUB,   /* invitación al grupo de WhatsApp */
       reservas:        PENDIENTE_CLUB,   /* URL de la plataforma de reservas */
       direccion:       PENDIENTE_CLUB,
+      direccionPostal: PENDIENTE_CLUB,   /* { streetAddress, postalCode, addressLocality, addressRegion, addressCountry } */
       mapsUrl:         PENDIENTE_CLUB,
-      geo:             PENDIENTE_CLUB,   /* { lat, lng } para generar-mapa.js */
+      geo:             PENDIENTE_CLUB,   /* { lat, lng, verificado, fuente } */
       mapImage:        PENDIENTE_CLUB,   /* '../assets/maps/<slug>.svg' */
       horario:         PENDIENTE_CLUB    /* { es, en, nl } */
     },
@@ -46,7 +48,7 @@
     cancelaciones:  PENDIENTE_CLUB,      /* { verificado, fuente, pistas:{titulo,items}, clases:{…}, nota } */
     pools:          PENDIENTE_CLUB,      /* { verificado, fuente, texto, insignias:[ {img, alt} ] } */
     equipo:         [],                  /* [ { nombre, foto|null, rol, bio } ] */
-    patrocinadores: [],                  /* [ { nombre, tipo } ] */
+    patrocinadores: { listaCompleta: PENDIENTE_CLUB, items: [] },   /* items: [ { nombre, tipo } ]; se pinta solo con listaCompleta: true */
     colaborar:      PENDIENTE_CLUB,
     galeria:        [],                  /* [ { base, w, h, alt:{es} } ] */
     eventos:        []                   /* [ { id, titulo, texto, desde?, hasta (OBLIGATORIO), enlace? } ] */
