@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <!-- Web de la MARCA Eleva Pádel (raíz /). Desde aquí se accede a los clubes.
-     Solo lleva lo confirmado: nombre, logotipo, el club de Pizarra y el pie.
+     Solo lleva lo confirmado: nombre, logotipo, los clubes y el pie.
      Pendientes (valores propuestos solo en CONFIRMAR.md):
        PENDIENTE_MARCA: qué ofrece la marca a los clubes y cómo unirse
        PENDIENTE_MARCA: contacto comercial (WhatsApp/teléfono) e Instagram
        PENDIENTE_MARCA: año de fundación, zona de actuación y CTA -->
-
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Eleva Pádel</title>
   <meta name="description" content="Eleva Pádel y su club de Pizarra, Málaga.">
-  <meta name="theme-color" content="#1A1A1A">
+  <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="dark">
 
   <link rel="canonical" href="https://eleva-padel-pizarra.vercel.app/">
@@ -32,6 +31,7 @@
     "@id": "https://eleva-padel-pizarra.vercel.app/#organization",
     "name": "Eleva Pádel",
     "url": "https://eleva-padel-pizarra.vercel.app/",
+    "logo": "https://eleva-padel-pizarra.vercel.app/apple-touch-icon.png",
     "subOrganization": {
       "@type": "SportsActivityLocation",
       "@id": "https://eleva-padel-pizarra.vercel.app/pizarra#club",
@@ -41,52 +41,48 @@
   }
   </script>
 
-  <link rel="stylesheet" href="css/fonts.css?v=20261001">
-  <link rel="stylesheet" href="css/main.css?v=20261001">
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css?v=20261001b">
+  <link rel="stylesheet" href="css/main.css?v=20261001b">
   <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
-<body class="home-landing">
+<body class="marca">
 
-<a href="#contenido" class="skip-link" data-i18n="skip.link">Saltar al contenido principal</a>
+<a href="#contenido" class="saltar" data-i18n="skip.link">Saltar al contenido principal</a>
 
-<nav id="main-nav" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
-  <a href="#contenido" class="nav-logo" aria-label="Eleva Pádel, inicio" data-i18n-arialabel="home.logoLabel">
-    <svg class="nav-logo-tri" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-    </svg>
-    <span class="logo-wordmark">ELEVA</span>
-  </a>
-  <div class="lang-switch" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
-    <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
-    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
+<header class="cabecera">
+  <div class="cabecera-barra">
+    <a href="#contenido" class="logo" aria-label="Eleva Pádel, inicio" data-i18n-arialabel="home.logoLabel">
+      <img src="assets/img/favicon.svg" width="40" height="40" alt="">
+      <span class="logo-nombre">Eleva Pádel</span>
+    </a>
+    <div class="idiomas" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
+      <button type="button" class="idioma" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" class="idioma" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" class="idioma" data-lang="nl" aria-pressed="false">NL</button>
+    </div>
   </div>
-</nav>
+</header>
 
 <main id="contenido">
 
-<section id="hero" class="home-hero2" aria-labelledby="home-title">
-  <div class="home-hero2-grid">
-    <div class="home-hero2-content">
-      <h1 id="home-title" class="home-hero2-title">Eleva Pádel</h1>
-    </div>
-  </div>
+<section class="marca-hero" aria-labelledby="titulo">
+  <img class="marca-logo" src="assets/img/favicon.svg" width="160" height="160" alt="">
+  <h1 id="titulo" class="marca-titulo">Eleva Pádel</h1>
 </section>
 
-<section id="clubes" class="home-network" aria-labelledby="clubes-heading">
-  <div class="home-network-header">
-    <h2 id="clubes-heading" class="home-network-title" data-i18n="home.clubs.heading">Clubes</h2>
-  </div>
-  <ul class="home-network-grid" role="list">
-    <li class="home-club-item">
-      <a class="home-club" href="pizarra/index.html">
-        <img class="home-club-img" src="assets/img/hero.jpg" width="800" height="600" alt="" loading="lazy" decoding="async">
-        <span class="home-club-body">
-          <span class="home-club-name">Eleva Pádel Pizarra</span>
-          <span class="home-club-city">Pizarra, Málaga</span>
-          <span class="home-club-link" data-i18n="home.clubs.visit">Ver el club</span>
+<section class="seccion" aria-labelledby="clubes-titulo">
+  <h2 id="clubes-titulo" data-i18n="home.clubs.heading">Clubes</h2>
+  <ul class="clubes">
+    <li>
+      <a class="club" href="pizarra/index.html">
+        <img src="assets/img/hero.jpg" width="800" height="600" alt="" loading="lazy" decoding="async">
+        <span class="club-texto">
+          <span class="club-nombre">Eleva Pádel Pizarra</span>
+          <span>Pizarra, Málaga</span>
+          <span class="enlace" data-i18n="home.clubs.visit">Ver el club</span>
         </span>
       </a>
     </li>
@@ -95,19 +91,15 @@
 
 </main>
 
-<footer id="footer" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
-  <div class="footer-bottom">
-    <p class="footer-legal">
-      <a href="privacidad.html" class="footer-legal-link" data-i18n="footer.legalLink">Aviso legal y privacidad</a>
-    </p>
-    <p class="footer-credit">
-      <span data-i18n="footer.credit">Desarrollado por</span>
-      <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
-    </p>
+<footer class="pie" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
+  <div class="pie-legal">
+    <a href="privacidad.html" data-i18n="footer.legalLink">Aviso legal y privacidad</a>
+    <p><span data-i18n="footer.credit">Desarrollado por</span>
+      <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a></p>
   </div>
 </footer>
 
-<script src="js/translations.js?v=20261001" defer></script>
-<script src="js/main.js?v=20261001" defer></script>
+<script src="js/translations.js?v=20261001b" defer></script>
+<script src="js/main.js?v=20261001b" defer></script>
 </body>
 </html>
