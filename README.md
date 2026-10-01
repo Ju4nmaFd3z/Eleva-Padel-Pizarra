@@ -106,6 +106,12 @@ galería y avisos. Después de cambiarlo, `node tools/generar.js`.
   la web lo usa como imagen y `favicon.ico` y `apple-touch-icon.png` se renderizan
   desde él. No se redibuja.
 - Fuentes: Barlow Condensed y Barlow (OFL, `assets/fonts/OFL-Barlow.txt`).
+- Iconos: Lucide 1.49.0 en `assets/icons/lucide.svg` (sprite, sin modificar; licencia
+  en `assets/icons/LICENSE-lucide.txt`). Se usan solo donde ayudan: menú, ubicación,
+  enlaces externos y flechas. Para añadir uno, se copia su `<symbol>` tal cual del
+  repositorio de Lucide.
+- WhatsApp e Instagram: glifos oficiales de Meta en `assets/marcas/`, sin modificar
+  (blanco sobre fondo negro, negro sobre botón beige), siempre junto al nombre escrito.
 
 ## Fotos
 
@@ -121,7 +127,7 @@ imagen, usa un nombre nuevo: la caché del navegador guarda las imágenes hasta 
 
 ## Cache-buster
 
-Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261001b`), igual en todos
+Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261001c`), igual en todos
 los HTML. Súbelo al cambiar CSS, JS o manifest. `tools/validar.js` comprueba que
 coincide.
 

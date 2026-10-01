@@ -48,7 +48,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 11. **i18n ES/EN/NL**: `js/translations.js` (solo interfaz) con las mismas claves en los
     tres idiomas. Los datos del club son `{ es, en, nl }` en su manifest (respaldo `es`).
     Textos nuevos: primero en español, a revisión del cliente; EN/NL después.
-12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261001b`) igual en todos los HTML;
+12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261001c`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según
     `CONTRIBUTING.md`: `tipo(ámbito): resumen` en español, presente, minúscula, ≤72,
@@ -66,6 +66,10 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - Colores muestreados de las insignias: negro `#000`, crema `#EDE4DC`, claro `#DBD2CC`,
   beige `#947E6B`, anillo `#A18572`. Crema sobre beige (3,1:1) no se usa. Los acentos de
   categoría (rosa, violeta, azul) solo marcan la categoría de un pool.
+- Iconos: Lucide 1.49.0 (`assets/icons/lucide.svg`, `<use href>`, color del texto) solo
+  en lo funcional; glifos oficiales de WhatsApp e Instagram (`assets/marcas/`) sin
+  modificar, nunca en lugar de la palabra ni como elemento principal. Nada de iconos
+  dibujados a mano.
 - CSS mobile-first con tres puntos de corte: 40rem, 64rem y 90rem. Hover solo dentro de
   `(hover: hover)`. Objetivos táctiles ≥ 44 px; inputs a 16 px.
 
