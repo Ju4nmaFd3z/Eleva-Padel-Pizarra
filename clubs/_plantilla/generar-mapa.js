@@ -11,16 +11,16 @@
    (licencia ODbL): «© OpenStreetMap contributors», que
    js/main.js ya pinta bajo el mapa.
 
-   Herramienta de desarrollo: Node 18+ sin dependencias.
+   Herramienta de desarrollo: Node 22+ sin dependencias.
    No se publica (clubs/ está en .vercelignore).
 
    Uso (desde la raíz del repo):
      node clubs/_plantilla/generar-mapa.js <lat> <lng> <salida.svg>
    Ejemplo:
-     node clubs/_plantilla/generar-mapa.js 36.769391 -4.709363 assets/maps/pizarra.svg
+     node clubs/_plantilla/generar-mapa.js 36.7 -4.7 assets/maps/<slug>.svg   (coordenadas confirmadas)
 
    Luego, en el manifest de la sede:
-     brand.mapImage: '../assets/maps/<slug>.svg'
+     contacto.mapImage: '../assets/maps/<slug>.svg'
    ========================================================= */
 'use strict';
 const fs = require('fs');
