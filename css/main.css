@@ -80,214 +80,6 @@ a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 ul { list-style: none; }
 svg { display: block; }
 
-/* ── 3. GRAIN OVERLAY ──────────────────────────────────────────── */
-.grain {
-  position: fixed;
-  inset: -4px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: .032;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain-drift 0.4s steps(2) infinite;
-}
-@keyframes grain-drift {
-  0%   { transform: translate(0,0); }
-  25%  { transform: translate(-2px,-2px); }
-  50%  { transform: translate(2px,-2px); }
-  75%  { transform: translate(-2px,2px); }
-  100% { transform: translate(2px,2px); }
-}
-
-/* ── 4. CUSTOM CURSOR ──────────────────────────────────────────── */
-#cursor {
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  /* El blend va AQUÍ, en el contenedor. Si se pone en .cursor-dot/.cursor-ring
-     (hijos de este elemento fixed), el blend queda aislado dentro de #cursor y
-     NO mezcla con el fondo de la página → el cursor se quedaba siempre blanco.
-     En el contenedor sí mezcla contra las secciones: invierte de verdad. */
-  mix-blend-mode: difference;
-}
-.cursor-dot {
-  position: absolute;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #fff;
-  transform: translate(-50%, -50%);
-  transition: transform .15s var(--ease-out), width .2s, height .2s;
-}
-.cursor-ring {
-  position: absolute;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 1.5px solid #fff;
-  transform: translate(-50%, -50%);
-  transition: width .3s var(--ease-out), height .3s var(--ease-out), opacity .2s;
-  opacity: .9;
-}
-.cursor-label {
-  position: absolute;
-  /* left/top se gestionan por JS en tick() para seguir al anillo */
-  font-family: var(--font-mono);
-  font-size: .6rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: #fff;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity .2s, transform .2s;
-  pointer-events: none;
-}
-#cursor.has-label .cursor-label { opacity: 1; transform: none; }
-#cursor.is-hovering .cursor-ring { width: 52px; height: 52px; opacity: 1; }
-#cursor.is-hovering .cursor-dot  { transform: translate(-50%,-50%) scale(0.5); }
-@media (hover: none) {
-  #cursor { display: none; }
-  body    { cursor: auto; }
-  button  { cursor: pointer; touch-action: manipulation; }
-  .btn    { cursor: pointer; }
-  a       { cursor: pointer; }
-}
-
-/* cursor:none SÓLO cuando el cursor personalizado se ha inicializado de
-   verdad (main.js añade .has-custom-cursor a <html>). Sin JS —o si falla—
-   el puntero nativo sigue visible y correcto. Los overrides equivalentes
-   para forced-colors / hover:none están más abajo con la misma
-   especificidad, y ganan por orden en la cascada. */
-html.has-custom-cursor body,
-html.has-custom-cursor button,
-html.has-custom-cursor a,
-html.has-custom-cursor .btn,
-html.has-custom-cursor .form-group select,
-html.has-custom-cursor .team-card,
-html.has-custom-cursor .sponsor-row { cursor: none; }
-
-/* ── 5. SPLASH ─────────────────────────────────────────────────── */
-#splash {
-  position: fixed;
-  inset: 0;
-  background: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5000;
-  /* Tiempo total en pantalla ≈1.15 s (0.8 s de entrada + 0.35 s de salida).
-     main.js lo oculta a los 1000 ms; esta animación es la red de seguridad
-     si el JS no llega a ejecutarse. */
-  animation: splash-exit .35s var(--ease-cinematic) .8s forwards;
-}
-@keyframes splash-exit {
-  to { opacity: 0; pointer-events: none; visibility: hidden; }
-}
-#splash.hidden { display: none; }
-/* Ya se mostró en esta sesión (main.js marca <html class="splash-seen">
-   leyendo sessionStorage): no se repite en cada navegación interna. */
-html.splash-seen #splash { display: none !important; }
-
-.splash-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-  padding: 0 1.5rem;
-  width: 100%;
-  user-select: none;
-}
-
-.splash-triangle svg {
-  width: clamp(60px, 15vw, 110px);
-  height: auto;
-  overflow: visible;
-}
-.triangle-path {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: miter;
-  stroke-miterlimit: 6;
-  stroke-dasharray: 215;
-  stroke-dashoffset: 215;
-  animation: draw-triangle .5s var(--ease-out) forwards;
-}
-@keyframes draw-triangle { to { stroke-dashoffset: 0; } }
-
-.splash-letters {
-  display: flex;
-  justify-content: center;
-  gap: .08em;
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 13vw, 7rem);
-  font-weight: 300;
-  letter-spacing: .45em;
-  text-indent: .45em;
-  color: var(--white-warm);
-  max-width: 100%;
-}
-.splash-letters span {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(28px);
-  animation: letter-rise .32s var(--ease-out) forwards;
-}
-.splash-letters span:nth-child(1) { animation-delay: .12s; }
-.splash-letters span:nth-child(2) { animation-delay: .18s; }
-.splash-letters span:nth-child(3) { animation-delay: .24s; }
-.splash-letters span:nth-child(4) { animation-delay: .30s; }
-.splash-letters span:nth-child(5) { animation-delay: .36s; }
-@keyframes letter-rise { to { opacity: 1; transform: translateY(0); } }
-
-/* Sub-línea del splash: localidad del club (— PIZARRA —).
-   Solo aparece en páginas de club (la landing no incluye .splash-sub).
-   Cada club pone aquí su localidad al copiar la plantilla. */
-.splash-sub {
-  display: flex;
-  align-items: center;
-  gap: clamp(.7rem, 2.5vw, 1.25rem);
-  opacity: 0;
-  animation: splash-sub-in .3s var(--ease-out) .42s forwards;
-}
-.splash-sub-text {
-  font-family: var(--font-mono);
-  font-size: clamp(.68rem, 2vw, .92rem);
-  letter-spacing: .5em;
-  text-indent: .5em;
-  text-transform: uppercase;
-  color: var(--gold);
-  white-space: nowrap;
-}
-.splash-sub-rule {
-  width: clamp(22px, 6vw, 46px);
-  height: 1px;
-  background: rgba(196,168,130,.45);
-  transform: scaleX(0);
-  animation: splash-rule-in .3s var(--ease-out) .5s forwards;
-}
-@keyframes splash-sub-in  { to { opacity: 1; } }
-@keyframes splash-rule-in { to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: reduce) {
-  .splash-sub { opacity: 1; animation: none; }
-  .splash-sub-rule { transform: scaleX(1); animation: none; }
-}
-
-.splash-bar-wrap {
-  width: clamp(120px, 30vw, 200px);
-  height: 1px;
-  background: rgba(196,168,130,.2);
-  overflow: hidden;
-}
-.splash-bar {
-  height: 100%;
-  background: var(--gold);
-  width: 0;
-  animation: bar-fill .75s ease forwards;
-  animation-delay: .05s;
-}
-@keyframes bar-fill { to { width: 100%; } }
-
 /* ── 6. NAVIGATION ─────────────────────────────────────────────── */
 #main-nav {
   position: fixed;
@@ -558,29 +350,6 @@ html.splash-seen #splash { display: none !important; }
   .nav-overlay .nav-overlay-cta { margin-top: .35rem; }
 }
 
-/* ── 7. BRAND MARK (lateral fijo) ──────────────────────────────── */
-/* Texto VERTICAL pegado al borde derecho. Antes era una línea horizontal
-   girada 90° sobre su centro: quedaba ~148 px hacia dentro y se montaba
-   sobre textos, precios, botones y campos del formulario. Con
-   writing-mode ocupa ~12 px junto al borde, fuera de la columna de
-   contenido (--container-max + --container-pad). */
-.brand-mark {
-  position: fixed;
-  right: max(10px, env(safe-area-inset-right));
-  top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-rl;
-  z-index: 100;
-  pointer-events: none;
-  font-family: var(--font-mono);
-  font-size: .6rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(196,168,130,.35);
-  white-space: nowrap;
-  user-select: none;
-}
-
 /* ── 8. FAB TRIANGLE ───────────────────────────────────────────── */
 .fab-triangle {
   position: fixed;
@@ -784,42 +553,6 @@ html.splash-seen #splash { display: none !important; }
 @keyframes scroll-line {
   0%,100% { transform: scaleY(1); transform-origin: top; }
   50% { transform: scaleY(.4); transform-origin: top; }
-}
-
-/* ── 12. MARQUEE STRIP ─────────────────────────────────────────── */
-.marquee-section {
-  background: var(--black);
-  border-top: 1px solid rgba(196,168,130,.15);
-  border-bottom: 1px solid rgba(196,168,130,.15);
-  overflow: hidden;
-  padding: 1.1rem 0;
-}
-.marquee-track {
-  display: flex;
-  white-space: nowrap;
-  width: max-content;
-  animation: marquee-run 35s linear infinite;
-}
-.marquee-track:hover { animation-play-state: paused; }
-.marquee-inner {
-  display: flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: var(--t-sm);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--beige);
-  padding-right: 3rem;
-  flex-shrink: 0;
-}
-.marquee-sep {
-  color: var(--gold);
-  margin: 0 1.5rem;
-  font-size: .8em;
-}
-@keyframes marquee-run {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
 }
 
 /* ── 13. SECCIÓN 01 — EL CLUB ──────────────────────────────────── */
@@ -3032,18 +2765,6 @@ html.splash-seen #splash { display: none !important; }
   min-width: 44px;
 }
 
-/* ── AURORA ORB ─────────────────────────────────────────────── */
-.aurora-orb {
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 0;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0;
-  transition: opacity 1.5s, transform 0.5s;
-  will-change: transform;
-}
 
 /* ════════════════════════════════════════════════════════════════
    36. LANDING B2B (raíz /)  ·  body.home-landing
@@ -3657,3 +3378,31 @@ a.home-club--cta:hover .home-club-link { color: var(--gold); }
   .form-group select,
   .form-group textarea { font-size: 16px; }
 }
+
+/* ── PROVISIONAL (bloque 1 del rediseño) ─────────────────────────
+   Estilos mínimos para los bloques nuevos hasta que el CSS se rehaga
+   mobile-first en el bloque 2. */
+.hero-title { font-size: clamp(2.5rem, 9vw, 6rem); }
+.section-academy, .section-pools, .section-other, .section-policy,
+.section-team, .section-sponsors, .section-gallery {
+  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 5vw, 4rem);
+}
+.section-heading { font-size: clamp(1.75rem, 5vw, 3rem); margin-bottom: 1.5rem; }
+.club-list { display: grid; gap: .25rem; }
+.academy-rates-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.academy-includes { display: grid; gap: .35rem; margin-top: .75rem; }
+.pools-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(45%, 14rem), 1fr)); margin: 2rem 0; }
+.pools-grid img { width: 100%; height: auto; border-radius: 50%; }
+.policy-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+.policy-block h3 { margin-bottom: .75rem; }
+.policy-block ul { display: grid; gap: .5rem; padding-left: 1.1rem; list-style: disc; }
+.policy-note { grid-column: 1 / -1; }
+.team-photo-wrap::before, .team-photo-wrap::after { display: none; }
+img.team-photo { width: 100%; height: 100%; object-fit: cover; filter: none; display: block; }
+.academy-rate-price { color: var(--cream); margin: .5rem 0; }
+.sponsor-row { grid-template-columns: minmax(0, 1fr) auto; }
+.home-club-img { width: 100%; height: auto; display: block; }
+.fab-triangle a.fab-label { width: auto; height: auto; border-radius: 4px; display: inline-flex; align-items: center; min-height: 44px; padding: .5rem 1.25rem;
+  background: var(--gold); color: var(--black); font-weight: 500; }
+.club-events:not([hidden]) { padding: 1rem clamp(1rem, 5vw, 4rem); background: var(--gold); color: var(--black); }
+.section-academy .academy-rates-sub { color: var(--beige); display: block; margin-top: 1rem; }

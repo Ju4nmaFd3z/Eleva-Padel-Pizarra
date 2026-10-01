@@ -81,10 +81,9 @@ const PAGINA = `<!DOCTYPE html>
 <main>
   <svg class="logo" viewBox="20 16 60 69" role="img" aria-label="Logo de Eleva Pádel" xmlns="http://www.w3.org/2000/svg"><path d="M50 16 L20 70 L26 70 L50 27 L74 70 L80 70 Z M20 80 H80 V85 H20 Z" fill="#C4A882"/></svg>
   <h1>Eleva Pádel</h1>
-  <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos o llamarnos.</p>
+  <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos.</p>
   <ul>
-    <li><a href="tel:+34659143103">Llamar al +34 659 14 31 03</a></li>
-    <li><a href="https://wa.me/34659143103" rel="noopener noreferrer">WhatsApp</a></li>
+    <li><a href="https://wa.me/34659143103" rel="noopener noreferrer">WhatsApp +34 659 14 31 03</a></li>
     <li><a href="https://instagram.com/elevapadelpizarra" rel="noopener noreferrer">Instagram @elevapadelpizarra</a></li>
   </ul>
 </main>

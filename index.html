@@ -1,573 +1,113 @@
 <!DOCTYPE html>
-<!-- ══════════════════════════════════════════════════════════════════
-     LANDING B2B · Eleva Pádel  ·  raíz /
-     Escaparate de marca para dueños de clubes/academias de pádel.
-     Sitio 100% estático · sin build · IIFE · funciona en file:// y Vercel.
-     Reutiliza el chasis de css/main.css + js/main.js + js/translations.js.
-════════════════════════════════════════════════════════════════════ -->
+<!-- Web de la MARCA Eleva Pádel (raíz /). Desde aquí se accede a los clubes.
+     Solo lleva lo confirmado: nombre, logotipo, el club de Pizarra y el pie.
+     Pendientes (valores propuestos solo en CONFIRMAR.md):
+       PENDIENTE_MARCA: qué ofrece la marca a los clubes y cómo unirse
+       PENDIENTE_MARCA: contacto comercial (WhatsApp/teléfono) e Instagram
+       PENDIENTE_MARCA: año de fundación, zona de actuación y CTA -->
+
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="home.metaTitle">Eleva Pádel · Marca de clubes de pádel</title>
-  <meta name="description" content="Eleva Pádel: marca de clubes de pádel con identidad propia, web multiidioma ES/EN/NL, reservas y comunidad. Primera sede en Pizarra, Málaga.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Eleva Pádel</title>
+  <meta name="description" content="Eleva Pádel y su club de Pizarra, Málaga.">
   <meta name="theme-color" content="#1A1A1A">
   <meta name="color-scheme" content="dark">
 
-  <!-- Canónica y SEO -->
   <link rel="canonical" href="https://eleva-padel-pizarra.vercel.app/">
   <link rel="alternate" hreflang="x-default" href="https://eleva-padel-pizarra.vercel.app/">
-  <meta name="robots" content="index, follow">
 
-  <!-- Open Graph -->
   <meta property="og:type"        content="website">
   <meta property="og:site_name"   content="Eleva Pádel">
   <meta property="og:url"         content="https://eleva-padel-pizarra.vercel.app/">
-  <meta property="og:title"       content="Eleva Pádel · Marca de clubes de pádel">
-  <meta property="og:description" content="Una marca. Una experiencia. Todas tus pistas, elevadas. Lleva Eleva a tu club.">
-  <meta property="og:image"       content="https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt"   content="Eleva Pádel — marca de clubes de pádel">
+  <meta property="og:title"       content="Eleva Pádel">
+  <meta property="og:description" content="Eleva Pádel y su club de Pizarra, Málaga.">
   <meta property="og:locale"      content="es_ES">
 
-  <!-- Twitter / X Card -->
-  <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="Eleva Pádel · Marca de clubes de pádel">
-  <meta name="twitter:description" content="Una marca. Una experiencia. Todas tus pistas, elevadas. Lleva Eleva a tu club.">
-  <meta name="twitter:image"       content="https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg">
-  <meta name="twitter:image:alt"   content="Eleva Pádel — marca de clubes de pádel">
-
-  <!-- JSON-LD Organización (marca Eleva Pádel) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": "https://eleva-padel-pizarra.vercel.app/#organization",
     "name": "Eleva Pádel",
-    "alternateName": "Eleva Padel",
-    "description": "Marca de clubes de pádel. Identidad propia, web multiidioma, reservas y comunidad para clubes y academias. Primera sede en Pizarra, Málaga.",
     "url": "https://eleva-padel-pizarra.vercel.app/",
-    "image": "https://eleva-padel-pizarra.vercel.app/assets/img/og.jpg",
-    "telephone": "+34659143103",
-    "areaServed": "ES",
-    "sameAs": ["https://instagram.com/elevapadelpizarra"],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+34659143103",
-      "contactType": "sales"
-    },
     "subOrganization": {
       "@type": "SportsActivityLocation",
       "@id": "https://eleva-padel-pizarra.vercel.app/pizarra#club",
-      "name": "Eleva Padel Club",
+      "name": "Eleva Pádel Pizarra",
       "url": "https://eleva-padel-pizarra.vercel.app/pizarra"
     }
   }
   </script>
 
-  <!-- Fonts (solo CSS, sin JS externo) -->
-  <script>try{if(sessionStorage.getItem('eleva-splash-seen')==='1'){document.documentElement.className+=' splash-seen'}}catch(e){}</script>
-  <link rel="stylesheet" href="css/fonts.css?v=20260930">
+  <link rel="stylesheet" href="css/fonts.css?v=20261001">
+  <link rel="stylesheet" href="css/main.css?v=20261001">
   <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-  <link rel="stylesheet" href="css/main.css?v=20260930">
-
-  <!-- Fallback: si JS no carga, todo el contenido es visible -->
-  <noscript>
-    <style>
-      #splash { display: none !important; }
-      [data-reveal] { opacity: 1 !important; transform: none !important; }
-      body, a, button, .btn { cursor: auto !important; }
-    </style>
-  </noscript>
 </head>
 <body class="home-landing">
 
 <a href="#contenido" class="skip-link" data-i18n="skip.link">Saltar al contenido principal</a>
 
-<!-- GRAIN -->
-<div class="grain" aria-hidden="true"></div>
-
-<!-- SPLASH -->
-<div id="splash" role="status" aria-label="Cargando Eleva Pádel" data-i18n-arialabel="home.splashLabel">
-  <div class="splash-inner">
-    <div class="splash-triangle" aria-hidden="true">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path class="triangle-path" d="M17.5 74 L50 12 L82.5 74 M14 89 H86"/>
-      </svg>
-    </div>
-    <div class="splash-letters" role="img" aria-label="ELEVA">
-      <span aria-hidden="true">E</span>
-      <span aria-hidden="true">L</span>
-      <span aria-hidden="true">E</span>
-      <span aria-hidden="true">V</span>
-      <span aria-hidden="true">A</span>
-    </div>
-    <div class="splash-bar-wrap" aria-hidden="true">
-      <div class="splash-bar"></div>
-    </div>
-  </div>
-</div>
-
-<!-- CUSTOM CURSOR -->
-<div id="cursor" aria-hidden="true">
-  <div class="cursor-dot"></div>
-  <div class="cursor-ring"></div>
-  <span class="cursor-label"></span>
-</div>
-
-<!-- NAVEGACIÓN -->
 <nav id="main-nav" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
-  <a href="#hero" class="nav-logo" aria-label="Eleva Pádel — inicio" data-i18n-arialabel="home.nav.logoLabel">
+  <a href="#contenido" class="nav-logo" aria-label="Eleva Pádel, inicio" data-i18n-arialabel="home.logoLabel">
     <svg class="nav-logo-tri" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
     </svg>
     <span class="logo-wordmark">ELEVA</span>
   </a>
-
-  <ul class="nav-links" role="list">
-    <li><a href="#manifiesto" data-num="01" data-cursor="ver"  data-i18n="home.nav.manifesto">Manifiesto</a></li>
-    <li><a href="#propuesta"  data-num="02" data-cursor="ver"  data-i18n="home.nav.about">Qué es</a></li>
-    <li><a href="#unirse"     data-num="03" data-cursor="ver"  data-i18n="home.nav.join">Unirse</a></li>
-    <li><a href="#beneficios" data-num="04" data-cursor="ver"  data-i18n="home.nav.benefits">Beneficios</a></li>
-    <li><a href="#red"        data-num="05" data-cursor="ver"  data-i18n="home.nav.network">La Red</a></li>
-    <li><a href="#contacto"   data-num="06" data-cursor="leer" data-i18n="home.nav.contact">Contacto</a></li>
-  </ul>
-
-  <a href="https://wa.me/34659143103"
-     target="_blank" rel="noopener noreferrer"
-     class="nav-cta js-wa-b2b"
-     data-cursor="WhatsApp"
-     data-i18n="home.nav.cta">
-    Únete
-  </a>
-
   <div class="lang-switch" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
     <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
     <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
   </div>
-
-  <button type="button" class="nav-burger" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen" aria-expanded="false" aria-controls="nav-overlay">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<!-- Mobile nav overlay -->
-<div id="nav-overlay" class="nav-overlay" role="dialog" aria-label="Menú de navegación" data-i18n-arialabel="nav.overlayLabel" aria-modal="true" aria-hidden="true">
-  <a href="#manifiesto" data-cursor="ver"  data-i18n="home.nav.manifesto">Manifiesto</a>
-  <a href="#propuesta"  data-cursor="ver"  data-i18n="home.nav.about">Qué es</a>
-  <a href="#unirse"     data-cursor="ver"  data-i18n="home.nav.join">Unirse</a>
-  <a href="#beneficios" data-cursor="ver"  data-i18n="home.nav.benefits">Beneficios</a>
-  <a href="#red"        data-cursor="ver"  data-i18n="home.nav.network">La Red</a>
-  <a href="#contacto"   data-cursor="leer" data-i18n="home.nav.contact">Contacto</a>
-  <a href="https://wa.me/34659143103"
-     target="_blank" rel="noopener noreferrer"
-     class="nav-overlay-cta js-wa-b2b"
-     data-cursor="WhatsApp"
-     data-i18n="home.nav.cta">
-    Únete
-  </a>
-  <div class="nav-overlay-lang" role="group" aria-label="Seleccionar idioma" data-i18n-arialabel="nav.langLabel">
-    <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
-    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
-  </div>
-</div>
-
-<!-- MARCA LATERAL FIJA -->
-<div class="brand-mark" aria-hidden="true" data-i18n="home.brandMark">ELEVA · PÁDEL · NACE EN PIZARRA</div>
-
-<!-- ════════════════════════════════════════════════════════════
-     HERO · "Índice de la Red"
-     Concepto propio de MARCA (deliberadamente distinto del hero del club:
-     sin foto a sangre ni título serif centrado). Lienzo negro editorial +
-     tipografía cinética a gran escala (rotador "Eleva tu ___") sobre una
-     CONSTELACIÓN viva de sedes que ancla en Pizarra. Conecta temáticamente
-     con el apartado 05 · La Red.
-════════════════════════════════════════════════════════════ -->
 <main id="contenido">
 
-<section id="hero" class="home-hero2" aria-label="Eleva Pádel — red de clubes de pádel" data-i18n-arialabel="home.hero.ariaLabel">
-
-  <!-- Constelación de la red · ancla = Pizarra (ÚNICA sede real).
-       Antes había 7 nodos cerrados entre sí: se leía como "7 sedes
-       conectadas", que no es cierto. Ahora sólo el ancla es un nodo; el
-       resto son trazos abiertos (discontinuos, inline-style para que no
-       los repinte el CSS) que sugieren una red por construir, sin
-       insinuar un número de sedes. -->
-  <svg class="home-net" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <g class="home-net-links">
-      <!-- style inline: gana al CSS (.home-net-links path) sin tocar main.css -->
-      <path d="M630 360 L560 160" style="opacity:.17;stroke-dasharray:5 9"/>
-      <path d="M630 360 L790 105" style="opacity:.15;stroke-dasharray:5 9"/>
-      <path d="M630 360 L560 520" style="opacity:.15;stroke-dasharray:5 9"/>
-      <path d="M630 360 L960 440" style="opacity:.12;stroke-dasharray:5 9"/>
-      <path d="M630 360 L935 215" style="opacity:.11;stroke-dasharray:5 9"/>
-      <path d="M630 360 L800 590" style="opacity:.10;stroke-dasharray:5 9"/>
-    </g>
-    <!-- Nodo ancla: Pizarra -->
-    <g class="home-net-anchor" transform="translate(630 360)">
-      <circle class="home-net-pulse" r="26"/>
-      <path class="home-net-tri" d="M0 -19 L-16 12 L16 12 Z"/>
-    </g>
-  </svg>
-
+<section id="hero" class="home-hero2" aria-labelledby="home-title">
   <div class="home-hero2-grid">
-    <!-- Índice lateral (sistema editorial) -->
-    <p class="home-hero2-index" aria-hidden="true">
-      <span>N°01</span><span class="home-idx-line"></span><span data-i18n="home.hero.index">La Red</span>
-    </p>
-
     <div class="home-hero2-content">
-      <div class="home-hero2-main">
-        <p class="home-hero2-kicker" data-reveal data-i18n="home.hero.kicker">MARCA DE CLUBES DE PÁDEL · NACE EN PIZARRA</p>
-
-        <h1 class="home-hero2-title" data-reveal data-reveal-delay="100"
-            data-i18n-arialabel="home.hero.titleSr" aria-label="Eleva tu club, tu marca, tu comunidad y tu pádel.">
-          <span class="home-hero2-brand">Eleva</span>
-          <span class="home-hero2-rotator" aria-hidden="true">
-            <!-- La palabra más larga va primero y activa: si aparece después,
-                 el navegador la cuenta como un LCP nuevo (~7,6 s en móvil lento) -->
-            <span class="home-rot is-active" data-i18n="home.hero.rot3">tu comunidad.</span>
-            <span class="home-rot" data-i18n="home.hero.rot1">tu club.</span>
-            <span class="home-rot" data-i18n="home.hero.rot2">tu marca.</span>
-            <span class="home-rot" data-i18n="home.hero.rot4">tu pádel.</span>
-          </span>
-        </h1>
-
-        <p class="home-hero2-tagline" data-reveal data-reveal-delay="200" data-i18n="home.hero.tagline">Una marca. Una experiencia. Todas tus pistas, elevadas.</p>
-
-        <div class="home-hero2-ctas" data-reveal data-reveal-delay="300">
-          <a href="https://wa.me/34659143103"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn-primary js-wa-b2b"
-             data-cursor="WhatsApp"
-             data-i18n="home.hero.ctaPrimary">
-            Lleva Eleva a tu club
-          </a>
-          <a href="pizarra/index.html" class="btn btn-ghost" data-cursor="ver" data-i18n="home.hero.ctaSecondary">
-            Ver una sede
-          </a>
-        </div>
-      </div>
-
-      <!-- Leyenda del nodo ancla (Pizarra) -->
-      <div class="home-hero2-legend" data-reveal data-reveal-delay="360">
-        <span class="home-legend-dot" aria-hidden="true"></span>
-        <span class="home-legend-city" data-i18n="home.hero.anchorCity">Pizarra · Málaga</span>
-        <span class="home-legend-sep" aria-hidden="true">·</span>
-        <span class="home-legend-status" data-i18n="home.hero.anchorStatus">Sede activa</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-scroll" aria-hidden="true">
-    <span data-i18n="hero.scroll">Scroll</span>
-    <div class="hero-scroll-line"></div>
-  </div>
-</section>
-
-<!-- MARQUEE STRIP -->
-<div class="marquee-section" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-inner">
-      <span data-i18n="home.marquee.brand">Marca premium</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.multilang">Web multiidioma ES · EN · NL</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.booking">Reservas online</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.tournaments">Torneos &amp; Pools</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.community">Comunidad</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.expansion">Red en construcción</span>
-      <span class="marquee-sep">Δ</span>
-    </span>
-    <span class="marquee-inner" aria-hidden="true">
-      <span data-i18n="home.marquee.brand">Marca premium</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.multilang">Web multiidioma ES · EN · NL</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.booking">Reservas online</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.tournaments">Torneos &amp; Pools</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.community">Comunidad</span>
-      <span class="marquee-sep">Δ</span>
-      <span data-i18n="home.marquee.expansion">Red en construcción</span>
-      <span class="marquee-sep">Δ</span>
-    </span>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════════
-     01 — MANIFIESTO
-════════════════════════════════════════════════════════════ -->
-<section id="manifiesto" class="home-manifesto" aria-labelledby="manifiesto-heading">
-  <div class="home-manifesto-inner">
-    <span class="section-watermark" aria-hidden="true" data-n="01"></span>
-    <span class="section-label" data-i18n="home.manifesto.label">Manifiesto</span>
-    <h2 id="manifiesto-heading" class="home-manifesto-heading" data-reveal data-i18n-html="home.manifesto.headingHtml">
-      El pádel no necesita más pistas.<br>Necesita más <em>criterio</em>.
-    </h2>
-    <p class="home-manifesto-text" data-reveal data-reveal-delay="120" data-i18n="home.manifesto.text">
-      Creemos en clubes con alma: bien diseñados, bien contados, bien gestionados.
-      Eleva es la marca que convierte tu club en un destino —y a tus jugadores, en comunidad.
-    </p>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════
-     02 — QUÉ ES ELEVA (propuesta de valor)
-════════════════════════════════════════════════════════════ -->
-<section id="propuesta" class="home-value" aria-labelledby="propuesta-heading">
-  <div class="home-value-inner">
-    <div class="home-value-head">
-      <span class="section-label" data-i18n="home.value.label">Qué es Eleva</span>
-      <h2 id="propuesta-heading" class="home-value-heading" data-reveal data-i18n-html="home.value.headingHtml">
-        Una red,<br>no una franquicia rígida.
-      </h2>
-    </div>
-    <div class="home-value-body">
-      <p data-reveal data-i18n="home.value.p1">
-        Eleva es una marca de pádel que empieza en Pizarra. Aportamos identidad, tecnología
-        y una web propia multiidioma; tú mantienes tu club, tu equipo y tu esencia.
-      </p>
-      <p data-reveal data-reveal-delay="120" data-i18n="home.value.p2">
-        Juntos elevamos el estándar: la experiencia que vive el jugador, la imagen que proyecta
-        tu club y la comunidad que lo sostiene.
-      </p>
-      <div class="home-stats" data-reveal data-reveal-delay="200">
-        <div class="home-stat">
-          <span class="home-stat-num" data-count="1" data-suffix="">1</span>
-          <span class="home-stat-label" data-i18n="home.value.stat1">Sede activa</span>
-        </div>
-        <div class="home-stat">
-          <span class="home-stat-num" data-count="3" data-suffix="">3</span>
-          <span class="home-stat-label" data-i18n="home.value.stat2">Idiomas de serie</span>
-        </div>
-        <div class="home-stat">
-          <span class="home-stat-num" data-count="2026" data-raw="1">2026</span>
-          <span class="home-stat-label" data-i18n="home.value.stat3">Año de fundación</span>
-        </div>
-      </div>
+      <h1 id="home-title" class="home-hero2-title">Eleva Pádel</h1>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════════════════════════
-     03 — CÓMO UNIR TU CLUB (pasos)
-════════════════════════════════════════════════════════════ -->
-<section id="unirse" class="home-steps" aria-labelledby="unirse-heading">
-  <div class="home-steps-header">
-    <span class="section-watermark" aria-hidden="true" data-n="03"></span>
-    <span class="section-label" data-i18n="home.steps.label">Cómo unir tu club</span>
-    <h2 id="unirse-heading" class="home-steps-title" data-reveal data-i18n-html="home.steps.headingHtml">
-      De tu club a la red<br><em>en cuatro pasos.</em>
-    </h2>
-  </div>
-
-  <ol class="home-steps-grid" role="list">
-    <li class="home-step" data-reveal>
-      <span class="home-step-num">01</span>
-      <h3 class="home-step-title" data-i18n="home.steps.s1Title">Hablamos</h3>
-      <p class="home-step-desc" data-i18n="home.steps.s1Desc">Nos cuentas cómo es tu club y qué buscas. Sin compromiso.</p>
-    </li>
-    <li class="home-step" data-reveal data-reveal-delay="100">
-      <span class="home-step-num">02</span>
-      <h3 class="home-step-title" data-i18n="home.steps.s2Title">Diseñamos</h3>
-      <p class="home-step-desc" data-i18n="home.steps.s2Desc">Adaptamos la identidad Eleva a tu sede: web, marca y presencia digital.</p>
-    </li>
-    <li class="home-step" data-reveal data-reveal-delay="200">
-      <span class="home-step-num">03</span>
-      <h3 class="home-step-title" data-i18n="home.steps.s3Title">Lanzamos</h3>
-      <p class="home-step-desc" data-i18n="home.steps.s3Desc">Publicamos tu club en la red con reservas, comunidad y multiidioma.</p>
-    </li>
-    <li class="home-step" data-reveal data-reveal-delay="300">
-      <span class="home-step-num">04</span>
-      <h3 class="home-step-title" data-i18n="home.steps.s4Title">Crecemos</h3>
-      <p class="home-step-desc" data-i18n="home.steps.s4Desc">Torneos, captación y una marca que trabaja para ti cada día.</p>
-    </li>
-  </ol>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════
-     04 — BENEFICIOS DE LA RED
-════════════════════════════════════════════════════════════ -->
-<section id="beneficios" class="home-benefits" aria-labelledby="beneficios-heading">
-  <div class="home-benefits-header">
-    <span class="section-label" data-i18n="home.benefits.label">Beneficios de la red</span>
-    <h2 id="beneficios-heading" class="home-benefits-title" data-reveal data-i18n-html="home.benefits.headingHtml">
-      Todo lo que un club necesita<br>para <em>destacar</em>.
-    </h2>
-  </div>
-
-  <div class="home-benefits-grid">
-    <article class="home-benefit" data-reveal>
-      <span class="home-benefit-idx" aria-hidden="true">Δ</span>
-      <h3 class="home-benefit-title" data-i18n="home.benefits.b1Title">Identidad cuidada</h3>
-      <p class="home-benefit-desc" data-i18n="home.benefits.b1Desc">Una identidad coherente en web, redes y pista que diferencia tu club desde el primer vistazo.</p>
-    </article>
-    <article class="home-benefit" data-reveal data-reveal-delay="80">
-      <span class="home-benefit-idx" aria-hidden="true">Δ</span>
-      <h3 class="home-benefit-title" data-i18n="home.benefits.b2Title">Web propia multiidioma</h3>
-      <p class="home-benefit-desc" data-i18n="home.benefits.b2Desc">Tu sede con página propia en ES · EN · NL, lista para captar a cualquier jugador.</p>
-    </article>
-    <article class="home-benefit" data-reveal data-reveal-delay="160">
-      <span class="home-benefit-idx" aria-hidden="true">Δ</span>
-      <h3 class="home-benefit-title" data-i18n="home.benefits.b3Title">Captación y comunidad</h3>
-      <p class="home-benefit-desc" data-i18n="home.benefits.b3Desc">Te acompañamos para dar a conocer tu club y convertir jugadores sueltos en comunidad.</p>
-    </article>
-    <article class="home-benefit" data-reveal data-reveal-delay="240">
-      <span class="home-benefit-idx" aria-hidden="true">Δ</span>
-      <h3 class="home-benefit-title" data-i18n="home.benefits.b4Title">Tecnología y reservas</h3>
-      <p class="home-benefit-desc" data-i18n="home.benefits.b4Desc">Enlazamos tu plataforma de reservas online y cuidamos la experiencia digital de principio a fin.</p>
-    </article>
-    <article class="home-benefit home-benefit--wide" data-reveal data-reveal-delay="320">
-      <span class="home-benefit-idx" aria-hidden="true">Δ</span>
-      <h3 class="home-benefit-title" data-i18n="home.benefits.b5Title">Torneos y eventos</h3>
-      <p class="home-benefit-desc" data-i18n="home.benefits.b5Desc">Formatos de torneo y pools listos para activar, con el respaldo y la comunicación de la marca.</p>
-    </article>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════
-     05 — LA RED / SEDES  (grid data-driven, escalable)
-════════════════════════════════════════════════════════════ -->
-<section id="red" class="home-network" aria-labelledby="red-heading">
+<section id="clubes" class="home-network" aria-labelledby="clubes-heading">
   <div class="home-network-header">
-    <span class="section-watermark" aria-hidden="true" data-n="05"></span>
-    <span class="section-label" data-i18n="home.network.label">La Red</span>
-    <h2 id="red-heading" class="home-network-title" data-reveal data-i18n="home.network.heading">Donde ya se juega distinto.</h2>
-    <p class="home-network-sub" data-reveal data-reveal-delay="100" data-i18n="home.network.sub">
-      Empezamos en Pizarra. Tu club puede ser el próximo.
-    </p>
+    <h2 id="clubes-heading" class="home-network-title" data-i18n="home.clubs.heading">Clubes</h2>
   </div>
-
-  <!-- Sedes inyectadas por renderNetwork() (js/main.js) desde HOME_CLUBS -->
-  <div class="home-network-grid" id="network-grid" role="list"></div>
+  <ul class="home-network-grid" role="list">
+    <li class="home-club-item">
+      <a class="home-club" href="pizarra/index.html">
+        <img class="home-club-img" src="assets/img/hero.jpg" width="800" height="600" alt="" loading="lazy" decoding="async">
+        <span class="home-club-body">
+          <span class="home-club-name">Eleva Pádel Pizarra</span>
+          <span class="home-club-city">Pizarra, Málaga</span>
+          <span class="home-club-link" data-i18n="home.clubs.visit">Ver el club</span>
+        </span>
+      </a>
+    </li>
+  </ul>
 </section>
 
-<!-- ════════════════════════════════════════════════════════════
-     06 — CTA FINAL B2B
-════════════════════════════════════════════════════════════ -->
-<section id="contacto" class="home-cta" aria-labelledby="contacto-heading">
-  <svg class="home-cta-tri" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M17.5 74 L50 12 L82.5 74 M14 89 H86"/>
-  </svg>
-  <span class="section-label" data-i18n="home.cta.label">Contacto</span>
-  <h2 id="contacto-heading" class="home-cta-title" data-reveal data-i18n-html="home.cta.headingHtml">
-    ¿Listo para elevar<br><em>tu club?</em>
-  </h2>
-  <p class="home-cta-text" data-reveal data-reveal-delay="120" data-i18n="home.cta.text">
-    Cuéntanos tu proyecto. Te contestamos por WhatsApp lo antes posible.
-  </p>
-  <div class="home-cta-actions" data-reveal data-reveal-delay="200">
-    <a href="https://wa.me/34659143103"
-       target="_blank" rel="noopener noreferrer"
-       class="btn btn-primary js-wa-b2b"
-       data-cursor="WhatsApp"
-       data-i18n="home.cta.ctaPrimary">
-      Hablar por WhatsApp
-    </a>
-    <a href="pizarra/index.html" class="btn btn-ghost" data-cursor="ver" data-i18n="home.cta.ctaSecondary">
-      Ver una sede
-    </a>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════════════════════ -->
 </main>
 
 <footer id="footer" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
-  <div class="footer-marquee" aria-hidden="true">
-    <span class="footer-marquee-inner" data-text="Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp;"></span>
-    <span class="footer-marquee-inner" data-text="Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp; Eleva Pádel &nbsp;·&nbsp;"></span>
-  </div>
-
-  <div class="footer-grid">
-    <div>
-      <div class="footer-logo">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-        </svg>
-        <span class="footer-logo-name">ELEVA</span>
-      </div>
-      <p class="footer-claim" data-i18n="home.footer.claim">Elevando el pádel, un club cada vez.</p>
-    </div>
-
-    <div>
-      <div class="footer-col-title" data-i18n="footer.contactTitle">Contacto</div>
-      <div class="footer-contact-item">
-        <span class="lbl" data-i18n="footer.phoneLabel">Teléfono / WhatsApp</span>
-        <span class="val"><a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer" class="js-wa-b2b" data-cursor="WhatsApp">+34 659 14 31 03</a></span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="lbl" data-i18n="contact.infoInstagram">Instagram</span>
-        <span class="val">
-          <a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer" data-cursor="mirar">@elevapadelpizarra</a>
-        </span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="lbl" data-i18n="home.footer.sedeLabel">Primera sede</span>
-        <span class="val"><a href="pizarra/index.html" data-cursor="ver">Eleva Padel Club · Pizarra</a></span>
-      </div>
-    </div>
-
-    <div>
-      <div class="footer-col-title" data-i18n="home.footer.navTitle">Explorar</div>
-      <ul class="footer-links" role="list">
-        <li><a href="#manifiesto" data-cursor="ver"  data-i18n="home.nav.manifesto">Manifiesto</a></li>
-        <li><a href="#propuesta"  data-cursor="ver"  data-i18n="home.nav.about">Qué es Eleva</a></li>
-        <li><a href="#unirse"     data-cursor="ver"  data-i18n="home.nav.join">Cómo unirse</a></li>
-        <li><a href="#beneficios" data-cursor="ver"  data-i18n="home.nav.benefits">Beneficios</a></li>
-        <li><a href="#red"        data-cursor="ver"  data-i18n="home.nav.network">La Red</a></li>
-        <li><a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer" class="js-wa-b2b" data-cursor="WhatsApp" data-i18n="home.nav.cta">Únete</a></li>
-      </ul>
-    </div>
-  </div>
-
   <div class="footer-bottom">
     <p class="footer-legal">
-      &copy; 2026 Eleva Pádel ·
-      <a href="privacidad.html" class="footer-legal-link" data-i18n-html="footer.legalLink">Aviso Legal &amp; Privacidad</a>
+      <a href="privacidad.html" class="footer-legal-link" data-i18n="footer.legalLink">Aviso legal y privacidad</a>
     </p>
     <p class="footer-credit">
       <span data-i18n="footer.credit">Desarrollado por</span>
       <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
     </p>
   </div>
-  <!-- FAB dentro del <footer>: así queda en un landmark (axe "region");
-       es position:fixed, el lugar en el DOM no cambia dónde se ve -->
-  <!-- FAB — triángulo flotante · unir club -->
-  <div class="fab-triangle">
-    <a href="https://wa.me/34659143103"
-       target="_blank" rel="noopener noreferrer"
-       class="js-wa-b2b"
-       aria-label="Unir mi club a Eleva Pádel"
-       data-i18n-arialabel="home.fab.ariaLabel"
-       data-cursor="WhatsApp">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-      </svg>
-    </a>
-    <span class="fab-tooltip" aria-hidden="true" data-i18n="home.fab.tooltip">Unir mi club</span>
-  </div>
 </footer>
 
-
-<!-- SCRIPTS — sin manifest (la landing no carga datos de club) ni GSAP
-     (la landing no usa scroll horizontal/pin: su constelación es CSS puro
-     y los efectos —rotador, magnético, contadores— van en vanilla JS). -->
-<script src="js/translations.js?v=20260930"      defer></script>
-<script src="js/main.js?v=20260930"               defer></script>
-
+<script src="js/translations.js?v=20261001" defer></script>
+<script src="js/main.js?v=20261001" defer></script>
 </body>
 </html>
