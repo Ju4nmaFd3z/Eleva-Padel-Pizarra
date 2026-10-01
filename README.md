@@ -6,7 +6,7 @@ raíz. Se publica en Vercel desde la rama `main`.
 | URL           | Archivo                                   | Qué es                                   |
 |---------------|-------------------------------------------|------------------------------------------|
 | `/`           | `index.html`                              | Web de la marca Eleva Pádel              |
-| `/pizarra`    | `pizarra/index.html` + `pizarra/manifest.js` | Web del club Eleva Pádel Pizarra      |
+| `/pizarra`    | `pizarra/index.html` (generado) + `pizarra/manifest.js` | Web del club Eleva Pádel Pizarra |
 | `/privacidad` | `privacidad.html`                         | Aviso legal, privacidad y cookies        |
 | *(404)*       | `404.html`                                | Página de «no encontrado»                |
 
@@ -32,14 +32,24 @@ excluido en `.vercelignore`, la página 404 y el modo mantenimiento.
 > `/pizarra` como `/pizarra/` y esconden errores de rutas. Por eso todas las rutas
 > de la página del club llevan `../`.
 
-Antes de cada commit:
+## Generar y validar
+
+El HTML de cada club se **genera** desde su manifest, para que todo lo confirmado
+se vea también sin JavaScript (y lo lean los buscadores). Vercel no ejecuta nada:
+el HTML generado se versiona.
 
 ```sh
-node tools/validar.js
+node tools/generar.js    # pinta el HTML de cada club desde su manifest
+node tools/validar.js    # pendientes, fechas, avisos, i18n, cache-buster y HTML al día
 ```
 
-Lista los datos pendientes y avisa de datos sin reconfirmar desde hace más de 90
-días, avisos caducados, claves de traducción desiguales y cache-busters distintos.
+Con los hooks activados lo hace Git solo en cada commit:
+
+```sh
+git config core.hooksPath tools/hooks
+```
+
+Convención de commits y normas de trabajo: **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ---
 
@@ -70,9 +80,9 @@ borradores) que está fuera de Git y de `.vercelignore`.
 
 ## Cambiar los datos del club
 
-Todo lo del club está en `pizarra/manifest.js`: contacto, instalaciones, clases y
-tarifas, pools, otros servicios, cancelaciones, equipo, patrocinadores, galería y
-avisos.
+Todo lo del club está en `pizarra/manifest.js`: contacto, coordenadas, instalaciones,
+clases y tarifas, pools, otros servicios, cancelaciones, equipo, patrocinadores,
+galería y avisos. Después de cambiarlo, `node tools/generar.js`.
 
 - **Solo datos confirmados por el club.** Lo pendiente se marca `PENDIENTE_CLUB`
   y no se pinta; su valor propuesto se apunta en `CONFIRMAR.md`, nunca en el repo.
@@ -80,8 +90,9 @@ avisos.
   `fuente`. Al reconfirmarlos, actualiza la fecha.
 - **Avisos con fecha** (`eventos`): `hasta` es obligatorio y se ocultan solos al
   pasar esa fecha. Nunca se ponen en el HTML fijo.
-- La cabecera SEO de `pizarra/index.html` (title, description, Open Graph, JSON-LD)
-  y los enlaces fijos de contacto también contienen datos: si cambian, cámbialos ahí.
+- El JSON-LD y los enlaces de reservas y WhatsApp los escribe el generador. El
+  `title`, la `description` y el Open Graph de `pizarra/index.html` se editan a mano.
+- Patrocinadores: la sección solo se muestra con la lista completa confirmada.
 
 ## Cambiar los textos
 
@@ -89,12 +100,20 @@ avisos.
   mismas claves en español, inglés y neerlandés.
 - Textos del club: en su manifest, como `{ es, en, nl }`.
 
+## Logo y tipografía
+
+- Logo oficial: `assets/img/favicon.svg` (aprobado por el club). Es el único origen:
+  la web lo usa como imagen y `favicon.ico` y `apple-touch-icon.png` se renderizan
+  desde él. No se redibuja.
+- Fuentes: Barlow Condensed y Barlow (OFL, `assets/fonts/OFL-Barlow.txt`).
+
 ## Fotos
 
 - `assets/img/hero.jpg`: foto del inicio del club (y de su tarjeta en `/`).
 - `assets/img/og-pizarra.jpg`: imagen para redes (1200×630), recortada del hero.
 - `assets/img/team-lorena.jpg`: equipo.
 - `assets/pools/opt/`: insignias de los pools (AVIF 240/480/720 y JPEG 480).
+- `assets/maps/pizarra.svg`: plano del pie (© OpenStreetMap contributors, ODbL).
 - Galería: vacía hasta que haya fotos reales (ver `clubs/_plantilla/README.md`).
 
 Procedencia y licencias en `assets/credits.json` (interno). Si sustituyes una
@@ -102,7 +121,7 @@ imagen, usa un nombre nuevo: la caché del navegador guarda las imágenes hasta 
 
 ## Cache-buster
 
-Cada `<link>` y `<script>` lleva `?v=YYYYMMDD` (hoy `20261001`), igual en todos
+Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261001b`), igual en todos
 los HTML. Súbelo al cambiar CSS, JS o manifest. `tools/validar.js` comprueba que
 coincide.
 
@@ -120,10 +139,11 @@ como plantilla vacía.
 ├── middleware.js        ← modo mantenimiento
 ├── pizarra/             ← web del club (index.html + manifest.js)
 ├── css/                 ← main.css y fonts.css
-├── js/                  ← main.js y translations.js
+├── js/                  ← main.js, render.js (manifest → HTML) y translations.js
 ├── assets/              ← fuentes, imágenes, insignias, credits.json (interno)
 ├── clubs/_plantilla/    ← alta de clubes (no se publica)
-├── tools/               ← servidor local y validador (no se publica)
+├── tools/               ← servidor local, generar, validar y hooks (no se publica)
+├── CONTRIBUTING.md      ← convención de commits
 ├── robots.txt · sitemap.xml · vercel.json · .vercelignore
 ```
 
