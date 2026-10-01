@@ -17,3 +17,8 @@ assets/credits.json
 
 # Herramientas de desarrollo (servidor local tipo Vercel)
 tools/
+
+# Material interno del rediseño (también fuera de Git)
+CONFIRMAR.md
+borradores/
+capturas/

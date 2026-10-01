@@ -22,3 +22,10 @@ presupuesto/
 
 # Documento de traspaso entre sesiones: contexto interno, repo público
 HANDOFF-AUDITORIA.md
+
+# Material interno del rediseño (repo público): solo en local
+CONFIRMAR.md
+borradores/
+capturas/
+tools/qa/node_modules/
+tools/qa/test-results/
