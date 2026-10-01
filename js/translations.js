@@ -21,7 +21,7 @@
         book: 'Reservar', bookCourt: 'Reservar pista'
       },
       hero:    { ctaPrimary: 'Reservar pista', ctaCancel: 'Política de cancelaciones' },
-      club:    { heading: 'El club', facilities: 'Instalaciones', bookings: 'Reservas', community: 'Comunidad' },
+      club:    { heading: 'El club', facilities: 'Instalaciones', hours: 'Horario', bookings: 'Reservas', bookOnline: 'Reservar en Vola', community: 'Comunidad' },
       classes: { heading: 'Clases', vat: 'Precios con IVA incluido.', cta: 'Consultar por WhatsApp' },
       pools:   { heading: 'Pools', cta: 'Consultar por WhatsApp' },
       other:   { heading: 'Otros servicios' },
@@ -32,7 +32,7 @@
       contact: {
         heading: 'Contacto',
         channels: 'Información y reservas por WhatsApp o en recepción.',
-        address: 'Dirección', maps: 'Cómo llegar (Google Maps)',
+        address: 'Dirección', maps: 'Cómo llegar (Google Maps)', mapAlt: 'Plano de la zona del club',
         community: 'Comunidad', communityLink: 'Grupo de WhatsApp del club',
         formTitle: 'Escríbenos',
         labelName: 'Nombre', labelPhone: 'Teléfono', labelMessage: 'Mensaje',
@@ -69,7 +69,7 @@
         book: 'Book', bookCourt: 'Book a court'
       },
       hero:    { ctaPrimary: 'Book a court', ctaCancel: 'Cancellation policy' },
-      club:    { heading: 'The club', facilities: 'Facilities', bookings: 'Bookings', community: 'Community' },
+      club:    { heading: 'The club', facilities: 'Facilities', hours: 'Opening hours', bookings: 'Bookings', bookOnline: 'Book on Vola', community: 'Community' },
       classes: { heading: 'Lessons', vat: 'Prices include VAT.', cta: 'Ask on WhatsApp' },
       pools:   { heading: 'Pools', cta: 'Ask on WhatsApp' },
       other:   { heading: 'Other services' },
@@ -80,7 +80,7 @@
       contact: {
         heading: 'Contact',
         channels: 'Information and bookings on WhatsApp or at reception.',
-        address: 'Address', maps: 'Directions (Google Maps)',
+        address: 'Address', maps: 'Directions (Google Maps)', mapAlt: 'Map of the area around the club',
         community: 'Community', communityLink: 'Club WhatsApp group',
         formTitle: 'Message us',
         labelName: 'Name', labelPhone: 'Phone', labelMessage: 'Message',
@@ -117,7 +117,7 @@
         book: 'Reserveren', bookCourt: 'Baan reserveren'
       },
       hero:    { ctaPrimary: 'Baan reserveren', ctaCancel: 'Annuleringsbeleid' },
-      club:    { heading: 'De club', facilities: 'Faciliteiten', bookings: 'Reserveren', community: 'Community' },
+      club:    { heading: 'De club', facilities: 'Faciliteiten', hours: 'Openingstijden', bookings: 'Reserveren', bookOnline: 'Reserveren via Vola', community: 'Community' },
       classes: { heading: 'Lessen', vat: 'Prijzen inclusief btw.', cta: 'Vraag het via WhatsApp' },
       pools:   { heading: 'Pools', cta: 'Vraag het via WhatsApp' },
       other:   { heading: 'Andere diensten' },
@@ -128,7 +128,7 @@
       contact: {
         heading: 'Contact',
         channels: 'Informatie en reserveren via WhatsApp of bij de receptie.',
-        address: 'Adres', maps: 'Routebeschrijving (Google Maps)',
+        address: 'Adres', maps: 'Routebeschrijving (Google Maps)', mapAlt: 'Kaart van de omgeving van de club',
         community: 'Community', communityLink: 'WhatsApp-groep van de club',
         formTitle: 'Stuur ons een bericht',
         labelName: 'Naam', labelPhone: 'Telefoon', labelMessage: 'Bericht',

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+<!-- Las zonas data-gen y el atributo hidden de cada data-seccion los escribe
+     tools/generar.js desde pizarra/manifest.js: no se editan a mano. -->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Eleva Pádel Pizarra · Pizarra, Málaga</title>
   <meta name="description" content="Eleva Pádel Pizarra: 4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga. Reservas por Vola, por WhatsApp o en recepción.">
-  <meta name="theme-color" content="#1A1A1A">
+  <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="dark">
 
   <!-- Una sola URL: el idioma (ES/EN/NL) se cambia en el navegador -->
@@ -24,280 +26,202 @@
   <meta property="og:locale"       content="es_ES">
   <meta name="twitter:card"        content="summary_large_image">
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SportsActivityLocation",
-    "@id": "https://eleva-padel-pizarra.vercel.app/pizarra#club",
-    "name": "Eleva Pádel Pizarra",
-    "description": "Club de pádel con 4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga.",
-    "url": "https://eleva-padel-pizarra.vercel.app/pizarra",
-    "image": "https://eleva-padel-pizarra.vercel.app/assets/img/og-pizarra.jpg",
-    "hasMap": "https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Pasaje Jerez s/n",
-      "postalCode": "29560",
-      "addressLocality": "Pizarra",
-      "addressRegion": "Málaga",
-      "addressCountry": "ES"
-    },
-    "sameAs": ["https://instagram.com/elevapadelpizarra"],
-    "parentOrganization": {
-      "@type": "Organization",
-      "@id": "https://eleva-padel-pizarra.vercel.app/#organization",
-      "name": "Eleva Pádel",
-      "url": "https://eleva-padel-pizarra.vercel.app/"
-    }
+  <!--gen:jsonld--><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "@id": "https://eleva-padel-pizarra.vercel.app/pizarra#club",
+  "name": "Eleva Pádel Pizarra",
+  "url": "https://eleva-padel-pizarra.vercel.app/pizarra",
+  "description": "Club de pádel con 4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga.",
+  "image": "https://eleva-padel-pizarra.vercel.app/assets/img/og-pizarra.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pasaje Jerez s/n",
+    "postalCode": "29560",
+    "addressLocality": "Pizarra",
+    "addressRegion": "Málaga",
+    "addressCountry": "ES"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 36.76933415706922,
+    "longitude": -4.709440122747979
+  },
+  "hasMap": "https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5",
+  "sameAs": [
+    "https://instagram.com/elevapadelpizarra"
+  ],
+  "parentOrganization": {
+    "@type": "Organization",
+    "@id": "https://eleva-padel-pizarra.vercel.app/#organization",
+    "name": "Eleva Pádel",
+    "url": "https://eleva-padel-pizarra.vercel.app/"
   }
-  </script>
+}
+</script><!--/gen:jsonld-->
 
   <link rel="preload" as="image" href="../assets/img/hero.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="../css/fonts.css?v=20261001">
-  <link rel="stylesheet" href="../css/main.css?v=20261001">
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
+  <link rel="stylesheet" href="../css/fonts.css?v=20261001b">
+  <link rel="stylesheet" href="../css/main.css?v=20261001b">
   <link rel="icon" href="../favicon.ico" sizes="48x48">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 </head>
 <body>
 
-<a href="#contenido" class="skip-link" data-i18n="skip.link">Saltar al contenido principal</a>
+<a href="#contenido" class="saltar" data-i18n="skip.link">Saltar al contenido principal</a>
 
-<nav id="main-nav" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
-  <a href="#hero" class="nav-logo" aria-label="Eleva Pádel Pizarra, inicio" data-i18n-arialabel="nav.logoLabel">
-    <svg class="nav-logo-tri" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-    </svg>
-    <span class="logo-wordmark">ELEVA</span>
-  </a>
-
-  <ul class="nav-links" role="list">
-    <li><a href="../index.html" class="nav-back" data-i18n="nav.network">Eleva Pádel</a></li>
-    <li><a href="#club"          data-i18n="nav.club">El club</a></li>
-    <li><a href="#clases"        data-i18n="nav.classes">Clases</a></li>
-    <li><a href="#pools"         data-i18n="nav.pools">Pools</a></li>
-    <li><a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a></li>
-    <li><a href="#contacto"      data-i18n="nav.contact">Contacto</a></li>
-  </ul>
-
-  <a href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer"
-     class="nav-cta" data-i18n="nav.book">Reservar</a>
-
-  <div class="lang-switch" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
-    <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
-    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
+<header class="cabecera">
+  <div class="cabecera-barra">
+    <a href="#inicio" class="logo" aria-label="Eleva Pádel Pizarra, inicio" data-i18n-arialabel="nav.logoLabel">
+      <img src="../assets/img/favicon.svg" width="40" height="40" alt="">
+      <span class="logo-nombre">Eleva Pádel Pizarra</span>
+    </a>
+    <a class="boton boton-reservar" href="https://vola.plus/app-link/club/1498" data-href="reservas" target="_blank" rel="noopener noreferrer" data-i18n="nav.book">Reservar</a>
+    <button type="button" class="menu-boton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen">
+      <span class="menu-boton-icono" aria-hidden="true"></span>
+    </button>
   </div>
-
-  <button type="button" class="nav-burger" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen" aria-expanded="false" aria-controls="nav-overlay">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<div id="nav-overlay" class="nav-overlay" role="dialog" aria-label="Menú de navegación" data-i18n-arialabel="nav.overlayLabel" aria-modal="true" aria-hidden="true">
-  <a href="../index.html" class="nav-back" data-i18n="nav.network">Eleva Pádel</a>
-  <a href="#club"          data-i18n="nav.club">El club</a>
-  <a href="#clases"        data-i18n="nav.classes">Clases</a>
-  <a href="#pools"         data-i18n="nav.pools">Pools</a>
-  <a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a>
-  <a href="#contacto"      data-i18n="nav.contact">Contacto</a>
-  <a href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer"
-     class="nav-overlay-cta" data-i18n="nav.bookCourt">Reservar pista</a>
-  <div class="nav-overlay-lang" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
-    <button type="button" class="lang-btn lang-active" data-lang="es" aria-pressed="true">ES</button>
-    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-    <button type="button" class="lang-btn" data-lang="nl" aria-pressed="false">NL</button>
-  </div>
-</div>
+  <nav id="menu" class="menu" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
+    <ul>
+      <li data-seccion="club"><a href="#club" data-i18n="nav.club">El club</a></li>
+      <li data-seccion="clases"><a href="#clases" data-i18n="nav.classes">Clases</a></li>
+      <li data-seccion="pools"><a href="#pools" data-i18n="nav.pools">Pools</a></li>
+      <li data-seccion="cancelaciones"><a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a></li>
+      <li data-seccion="contacto"><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
+      <li><a href="../index.html" data-i18n="nav.network">Eleva Pádel</a></li>
+    </ul>
+    <div class="idiomas" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
+      <button type="button" class="idioma" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" class="idioma" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" class="idioma" data-lang="nl" aria-pressed="false">NL</button>
+    </div>
+  </nav>
+</header>
 
 <main id="contenido">
 
-<section id="hero" class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-overlay" aria-hidden="true"></div>
-  <div class="hero-content">
-    <h1 class="hero-title">Eleva Pádel Pizarra</h1>
-    <p class="hero-tagline">Pizarra, Málaga</p>
-    <div class="hero-ctas">
-      <a href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer"
-         class="btn btn-primary" data-i18n="hero.ctaPrimary">Reservar pista</a>
-      <a href="#cancelaciones" class="btn btn-ghost" data-i18n="hero.ctaCancel">Política de cancelaciones</a>
+<section id="inicio" class="hero" aria-labelledby="titulo">
+  <div class="hero-contenido">
+    <h1 id="titulo" class="hero-titulo">Eleva Pádel Pizarra</h1>
+    <p class="hero-lugar">Pizarra, Málaga</p>
+    <div class="botones">
+      <a class="boton" href="https://vola.plus/app-link/club/1498" data-href="reservas" target="_blank" rel="noopener noreferrer" data-i18n="hero.ctaPrimary">Reservar pista</a>
+      <a class="boton boton-secundario" href="#cancelaciones" data-i18n="hero.ctaCancel">Política de cancelaciones</a>
     </div>
   </div>
 </section>
 
-<!-- Avisos por fecha (manifest.eventos): solo se pintan entre `desde` y `hasta` -->
-<div id="eventos" class="club-events" hidden></div>
+<!-- Avisos con fecha: solo los pinta js/main.js entre `desde` y `hasta` -->
+<div id="eventos" class="avisos" hidden></div>
 
-<section id="club" class="section-club" aria-labelledby="club-heading">
-  <div class="club-content">
-    <h2 id="club-heading" class="club-heading" data-i18n="club.heading">El club</h2>
-    <dl class="club-defs" id="club-defs"></dl>
-  </div>
+<section id="club" class="seccion" data-seccion="club" aria-labelledby="club-titulo">
+  <h2 id="club-titulo" data-i18n="club.heading">El club</h2>
+  <dl class="datos" data-gen="club"><!--gen--><div class="dato"><dt>Instalaciones</dt><dd><ul><li>4 pistas exteriores de cristal</li><li>Iluminación LED</li><li>Zona chill-out</li></ul></dd></div><div class="dato"><dt>Reservas</dt><dd><p>Por Vola, por WhatsApp o en recepción.</p><a class="enlace" href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer">Reservar en Vola</a></dd></div><div class="dato"><dt>Comunidad</dt><dd><a class="enlace" href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">Grupo de WhatsApp del club</a></dd></div><!--/gen--></dl>
 </section>
 
-<section id="clases" class="section-academy" aria-labelledby="clases-heading" hidden>
-  <div class="academy-header">
-    <h2 id="clases-heading" class="academy-title" data-i18n="classes.heading">Clases</h2>
-    <p class="academy-rates-sub" data-i18n="classes.vat">Precios con IVA incluido.</p>
-  </div>
-  <div class="academy-rates-grid" id="clases-grid"></div>
-  <div class="academy-rates-cta">
-    <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer"
-       class="btn btn-primary js-wa" data-wa="wa.classes" data-i18n="classes.cta">Consultar por WhatsApp</a>
-  </div>
+<section id="clases" class="seccion" data-seccion="clases" aria-labelledby="clases-titulo">
+  <h2 id="clases-titulo" data-i18n="classes.heading">Clases</h2>
+  <p class="aviso-iva" data-i18n="classes.vat">Precios con IVA incluido.</p>
+  <div class="tarjetas" data-gen="clases"><!--gen--><article class="tarjeta"><h3 class="tarjeta-titulo">Clases en grupo</h3><p class="precio">60 € <span>por persona / mes</span></p><ul class="lista"><li>Grupos de 4 personas.</li><li>Organizados por nivel y disponibilidad.</li><li>Plazas limitadas.</li><li>También en modalidad puntual (consultar).</li></ul></article><article class="tarjeta"><h3 class="tarjeta-titulo">Otras opciones</h3><ul class="lista"><li>Individual, 2 personas o 3 personas.</li><li>Modalidad mensual o puntual.</li><li>Consulta precio y disponibilidad.</li></ul></article><article class="tarjeta"><h3 class="tarjeta-titulo">Escuela infantil</h3><p class="precio">40 € <span>por niño / mes</span></p><ul class="lista"><li>Hasta 12 años.</li><li>1 clase a la semana.</li><li>Máximo 6 niños por grupo.</li></ul></article><!--/gen--></div>
+  <p><a class="boton" href="https://wa.me/34659143103" data-href="whatsapp" data-wa="wa.classes" target="_blank" rel="noopener noreferrer" data-i18n="classes.cta">Consultar por WhatsApp</a></p>
 </section>
 
-<section id="pools" class="section-pools" aria-labelledby="pools-heading" hidden>
-  <div class="pools-header">
-    <h2 id="pools-heading" class="pools-title" data-i18n="pools.heading">Pools</h2>
-    <p class="pools-text" id="pools-text"></p>
-  </div>
-  <ul class="pools-grid" id="pools-grid" role="list"></ul>
-  <div class="pools-quote">
-    <a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer"
-       class="btn btn-primary js-wa" data-wa="wa.pools" data-i18n="pools.cta">Consultar por WhatsApp</a>
-  </div>
+<section id="pools" class="seccion" data-seccion="pools" aria-labelledby="pools-titulo">
+  <h2 id="pools-titulo" data-i18n="pools.heading">Pools</h2>
+  <p data-gen="pools-texto"><!--gen-->Información e inscripciones por WhatsApp.<!--/gen--></p>
+  <ul class="insignias" data-gen="pools"><!--gen--><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_snp_masculina-240.avif 240w, ../assets/pools/opt/pool_snp_masculina-480.avif 480w, ../assets/pools/opt/pool_snp_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_snp_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_snp_femenina-240.avif 240w, ../assets/pools/opt/pool_snp_femenina-480.avif 480w, ../assets/pools/opt/pool_snp_femenina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_snp_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP femenina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_3a_masculina-240.avif 240w, ../assets/pools/opt/pool_3a_masculina-480.avif 480w, ../assets/pools/opt/pool_3a_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_3a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 3.ª masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_4a_masculina-240.avif 240w, ../assets/pools/opt/pool_4a_masculina-480.avif 480w, ../assets/pools/opt/pool_4a_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_4a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4.ª masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_4a_femenina-240.avif 240w, ../assets/pools/opt/pool_4a_femenina-480.avif 480w, ../assets/pools/opt/pool_4a_femenina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_4a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4.ª femenina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_5a_masculina-240.avif 240w, ../assets/pools/opt/pool_5a_masculina-480.avif 480w, ../assets/pools/opt/pool_5a_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_5a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5.ª masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_5a_femenina-240.avif 240w, ../assets/pools/opt/pool_5a_femenina-480.avif 480w, ../assets/pools/opt/pool_5a_femenina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_5a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5.ª femenina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_mixta-240.avif 240w, ../assets/pools/opt/pool_mixta-480.avif 480w, ../assets/pools/opt/pool_mixta-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_mixta-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool mixta · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_rocha-240.avif 240w, ../assets/pools/opt/pool_rocha-480.avif 480w, ../assets/pools/opt/pool_rocha-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_rocha-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool Rocha · Eleva Pádel Pizarra"></picture></li><!--/gen--></ul>
+  <p><a class="boton" href="https://wa.me/34659143103" data-href="whatsapp" data-wa="wa.pools" target="_blank" rel="noopener noreferrer" data-i18n="pools.cta">Consultar por WhatsApp</a></p>
 </section>
 
-<section id="servicios" class="section-other" aria-labelledby="servicios-heading" hidden>
-  <h2 id="servicios-heading" class="section-heading" data-i18n="other.heading">Otros servicios</h2>
-  <p id="servicios-text"></p>
+<section id="servicios" class="seccion" data-seccion="servicios" aria-labelledby="servicios-titulo">
+  <h2 id="servicios-titulo" data-i18n="other.heading">Otros servicios</h2>
+  <p data-gen="servicios"><!--gen-->Americanos, pools y eventos. Precio según evento.<!--/gen--></p>
 </section>
 
-<section id="cancelaciones" class="section-policy" aria-labelledby="cancelaciones-heading" hidden>
-  <h2 id="cancelaciones-heading" class="section-heading" data-i18n="cancel.heading">Política de cancelaciones</h2>
-  <div class="policy-grid" id="cancelaciones-body"></div>
+<section id="cancelaciones" class="seccion" data-seccion="cancelaciones" aria-labelledby="cancelaciones-titulo">
+  <h2 id="cancelaciones-titulo" data-i18n="cancel.heading">Política de cancelaciones</h2>
+  <div class="politica" data-gen="cancelaciones"><!--gen--><div class="bloque"><h3>Reservas de pista</h3><ul class="lista"><li>Las reservas deberán cancelarse con al menos 24 horas de antelación.</li><li>Las cancelaciones fuera de plazo podrán no ser reembolsadas.</li></ul></div><div class="bloque"><h3>Clases</h3><ul class="lista"><li>Clases particulares: las cancelaciones deben avisarse con 24 horas de antelación.</li><li>Clases de grupo y escuela: la cuota mensual reserva la plaza en el grupo asignado.</li><li>Recuperación por ausencia: si se avisa con 24 horas y es la única ausencia del mes, se intentará siempre recuperar esa clase. Las ausencias adicionales no tienen recuperación garantizada.</li><li>Lluvia o imposibilidad del club: la clase será recuperada o compensada.</li><li>Cambios organizativos: el club podrá modificar horarios o grupos por motivos organizativos, avisando siempre con antelación.</li></ul></div><p class="nota">Consulta cualquier duda por WhatsApp o en recepción.</p><!--/gen--></div>
 </section>
 
-<section id="equipo" class="section-team" aria-labelledby="equipo-heading" hidden>
-  <div class="team-header">
-    <h2 id="equipo-heading" class="team-title" data-i18n="team.heading">Equipo</h2>
-  </div>
-  <div class="team-grid" id="team-grid"></div>
+<section id="equipo" class="seccion" data-seccion="equipo" aria-labelledby="equipo-titulo">
+  <h2 id="equipo-titulo" data-i18n="team.heading">Equipo</h2>
+  <ul class="personas" data-gen="equipo"><!--gen--><li class="persona"><img class="persona-foto" src="../assets/img/team-lorena.jpg" width="632" height="800" loading="lazy" decoding="async" alt=""><h3>Lorena Vano</h3></li><li class="persona"><span class="persona-foto persona-inicial" aria-hidden="true">M</span><h3>Maripaz</h3></li><!--/gen--></ul>
 </section>
 
-<section id="patrocinadores" class="section-sponsors" aria-labelledby="sponsors-heading" hidden>
-  <div class="sponsors-inner">
-    <h2 id="sponsors-heading" class="sponsors-headline" data-i18n="sponsors.heading">Patrocinadores</h2>
-    <ul class="sponsors-list" id="sponsors-list" role="list"></ul>
-  </div>
+<section id="patrocinadores" class="seccion" data-seccion="patrocinadores" aria-labelledby="patrocinadores-titulo" hidden>
+  <h2 id="patrocinadores-titulo" data-i18n="sponsors.heading">Patrocinadores</h2>
+  <ul class="patrocinadores" data-gen="patrocinadores"><!--gen--><!--/gen--></ul>
 </section>
 
-<section id="galeria" class="section-gallery" aria-labelledby="galeria-heading" hidden>
-  <h2 id="galeria-heading" class="gallery-title" data-i18n="gallery.heading">Fotos del club</h2>
-  <ul class="galeria-lista" id="galeria-lista" role="list"></ul>
+<section id="galeria" class="seccion" data-seccion="galeria" aria-labelledby="galeria-titulo" hidden>
+  <h2 id="galeria-titulo" data-i18n="gallery.heading">Fotos del club</h2>
+  <ul class="galeria" data-gen="galeria"><!--gen--><!--/gen--></ul>
 </section>
 
-<section id="contacto" class="section-contact" aria-labelledby="contacto-heading">
-  <div class="contact-split">
-    <div class="contact-left">
-      <h2 id="contacto-heading" class="contact-title" data-i18n="contact.heading">Contacto</h2>
-      <p class="contact-note" data-i18n="contact.channels">Información y reservas por WhatsApp o en recepción.</p>
-      <dl class="contact-info">
-        <div class="contact-info-cell">
-          <dt class="contact-info-label">WhatsApp</dt>
-          <dd class="contact-info-value"><a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer" class="js-wa-plain">+34 659 14 31 03</a></dd>
-        </div>
-        <div class="contact-info-cell">
-          <dt class="contact-info-label">Instagram</dt>
-          <dd class="contact-info-value"><a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a></dd>
-        </div>
-        <div class="contact-info-cell">
-          <dt class="contact-info-label" data-i18n="contact.address">Dirección</dt>
-          <dd class="contact-info-value">Pasaje Jerez s/n · 29560 Pizarra, Málaga<br>
-            <a href="https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5" target="_blank" rel="noopener noreferrer" data-i18n="contact.maps">Cómo llegar (Google Maps)</a></dd>
-        </div>
-        <div class="contact-info-cell">
-          <dt class="contact-info-label" data-i18n="contact.community">Comunidad</dt>
-          <dd class="contact-info-value"><a href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer" data-i18n="contact.communityLink">Grupo de WhatsApp del club</a></dd>
-        </div>
-      </dl>
-      <div class="club-map" id="club-map" hidden></div>
+<section id="contacto" class="seccion" data-seccion="contacto" aria-labelledby="contacto-titulo">
+  <h2 id="contacto-titulo" data-i18n="contact.heading">Contacto</h2>
+  <div class="contacto">
+    <div>
+      <p data-i18n="contact.channels">Información y reservas por WhatsApp o en recepción.</p>
+      <dl class="datos" data-gen="contacto"><!--gen--><div class="dato"><dt>WhatsApp</dt><dd><a class="enlace" href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">+34 659 14 31 03</a></dd></div><div class="dato"><dt>Instagram</dt><dd><a class="enlace" href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a></dd></div><div class="dato"><dt>Dirección</dt><dd><p>Pasaje Jerez s/n · 29560 Pizarra, Málaga</p><a class="enlace" href="https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5" target="_blank" rel="noopener noreferrer">Cómo llegar (Google Maps)</a></dd></div><div class="dato"><dt>Comunidad</dt><dd><a class="enlace" href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer">Grupo de WhatsApp del club</a></dd></div><!--/gen--></dl>
+      <figure class="mapa" data-seccion="mapa" data-gen="mapa"><!--gen--><a href="https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5" target="_blank" rel="noopener noreferrer"><img src="../assets/maps/pizarra.svg" width="1200" height="480" loading="lazy" decoding="async" alt="Plano de la zona del club"></a><figcaption>© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors</figcaption><!--/gen--></figure>
     </div>
 
-    <div class="contact-right">
-      <h3 id="contact-form-title" class="contact-form-title" data-i18n="contact.formTitle">Escríbenos</h3>
-      <form class="contact-form" id="contact-form" aria-labelledby="contact-form-title">
-        <div class="form-group">
-          <label for="f-nombre" data-i18n="contact.labelName">Nombre</label>
-          <input type="text" id="f-nombre" name="nombre" required autocomplete="name">
-        </div>
-        <div class="form-group">
-          <label for="f-telefono" data-i18n="contact.labelPhone">Teléfono</label>
-          <input type="tel" id="f-telefono" name="telefono" required autocomplete="tel" inputmode="tel">
-        </div>
-        <div class="form-group">
-          <label for="f-mensaje" data-i18n="contact.labelMessage">Mensaje</label>
-          <textarea id="f-mensaje" name="mensaje" required></textarea>
-        </div>
-        <!-- Desactivado hasta que main.js lo activa: sin JS el navegador
-             mandaría los datos en la URL. -->
-        <button type="submit" class="btn btn-primary form-submit" data-i18n="contact.submit" disabled>Enviar por WhatsApp</button>
-        <p class="form-note" data-i18n="contact.formNote">Se abre WhatsApp con el mensaje escrito. Lo envías tú.</p>
-        <p class="form-privacy"><span data-i18n="contact.privacy">Tus datos solo viajan en ese mensaje. Más información en</span>
-          <a href="../privacidad.html" data-i18n="footer.legalLink">Aviso legal y privacidad</a>.</p>
-      </form>
-    </div>
+    <form class="formulario" id="contact-form" aria-labelledby="form-titulo">
+      <h3 id="form-titulo" data-i18n="contact.formTitle">Escríbenos</h3>
+      <label for="f-nombre" data-i18n="contact.labelName">Nombre</label>
+      <input type="text" id="f-nombre" name="nombre" required autocomplete="name">
+      <label for="f-telefono" data-i18n="contact.labelPhone">Teléfono</label>
+      <input type="tel" id="f-telefono" name="telefono" required autocomplete="tel" inputmode="tel">
+      <label for="f-mensaje" data-i18n="contact.labelMessage">Mensaje</label>
+      <textarea id="f-mensaje" name="mensaje" rows="4" required></textarea>
+      <!-- Desactivado hasta que main.js lo activa: sin JS el navegador
+           mandaría los datos en la URL. -->
+      <button type="submit" class="boton" data-i18n="contact.submit" disabled>Enviar por WhatsApp</button>
+      <p class="nota" data-i18n="contact.formNote">Se abre WhatsApp con el mensaje escrito. Lo envías tú.</p>
+      <p class="nota"><span data-i18n="contact.privacy">Tus datos solo viajan en ese mensaje. Más información en</span>
+        <a href="../privacidad.html" data-i18n="footer.legalLink">Aviso legal y privacidad</a>.</p>
+    </form>
   </div>
 </section>
 
 </main>
 
-<footer id="footer" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
-  <div class="footer-grid">
+<footer class="pie" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
+  <div class="pie-columnas">
     <div>
-      <div class="footer-logo">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M50 10 L14 74 L21 74 L50 23 L79 74 L86 74 Z M14 86 H86 V92 H14 Z"/>
-        </svg>
-        <span class="footer-logo-name">ELEVA</span>
-      </div>
-      <p class="footer-claim">Eleva Pádel Pizarra · Pizarra, Málaga</p>
+      <img src="../assets/img/favicon.svg" width="48" height="48" alt="Eleva Pádel">
+      <p class="pie-nombre">Eleva Pádel Pizarra</p>
+      <p>Pizarra, Málaga</p>
     </div>
     <div>
-      <div class="footer-col-title" data-i18n="footer.contactTitle">Contacto</div>
-      <div class="footer-contact-item">
-        <span class="lbl">WhatsApp</span>
-        <span class="val"><a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">+34 659 14 31 03</a></span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="lbl">Instagram</span>
-        <span class="val"><a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">@elevapadelpizarra</a></span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="lbl" data-i18n="footer.bookings">Reservas</span>
-        <span class="val"><a href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer">Vola</a></span>
-      </div>
+      <h2 class="pie-titulo" data-i18n="footer.contactTitle">Contacto</h2>
+      <ul data-gen="pie-contacto"><!--gen--><li><a href="https://wa.me/34659143103" target="_blank" rel="noopener noreferrer">WhatsApp +34 659 14 31 03</a></li><li><a href="https://instagram.com/elevapadelpizarra" target="_blank" rel="noopener noreferrer">Instagram @elevapadelpizarra</a></li><li><a href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer">Reservas</a></li><!--/gen--></ul>
     </div>
     <div>
-      <div class="footer-col-title" data-i18n="footer.navTitle">En esta página</div>
-      <ul class="footer-links" role="list">
-        <li><a href="#club"          data-i18n="nav.club">El club</a></li>
-        <li><a href="#clases"        data-i18n="nav.classes">Clases</a></li>
-        <li><a href="#pools"         data-i18n="nav.pools">Pools</a></li>
-        <li><a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a></li>
-        <li><a href="#contacto"      data-i18n="nav.contact">Contacto</a></li>
+      <h2 class="pie-titulo" data-i18n="footer.navTitle">En esta página</h2>
+      <ul>
+        <li data-seccion="club"><a href="#club" data-i18n="nav.club">El club</a></li>
+        <li data-seccion="clases"><a href="#clases" data-i18n="nav.classes">Clases</a></li>
+        <li data-seccion="pools"><a href="#pools" data-i18n="nav.pools">Pools</a></li>
+        <li data-seccion="cancelaciones"><a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a></li>
+        <li data-seccion="contacto"><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p class="footer-legal">
-      <a href="../privacidad.html" class="footer-legal-link" data-i18n="footer.legalLink">Aviso legal y privacidad</a>
-    </p>
-    <p class="footer-credit">
-      <span data-i18n="footer.credit">Desarrollado por</span>
-      <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
-    </p>
-  </div>
-  <div class="fab-triangle">
-    <a href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer"
-       class="fab-label" data-i18n="nav.book">Reservar</a>
+  <div class="pie-legal">
+    <a href="../privacidad.html" data-i18n="footer.legalLink">Aviso legal y privacidad</a>
+    <p><span data-i18n="footer.credit">Desarrollado por</span>
+      <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a></p>
   </div>
 </footer>
 
-<script src="../pizarra/manifest.js?v=20261001" defer></script>
-<script src="../js/translations.js?v=20261001" defer></script>
-<script src="../js/main.js?v=20261001" defer></script>
+<script src="../pizarra/manifest.js?v=20261001b" defer></script>
+<script src="../js/translations.js?v=20261001b" defer></script>
+<script src="../js/render.js?v=20261001b" defer></script>
+<script src="../js/main.js?v=20261001b" defer></script>
 </body>
 </html>

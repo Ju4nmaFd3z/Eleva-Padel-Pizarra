@@ -12,6 +12,7 @@
    · mismas claves de i18n en ES, EN y NL
    · mismo ?v= en todos los HTML
    · ningún <script> inline salvo JSON-LD (la CSP es 'self')
+   · HTML de cada club sincronizado con su manifest (tools/generar.js)
    ========================================================= */
 'use strict';
 const fs = require('fs');
@@ -102,6 +103,14 @@ for (const p of servidos.filter(p => p.endsWith('.html'))) {
   }
 }
 if (versiones.size > 1) errores.push('cache-buster distinto: ' + [...versiones].map(([v, f]) => `${v} (${[...new Set(f)].join(', ')})`).join(' · '));
+
+/* 7. HTML de cada club generado desde su manifest */
+try {
+  const { generar, clubes } = require('./generar.js');
+  for (const slug of clubes()) {
+    if (generar(slug).cambiado) errores.push(`${slug}/index.html no está generado desde su manifest: ejecuta node tools/generar.js`);
+  }
+} catch (e) { errores.push('tools/generar.js falló: ' + e.message); }
 
 console.log(`\nValidación (${HOY.toISOString().slice(0, 10)}, plazo ${DIAS} días)\n`);
 if (info.length) console.log('Pendientes e info:\n  ' + info.join('\n  ') + '\n');
