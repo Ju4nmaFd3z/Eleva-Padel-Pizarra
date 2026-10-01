@@ -31,6 +31,7 @@ const http = require('http');
 const { pathToFileURL } = require('url');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = Number(process.argv[2]) || 3000;
@@ -73,11 +74,21 @@ function headersFor(p) {
   return h;
 }
 
-function send(res, code, rel, reqPath) {
+/* Comprime como Vercel (brotli o gzip) los formatos de texto: sin esto las
+   medidas de rendimiento en local salían peores que en producción. */
+const COMPRIMIBLE = /\.(html|js|css|json|svg|xml|txt)$/;
+function send(res, code, rel, reqPath, req) {
   const h = headersFor(reqPath);
   h['Content-Type'] = MIME[path.extname(rel)] || 'application/octet-stream';
+  let body = fs.readFileSync(path.join(ROOT, rel));
+  const acepta = (req && req.headers['accept-encoding']) || '';
+  if (COMPRIMIBLE.test(rel)) {
+    h['Vary'] = 'Accept-Encoding';
+    if (/\bbr\b/.test(acepta)) { body = zlib.brotliCompressSync(body); h['Content-Encoding'] = 'br'; }
+    else if (/\bgzip\b/.test(acepta)) { body = zlib.gzipSync(body); h['Content-Encoding'] = 'gzip'; }
+  }
   res.writeHead(code, h);
-  res.end(fs.readFileSync(path.join(ROOT, rel)));
+  res.end(body);
 }
 
 /* Igual que en Vercel: si middleware.js devuelve una Response, se envía
@@ -111,8 +122,8 @@ function serve(req, res) {
   else if (exists(rel + '.html')) file = rel + '.html';
   else if (exists(rel + '/index.html')) file = rel + '/index.html';
 
-  if (file) return send(res, 200, file, p);
-  send(res, 404, '404.html', p);
+  if (file) return send(res, 200, file, p, req);
+  send(res, 404, '404.html', p, req);
 }
 
 import(pathToFileURL(path.join(ROOT, 'middleware.js')).href).then(({ default: middleware }) => {
