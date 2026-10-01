@@ -68,6 +68,16 @@
   <link rel="icon" href="../favicon.ico" sizes="48x48">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <!-- Sin JS no hay botón de menú: los enlaces se muestran desplegados -->
+  <noscript><style>
+    .menu-boton { display: none; }
+    @media (max-width: 63.99rem) {
+      .cabecera { position: relative; }
+      .menu { display: block; position: static; padding: 0 0 .75rem; background: none; overflow: visible; }
+      .menu ul { flex-direction: row; margin-bottom: .5rem; }
+      .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
+    }
+  </style></noscript>
 </head>
 <body>
 

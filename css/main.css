@@ -109,14 +109,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 /* ── Cabecera ─────────────────────────────────────────────────── */
-/* Fija solo con JS: sin JS el menú va desplegado y ocuparía media pantalla */
+/* La maqueta por defecto es la de con JS; la de sin JS va en un <noscript>
+   de cada página. Así no hay salto de maquetación cuando carga el JS. */
 .cabecera {
-  position: relative; z-index: 50;
+  position: sticky; top: 0; z-index: 50;
   background: var(--negro);
   border-bottom: 1px solid var(--linea);
   padding-inline: max(var(--margen), env(safe-area-inset-left)) max(var(--margen), env(safe-area-inset-right));
 }
-.js .cabecera { position: sticky; top: 0; }
 .cabecera-barra {
   display: flex; align-items: center; gap: .75rem;
   min-height: var(--alto-cabecera);
@@ -135,8 +135,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .logo { min-width: 0; }
 .logo-nombre { font-size: clamp(1rem, 4.5vw, 1.25rem); }
 
-/* Menú: sin JS se ve como una fila de enlaces bajo la barra */
-.menu { padding-bottom: .75rem; }
 .menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
 .menu a {
   display: inline-flex; align-items: center; min-height: 44px; min-width: 44px;
@@ -152,8 +150,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .idioma[aria-pressed="true"] { background: var(--crema); color: var(--negro); border-color: var(--crema); }
 .cabecera-barra .idiomas { margin-left: .25rem; }
 
-.menu-boton { display: none; }
-.js .menu-boton {
+.menu-boton {
   flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; padding: 0;
@@ -166,16 +163,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .menu-boton[aria-expanded="true"] .icono-cerrar { display: block; }
 
 /* Con JS y pantalla estrecha: el menú se abre a pantalla completa */
-.js .menu {
+.menu {
   display: none;
   position: fixed; inset: var(--alto-cabecera) 0 0 0; z-index: 49;
   overflow-y: auto;
   padding: 1.5rem max(var(--margen), env(safe-area-inset-left)) calc(2rem + env(safe-area-inset-bottom));
   background: var(--negro);
 }
-.js .menu.abierto { display: block; }
-.js .menu ul { flex-direction: column; gap: 0; margin-bottom: 1.5rem; }
-.js .menu a { min-height: 3.25rem; font: 600 1.75rem/1.1 var(--fuente-titulos); text-transform: uppercase; }
+.menu.abierto { display: block; }
+.menu ul { flex-direction: column; gap: 0; margin-bottom: 1.5rem; }
+.menu a { min-height: 3.25rem; font: 600 1.75rem/1.1 var(--fuente-titulos); text-transform: uppercase; }
 
 /* ── Hero del club ────────────────────────────────────────────── */
 .hero {
@@ -307,16 +304,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .cabecera { display: flex; align-items: center; gap: 1.5rem; }
   .cabecera-barra { display: contents; }
   .logo { order: 1; margin-right: 0; }
-  .menu, .js .menu {
+  .menu {
     order: 2; flex: 1;
     display: flex; align-items: center; justify-content: flex-end; gap: 1.5rem;
     position: static; padding: 0; overflow: visible; background: none;
   }
-  .js .menu ul { flex-direction: row; gap: 0 1.25rem; margin: 0; }
-  .js .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
+  .menu ul { flex-direction: row; gap: 0 1.25rem; margin: 0; }
+  .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
   .boton-reservar { order: 3; }
   .cabecera-barra .idiomas { order: 4; }
-  .js .menu-boton { display: none; }
+  .menu-boton { display: none; }
   .datos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .tarjetas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .politica { grid-template-columns: repeat(2, minmax(0, 1fr)); }
