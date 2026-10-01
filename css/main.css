@@ -72,9 +72,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .saltar:focus { top: 1rem; }
 
+/* ── Iconos ───────────────────────────────────────────────────
+   Lucide (sprite, toma el color del texto) y glifos oficiales de WhatsApp
+   e Instagram (sin modificar: blanco sobre negro, negro sobre beige). */
+.icono, .glifo { width: 1.25em; height: 1.25em; flex-shrink: 0; }
+.icono { stroke: currentColor; }
+.con-icono { display: inline-flex; align-items: flex-start; gap: .5rem; }
+.con-icono .icono { margin-top: .2em; }
+.enlace, .pie li a { display: inline-flex; align-items: center; gap: .5rem; }
+
 /* ── Botones y enlaces sueltos ────────────────────────────────── */
 .boton {
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   min-height: 3rem; padding: .625rem 1.25rem;
   background: var(--beige); color: var(--negro);
   border: 2px solid var(--beige); border-radius: 2px;
@@ -85,7 +94,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .boton-secundario { background: transparent; color: var(--crema); border-color: var(--anillo); }
 .boton:disabled { opacity: .6; cursor: not-allowed; }
 .botones { display: flex; flex-wrap: wrap; gap: .75rem; }
-.enlace { display: inline-block; padding-block: .625rem; min-width: 44px; }
+.enlace { padding-block: .625rem; min-width: 44px; }
 @media (hover: hover) {
   .boton:hover { background: var(--crema); border-color: var(--crema); color: var(--negro); }
   a:hover { color: var(--claro); }
@@ -150,15 +159,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 44px; height: 44px; padding: 0;
   background: transparent; border: 1px solid var(--linea); border-radius: 2px; cursor: pointer;
 }
-.menu-boton-icono, .menu-boton-icono::before, .menu-boton-icono::after {
-  display: block; width: 20px; height: 2px; background: var(--crema); content: '';
-}
-.menu-boton-icono { position: relative; }
-.menu-boton-icono::before { position: absolute; top: -6px; }
-.menu-boton-icono::after { position: absolute; top: 6px; }
-.menu-boton[aria-expanded="true"] .menu-boton-icono { background: transparent; }
-.menu-boton[aria-expanded="true"] .menu-boton-icono::before { top: 0; transform: rotate(45deg); }
-.menu-boton[aria-expanded="true"] .menu-boton-icono::after { top: 0; transform: rotate(-45deg); }
+.menu-boton { color: var(--crema); }
+.menu-boton .icono { width: 1.5rem; height: 1.5rem; }
+.menu-boton .icono-cerrar,
+.menu-boton[aria-expanded="true"] .icono-abrir { display: none; }
+.menu-boton[aria-expanded="true"] .icono-cerrar { display: block; }
 
 /* Con JS y pantalla estrecha: el menú se abre a pantalla completa */
 .js .menu {

@@ -30,7 +30,7 @@
       ]
     },
     {
-      "source": "/assets/(img|pools|maps|galeria)/(.*)",
+      "source": "/assets/(img|pools|maps|galeria|icons|marcas)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

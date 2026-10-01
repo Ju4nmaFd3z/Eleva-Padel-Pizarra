@@ -12,6 +12,17 @@
   'use strict';
 
   var POOLS_BASE = '../assets/pools/opt/';
+  var ASSETS = '../assets/';
+
+  /* Iconos: Lucide (sprite assets/icons/lucide.svg, color del texto) y
+     glifos oficiales de WhatsApp e Instagram (assets/marcas/, sin modificar,
+     siempre junto a su nombre escrito, nunca en su lugar). */
+  function icono(id) {
+    return '<svg class="icono" aria-hidden="true" focusable="false"><use href="' + ASSETS + 'icons/lucide.svg#' + id + '"></use></svg>';
+  }
+  function glifo(marca, color) {
+    return '<img class="glifo" src="' + ASSETS + 'marcas/' + marca + '-glifo-' + (color || 'blanco') + '.svg" width="20" height="20" alt="">';
+  }
 
   function esc(v) {
     return String(v == null ? '' : v)
@@ -37,9 +48,10 @@
       return '<ul' + (cls ? ' class="' + cls + '"' : '') + '>' +
         items.map(function (i) { return '<li>' + esc(L(i)) + '</li>'; }).join('') + '</ul>';
     }
-    function enlace(url, texto, cls) {
+    /* antes / despues: HTML de icono ya construido (no texto del usuario) */
+    function enlace(url, texto, cls, antes, despues) {
       return '<a' + (cls ? ' class="' + cls + '"' : '') + ' href="' + esc(url) +
-        '" target="_blank" rel="noopener noreferrer">' + esc(texto) + '</a>';
+        '" target="_blank" rel="noopener noreferrer">' + (antes || '') + '<span>' + esc(texto) + '</span>' + (despues || '') + '</a>';
     }
 
     var d = data || {};
@@ -51,12 +63,12 @@
     if (d.instalaciones && presente(d.instalaciones.items)) {
       filas.push([t('club.facilities'), lista(d.instalaciones.items)]);
     }
-    if (presente(c.horario)) filas.push([t('club.hours'), esc(L(c.horario))]);
+    if (presente(c.horario)) filas.push([t('club.hours'), '<p class="con-icono">' + icono('clock') + '<span>' + esc(L(c.horario)) + '</span></p>']);
     if (d.reservas && presente(c.reservas)) {
       filas.push([t('club.bookings'), '<p>' + esc(L(d.reservas.canales)) + '</p>' +
-        enlace(c.reservas, t('club.bookOnline'), 'enlace')]);
+        enlace(c.reservas, t('club.bookOnline'), 'enlace', '', icono('external-link'))]);
     }
-    if (presente(c.comunidad)) filas.push([t('club.community'), enlace(c.comunidad, t('contact.communityLink'), 'enlace')]);
+    if (presente(c.comunidad)) filas.push([t('club.community'), enlace(c.comunidad, t('contact.communityLink'), 'enlace', glifo('whatsapp'))]);
     s.club = {
       html: filas.map(function (f) { return '<div class="dato"><dt>' + esc(f[0]) + '</dt><dd>' + f[1] + '</dd></div>'; }).join(''),
       visible: filas.length > 0
@@ -145,13 +157,13 @@
 
     /* Contacto */
     var dc = [];
-    if (presente(c.whatsapp)) dc.push(['WhatsApp', enlace('https://wa.me/' + c.whatsapp, c.whatsappDisplay, 'enlace')]);
-    if (presente(c.instagram)) dc.push(['Instagram', enlace(c.instagram.url, c.instagram.handle, 'enlace')]);
+    if (presente(c.whatsapp)) dc.push(['WhatsApp', enlace('https://wa.me/' + c.whatsapp, c.whatsappDisplay, 'enlace', glifo('whatsapp'))]);
+    if (presente(c.instagram)) dc.push(['Instagram', enlace(c.instagram.url, c.instagram.handle, 'enlace', glifo('instagram'))]);
     if (presente(c.direccion)) {
-      dc.push([t('contact.address'), '<p>' + esc(c.direccion) + '</p>' +
-        (presente(c.mapsUrl) ? enlace(c.mapsUrl, t('contact.maps'), 'enlace') : '')]);
+      dc.push([t('contact.address'), '<p class="con-icono">' + icono('map-pin') + '<span>' + esc(c.direccion) + '</span></p>' +
+        (presente(c.mapsUrl) ? enlace(c.mapsUrl, t('contact.maps'), 'enlace', '', icono('external-link')) : '')]);
     }
-    if (presente(c.comunidad)) dc.push([t('contact.community'), enlace(c.comunidad, t('contact.communityLink'), 'enlace')]);
+    if (presente(c.comunidad)) dc.push([t('contact.community'), enlace(c.comunidad, t('contact.communityLink'), 'enlace', glifo('whatsapp'))]);
     s.contacto = {
       html: dc.map(function (f) { return '<div class="dato"><dt>' + esc(f[0]) + '</dt><dd>' + f[1] + '</dd></div>'; }).join(''),
       visible: dc.length > 0
@@ -168,9 +180,9 @@
 
     /* Pie */
     var pie = [];
-    if (presente(c.whatsapp)) pie.push(enlace('https://wa.me/' + c.whatsapp, 'WhatsApp ' + c.whatsappDisplay));
-    if (presente(c.instagram)) pie.push(enlace(c.instagram.url, 'Instagram ' + c.instagram.handle));
-    if (presente(c.reservas)) pie.push(enlace(c.reservas, t('footer.bookings')));
+    if (presente(c.whatsapp)) pie.push(enlace('https://wa.me/' + c.whatsapp, 'WhatsApp ' + c.whatsappDisplay, '', glifo('whatsapp')));
+    if (presente(c.instagram)) pie.push(enlace(c.instagram.url, 'Instagram ' + c.instagram.handle, '', glifo('instagram')));
+    if (presente(c.reservas)) pie.push(enlace(c.reservas, t('footer.bookings'), '', '', icono('external-link')));
     s['pie-contacto'] = { html: pie.map(function (x) { return '<li>' + x + '</li>'; }).join(''), visible: pie.length > 0 };
 
     return s;
