@@ -2,58 +2,52 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
   <title>Página no encontrada · Eleva Pádel</title>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <!-- Rutas absolutas a propósito: esta página se sirve desde cualquier ruta inexistente -->
-  <link rel="stylesheet" href="/css/fonts.css?v=20261001">
-  <!-- El resto va embebido: sin JS y sin más dependencias -->
+  <link rel="stylesheet" href="/css/fonts.css?v=20261001b">
   <style>
-    :root { --black:#1A1A1A; --cream:#F5F0E8; --gold:#C4A882; --gold-ink:#8A6D45; }
+    :root { --negro:#000; --crema:#EDE4DC; --claro:#DBD2CC; --beige:#947E6B; --anillo:#A18572; }
     * { box-sizing: border-box; }
     body {
-      margin: 0; min-height: 100vh;
+      margin: 0; min-height: 100vh; min-height: 100dvh;
       display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1.25rem;
-      background: var(--black); color: var(--cream);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      font-weight: 300; text-align: center;
+      padding: 2rem max(1rem, env(safe-area-inset-right)) 2rem max(1rem, env(safe-area-inset-left));
+      background: var(--negro); color: var(--claro);
+      font: 400 1.0625rem/1.6 'Barlow', system-ui, sans-serif; text-align: center;
     }
-    .wrap { max-width: 32rem; }
-    .code {
-      font-family: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-      font-size: .75rem; letter-spacing: .28em; text-transform: uppercase;
-      color: var(--gold); margin: 0 0 1.75rem;
-    }
+    main { max-width: 32rem; }
+    img { display: block; width: 5rem; height: 5rem; margin: 0 auto 1.5rem; }
     h1 {
-      font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-      font-weight: 300; font-size: clamp(2.25rem, 8vw, 3.5rem);
-      line-height: 1.05; margin: 0 0 1rem;
+      margin: 0 0 1rem; color: var(--crema);
+      font: 600 clamp(2.25rem, 9vw, 3.5rem)/1.05 'Barlow Condensed', 'Arial Narrow', sans-serif;
+      text-transform: uppercase;
     }
-    p { font-size: 1rem; line-height: 1.6; color: rgba(245,240,232,.72); margin: 0 0 2.5rem; }
-    .links { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; }
+    p { margin: 0 0 2rem; }
+    .enlaces { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; }
     a {
-      display: inline-block; padding: .9rem 1.6rem;
-      font-size: .8rem; letter-spacing: .16em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid var(--gold); color: var(--gold);
-      transition: background-color .25s ease, color .25s ease;
+      display: inline-flex; align-items: center; justify-content: center; min-height: 3rem;
+      padding: .625rem 1.25rem; border: 2px solid var(--beige); border-radius: 2px;
+      background: var(--beige); color: var(--negro); text-decoration: none;
+      font: 600 1.125rem/1.1 'Barlow Condensed', 'Arial Narrow', sans-serif; text-transform: uppercase; letter-spacing: .04em;
     }
-    a.primary { background: var(--gold); color: var(--black); }
-    a:hover, a:focus-visible { background: var(--cream); border-color: var(--cream); color: var(--black); }
-    @media (prefers-reduced-motion: reduce) { a { transition: none; } }
+    a.secundario { background: transparent; color: var(--crema); border-color: var(--anillo); }
+    a:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+    @media (hover: hover) { a:hover { background: var(--crema); border-color: var(--crema); color: var(--negro); } }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <p class="code">Error 404</p>
-    <h1>Esta página no existe.</h1>
+  <main>
+    <img src="/assets/img/favicon.svg" width="80" height="80" alt="Eleva Pádel">
+    <h1>Esta página no existe</h1>
     <p>El enlace puede estar mal escrito o la página ya no está disponible.</p>
-    <div class="links">
-      <a class="primary" href="/pizarra">Club de Pizarra</a>
-      <a href="/">Eleva Pádel</a>
+    <div class="enlaces">
+      <a href="/pizarra">Eleva Pádel Pizarra</a>
+      <a class="secundario" href="/">Eleva Pádel</a>
     </div>
   </main>
 </body>

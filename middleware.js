@@ -41,7 +41,7 @@ const PAGINA = `<!DOCTYPE html>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <style>
-  :root { --fondo:#1A1A1A; --texto:#F5F0E8; --suave:rgba(245,240,232,.72); --oro:#C4A882; }
+  :root { --fondo:#000000; --texto:#EDE4DC; --suave:#DBD2CC; --oro:#947E6B; }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
@@ -55,6 +55,7 @@ const PAGINA = `<!DOCTYPE html>
   }
   main { max-width: 30rem; }
   .logo { display: block; width: clamp(4rem, 18vw, 5.5rem); height: auto; margin: 0 auto 1.25rem; }
+  ul a { color: var(--texto); }
   h1 { font-size: clamp(1.75rem, 7vw, 2.5rem); line-height: 1.15; margin: 0 0 .75rem; }
   p { margin: 0 0 1.5rem; color: var(--suave); }
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
@@ -79,7 +80,7 @@ const PAGINA = `<!DOCTYPE html>
 </head>
 <body>
 <main>
-  <svg class="logo" viewBox="20 16 60 69" role="img" aria-label="Logo de Eleva Pádel" xmlns="http://www.w3.org/2000/svg"><path d="M50 16 L20 70 L26 70 L50 27 L74 70 L80 70 Z M20 80 H80 V85 H20 Z" fill="#C4A882"/></svg>
+  <img class="logo" src="/assets/img/favicon.svg" width="88" height="88" alt="Logo de Eleva Pádel">
   <h1>Eleva Pádel</h1>
   <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos.</p>
   <ul>
