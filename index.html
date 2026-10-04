@@ -42,11 +42,14 @@
   </script>
 
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
-  <link rel="stylesheet" href="css/fonts.css?v=20261001c">
-  <link rel="stylesheet" href="css/main.css?v=20261001c">
+  <link rel="stylesheet" href="css/fonts.css?v=20261004c">
+  <link rel="stylesheet" href="css/main.css?v=20261004c">
+  <link rel="stylesheet" href="css/movimiento.css?v=20261004c">
   <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Sin JS el selector de idioma no sirve (los textos se cambian en el navegador) -->
+  <noscript><style>.idioma-selector { display: none; }</style></noscript>
 </head>
 <body class="marca">
 
@@ -55,33 +58,40 @@
 <header class="cabecera">
   <div class="cabecera-barra">
     <a href="#contenido" class="logo" aria-label="Eleva Pádel, inicio" data-i18n-arialabel="home.logoLabel">
-      <img src="assets/img/favicon.svg" width="40" height="40" alt="">
+      <img src="assets/img/logo-sin-fondo.svg" width="40" height="40" alt="">
       <span class="logo-nombre">Eleva Pádel</span>
     </a>
-    <div class="idiomas" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
-      <button type="button" class="idioma" data-lang="es" aria-pressed="true">ES</button>
-      <button type="button" class="idioma" data-lang="en" aria-pressed="false">EN</button>
-      <button type="button" class="idioma" data-lang="nl" aria-pressed="false">NL</button>
+    <div class="idioma-selector">
+      <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/icons/lucide.svg#chevron-down"></use></svg></button>
+      <ul id="idiomas" class="idioma-lista" hidden>
+        <li><button type="button" class="idioma" data-lang="es" lang="es" aria-current="true"><span class="idioma-codigo">ES</span> Español</button></li>
+        <li><button type="button" class="idioma" data-lang="en" lang="en"><span class="idioma-codigo">EN</span> English</button></li>
+        <li><button type="button" class="idioma" data-lang="nl" lang="nl"><span class="idioma-codigo">NL</span> Nederlands</button></li>
+      </ul>
     </div>
   </div>
 </header>
 
 <main id="contenido">
 
+<!-- El logo grande y el nombre; con el scroll el logo se abre hacia el club -->
 <section class="marca-hero" aria-labelledby="titulo">
-  <img class="marca-logo" src="assets/img/favicon.svg" width="160" height="160" alt="">
-  <h1 id="titulo" class="marca-titulo">Eleva Pádel</h1>
+  <img class="marca-logo" src="assets/img/logo-sin-fondo.svg" width="400" height="400" alt="" fetchpriority="high">
+  <h1 id="titulo" class="marca-titulo"><span class="hero-linea">Eleva</span> <span class="hero-linea">Pádel</span></h1>
 </section>
 
-<section class="seccion" aria-labelledby="clubes-titulo">
+<!-- Borrador local de la marca (solo en el servidor local; ver MARCA-borrador.md) -->
+<div id="marca-borrador" hidden></div>
+
+<section class="seccion" data-superficie="tinta" aria-labelledby="clubes-titulo">
   <h2 id="clubes-titulo" data-i18n="home.clubs.heading">Clubes</h2>
   <ul class="clubes">
     <li>
       <a class="club" href="pizarra/index.html">
-        <img src="assets/img/hero.jpg" width="800" height="600" alt="" loading="lazy" decoding="async">
+        <span class="club-foto"><img src="assets/img/hero.jpg" width="800" height="600" alt="" loading="lazy" decoding="async"></span>
         <span class="club-texto">
           <span class="club-nombre">Eleva Pádel Pizarra</span>
-          <span>Pizarra, Málaga</span>
+          <span class="club-lugar">Pizarra, Málaga</span>
           <span class="enlace con-icono"><span data-i18n="home.clubs.visit">Ver el club</span><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/icons/lucide.svg#arrow-right"></use></svg></span>
         </span>
       </a>
@@ -99,7 +109,10 @@
   </div>
 </footer>
 
-<script src="js/translations.js?v=20261001c" defer></script>
-<script src="js/main.js?v=20261001c" defer></script>
+<script src="js/translations.js?v=20261004c" defer></script>
+<script src="js/main.js?v=20261004c" defer></script>
+<script src="js/movimiento/nucleo.js?v=20261004c" defer></script>
+<script src="js/movimiento/scroll.js?v=20261004c" defer></script>
+<script src="js/movimiento/puntero.js?v=20261004c" defer></script>
 </body>
 </html>

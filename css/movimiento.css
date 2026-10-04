@@ -1,0 +1,204 @@
+/* ================================================================
+   Eleva Pádel — movimiento.css
+   Todo lo que se mueve. El logo oficial sin fondo
+   (assets/img/logo-sin-fondo.svg, usado como máscara por alfa, nunca
+   redibujado) guía la coreografía: la pista del hero se ve a través de
+   él, las secciones entran por él y la transición entre páginas se abre
+   con él.
+
+   · Los tokens (--dur-*, --curva-*, --retardo-*, --dist-*, --prof-*) están
+     en :root de main.css; su espejo en JS, en js/movimiento/nucleo.js.
+   · Todo lo animado con el scroll cuelga de html.mov, que pone nucleo.js
+     solo si no se pide movimiento reducido. Sin JS o con movimiento
+     reducido la página se queda en su estado estático (main.css),
+     completo y legible.
+   · Las animaciones ligadas al scroll (keyframes sd-*) están en pausa y
+     js/movimiento/scroll.js mueve su currentTime con el scroll (motor JS:
+     las scroll-driven animations nativas bajaban a 30 fps en móvil). Los
+     rangos están en scroll.js.
+   · Solo se animan transform (scale/translate) y opacity. Excepción: la
+     transición entre páginas anima mask-size/mask-position (una vez, 0,9 s,
+     sobre una instantánea: no hay otra forma de abrir la página nueva a
+     través del logo).
+   ================================================================ */
+
+/* ── Transición entre / y /pizarra (View Transitions entre documentos) ──
+   La página nueva aparece a través del logo, que crece desde el centro
+   hasta abrirse. Sin soporte: navegación normal. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation: none; }
+  ::view-transition-new(root) {
+    -webkit-mask-image: url('../assets/img/logo-sin-fondo.svg');
+    mask-image: url('../assets/img/logo-sin-fondo.svg');
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    animation: vt-logo var(--dur-vt) var(--curva-tension) both;
+  }
+}
+/* Zoom con origen en el vértice del triángulo (50 % · 24 % del logo) */
+@keyframes vt-logo {
+  0%   { -webkit-mask-size: 20vmin 20vmin; mask-size: 20vmin 20vmin; -webkit-mask-position: calc(50vw - 10vmin) calc(50vh - 4.8vmin); mask-position: calc(50vw - 10vmin) calc(50vh - 4.8vmin); }
+  35%  { -webkit-mask-size: 70vmin 70vmin; mask-size: 70vmin 70vmin; -webkit-mask-position: calc(50vw - 35vmin) calc(50vh - 16.8vmin); mask-position: calc(50vw - 35vmin) calc(50vh - 16.8vmin); }
+  65%  { -webkit-mask-size: 320vmax 320vmax; mask-size: 320vmax 320vmax; -webkit-mask-position: calc(50vw - 160vmax) calc(50vh - 76.8vmax); mask-position: calc(50vw - 160vmax) calc(50vh - 76.8vmax); }
+  100% { -webkit-mask-size: 3000vmax 3000vmax; mask-size: 3000vmax 3000vmax; -webkit-mask-position: calc(50vw - 1500vmax) calc(50vh - 720vmax); mask-position: calc(50vw - 1500vmax) calc(50vh - 720vmax); }
+}
+
+/* ── Hero del club: la pista a través del logo ───────────────────────
+   Sin pin: el hero se desplaza con normalidad mientras el telón negro
+   crece desde el vértice del logo (rango 0 → 70svh de scroll) y, al final,
+   se funde; la pista queda a sangre y la cámara 3D (tres-d.js) baja de la
+   vista alta a la altura del jugador con ese mismo progreso. El velo
+   asegura el contraste del texto. Las líneas del titular se separan. */
+html.mov .hero-mascara { animation: sd-hero-mascara 1s linear both, sd-hero-abre 1s linear both; }
+html.mov .hero-tinte   { animation: sd-hero-mascara 1s linear both, sd-hero-tinte 1s linear both; }
+html.mov .hero-velo    { animation: sd-hero-velo 1s linear both; }
+html.mov .hero-linea   { animation: sd-hero-linea 1s linear both; }
+html.mov .hero-linea:nth-child(1) { --sentido: -1; }
+html.mov .hero-linea:nth-child(2) { --sentido: 1; }
+html.mov .hero-linea:nth-child(3) { --sentido: -.6; }
+html.mov .hero-fondo, html.mov .hero-telon { will-change: transform; }
+
+/* Encendido de las LED: la penumbra se retira una vez al cargar (decorativo,
+   por debajo del texto; la pista 3D continúa desde su mismo punto) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-penumbra { animation: encender var(--dur-encendido) var(--curva-tension) var(--retardo-encendido) both; }
+}
+@keyframes encender {
+  from { opacity: var(--penumbra-inicial); }
+  to   { opacity: 0; }
+}
+
+/* ── Web de la marca: el logo se abre hacia el club ───────────────── */
+html.mov .marca-logo { animation: sd-hero-marca 1s linear both, sd-hero-abre 1s linear both; will-change: transform; }
+
+/* ── Cortes de sección ───────────────────────────────────────────────
+   Detrás del contenido: un telón del color de la sección anterior y, encima,
+   el logo en el color de la sección, que escala desde su vértice hasta
+   cubrirla. El contenido nunca se oculta: está por encima y contrasta con
+   los dos fondos. Termina cuando la sección llega a 6rem del borde superior,
+   así quien llega por un ancla la ve ya abierta. */
+html.mov .seccion { --Lc: min(40vh, 70vw); }
+html.mov .seccion::before,
+html.mov .seccion::after {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+}
+html.mov .seccion::before {
+  inset: 0 0 auto 0; height: min(100%, 100vh);
+  background: var(--fondo-previo);
+  animation: sd-corte-telon 1s linear both;
+}
+html.mov .seccion::after {
+  width: var(--Lc); height: var(--Lc);
+  left: calc(50% - var(--Lc) / 2);
+  top: calc(min(50%, 50vh) - var(--Lc) * .24);
+  background: var(--fondo);
+  -webkit-mask: url('../assets/img/logo-sin-fondo.svg') center / 100% 100% no-repeat;
+  mask: url('../assets/img/logo-sin-fondo.svg') center / 100% 100% no-repeat;
+  transform-origin: 50% 24%;
+  animation: sd-corte-logo 1s linear both;
+}
+
+/* ── Clases: la luz LED barre el canto de cada tarjeta, una vez ──────
+   scroll.js añade .encendida al entrar en pantalla (escalonado); la luz
+   es decoración: el contenido se ve siempre. */
+html.mov .tarjeta::before { opacity: 0; }
+html.mov .tarjeta::after {
+  content: ""; position: absolute; left: 0; top: 0; width: 40%; height: 3px; pointer-events: none;
+  background: linear-gradient(to right, rgba(255,255,255,0), #fff 70%, rgba(255,255,255,0));
+  opacity: 0; transform: translateX(-100%);
+}
+html.mov .encendida::before { opacity: 1; animation: canto var(--dur-larga) var(--curva-salida) var(--retardo-led, 0ms) both; }
+html.mov .encendida::after { animation: destello var(--dur-larga) var(--curva-tension) var(--retardo-led, 0ms) both; }
+html.mov .encendida-ya::before, html.mov .encendida-ya::after { animation: none; }
+@keyframes canto {
+  from { opacity: .2; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+@keyframes destello {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(250%); }
+}
+
+/* ── Precios y títulos de fila que se asientan ───────────────────────
+   Llegan grandes y con las letras separadas y se asientan en su tamaño e
+   interletraje (rango: la pieza entra y sube media pantalla). Legibles en
+   todo momento. */
+html.mov :is(.precio-cifra, .politica h3) { animation: sd-precio 1s linear both; }
+html.mov .cin > span > span { animation: sd-tracking 1s linear both; }
+
+/* ── Pools: abanico que termina en rejilla ───────────────────────────
+   Las insignias salen en abanico desde el centro de la lista y se colocan
+   en su celda con el scroll. --dx, --dy, --rot y --z los calcula scroll.js;
+   sin ellos no hay abanico. */
+html.mov .insignia { z-index: var(--z, auto); animation: sd-abanico 1s linear both; }
+
+/* Inclinación hacia el puntero (puntero.js escribe --rx / --ry) */
+html.mov .insignia-pieza { transition: transform var(--dur-media) var(--curva-salida); }
+
+/* Giro de la insignia (tacto.js: botón con aria-pressed) */
+.insignia-cara, .insignia-dorso { transition: transform var(--dur-giro) var(--curva-salida), opacity var(--dur-corta) linear; }
+@media (prefers-reduced-motion: reduce) {
+  /* el giro se sustituye por un fundido breve */
+  .insignia-dorso, .girada .insignia-dorso, .girada .insignia-cara { transform: none; }
+  .insignia-dorso { opacity: 0; }
+  .girada .insignia-cara { opacity: 0; }
+  .girada .insignia-dorso { opacity: 1; }
+}
+
+/* ── Botones magnéticos (puntero.js escribe --iman-x / --iman-y) ── */
+html.mov .iman {
+  translate: var(--iman-x, 0px) var(--iman-y, 0px);
+  transition: translate var(--dur-media) var(--curva-salida),
+              background-color var(--dur-corta) linear, border-color var(--dur-corta) linear, color var(--dur-corta) linear;
+}
+
+/* ── Puntero propio (solo ratón): un punto ──────────────────────────
+   Sobre lo interactivo crece y, en modo diferencia, invierte lo que
+   cubre; al pulsar se encoge. En campos de texto desaparece y vuelve el
+   cursor nativo. En táctil no existe. */
+.cursor {
+  position: fixed; left: 0; top: 0; z-index: 300; pointer-events: none;
+  width: 40px; height: 40px; margin: -20px 0 0 -20px;
+  mix-blend-mode: difference;
+  opacity: 0; transition: opacity var(--dur-corta) linear;
+}
+.cursor.visible { opacity: 1; }
+.cursor-punto {
+  position: absolute; inset: 0; border-radius: 50%; background: var(--crema);
+  scale: .25;
+  transition: scale var(--dur-corta) var(--curva-salida);
+}
+.cursor.sobre .cursor-punto { scale: 1; }
+.cursor.pulsando .cursor-punto { scale: .18; }
+.cursor.sobre.pulsando .cursor-punto { scale: .8; }
+html.cursor-propio, html.cursor-propio * { cursor: none; }
+html.cursor-propio :is(input, textarea, select, [contenteditable]) { cursor: auto; }
+
+/* ── Línea de tiempo movida por JS ──────────────────────────────────
+   En pausa en el primer fotograma (igual al estado estático); scroll.js
+   mueve su currentTime. */
+html.mov :is(.hero-mascara, .hero-tinte, .hero-velo, .hero-linea, .marca-logo, .insignia, .precio-cifra, .politica h3, .cin > span > span),
+html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paused; }
+
+/* ── Keyframes ──────────────────────────────────────────────────────
+   Zoom exponencial (escala = S^t) en pasos: S = --prof-escala-hero (24)
+   en el hero, --prof-escala-corte (30) en los cortes y 9 en la marca.
+   Generados con un guion de 5 líneas (ver docs en CLAUDE.md). */
+@keyframes sd-hero-abre  { 0%, 55% { opacity: 1; } 92%, 100% { opacity: 0; } }
+@keyframes sd-hero-tinte { 0%, 8% { opacity: .32; } 40%, 100% { opacity: 0; } }
+@keyframes sd-hero-velo  { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes sd-hero-linea { to { translate: calc(var(--sentido, 0) * var(--dist-linea)) 0; } }
+@keyframes sd-corte-telon { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes sd-abanico {
+  from { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg)) scale(.72); }
+  to   { transform: none; }
+}
+@keyframes sd-precio   { from { scale: 1.28; } to { scale: 1; } }
+@keyframes sd-tracking { from { translate: calc(var(--k, 0) * var(--dist-tracking)) 0; } to { translate: 0 0; } }
+@keyframes sd-hero-mascara { 0% { scale: 1; } 2.5% { scale: 1.0827; } 5% { scale: 1.1722; } 7.5% { scale: 1.2692; } 10% { scale: 1.3741; } 12.5% { scale: 1.4877; } 15% { scale: 1.6108; } 17.5% { scale: 1.744; } 20% { scale: 1.8882; } 22.5% { scale: 2.0443; } 25% { scale: 2.2134; } 27.5% { scale: 2.3964; } 30% { scale: 2.5946; } 32.5% { scale: 2.8091; } 35% { scale: 3.0414; } 37.5% { scale: 3.2929; } 40% { scale: 3.5652; } 42.5% { scale: 3.86; } 45% { scale: 4.1792; } 47.5% { scale: 4.5248; } 50% { scale: 4.899; } 52.5% { scale: 5.3041; } 55% { scale: 5.7427; } 57.5% { scale: 6.2176; } 60% { scale: 6.7317; } 62.5% { scale: 7.2884; } 65% { scale: 7.8911; } 67.5% { scale: 8.5436; } 70% { scale: 9.2501; } 72.5% { scale: 10.0151; } 75% { scale: 10.8432; } 77.5% { scale: 11.7399; } 80% { scale: 12.7107; } 82.5% { scale: 13.7618; } 85% { scale: 14.8998; } 87.5% { scale: 16.1319; } 90% { scale: 17.4659; } 92.5% { scale: 18.9102; } 95% { scale: 20.4739; } 97.5% { scale: 22.167; } 100% { scale: 24; } }
+
+@keyframes sd-corte-logo { 0% { scale: 1; } 10% { scale: 1.4051; } 20% { scale: 1.9744; } 30% { scale: 2.7742; } 40% { scale: 3.8981; } 50% { scale: 5.4772; } 60% { scale: 7.6961; } 70% { scale: 10.814; } 80% { scale: 15.1949; } 90% { scale: 21.3506; } 100% { scale: 30; } }
+
+@keyframes sd-hero-marca { 0% { scale: 1; } 5% { scale: 1.1161; } 10% { scale: 1.2457; } 15% { scale: 1.3904; } 20% { scale: 1.5518; } 25% { scale: 1.7321; } 30% { scale: 1.9332; } 35% { scale: 2.1577; } 40% { scale: 2.4082; } 45% { scale: 2.6879; } 50% { scale: 3; } 55% { scale: 3.3484; } 60% { scale: 3.7372; } 65% { scale: 4.1712; } 70% { scale: 4.6555; } 75% { scale: 5.1962; } 80% { scale: 5.7995; } 85% { scale: 6.473; } 90% { scale: 7.2247; } 95% { scale: 8.0636; } 100% { scale: 9; } }

@@ -77,9 +77,11 @@
     /* Clases */
     function tarjeta(b) {
       if (!b) return '';
-      return '<article class="tarjeta">' +
+      /* La cifra del precio va aparte para pintarla a escala grande */
+      return '<article class="tarjeta' + (presente(b.precio) ? ' tarjeta-precio' : '') + '">' +
         '<h3 class="tarjeta-titulo">' + esc(L(b.titulo)) + '</h3>' +
-        (presente(b.precio) ? '<p class="precio">' + esc(b.precio) + ' <span>' + esc(L(b.unidad)) + '</span></p>' : '') +
+        (presente(b.precio) ? '<p class="precio">' + esc(b.precio).replace(/^([\d.,]+)/, '<span class="precio-cifra">$1</span>') +
+          ' <span class="precio-unidad">' + esc(L(b.unidad)) + '</span></p>' : '') +
         (presente(b.detalle) ? lista(b.detalle, 'lista') : '') +
         '</article>';
     }
@@ -94,14 +96,28 @@
     /* Pools: insignias reales */
     var p = d.pools;
     var hayPools = !!(p && presente(p.insignias));
+    /* Cada insignia es una pieza con dos caras: delante la imagen (recortada
+       en círculo por CSS); detrás, el mismo texto del alt (nada nuevo).
+       js/movimiento/tacto.js la convierte en botón para girarla; sin JS el
+       reverso no se ve. El color de cada insignia (manifest, muestreado de
+       su imagen) es el único que marca su categoría: aro y reverso. */
+    function color(v) { return /^#[0-9a-f]{6}$/i.test(v || '') ? v : ''; }
     s.pools = {
       html: hayPools ? p.insignias.map(function (i) {
         var b = POOLS_BASE + i.img;
-        return '<li><picture>' +
+        var partes = String(i.alt).split(' · ');
+        var estilo = (color(i.color) ? '--acento:' + color(i.color) + ';' : '') +
+          (color(i.colorAro) ? '--acento-aro:' + color(i.colorAro) + ';' : '');
+        return '<li class="insignia"' + (estilo ? ' style="' + estilo + '"' : '') + '>' +
+          '<span class="insignia-pieza">' +
+          '<span class="insignia-cara"><picture>' +
           '<source type="image/avif" srcset="' + b + '-240.avif 240w, ' + b + '-480.avif 480w, ' + b + '-720.avif 720w" ' +
-          'sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw">' +
+          'sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw">' +
           '<img src="' + b + '-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="' + esc(i.alt) + '">' +
-          '</picture></li>';
+          '</picture></span>' +
+          '<span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">' + esc(partes[0]) + '</span>' +
+          (partes[1] ? '<span class="insignia-club">' + esc(partes.slice(1).join(' · ')) + '</span>' : '') +
+          '</span></span></li>';
       }).join('') : '',
       visible: hayPools
     };

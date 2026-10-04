@@ -61,20 +61,20 @@
 }
 </script><!--/gen:jsonld-->
 
-  <link rel="preload" as="image" href="../assets/img/hero.jpg" fetchpriority="high">
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
-  <link rel="stylesheet" href="../css/fonts.css?v=20261001c">
-  <link rel="stylesheet" href="../css/main.css?v=20261001c">
+  <link rel="stylesheet" href="../css/fonts.css?v=20261004c">
+  <link rel="stylesheet" href="../css/main.css?v=20261004c">
+  <link rel="stylesheet" href="../css/movimiento.css?v=20261004c">
   <link rel="icon" href="../favicon.ico" sizes="48x48">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <!-- Sin JS no hay botón de menú: los enlaces se muestran desplegados -->
   <noscript><style>
-    .menu-boton { display: none; }
+    .menu-boton, .idioma-selector { display: none; }
     @media (max-width: 63.99rem) {
       .cabecera { position: relative; }
       .menu { display: block; position: static; padding: 0 0 .75rem; background: none; overflow: visible; }
-      .menu ul { flex-direction: row; margin-bottom: .5rem; }
+      .menu ul { flex-direction: row; flex-wrap: wrap; column-gap: 1.25rem; margin-bottom: .5rem; }
       .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
     }
   </style></noscript>
@@ -86,10 +86,18 @@
 <header class="cabecera">
   <div class="cabecera-barra">
     <a href="#inicio" class="logo" aria-label="Eleva Pádel Pizarra, inicio" data-i18n-arialabel="nav.logoLabel">
-      <img src="../assets/img/favicon.svg" width="40" height="40" alt="">
+      <img src="../assets/img/logo-sin-fondo.svg" width="40" height="40" alt="">
       <span class="logo-nombre">Eleva Pádel Pizarra</span>
     </a>
     <a class="boton boton-reservar" href="https://vola.plus/app-link/club/1498" data-href="reservas" target="_blank" rel="noopener noreferrer" data-i18n="nav.book">Reservar</a>
+    <div class="idioma-selector">
+      <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#chevron-down"></use></svg></button>
+      <ul id="idiomas" class="idioma-lista" hidden>
+        <li><button type="button" class="idioma" data-lang="es" lang="es" aria-current="true"><span class="idioma-codigo">ES</span> Español</button></li>
+        <li><button type="button" class="idioma" data-lang="en" lang="en"><span class="idioma-codigo">EN</span> English</button></li>
+        <li><button type="button" class="idioma" data-lang="nl" lang="nl"><span class="idioma-codigo">NL</span> Nederlands</button></li>
+      </ul>
+    </div>
     <button type="button" class="menu-boton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen">
       <svg class="icono icono-abrir" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#menu"></use></svg>
       <svg class="icono icono-cerrar" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#x"></use></svg>
@@ -104,19 +112,32 @@
       <li data-seccion="contacto"><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
       <li><a href="../index.html" data-i18n="nav.network">Eleva Pádel</a></li>
     </ul>
-    <div class="idiomas" role="group" aria-label="Idioma" data-i18n-arialabel="nav.langLabel">
-      <button type="button" class="idioma" data-lang="es" aria-pressed="true">ES</button>
-      <button type="button" class="idioma" data-lang="en" aria-pressed="false">EN</button>
-      <button type="button" class="idioma" data-lang="nl" aria-pressed="false">NL</button>
-    </div>
   </nav>
 </header>
 
 <main id="contenido">
 
 <section id="inicio" class="hero" aria-labelledby="titulo">
+  <!-- La pista del club (medidas FIP, js/movimiento/pista.js) vista a través
+       del logo oficial sin fondo; con el scroll el logo se abre y la pista
+       queda a sangre. Decorativo: el texto no depende de ello. Sin JS, sin
+       WebGL, con Save-Data o movimiento reducido: imagen fija de la misma
+       escena. -->
+  <div class="hero-fondo" aria-hidden="true">
+    <div class="hero-escena">
+      <picture class="hero-imagen">
+        <source media="(max-aspect-ratio: 1/1)" type="image/avif" srcset="../assets/img/pista-v-600.avif 600w, ../assets/img/pista-v-1000.avif 1000w" sizes="100vw">
+        <source media="(max-aspect-ratio: 1/1)" srcset="../assets/img/pista-v-1000.jpg 1000w" sizes="100vw">
+        <source type="image/avif" srcset="../assets/img/pista-h-1280.avif 1280w, ../assets/img/pista-h-1920.avif 1920w" sizes="100vw">
+        <img src="../assets/img/pista-h-1920.jpg" width="1920" height="1080" alt="" fetchpriority="high" decoding="async">
+      </picture>
+      <span class="hero-penumbra"></span>
+    </div>
+    <div class="hero-telon"><div class="hero-pulso"><div class="hero-tinte"></div><div class="hero-mascara"></div></div></div>
+    <div class="hero-velo"></div>
+  </div>
   <div class="hero-contenido">
-    <h1 id="titulo" class="hero-titulo">Eleva Pádel Pizarra</h1>
+    <h1 id="titulo" class="hero-titulo"><span class="hero-linea">Eleva</span> <span class="hero-linea">Pádel</span> <span class="hero-linea">Pizarra</span></h1>
     <p class="hero-lugar">Pizarra, Málaga</p>
     <div class="botones">
       <a class="boton" href="https://vola.plus/app-link/club/1498" data-href="reservas" target="_blank" rel="noopener noreferrer"><span data-i18n="hero.ctaPrimary">Reservar pista</span><svg class="icono" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#external-link"></use></svg></a>
@@ -128,23 +149,25 @@
 <!-- Avisos con fecha: solo los pinta js/main.js entre `desde` y `hasta` -->
 <div id="eventos" class="avisos" hidden></div>
 
-<section id="club" class="seccion" data-seccion="club" aria-labelledby="club-titulo">
+<section id="club" class="seccion" data-superficie="tinta" data-seccion="club" aria-labelledby="club-titulo">
   <h2 id="club-titulo" data-i18n="club.heading">El club</h2>
   <dl class="datos" data-gen="club"><!--gen--><div class="dato"><dt>Instalaciones</dt><dd><ul><li>4 pistas exteriores de cristal</li><li>Iluminación LED</li><li>Zona chill-out</li></ul></dd></div><div class="dato"><dt>Reservas</dt><dd><p>Por Vola, por WhatsApp o en recepción.</p><a class="enlace" href="https://vola.plus/app-link/club/1498" target="_blank" rel="noopener noreferrer"><span>Reservar en Vola</span><svg class="icono" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#external-link"></use></svg></a></dd></div><div class="dato"><dt>Comunidad</dt><dd><a class="enlace" href="https://chat.whatsapp.com/EpKyuxIv74E2NWW1aBmPKE" target="_blank" rel="noopener noreferrer"><img class="glifo" src="../assets/marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt=""><span>Grupo de WhatsApp del club</span></a></dd></div><!--/gen--></dl>
 </section>
 
-<section id="clases" class="seccion" data-seccion="clases" aria-labelledby="clases-titulo">
+<section id="clases" class="seccion seccion-clases" data-seccion="clases" aria-labelledby="clases-titulo">
   <h2 id="clases-titulo" data-i18n="classes.heading">Clases</h2>
   <p class="aviso-iva" data-i18n="classes.vat">Precios con IVA incluido.</p>
-  <div class="tarjetas" data-gen="clases"><!--gen--><article class="tarjeta"><h3 class="tarjeta-titulo">Clases en grupo</h3><p class="precio">60 € <span>por persona / mes</span></p><ul class="lista"><li>Grupos de 4 personas.</li><li>Organizados por nivel y disponibilidad.</li><li>Plazas limitadas.</li><li>También en modalidad puntual (consultar).</li></ul></article><article class="tarjeta"><h3 class="tarjeta-titulo">Otras opciones</h3><ul class="lista"><li>Individual, 2 personas o 3 personas.</li><li>Modalidad mensual o puntual.</li><li>Consulta precio y disponibilidad.</li></ul></article><article class="tarjeta"><h3 class="tarjeta-titulo">Escuela infantil</h3><p class="precio">40 € <span>por niño / mes</span></p><ul class="lista"><li>Hasta 12 años.</li><li>1 clase a la semana.</li><li>Máximo 6 niños por grupo.</li></ul></article><!--/gen--></div>
+  <div class="tarjetas" data-gen="clases"><!--gen--><article class="tarjeta tarjeta-precio"><h3 class="tarjeta-titulo">Clases en grupo</h3><p class="precio"><span class="precio-cifra">60</span> € <span class="precio-unidad">por persona / mes</span></p><ul class="lista"><li>Grupos de 4 personas.</li><li>Organizados por nivel y disponibilidad.</li><li>Plazas limitadas.</li><li>También en modalidad puntual (consultar).</li></ul></article><article class="tarjeta"><h3 class="tarjeta-titulo">Otras opciones</h3><ul class="lista"><li>Individual, 2 personas o 3 personas.</li><li>Modalidad mensual o puntual.</li><li>Consulta precio y disponibilidad.</li></ul></article><article class="tarjeta tarjeta-precio"><h3 class="tarjeta-titulo">Escuela infantil</h3><p class="precio"><span class="precio-cifra">40</span> € <span class="precio-unidad">por niño / mes</span></p><ul class="lista"><li>Hasta 12 años.</li><li>1 clase a la semana.</li><li>Máximo 6 niños por grupo.</li></ul></article><!--/gen--></div>
   <p><a class="boton" href="https://wa.me/34659143103" data-href="whatsapp" data-wa="wa.classes" target="_blank" rel="noopener noreferrer"><img class="glifo" src="../assets/marcas/whatsapp-glifo-negro.svg" width="20" height="20" alt=""><span data-i18n="classes.cta">Consultar por WhatsApp</span></a></p>
 </section>
 
-<section id="pools" class="seccion" data-seccion="pools" aria-labelledby="pools-titulo">
+<section id="pools" class="seccion seccion-pools" data-superficie="tinta" data-seccion="pools" aria-labelledby="pools-titulo">
+  <div class="pools-intro">
   <h2 id="pools-titulo" data-i18n="pools.heading">Pools</h2>
   <p data-gen="pools-texto"><!--gen-->Información e inscripciones por WhatsApp.<!--/gen--></p>
-  <ul class="insignias" data-gen="pools"><!--gen--><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_snp_masculina-240.avif 240w, ../assets/pools/opt/pool_snp_masculina-480.avif 480w, ../assets/pools/opt/pool_snp_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_snp_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_snp_femenina-240.avif 240w, ../assets/pools/opt/pool_snp_femenina-480.avif 480w, ../assets/pools/opt/pool_snp_femenina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_snp_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP femenina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_3a_masculina-240.avif 240w, ../assets/pools/opt/pool_3a_masculina-480.avif 480w, ../assets/pools/opt/pool_3a_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_3a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 3.ª masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_4a_masculina-240.avif 240w, ../assets/pools/opt/pool_4a_masculina-480.avif 480w, ../assets/pools/opt/pool_4a_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_4a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4.ª masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_4a_femenina-240.avif 240w, ../assets/pools/opt/pool_4a_femenina-480.avif 480w, ../assets/pools/opt/pool_4a_femenina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_4a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4.ª femenina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_5a_masculina-240.avif 240w, ../assets/pools/opt/pool_5a_masculina-480.avif 480w, ../assets/pools/opt/pool_5a_masculina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_5a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5.ª masculina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_5a_femenina-240.avif 240w, ../assets/pools/opt/pool_5a_femenina-480.avif 480w, ../assets/pools/opt/pool_5a_femenina-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_5a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5.ª femenina · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_mixta-240.avif 240w, ../assets/pools/opt/pool_mixta-480.avif 480w, ../assets/pools/opt/pool_mixta-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_mixta-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool mixta · Eleva Pádel Pizarra"></picture></li><li><picture><source type="image/avif" srcset="../assets/pools/opt/pool_rocha-240.avif 240w, ../assets/pools/opt/pool_rocha-480.avif 480w, ../assets/pools/opt/pool_rocha-720.avif 720w" sizes="(min-width: 64rem) 15rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_rocha-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool Rocha · Eleva Pádel Pizarra"></picture></li><!--/gen--></ul>
-  <p><a class="boton" href="https://wa.me/34659143103" data-href="whatsapp" data-wa="wa.pools" target="_blank" rel="noopener noreferrer"><img class="glifo" src="../assets/marcas/whatsapp-glifo-negro.svg" width="20" height="20" alt=""><span data-i18n="pools.cta">Consultar por WhatsApp</span></a></p>
+  </div>
+  <ul class="insignias" data-gen="pools"><!--gen--><li class="insignia" style="--acento:#957E6D;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_snp_masculina-240.avif 240w, ../assets/pools/opt/pool_snp_masculina-480.avif 480w, ../assets/pools/opt/pool_snp_masculina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_snp_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP masculina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool SNP masculina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#997E6D;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_snp_femenina-240.avif 240w, ../assets/pools/opt/pool_snp_femenina-480.avif 480w, ../assets/pools/opt/pool_snp_femenina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_snp_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool SNP femenina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool SNP femenina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#937C6A;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_3a_masculina-240.avif 240w, ../assets/pools/opt/pool_3a_masculina-480.avif 480w, ../assets/pools/opt/pool_3a_masculina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_3a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 3.ª masculina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool 3.ª masculina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#947E6B;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_4a_masculina-240.avif 240w, ../assets/pools/opt/pool_4a_masculina-480.avif 480w, ../assets/pools/opt/pool_4a_masculina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_4a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4.ª masculina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool 4.ª masculina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#E27D93;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_4a_femenina-240.avif 240w, ../assets/pools/opt/pool_4a_femenina-480.avif 480w, ../assets/pools/opt/pool_4a_femenina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_4a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 4.ª femenina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool 4.ª femenina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#8D7965;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_5a_masculina-240.avif 240w, ../assets/pools/opt/pool_5a_masculina-480.avif 480w, ../assets/pools/opt/pool_5a_masculina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_5a_masculina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5.ª masculina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool 5.ª masculina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#E38B9B;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_5a_femenina-240.avif 240w, ../assets/pools/opt/pool_5a_femenina-480.avif 480w, ../assets/pools/opt/pool_5a_femenina-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_5a_femenina-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool 5.ª femenina · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool 5.ª femenina</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#945BA4;--acento-aro:#7D72AB;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_mixta-240.avif 240w, ../assets/pools/opt/pool_mixta-480.avif 480w, ../assets/pools/opt/pool_mixta-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_mixta-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool mixta · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool mixta</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><li class="insignia" style="--acento:#A49183;"><span class="insignia-pieza"><span class="insignia-cara"><picture><source type="image/avif" srcset="../assets/pools/opt/pool_rocha-240.avif 240w, ../assets/pools/opt/pool_rocha-480.avif 480w, ../assets/pools/opt/pool_rocha-720.avif 720w" sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw"><img src="../assets/pools/opt/pool_rocha-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="Pool Rocha · Eleva Pádel Pizarra"></picture></span><span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">Pool Rocha</span><span class="insignia-club">Eleva Pádel Pizarra</span></span></span></li><!--/gen--></ul>
+  <p class="pools-cta"><a class="boton" href="https://wa.me/34659143103" data-href="whatsapp" data-wa="wa.pools" target="_blank" rel="noopener noreferrer"><img class="glifo" src="../assets/marcas/whatsapp-glifo-negro.svg" width="20" height="20" alt=""><span data-i18n="pools.cta">Consultar por WhatsApp</span></a></p>
 </section>
 
 <section id="servicios" class="seccion" data-seccion="servicios" aria-labelledby="servicios-titulo">
@@ -152,7 +175,7 @@
   <p data-gen="servicios"><!--gen-->Americanos, pools y eventos. Precio según evento.<!--/gen--></p>
 </section>
 
-<section id="cancelaciones" class="seccion" data-seccion="cancelaciones" aria-labelledby="cancelaciones-titulo">
+<section id="cancelaciones" class="seccion" data-superficie="tinta" data-seccion="cancelaciones" aria-labelledby="cancelaciones-titulo">
   <h2 id="cancelaciones-titulo" data-i18n="cancel.heading">Política de cancelaciones</h2>
   <div class="politica" data-gen="cancelaciones"><!--gen--><div class="bloque"><h3>Reservas de pista</h3><ul class="lista"><li>Las reservas deberán cancelarse con al menos 24 horas de antelación.</li><li>Las cancelaciones fuera de plazo podrán no ser reembolsadas.</li></ul></div><div class="bloque"><h3>Clases</h3><ul class="lista"><li>Clases particulares: las cancelaciones deben avisarse con 24 horas de antelación.</li><li>Clases de grupo y escuela: la cuota mensual reserva la plaza en el grupo asignado.</li><li>Recuperación por ausencia: si se avisa con 24 horas y es la única ausencia del mes, se intentará siempre recuperar esa clase. Las ausencias adicionales no tienen recuperación garantizada.</li><li>Lluvia o imposibilidad del club: la clase será recuperada o compensada.</li><li>Cambios organizativos: el club podrá modificar horarios o grupos por motivos organizativos, avisando siempre con antelación.</li></ul></div><p class="nota">Consulta cualquier duda por WhatsApp o en recepción.</p><!--/gen--></div>
 </section>
@@ -162,7 +185,7 @@
   <ul class="personas" data-gen="equipo"><!--gen--><li class="persona"><img class="persona-foto" src="../assets/img/team-lorena.jpg" width="632" height="800" loading="lazy" decoding="async" alt=""><h3>Lorena Vano</h3></li><li class="persona"><span class="persona-foto persona-inicial" aria-hidden="true">M</span><h3>Maripaz</h3></li><!--/gen--></ul>
 </section>
 
-<section id="patrocinadores" class="seccion" data-seccion="patrocinadores" aria-labelledby="patrocinadores-titulo" hidden>
+<section id="patrocinadores" class="seccion" data-superficie="tinta" data-seccion="patrocinadores" aria-labelledby="patrocinadores-titulo" hidden>
   <h2 id="patrocinadores-titulo" data-i18n="sponsors.heading">Patrocinadores</h2>
   <ul class="patrocinadores" data-gen="patrocinadores"><!--gen--><!--/gen--></ul>
 </section>
@@ -172,7 +195,7 @@
   <ul class="galeria" data-gen="galeria"><!--gen--><!--/gen--></ul>
 </section>
 
-<section id="contacto" class="seccion" data-seccion="contacto" aria-labelledby="contacto-titulo">
+<section id="contacto" class="seccion" data-superficie="tinta" data-seccion="contacto" aria-labelledby="contacto-titulo">
   <h2 id="contacto-titulo" data-i18n="contact.heading">Contacto</h2>
   <div class="contacto">
     <div>
@@ -204,7 +227,7 @@
 <footer class="pie" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
   <div class="pie-columnas">
     <div>
-      <img src="../assets/img/favicon.svg" width="48" height="48" alt="Eleva Pádel">
+      <img class="pie-logo" src="../assets/img/logo-sin-fondo.svg" width="48" height="48" alt="Eleva Pádel">
       <p class="pie-nombre">Eleva Pádel Pizarra</p>
       <p>Pizarra, Málaga</p>
     </div>
@@ -230,9 +253,17 @@
   </div>
 </footer>
 
-<script src="../pizarra/manifest.js?v=20261001c" defer></script>
-<script src="../js/translations.js?v=20261001c" defer></script>
-<script src="../js/render.js?v=20261001c" defer></script>
-<script src="../js/main.js?v=20261001c" defer></script>
+<script src="../pizarra/manifest.js?v=20261004c" defer></script>
+<script src="../js/translations.js?v=20261004c" defer></script>
+<script src="../js/render.js?v=20261004c" defer></script>
+<script src="../js/main.js?v=20261004c" defer></script>
+<!-- Sistema de movimiento: núcleo (tokens y API común) y un módulo por
+     efecto. tres-d.js importa la escena (js/movimiento/pista.js + lib/three)
+     solo cuando el hero se ve y el dispositivo la aguanta. -->
+<script src="../js/movimiento/nucleo.js?v=20261004c" defer></script>
+<script src="../js/movimiento/scroll.js?v=20261004c" defer></script>
+<script src="../js/movimiento/puntero.js?v=20261004c" defer></script>
+<script src="../js/movimiento/tacto.js?v=20261004c" defer></script>
+<script src="../js/movimiento/tres-d.js?v=20261004c" defer></script>
 </body>
 </html>

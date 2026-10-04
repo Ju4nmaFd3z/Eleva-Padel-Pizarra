@@ -5,8 +5,10 @@
    Colores muestreados de las insignias de los pools. Contrastes (WCAG):
      crema/negro 16,7 · claro/negro 14,1 · beige/negro 5,5 · negro/beige 5,5
      anillo/negro 6,1. Crema sobre beige (3,1) no se usa.
-   Los acentos por categoría (rosa, violeta, azul) solo se usan para
-   marcar la categoría de un pool.
+   El color de cada insignia (manifest, campo `color`) es el único que
+   marca la categoría de un pool.
+   Aquí va el estado estático, completo y legible (sin JS, con movimiento
+   reducido). Todo lo animado está en css/movimiento.css.
    ================================================================ */
 
 :root {
@@ -16,6 +18,9 @@
   --beige:  #947E6B;   /* categoría */
   --anillo: #A18572;   /* anillo de la insignia */
   --linea:  rgba(161, 133, 114, .35);
+  /* Superficie alterna de las secciones: beige al 16 % sobre negro.
+     crema/tinta 14,9 · claro/tinta 12,6 · beige/tinta 4,9 · anillo/tinta 5,4 */
+  --tinta:  #181411;
 
   --fuente-titulos: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --fuente-texto:   'Barlow', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -23,6 +28,61 @@
   --margen: clamp(1rem, 4vw, 3rem);
   --ancho:  72rem;
   --alto-cabecera: 4.5rem;
+
+  /* Tamaños de iconos y logos de marca: relativos al texto que acompañan
+     (entre 1em y 1,25em) y el mismo en todas sus apariciones. */
+  --tam-icono: 1.125em;      /* Lucide y glifos de WhatsApp / Instagram */
+  --tam-logo:  2.5rem;       /* logo de la cabecera */
+  --tam-logo-pie: 3rem;
+
+  /* ── Sistema de movimiento: única fuente de verdad ──────────────
+     js/movimiento/nucleo.js lee estos mismos valores (espejo en JS) y
+     css/movimiento.css los usa. Jerarquía: el encendido de la pista y la
+     apertura del logo son los gestos largos; lo demás es corto y
+     responde a la persona. */
+  --dur-instante: 120ms;     /* seguir el puntero, pulsar */
+  --dur-corta:    240ms;     /* fundidos y cambios de estado */
+  --dur-media:    400ms;     /* inclinación, imán */
+  --dur-larga:    720ms;     /* barrido de luz, pulso del logo */
+  --dur-giro:     700ms;     /* giro de 180° de una insignia */
+  --dur-encendido: 1000ms;   /* las LED de la pista pasan de penumbra a luz */
+  --dur-vt:       900ms;     /* transición entre / y /pizarra */
+  --curva-salida:  cubic-bezier(.16, 1, .3, 1);
+  --curva-entrada: cubic-bezier(.7, 0, .84, 0);
+  --curva-tension: cubic-bezier(.65, 0, .35, 1);
+  --curva-muelle:  cubic-bezier(.34, 1.56, .64, 1);
+  --retardo-escalon:   50ms; /* entre piezas de un mismo grupo */
+  --retardo-encendido: 150ms;
+  --dist-iman:       8px;    /* desplazamiento máximo de un botón magnético */
+  --dist-radio-iman: 56px;   /* alcance del imán alrededor del botón */
+  --dist-paralaje:   18px;   /* el logo del hero con el ratón */
+  --dist-titulo:     10px;   /* el titular del hero, en sentido opuesto */
+  --dist-linea:      5vw;    /* líneas del titular con el scroll */
+  --dist-tracking:   .1em;   /* interletraje inicial de cifras y títulos */
+  --dist-pulso:      .06;    /* pulso del logo al tocar el hero */
+  --dist-escena:     .45;    /* la pista sube al 55 % de la velocidad del scroll */
+  --prof-perspectiva: 900px;
+  --prof-inclinacion: 9deg;  /* inclinación máxima de las insignias */
+  --prof-abanico:     8deg;  /* giro entre insignias del abanico */
+  --prof-escala-hero:  24;   /* zoom final del logo del hero */
+  --prof-escala-corte: 30;   /* zoom final del corte de sección */
+  --prof-giro-pista:  12;    /* grados al arrastrar la pista en táctil */
+  --prof-paralaje-pista: 1;  /* metros de paralaje de la cámara con el ratón */
+  --fisica-suavizado: 7;     /* por segundo */
+  --fisica-rigidez:  90;     /* muelle del retorno de la pista */
+  --fisica-amortiguacion: 11;
+  --penumbra-inicial: .75;
+}
+
+/* Movimiento reducido: como mucho fundidos breves (los módulos JS leen
+   estos mismos tokens; nucleo.js desactiva paralaje, inclinación y 3D). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-media: 200ms; --dur-larga: 200ms; --dur-giro: 200ms; --dur-encendido: 0ms; --dur-vt: 0ms;
+    --retardo-escalon: 0ms; --retardo-encendido: 0ms;
+    --dist-iman: 0px; --dist-paralaje: 0px; --dist-titulo: 0px; --dist-linea: 0vw; --dist-pulso: 0;
+    --dist-escena: 0; --prof-inclinacion: 0deg; --prof-giro-pista: 0; --prof-paralaje-pista: 0;
+  }
 }
 
 /* ── Base ─────────────────────────────────────────────────────── */
@@ -40,6 +100,7 @@ body {
   background: var(--negro);
   color: var(--claro);
   font: 400 1.0625rem/1.6 var(--fuente-texto);
+  overflow-x: clip;
 }
 body.sin-scroll { overflow: hidden; }
 img { max-width: 100%; height: auto; display: block; }
@@ -54,7 +115,7 @@ h1, h2, h3 {
   hyphens: auto;
 }
 h1 { font-size: clamp(2.75rem, 11vw, 6.5rem); }
-h2 { font-size: clamp(2rem, 7vw, 3.5rem); }
+h2 { font-size: clamp(3rem, 13vw, 5.5rem); line-height: .95; }
 h3 { font-size: 1.375rem; }
 p { margin: 0 0 1rem; max-width: 65ch; }
 ul { margin: 0; padding: 0; list-style: none; }
@@ -65,6 +126,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   outline-offset: 3px;
 }
 [hidden] { display: none !important; }
+.vh {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
 .saltar {
   position: absolute; left: var(--margen); top: -10rem; z-index: 100;
@@ -73,12 +138,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .saltar:focus { top: 1rem; }
 
 /* ── Iconos ───────────────────────────────────────────────────
-   Lucide (sprite, toma el color del texto) y glifos oficiales de WhatsApp
-   e Instagram (sin modificar: blanco sobre negro, negro sobre beige). */
-.icono, .glifo { width: 1.25em; height: 1.25em; flex-shrink: 0; }
+   Lucide (sprite, toma el color del texto, trazo 2 en todos: al usar el
+   mismo tamaño en todas partes el grosor visible es uniforme) y glifos
+   oficiales de WhatsApp e Instagram (sin modificar: blanco sobre negro,
+   negro sobre beige). Mismo tamaño, alineados con la línea del texto. */
+.icono, .glifo { width: var(--tam-icono); height: var(--tam-icono); flex-shrink: 0; }
 .icono { stroke: currentColor; }
 .con-icono { display: inline-flex; align-items: flex-start; gap: .5rem; }
-.con-icono .icono { margin-top: .2em; }
+.con-icono .icono { margin-top: .25em; }
 .enlace, .pie li a { display: inline-flex; align-items: center; gap: .5rem; }
 
 /* ── Botones y enlaces sueltos ────────────────────────────────── */
@@ -90,6 +157,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font: 600 1.125rem/1.1 var(--fuente-titulos);
   letter-spacing: .04em; text-transform: uppercase; text-decoration: none; text-align: center;
   cursor: pointer;
+  transition: background-color var(--dur-corta) linear, border-color var(--dur-corta) linear, color var(--dur-corta) linear;
 }
 .boton-secundario { background: transparent; color: var(--crema); border-color: var(--anillo); }
 .boton:disabled { opacity: .6; cursor: not-allowed; }
@@ -110,7 +178,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* ── Cabecera ─────────────────────────────────────────────────── */
 /* La maqueta por defecto es la de con JS; la de sin JS va en un <noscript>
-   de cada página. Así no hay salto de maquetación cuando carga el JS. */
+   de cada página. Así no hay salto de maquetación cuando carga el JS.
+   Orden: logo · Reservar · idioma · menú. A 320 px caben los cuatro: por
+   debajo de 23,5rem el nombre junto al logo se oculta a la vista (el enlace
+   conserva su nombre accesible en aria-label). */
 .cabecera {
   position: sticky; top: 0; z-index: 50;
   background: var(--negro);
@@ -118,46 +189,58 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding-inline: max(var(--margen), env(safe-area-inset-left)) max(var(--margen), env(safe-area-inset-right));
 }
 .cabecera-barra {
-  display: flex; align-items: center; gap: .75rem;
+  display: flex; align-items: center; gap: .5rem;
   min-height: var(--alto-cabecera);
 }
 .logo {
   display: inline-flex; align-items: center; gap: .625rem;
-  margin-right: auto; min-height: 44px;
+  margin-right: auto; min-height: 44px; min-width: 44px;
   color: var(--crema); text-decoration: none;
 }
-.logo img { width: 2.5rem; height: 2.5rem; }
+.logo img { width: var(--tam-logo); height: var(--tam-logo); }
 .logo-nombre {
-  font: 600 1.25rem/1 var(--fuente-titulos);
+  font: 600 clamp(1rem, 4.5vw, 1.25rem)/1 var(--fuente-titulos);
   text-transform: uppercase; letter-spacing: .03em;
 }
-.boton-reservar { min-height: 2.75rem; padding-inline: 1rem; flex-shrink: 0; }
-.logo { min-width: 0; }
-.logo-nombre { font-size: clamp(1rem, 4.5vw, 1.25rem); }
-
-.menu ul { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
-.menu a {
-  display: inline-flex; align-items: center; min-height: 44px; min-width: 44px;
-  font: 500 1rem/1.2 var(--fuente-texto); text-decoration: none;
+@media (max-width: 23.49rem) {
+  .logo-nombre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
-.idiomas { display: flex; gap: .25rem; }
-.idioma {
-  min-width: 44px; min-height: 44px;
+.boton-reservar { min-height: 2.75rem; padding-inline: .875rem; flex-shrink: 0; }
+
+/* Selector de idioma: botón con el idioma actual que despliega ES, EN, NL */
+.idioma-selector { position: relative; flex-shrink: 0; }
+.idioma-boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: .125rem;
+  min-width: 44px; min-height: 44px; padding: 0 .375rem;
   background: transparent; color: var(--crema);
   border: 1px solid var(--linea); border-radius: 2px;
   font: 500 .9375rem/1 var(--fuente-texto); cursor: pointer;
 }
-.idioma[aria-pressed="true"] { background: var(--crema); color: var(--negro); border-color: var(--crema); }
-.cabecera-barra .idiomas { margin-left: .25rem; }
+.idioma-boton .icono { width: 1em; height: 1em; transition: transform var(--dur-corta) var(--curva-salida); }
+.idioma-boton[aria-expanded="true"] .icono { transform: rotate(180deg); }
+.idioma-lista {
+  position: absolute; right: 0; top: calc(100% + .5rem); z-index: 60;
+  min-width: 11rem; padding: .375rem;
+  background: var(--negro); border: 1px solid var(--linea); border-radius: 2px;
+}
+.idioma {
+  display: flex; align-items: center; gap: .75rem; width: 100%;
+  min-height: 44px; padding: 0 .75rem;
+  background: transparent; color: var(--crema); border: 0; border-radius: 2px;
+  font: 500 1rem/1.2 var(--fuente-texto); text-align: left; cursor: pointer;
+}
+.idioma-codigo { min-width: 1.75em; font-weight: 600; }
+.idioma[aria-current="true"] { background: var(--crema); color: var(--negro); }
+@media (hover: hover) { .idioma:not([aria-current="true"]):hover { background: var(--tinta); } }
+.idioma:focus-visible { outline-offset: -3px; }
 
 .menu-boton {
   flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; padding: 0;
-  background: transparent; border: 1px solid var(--linea); border-radius: 2px; cursor: pointer;
+  background: transparent; color: var(--crema);
+  border: 1px solid var(--linea); border-radius: 2px; cursor: pointer;
 }
-.menu-boton { color: var(--crema); }
-.menu-boton .icono { width: 1.5rem; height: 1.5rem; }
 .menu-boton .icono-cerrar,
 .menu-boton[aria-expanded="true"] .icono-abrir { display: none; }
 .menu-boton[aria-expanded="true"] .icono-cerrar { display: block; }
@@ -171,20 +254,103 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   background: var(--negro);
 }
 .menu.abierto { display: block; }
-.menu ul { flex-direction: column; gap: 0; margin-bottom: 1.5rem; }
-.menu a { min-height: 3.25rem; font: 600 1.75rem/1.1 var(--fuente-titulos); text-transform: uppercase; }
-
-/* ── Hero del club ────────────────────────────────────────────── */
-.hero {
-  display: flex; align-items: flex-end;
-  min-height: 70vh; min-height: 70svh;
-  padding: 3rem max(var(--margen), env(safe-area-inset-right)) 3rem max(var(--margen), env(safe-area-inset-left));
-  /* Velo negro del 70 %: crema sobre el peor caso de la foto ≥ 5:1 */
-  background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url('../assets/img/hero.jpg') center / cover no-repeat;
+.menu ul { display: flex; flex-direction: column; gap: 0; }
+.menu a {
+  display: inline-flex; align-items: center; min-height: 3.25rem; min-width: 44px;
+  font: 600 1.75rem/1.1 var(--fuente-titulos); text-transform: uppercase; text-decoration: none;
 }
-.hero-contenido { width: 100%; max-width: var(--ancho); margin-inline: auto; }
-.hero-titulo { margin-bottom: .5rem; }
-.hero-lugar { color: var(--crema); font-size: 1.25rem; margin-bottom: 1.75rem; }
+
+/* ── Hero del club: la pista vista a través del logo ───────────────
+   Capas (todas decorativas, aria-hidden):
+   · .hero-escena: la pista 3D (js/movimiento/pista.js) o, sin JS, sin
+     WebGL, con Save-Data, en movimiento reducido y mientras carga, su
+     imagen fija renderizada de la misma escena;
+   · .hero-mascara: telón negro con el hueco del logo oficial sin fondo
+     (assets/img/logo-sin-fondo.svg, máscara por alfa: el logo se ve sin
+     el «cuadrado fantasma»). Estado estático = el logo a su tamaño; con el
+     scroll crece desde el vértice hasta abrir la pista a sangre (solo
+     transform y opacity: css/movimiento.css);
+   · .hero-velo: degradado que garantiza el contraste del texto cuando la
+     pista queda abierta.
+   El texto es HTML por encima y se ve desde el primer pintado.
+   Geometría del logo: --L lado · --mx/--my posición dentro de la máscara
+   (semántica de mask-position) · --ox/--oy punto de zoom (el vértice del
+   triángulo, 50 % · 24 % del logo). */
+.hero {
+  --sangrado: 24px;
+  --L: min(84vw, 44svh);
+  --mx: 50%;
+  --my: calc(var(--sangrado) + .75rem);
+  --ox: 50%;
+  --oy: calc(var(--my) + var(--L) * .24);
+  position: relative; isolation: isolate; overflow: clip;
+  display: flex; align-items: flex-end;
+  min-height: max(calc(100svh - var(--alto-cabecera)), 34rem);
+  padding: calc(var(--L) * .7 + 1.5rem) max(var(--margen), env(safe-area-inset-right)) 2.5rem max(var(--margen), env(safe-area-inset-left));
+  background: var(--negro);
+  touch-action: pan-y;           /* arrastre horizontal: gira la pista; el vertical sigue siendo scroll */
+}
+.hero-fondo { position: absolute; inset: 0; z-index: -1; }
+.hero-escena, .hero-telon, .hero-pulso, .hero-velo { position: absolute; inset: 0; }
+.hero-escena { background: var(--negro); }
+.hero-imagen img, .hero-lienzo {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; max-width: none;
+  object-fit: cover; object-position: center;
+}
+/* Penumbra: las LED se encienden al cargar (solo opacity, por debajo del
+   texto). En movimiento reducido no hay animación: ya está encendida. */
+.hero-penumbra { position: absolute; inset: 0; background: var(--negro); opacity: 0; }
+/* Relevo: la escena viva entra fundida sobre la imagen fija */
+.hero-lienzo { opacity: 0; transition: opacity var(--dur-corta) linear; }
+.tres-d-lista .hero-lienzo { opacity: 1; }
+
+.hero-telon { inset: calc(-1 * var(--sangrado)); }
+.hero-mascara {
+  position: absolute; inset: 0;
+  background: var(--negro);
+  /* Todo el telón menos el logo: rectángulo «excluye» logo */
+  -webkit-mask-image: linear-gradient(#000, #000), url('../assets/img/logo-sin-fondo.svg');
+  mask-image: linear-gradient(#000, #000), url('../assets/img/logo-sin-fondo.svg');
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%, var(--L) var(--L); mask-size: 100% 100%, var(--L) var(--L);
+  -webkit-mask-position: 0 0, var(--mx) var(--my); mask-position: 0 0, var(--mx) var(--my);
+  transform-origin: var(--ox) var(--oy);
+}
+.hero-pulso { transform-origin: var(--ox) var(--oy); }
+/* Tinte del logo: el anillo de la marca, translúcido, dentro del logo para
+   que se lea como tal sobre la pista en penumbra; se retira al abrirse */
+.hero-tinte {
+  position: absolute; inset: 0;
+  background: var(--anillo); opacity: .32;
+  -webkit-mask: url('../assets/img/logo-sin-fondo.svg') no-repeat;
+  mask: url('../assets/img/logo-sin-fondo.svg') no-repeat;
+  -webkit-mask-size: var(--L) var(--L); mask-size: var(--L) var(--L);
+  -webkit-mask-position: var(--mx) var(--my); mask-position: var(--mx) var(--my);
+  transform-origin: var(--ox) var(--oy);
+}
+.hero-velo {
+  background: linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.72) 34%, rgba(0,0,0,0) 68%);
+  opacity: 0;
+}
+/* Sin máscaras compuestas (navegadores antiguos): la pista a sangre con velo */
+@supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .hero-telon { display: none; }
+  .hero-velo { opacity: 1; }
+}
+
+.hero-contenido { position: relative; width: 100%; max-width: var(--ancho); margin-inline: auto; }
+.hero-titulo {
+  display: flex; flex-direction: column;
+  margin-bottom: 1rem;
+  font-size: clamp(3.5rem, min(21vw, 12svh), 9rem);
+  line-height: .98; letter-spacing: -.005em;
+}
+.hero-linea { display: block; }
+.hero-linea:last-child { color: var(--anillo); }
+.hero-lugar { color: var(--crema); font-size: 1.25rem; margin-bottom: 1.5rem; }
 
 .avisos {
   padding: 1rem max(var(--margen), env(safe-area-inset-left));
@@ -192,13 +358,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .avisos a { color: var(--negro); }
 
-/* ── Secciones ────────────────────────────────────────────────── */
+/* ── Secciones ────────────────────────────────────────────────────
+   A sangre y alternando negro / tinta: cada una entra por un «corte» con
+   el logo (css/movimiento.css). El contenido siempre está por encima. */
 .seccion {
-  max-width: calc(var(--ancho) + 2 * var(--margen));
-  margin-inline: auto;
-  padding: clamp(3rem, 9vw, 6rem) max(var(--margen), env(safe-area-inset-right)) clamp(3rem, 9vw, 6rem) max(var(--margen), env(safe-area-inset-left));
-  border-top: 1px solid var(--linea);
+  --fondo: var(--negro);
+  --fondo-previo: var(--tinta);
+  position: relative; isolation: isolate; overflow: clip;
+  padding-block: clamp(3.5rem, 10vw, 7rem);
+  padding-inline: max(var(--margen), calc((100% - var(--ancho)) / 2), env(safe-area-inset-left));
+  background: var(--fondo);
 }
+.seccion[data-superficie="tinta"] { --fondo: var(--tinta); --fondo-previo: var(--negro); }
 .aviso-iva { color: var(--crema); }
 
 .datos { display: grid; gap: 1.5rem; }
@@ -209,16 +380,116 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .lista li { margin-bottom: .375rem; }
 .lista li::marker { color: var(--beige); }
 
-.tarjetas { display: grid; gap: 1rem; margin-block: 1.5rem 2rem; }
-.tarjeta { padding: 1.5rem; border: 1px solid var(--linea); }
-.precio { margin-bottom: .75rem; color: var(--crema); font: 600 2.5rem/1 var(--fuente-titulos); }
-.precio span { font: 400 1rem/1.3 var(--fuente-texto); color: var(--claro); }
+/* ── Clases: tarjetas con el precio en cifra grande ───────────────
+   Al entrar en pantalla reciben la luz LED: un barrido recorre su canto
+   superior una vez (css/movimiento.css). Sin JS, el canto ya está
+   iluminado y todo el contenido se ve. */
+.tarjetas { display: grid; gap: 1rem; margin-block: 2rem; }
+.tarjeta {
+  position: relative; overflow: hidden;
+  padding: 2rem 1.5rem 1.75rem;
+  border: 1px solid var(--linea);
+}
+.tarjeta::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4rem; pointer-events: none;
+  background: linear-gradient(to bottom, var(--crema) 0, var(--crema) 2px, rgba(237,228,220,.07) 2px, rgba(237,228,220,0) 100%);
+  transform-origin: left center;
+}
+.tarjeta-titulo { font-size: 1.5rem; letter-spacing: .02em; }
+.precio {
+  display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .375rem;
+  max-width: none; margin: .5rem 0 1.25rem; color: var(--crema);
+  font: 600 clamp(2rem, 8vw, 3rem)/1 var(--fuente-titulos);
+}
+.precio-cifra {
+  display: inline-block; white-space: nowrap;
+  font-size: clamp(5.5rem, 26vw, 8.5rem); line-height: .8; letter-spacing: -.02em;
+  transform-origin: 0 100%;
+}
+.precio .precio-unidad {
+  flex-basis: 100%; margin-top: .5rem;
+  font: 500 .875rem/1.3 var(--fuente-texto); letter-spacing: .14em; text-transform: uppercase; color: var(--claro);
+}
+.cin { display: inline-block; }
+.cin > span { display: inline-block; }
 
-.insignias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-block: 1.5rem 2rem; max-width: 52rem; }
+/* ── Pools: insignias como piezas físicas ────────────────────────
+   Las nueve con el mismo diámetro, recortadas en círculo por CSS (las
+   imágenes no se tocan: el aro de cada insignia ocupa el 90 % del
+   cuadrado y la de Rocha trae un fondo gris cuadrado que el recorte
+   elimina). Al pulsarlas (toque, clic, Enter o Espacio) giran 180° y
+   enseñan detrás su nombre (el texto del alt); el color de cada insignia
+   marca el aro y el reverso. Sin JS: imágenes normales. */
+.pools-intro p { margin-bottom: 0; }
+.insignias {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 1.5rem); margin-block: 2rem;
+}
+.insignia {
+  --acento: var(--anillo);
+  --aro: linear-gradient(135deg, var(--acento), var(--acento-aro, var(--acento)));
+  position: relative; perspective: var(--prof-perspectiva);
+}
+.insignia:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - .5rem); }
+.insignia-pieza {
+  position: relative; display: block; width: 100%; aspect-ratio: 1;
+  margin: 0; padding: 0; border: 0; border-radius: 50%;
+  background: none; color: inherit; font: inherit; text-align: center;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.insignia-pieza:focus-visible { outline: 3px solid var(--crema); outline-offset: 10px; }
+.insignia-cara, .insignia-dorso {
+  position: absolute; inset: 0; display: block;
+  border-radius: 50%; clip-path: circle(50% at 50% 50%);
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+}
+.insignia-cara img { width: 100%; height: 100%; scale: 1.09; }
+.insignia-dorso {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
+  padding: 12%;
+  transform: rotateY(180deg);
+  background: var(--negro);
+}
+/* Aro del color de la insignia: al girarla, con el foco y al pasar el ratón
+   (va en la pieza: se inclina con ella) */
+.insignia-pieza::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%; pointer-events: none;
+  padding: 3px; background: var(--aro);
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000, #000) content-box exclude, linear-gradient(#000, #000);
+  opacity: 0; transition: opacity var(--dur-corta) linear;
+}
+.girada .insignia-pieza::after, .insignia:focus-within .insignia-pieza::after { opacity: 1; }
+@media (hover: hover) { .insignia:hover .insignia-pieza::after { opacity: 1; } }
+.insignia-nombre {
+  color: var(--crema);
+  font: 600 clamp(1.25rem, 6vw, 2.25rem)/1 var(--fuente-titulos); text-transform: uppercase;
+}
+.insignia-nombre::after {
+  content: ""; display: block; width: 2.5rem; height: 3px; margin: .625rem auto 0;
+  background: var(--aro);
+}
+.insignia-club { color: var(--claro); font: 500 clamp(.6875rem, 2.4vw, .8125rem)/1.3 var(--fuente-texto); letter-spacing: .12em; text-transform: uppercase; }
+.girada .insignia-cara { transform: rotateY(-180deg); }
+.girada .insignia-dorso { transform: rotateY(0deg); }
 
-.politica { display: grid; gap: 2rem; }
-.politica h3 { margin-bottom: .75rem; }
-.politica .nota { color: var(--crema); }
+/* ── Política de cancelaciones: formato de filas ───────────────────
+   Cada bloque es una fila: el título grande a la izquierda y las normas a
+   la derecha, separadas por filetes (el formato «Clases» de la propuesta C
+   aplicado a las normas). El título se asienta con el scroll. */
+.politica { display: grid; margin-top: 2rem; }
+.politica .bloque { display: grid; gap: 1rem; padding-block: 2rem; border-top: 1px solid var(--linea); }
+.politica .bloque:last-of-type { border-bottom: 1px solid var(--linea); }
+.politica h3 {
+  margin: 0;
+  font-size: clamp(2.5rem, 12vw, 5.5rem); line-height: .9; letter-spacing: -.005em;
+  transform-origin: 0 100%;
+}
+.politica .lista { margin: 0; }
+.politica .nota { margin-top: 2rem; color: var(--crema); }
 
 .personas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; max-width: 40rem; }
 .persona h3 { margin-top: .75rem; margin-bottom: .25rem; }
@@ -261,7 +532,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .pie-columnas, .pie-legal { max-width: var(--ancho); margin-inline: auto; }
 .pie-columnas { display: grid; gap: 2rem; margin-bottom: 2.5rem; }
-.pie-columnas img { width: 3rem; height: 3rem; margin-bottom: .75rem; }
+.pie-logo { width: var(--tam-logo-pie); height: var(--tam-logo-pie); margin-bottom: .75rem; }
 .pie-nombre { color: var(--crema); font: 600 1.375rem/1.1 var(--fuente-titulos); text-transform: uppercase; margin-bottom: .25rem; }
 .pie-titulo { font-size: .875rem; }
 .pie li a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
@@ -273,55 +544,102 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .pie-legal p { margin: 0; }
 
 /* ── Web de la marca ──────────────────────────────────────────── */
+/* Hero: el logo grande y el nombre; con el scroll el logo se abre y deja
+   pasar a la tarjeta del club (css/movimiento.css). */
 .marca-hero {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
-  min-height: 60vh; min-height: 60svh;
-  padding: 3rem var(--margen); text-align: center;
+  --L: min(72vw, 40svh);
+  position: relative; isolation: isolate; overflow: clip;
+  display: grid; grid-template-rows: 1fr auto; gap: 2rem;
+  min-height: max(calc(100svh - var(--alto-cabecera)), 32rem);
+  padding: 2rem max(var(--margen), env(safe-area-inset-right)) 2.5rem max(var(--margen), env(safe-area-inset-left));
 }
-.marca-logo { width: clamp(6rem, 25vw, 10rem); height: auto; }
-.marca-titulo { margin: 0; }
-.clubes { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
-.club { display: block; border: 1px solid var(--linea); text-decoration: none; color: var(--claro); }
+.marca-logo {
+  position: relative; z-index: -1; align-self: center; justify-self: center;
+  width: var(--L); height: var(--L);
+  transform-origin: 50% 24%;
+}
+.marca-titulo {
+  display: flex; flex-direction: column; margin: 0;
+  font-size: clamp(4rem, min(30vw, 17svh), 15rem); line-height: .9;
+  width: 100%; max-width: var(--ancho); margin-inline: auto;
+}
+.marca-titulo .hero-linea:last-child { color: var(--anillo); }
+.clubes { display: grid; gap: 1.5rem; margin-top: 2rem; }
+.club {
+  position: relative; display: grid; isolation: isolate; overflow: hidden;
+  border: 1px solid var(--linea); text-decoration: none; color: var(--claro);
+}
+.club-foto { position: relative; overflow: hidden; }
 .club img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.club-texto { display: flex; flex-direction: column; gap: .25rem; padding: 1.25rem; }
-.club-nombre { color: var(--crema); font: 600 1.75rem/1.1 var(--fuente-titulos); text-transform: uppercase; }
+.club-texto { display: flex; flex-direction: column; gap: .25rem; padding: 1.25rem 1.25rem 1.5rem; }
+.club-nombre { color: var(--crema); font: 600 clamp(2.25rem, 10vw, 4.5rem)/.95 var(--fuente-titulos); text-transform: uppercase; }
+.club-lugar { color: var(--crema); }
 .club .enlace { color: var(--crema); text-decoration: underline; padding-bottom: 0; }
+.club:focus-visible { outline: 3px solid var(--crema); outline-offset: 4px; }
 @media (hover: hover) { .club:hover { border-color: var(--anillo); } }
 
 /* ── 40rem ────────────────────────────────────────────────────── */
 @media (min-width: 40rem) {
   .datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .insignias { grid-template-columns: repeat(3, 1fr); }
+  .insignias { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .insignia:last-child:nth-child(odd) { grid-column: auto; justify-self: stretch; width: auto; }
   .personas { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 52rem; }
   .galeria { grid-template-columns: repeat(2, 1fr); }
-  .clubes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pie-columnas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .politica .bloque { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 2.5rem; align-items: start; }
+  .club { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: end; }
+  .club img { aspect-ratio: auto; height: 100%; min-height: 22rem; }
 }
 
 /* ── 64rem: escritorio y tablets grandes ──────────────────────── */
 @media (min-width: 64rem) {
-  .cabecera { display: flex; align-items: center; gap: 1.5rem; }
+  .cabecera { display: flex; align-items: center; gap: 1.5rem; min-height: var(--alto-cabecera); }
   .cabecera-barra { display: contents; }
   .logo { order: 1; margin-right: 0; }
   .menu {
     order: 2; flex: 1;
-    display: flex; align-items: center; justify-content: flex-end; gap: 1.5rem;
+    display: flex; align-items: center; justify-content: flex-end;
     position: static; padding: 0; overflow: visible; background: none;
   }
   .menu ul { flex-direction: row; gap: 0 1.25rem; margin: 0; }
   .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
-  .boton-reservar { order: 3; }
-  .cabecera-barra .idiomas { order: 4; }
+  .boton-reservar { order: 3; padding-inline: 1rem; }
+  .idioma-selector { order: 4; }
   .menu-boton { display: none; }
   .datos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hero {
+    --L: min(calc((100svh - var(--alto-cabecera)) * .8), 46vw);
+    --mx: calc(100% - var(--sangrado) - 3vw);
+    --my: 50%;
+    --ox: calc(100% - var(--sangrado) - 3vw - var(--L) / 2);
+    --oy: calc(50% - var(--L) * .26);
+    padding-top: 3rem;
+  }
+  .hero-titulo { font-size: clamp(4rem, min(12.5vw, 19svh), 15rem); }
   .tarjetas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .politica { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .politica .nota { grid-column: 1 / -1; }
+  .seccion-pools {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+    grid-template-areas: 'intro lista' 'cta lista';
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(2rem, 5vw, 5rem);
+  }
+  .seccion-pools h2 { font-size: clamp(4.5rem, 10vw, 10rem); }
+  .pools-intro { grid-area: intro; }
+  .insignias { grid-area: lista; margin: 0; max-width: 42rem; justify-self: end; width: 100%; }
+  .pools-cta { grid-area: cta; margin-top: 2rem; }
   .galeria { grid-template-columns: repeat(3, 1fr); }
   .contacto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
   .contacto .datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pie-columnas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .marca .logo { margin-right: auto; }
+  .marca-hero {
+    --L: min(calc((100svh - var(--alto-cabecera)) * .75), 42vw);
+    grid-template-rows: 1fr; grid-template-columns: minmax(0, 1fr) auto;
+    padding-top: 3rem; padding-inline: max(var(--margen), calc((100% - var(--ancho)) / 2));
+  }
+  .marca-logo { grid-row: 1; grid-column: 2; }
+  .marca-titulo { grid-row: 1; grid-column: 1; align-self: end; font-size: clamp(5rem, min(15vw, 26svh), 16rem); }
 }
 
 /* ── 90rem: pantallas grandes ─────────────────────────────────── */

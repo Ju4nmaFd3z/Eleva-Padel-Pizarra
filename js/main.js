@@ -1,6 +1,7 @@
 /* ================================================================
    Eleva Pádel — main.js
-   Idioma, menú móvil, enlaces de WhatsApp, avisos con fecha y formulario.
+   Idioma (selector de la cabecera), menú móvil, enlaces de WhatsApp,
+   avisos con fecha y formulario.
    El contenido del club ya viene en el HTML (tools/generar.js); al
    cambiar de idioma se vuelve a pintar con js/render.js.
    ================================================================ */
@@ -50,6 +51,8 @@
       var z = s[el.getAttribute('data-seccion')];
       if (z) el.hidden = !z.visible;
     });
+    /* El HTML es nuevo: js/movimiento/ vuelve a engancharse */
+    document.dispatchEvent(new CustomEvent('eleva:repintado', { detail: { lang: currentLang } }));
   }
 
   function applyLang(lang) {
@@ -67,7 +70,13 @@
       var v = tr(el.getAttribute('data-i18n-arialabel'));
       if (v) el.setAttribute('aria-label', v);
     });
-    $$('.idioma').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)); });
+    $$('.idioma').forEach(function (b) {
+      if (b.getAttribute('data-lang') === lang) b.setAttribute('aria-current', 'true');
+      else b.removeAttribute('aria-current');
+    });
+    var codigo = lang.toUpperCase();
+    $$('.idioma-actual').forEach(function (el) { el.textContent = codigo; });
+    $$('.idioma-boton').forEach(function (b) { b.setAttribute('aria-label', tr('nav.langLabel', 'Idioma') + ': ' + codigo); });
     var mb = $('.menu-boton');
     if (mb) mb.setAttribute('aria-label', tr(mb.getAttribute('aria-expanded') === 'true' ? 'nav.menuClose' : 'nav.menuOpen'));
 
@@ -80,13 +89,64 @@
     var inicial = getStoredLang();
     currentLang = DEFAULT_LANG;
     applyLang(inicial);
-    $$('.idioma').forEach(function (b) {
+  }
+
+  /* ── Selector de idioma (cabecera) ──────────────────────────
+     Patrón de botón desplegable: el botón muestra el idioma actual y
+     abre la lista (aria-expanded). Enter, Espacio o flecha abajo la abren
+     con el foco en la opción actual (flecha arriba: en la última);
+     flechas, Inicio y Fin recorren las opciones; Escape cierra y devuelve
+     el foco al botón; Tab o un clic fuera la cierran. La opción activa
+     lleva aria-current. */
+  function initSelectorIdioma() {
+    var sel = $('.idioma-selector');
+    if (!sel) return;
+    var boton = $('.idioma-boton', sel);
+    var lista = $('.idioma-lista', sel);
+    function opciones() { return $$('.idioma', lista); }
+    function abierto() { return boton.getAttribute('aria-expanded') === 'true'; }
+    function abrir(foco) {
+      boton.setAttribute('aria-expanded', 'true');
+      lista.hidden = false;
+      if (!foco) return;
+      var o = opciones();
+      var i = Math.max(0, o.findIndex(function (b) { return b.getAttribute('aria-current') === 'true'; }));
+      (foco === 'ultima' ? o[o.length - 1] : o[i]).focus();
+    }
+    function cerrar(devolverFoco) {
+      if (!abierto()) return;
+      boton.setAttribute('aria-expanded', 'false');
+      lista.hidden = true;
+      if (devolverFoco) boton.focus();
+    }
+    var porTeclado = false;
+    boton.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); abrir(e.key === 'ArrowUp' ? 'ultima' : 'actual'); }
+      else if (e.key === 'Enter' || e.key === ' ') porTeclado = true;
+    });
+    boton.addEventListener('click', function () {
+      if (abierto()) cerrar(false); else abrir(porTeclado ? 'actual' : null);
+      porTeclado = false;
+    });
+    lista.addEventListener('keydown', function (e) {
+      var o = opciones(), i = o.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); o[(i + 1) % o.length].focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); o[(i - 1 + o.length) % o.length].focus(); }
+      else if (e.key === 'Home') { e.preventDefault(); o[0].focus(); }
+      else if (e.key === 'End') { e.preventDefault(); o[o.length - 1].focus(); }
+      else if (e.key === 'Escape') { e.preventDefault(); cerrar(true); }
+      else if (e.key === 'Tab') cerrar(false);
+    });
+    opciones().forEach(function (b) {
       b.addEventListener('click', function () {
         var l = b.getAttribute('data-lang');
         applyLang(l);
         setStoredLang(l);           /* solo se guarda cuando el usuario elige */
+        cerrar(true);
       });
     });
+    document.addEventListener('click', function (e) { if (abierto() && !sel.contains(e.target)) cerrar(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && abierto()) cerrar(true); });
   }
 
   /* ── Menú móvil ─────────────────────────────────────────────── */
@@ -216,6 +276,7 @@
   function init() {
     safe(initMenu, 'menu');
     safe(initI18n, 'i18n');
+    safe(initSelectorIdioma, 'idioma');
     safe(initContact, 'contact');
     safe(initAnchors, 'anchors');
   }
