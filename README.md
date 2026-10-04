@@ -103,19 +103,24 @@ galería y avisos. Después de cambiarlo, `node tools/generar.js`.
 ## Logo y tipografía
 
 - Logo oficial: `assets/img/favicon.svg` (aprobado por el club). Es el único origen:
-  la web lo usa como imagen y `favicon.ico` y `apple-touch-icon.png` se renderizan
-  desde él. No se redibuja.
+  `favicon.ico` y `apple-touch-icon.png` se renderizan desde él. No se redibuja.
+- Variante sin fondo: `assets/img/logo-sin-fondo.svg` (el mismo archivo sin el `<rect>`).
+  Va donde el fondo es más oscuro que #1A1A1A: cabecera, pie, `/`, 404, mantenimiento y
+  las máscaras del movimiento. El favicon y el icono de iOS, siempre el original.
 - Fuentes: Barlow Condensed y Barlow (OFL, `assets/fonts/OFL-Barlow.txt`).
 - Iconos: Lucide 1.49.0 en `assets/icons/lucide.svg` (sprite, sin modificar; licencia
-  en `assets/icons/LICENSE-lucide.txt`). Se usan solo donde ayudan: menú, ubicación,
-  enlaces externos y flechas. Para añadir uno, se copia su `<symbol>` tal cual del
+  en `assets/icons/LICENSE-lucide.txt`). Se usan solo donde ayudan: menú, idioma,
+  ubicación, enlaces externos y flechas. Todos miden `--tam-icono` (1,125 em), como los
+  glifos de WhatsApp e Instagram. Para añadir uno, se copia su `<symbol>` tal cual del
   repositorio de Lucide.
 - WhatsApp e Instagram: glifos oficiales de Meta en `assets/marcas/`, sin modificar
   (blanco sobre fondo negro, negro sobre botón beige), siempre junto al nombre escrito.
 
 ## Fotos
 
-- `assets/img/hero.jpg`: foto del inicio del club (y de su tarjeta en `/`).
+- `assets/img/hero.jpg`: foto de la tarjeta del club en `/` (ya no está en el hero del club).
+- `assets/img/pista-{h,v}-*`: imagen fija de la pista 3D del hero, renderizada de la
+  misma escena (`js/movimiento/pista.js`). Si cambia la escena, se renderiza con nombre nuevo.
 - `assets/img/og-pizarra.jpg`: imagen para redes (1200×630), recortada del hero.
 - `assets/img/team-lorena.jpg`: equipo.
 - `assets/pools/opt/`: insignias de los pools (AVIF 240/480/720 y JPEG 480).
@@ -127,7 +132,7 @@ imagen, usa un nombre nuevo: la caché del navegador guarda las imágenes hasta 
 
 ## Cache-buster
 
-Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261001c`), igual en todos
+Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261005a`), igual en todos
 los HTML. Súbelo al cambiar CSS, JS o manifest. `tools/validar.js` comprueba que
 coincide.
 
@@ -144,8 +149,11 @@ como plantilla vacía.
 ├── index.html · privacidad.html · 404.html
 ├── middleware.js        ← modo mantenimiento
 ├── pizarra/             ← web del club (index.html + manifest.js)
-├── css/                 ← main.css y fonts.css
+├── css/                 ← main.css (estático), movimiento.css (todo lo animado) y fonts.css
 ├── js/                  ← main.js, render.js (manifest → HTML) y translations.js
+├── js/movimiento/       ← nucleo.js y un módulo por efecto (scroll, puntero, tacto,
+│                          tres-d + pista.js, la escena 3D)
+├── lib/three/           ← three.js r186 reducido (MIT; cómo regenerarlo en README.txt)
 ├── assets/              ← fuentes, imágenes, insignias, credits.json (interno)
 ├── clubs/_plantilla/    ← alta de clubes (no se publica)
 ├── tools/               ← servidor local, generar, validar y hooks (no se publica)
@@ -169,3 +177,7 @@ WhatsApp +34 659 14 31 03 e Instagram @elevapadelpizarra.
 ---
 
 *Desarrollado por [Biznaga Consulting](https://biznagaconsulting.es/)*
+
+**¿Cómo se ve la web de la marca con los textos propuestos?** Solo en local: con el
+servidor local, abre `/?borrador`. Carga `marca-borrador.js` (fuera de Git y de Vercel);
+los textos y la arquitectura están en `MARCA-borrador.md`, también local.

@@ -1,5 +1,5 @@
 {
-  "_note": "Registro interno de las imágenes que existen en el sitio (no se publica: .vercelignore). Actualizado el 01-10-2026 (bloque 2).",
+  "_note": "Registro interno de las imágenes que existen en el sitio (no se publica: .vercelignore). Actualizado el 05-10-2026 (web viva).",
   "images": [
     {
       "file": "hero.jpg",
@@ -51,8 +51,8 @@
     },
     {
       "file": "../icons/lucide.svg",
-      "description": "Iconos de interfaz (menu, x, map-pin, external-link, arrow-right, arrow-left, clock) reunidos en un sprite, sin modificar",
-      "source": "Lucide 1.49.0 (github.com/lucide-icons/lucide)",
+      "description": "Iconos de interfaz (menu, x, map-pin, external-link, arrow-right, arrow-left, clock, chevron-down) reunidos en un sprite, sin modificar",
+      "source": "Lucide 1.49.0 (github.com/lucide-icons/lucide); chevron-down copiado de lucide-static@1.49.0 (unpkg.com/lucide-static@1.49.0/icons/chevron-down.svg) el 04-10-2026",
       "license": "ISC; los derivados de Feather (x, arrow-left, arrow-right, external-link, clock), MIT. Texto completo en assets/icons/LICENSE-lucide.txt",
       "credit": "Lucide Icons and Contributors; Cole Bemis (Feather)",
       "status": "definitivo"
@@ -71,6 +71,31 @@
       "source": "Instagram Brand Resources (meta.com/brand/resources/instagram), IG_brand_asset_pack_2023, descargado el 01-10-2026",
       "license": "Recursos de marca de Meta: sin modificar, siempre junto al nombre o la cuenta",
       "credit": "Instagram es una marca de Meta",
+      "status": "definitivo"
+    },
+    {
+      "file": "logo-sin-fondo.svg",
+      "description": "Variante del logo oficial: favicon.svg sin su <rect> de fondo (mismo trazado, sin redibujar)",
+      "source": "Derivada de favicon.svg",
+      "license": "Propio del cliente",
+      "credit": "Eleva Pádel",
+      "status": "definitivo: cabecera, pie, /, 404, mantenimiento y máscaras"
+    },
+    {
+      "file": "pista-h-{1280,1920}.avif, pista-h-1920.jpg, pista-v-{600,1000}.avif, pista-v-1000.jpg",
+      "description": "Imagen fija de la pista 3D del hero, renderizada de js/movimiento/pista.js (vista alta, LED encendidas)",
+      "source": "Render propio con three.js r186 (Chromium + Playwright) y sharp",
+      "license": "Propia",
+      "credit": "Biznaga Consulting",
+      "status": "definitivo"
+    }
+  ],
+  "libraries": [
+    {
+      "file": "../../lib/three/three.eleva.js",
+      "description": "three.js r186 (npm three@0.186.0), bundle reducido con esbuild a lo que importa js/movimiento/pista.js",
+      "source": "https://www.npmjs.com/package/three/v/0.186.0 (github.com/mrdoob/three.js)",
+      "license": "MIT, texto completo en lib/three/LICENSE (copiado del paquete); cabeceras @license conservadas en el bundle",
       "status": "definitivo"
     }
   ]
