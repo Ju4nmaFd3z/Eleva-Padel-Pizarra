@@ -25,6 +25,7 @@ const LIBRES = new Set([
   '/favicon.ico',
   '/apple-touch-icon.png',
   '/assets/img/favicon.svg',
+  '/assets/img/logo-sin-fondo.svg',
   '/robots.txt',
   '/assets/marcas/whatsapp-glifo-blanco.svg',
   '/assets/marcas/instagram-glifo-blanco.svg'
@@ -67,7 +68,9 @@ const PAGINA = `<!DOCTYPE html>
     min-height: 44px; padding: .5rem 1rem;
     border: 1px solid var(--oro); border-radius: 4px; text-decoration: none;
   }
-  ul a { gap: .625rem; }
+  ul a { gap: .5rem; }
+  /* Glifos de WhatsApp e Instagram: mismo tamaño que en la web (1,125em) */
+  ul a img { width: 1.125em; height: 1.125em; flex-shrink: 0; }
   ul a:hover, ul a:focus-visible { border-color: var(--texto); }
   footer { margin-top: 3rem; font-size: .875rem; color: var(--suave); }
   /* Móvil en horizontal: todo en una pantalla */
@@ -83,7 +86,7 @@ const PAGINA = `<!DOCTYPE html>
 </head>
 <body>
 <main>
-  <img class="logo" src="/assets/img/favicon.svg" width="88" height="88" alt="Logo de Eleva Pádel">
+  <img class="logo" src="/assets/img/logo-sin-fondo.svg" width="88" height="88" alt="Logo de Eleva Pádel">
   <h1>Eleva Pádel</h1>
   <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos.</p>
   <ul>
