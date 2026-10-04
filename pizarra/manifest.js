@@ -132,21 +132,25 @@
     },
 
     /* Insignias reales (assets/pools/opt/<img>-240|480|720.avif + -480.jpg).
-       Qué pools siguen en marcha y su horario: PENDIENTE_CLUB. */
+       Qué pools siguen en marcha y su horario: PENDIENTE_CLUB.
+       color: muestreado de la palabra de la categoría de su imagen 720 px,
+       04/10/2026. Es el único color que marca la categoría de cada insignia
+       (aro y reverso). colorAro (solo la mixta): el de su aro, con el que
+       se completa el degradado del aro. */
     pools: {
       verificado: '2026-09-30',
       fuente:     'cartel: Pools semanales',
       texto:      { es: 'Información e inscripciones por WhatsApp.' },
       insignias: [
-        { img: 'pool_snp_masculina', alt: 'Pool SNP masculina · Eleva Pádel Pizarra' },
-        { img: 'pool_snp_femenina',  alt: 'Pool SNP femenina · Eleva Pádel Pizarra' },
-        { img: 'pool_3a_masculina',  alt: 'Pool 3.ª masculina · Eleva Pádel Pizarra' },
-        { img: 'pool_4a_masculina',  alt: 'Pool 4.ª masculina · Eleva Pádel Pizarra' },
-        { img: 'pool_4a_femenina',   alt: 'Pool 4.ª femenina · Eleva Pádel Pizarra' },
-        { img: 'pool_5a_masculina',  alt: 'Pool 5.ª masculina · Eleva Pádel Pizarra' },
-        { img: 'pool_5a_femenina',   alt: 'Pool 5.ª femenina · Eleva Pádel Pizarra' },
-        { img: 'pool_mixta',         alt: 'Pool mixta · Eleva Pádel Pizarra' },
-        { img: 'pool_rocha',         alt: 'Pool Rocha · Eleva Pádel Pizarra' }
+        { img: 'pool_snp_masculina', alt: 'Pool SNP masculina · Eleva Pádel Pizarra', color: '#957E6D' },
+        { img: 'pool_snp_femenina',  alt: 'Pool SNP femenina · Eleva Pádel Pizarra',  color: '#997E6D' },
+        { img: 'pool_3a_masculina',  alt: 'Pool 3.ª masculina · Eleva Pádel Pizarra', color: '#937C6A' },
+        { img: 'pool_4a_masculina',  alt: 'Pool 4.ª masculina · Eleva Pádel Pizarra', color: '#947E6B' },
+        { img: 'pool_4a_femenina',   alt: 'Pool 4.ª femenina · Eleva Pádel Pizarra',  color: '#E27D93' },
+        { img: 'pool_5a_masculina',  alt: 'Pool 5.ª masculina · Eleva Pádel Pizarra', color: '#8D7965' },
+        { img: 'pool_5a_femenina',   alt: 'Pool 5.ª femenina · Eleva Pádel Pizarra',  color: '#E38B9B' },
+        { img: 'pool_mixta',         alt: 'Pool mixta · Eleva Pádel Pizarra',         color: '#945BA4', colorAro: '#7D72AB' },
+        { img: 'pool_rocha',         alt: 'Pool Rocha · Eleva Pádel Pizarra',         color: '#A49183' }
       ]
     },
 
