@@ -203,7 +203,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   text-transform: uppercase; letter-spacing: .03em;
 }
 @media (max-width: 23.49rem) {
-  .logo-nombre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  body:not(.marca) .logo-nombre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 .boton-reservar { min-height: 2.75rem; padding-inline: .875rem; flex-shrink: 0; }
 
@@ -477,19 +477,20 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
 .girada .insignia-cara { transform: rotateY(-180deg); }
 .girada .insignia-dorso { transform: rotateY(0deg); }
 
-/* ── Política de cancelaciones: formato de filas ───────────────────
-   Cada bloque es una fila: el título grande a la izquierda y las normas a
+/* ── Formato de filas (Política de cancelaciones) ───────────────────
+   Cada bloque es una fila: el título grande a la izquierda y el texto a
    la derecha, separadas por filetes (el formato «Clases» de la propuesta C
-   aplicado a las normas). El título se asienta con el scroll. */
-.politica { display: grid; margin-top: 2rem; }
-.politica .bloque { display: grid; gap: 1rem; padding-block: 2rem; border-top: 1px solid var(--linea); }
-.politica .bloque:last-of-type { border-bottom: 1px solid var(--linea); }
-.politica h3 {
+   aplicado a las normas). El título se asienta con el scroll. .filas/.fila
+   es el mismo formato para otras secciones. */
+.politica, .filas { display: grid; margin-top: 2rem; }
+.politica .bloque, .filas .fila { display: grid; gap: 1rem; padding-block: 2rem; border-top: 1px solid var(--linea); }
+.politica .bloque:last-of-type, .filas .fila:last-of-type { border-bottom: 1px solid var(--linea); }
+.politica h3, .filas h3 {
   margin: 0;
   font-size: clamp(2.5rem, 12vw, 5.5rem); line-height: .9; letter-spacing: -.005em;
   transform-origin: 0 100%;
 }
-.politica .lista { margin: 0; }
+.politica .lista, .filas .lista, .filas p { margin: 0; }
 .politica .nota { margin-top: 2rem; color: var(--crema); }
 
 .personas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; max-width: 40rem; }
@@ -548,9 +549,9 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
 /* Hero: el logo grande y el nombre; con el scroll el logo se abre y deja
    pasar a la tarjeta del club (css/movimiento.css). */
 .marca-hero {
-  --L: min(72vw, 40svh);
+  --L: min(80vw, 42svh);
   position: relative; isolation: isolate; overflow: clip;
-  display: grid; grid-template-rows: 1fr auto; gap: 2rem;
+  display: grid; grid-template-rows: 1fr auto; gap: 1rem;
   min-height: max(calc(100svh - var(--alto-cabecera)), 32rem);
   padding: 2rem max(var(--margen), env(safe-area-inset-right)) 2.5rem max(var(--margen), env(safe-area-inset-left));
 }
@@ -561,7 +562,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
 }
 .marca-titulo {
   display: flex; flex-direction: column; margin: 0;
-  font-size: clamp(4rem, min(30vw, 17svh), 15rem); line-height: .9;
+  font-size: clamp(4rem, min(32vw, 18svh), 15rem); line-height: .9;
   width: 100%; max-width: var(--ancho); margin-inline: auto;
 }
 .marca-titulo .hero-linea:last-child { color: var(--anillo); }
@@ -571,13 +572,20 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   border: 1px solid var(--linea); text-decoration: none; color: var(--claro);
 }
 .club-foto { position: relative; overflow: hidden; }
+.club-foto img { transition: scale var(--dur-larga) var(--curva-salida); }
+.club .enlace .icono { transition: translate var(--dur-media) var(--curva-salida); }
 .club img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .club-texto { display: flex; flex-direction: column; gap: .25rem; padding: 1.25rem 1.25rem 1.5rem; }
 .club-nombre { color: var(--crema); font: 600 clamp(2.25rem, 10vw, 4.5rem)/.95 var(--fuente-titulos); text-transform: uppercase; }
 .club-lugar { color: var(--crema); }
 .club .enlace { color: var(--crema); text-decoration: underline; padding-bottom: 0; }
 .club:focus-visible { outline: 3px solid var(--crema); outline-offset: 4px; }
-@media (hover: hover) { .club:hover { border-color: var(--anillo); } }
+@media (hover: hover) {
+  .club:hover { border-color: var(--anillo); }
+  .club:hover .club-foto img { scale: 1.04; }
+  .club:hover .enlace .icono { translate: .25em 0; }
+}
+.club:focus-visible .club-foto img { scale: 1.04; }
 
 /* ── 40rem ────────────────────────────────────────────────────── */
 @media (min-width: 40rem) {
@@ -588,7 +596,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .personas { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 52rem; }
   .galeria { grid-template-columns: repeat(2, 1fr); }
   .pie-columnas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .politica .bloque { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 2.5rem; align-items: start; }
+  .politica .bloque, .filas .fila { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 2.5rem; align-items: start; }
   .club { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: end; }
   .club img { aspect-ratio: auto; height: 100%; min-height: 22rem; }
 }

@@ -273,12 +273,25 @@
     });
   }
 
+  /* ── Borrador local de la web de la marca ─────────────────────
+     Solo en el servidor local y con ?borrador en la dirección: el archivo
+     (marca-borrador.js) está fuera de Git y de Vercel. En producción no
+     se pide nada. */
+  function initBorradorMarca() {
+    if (!document.body.classList.contains('marca')) return;
+    if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || !/[?&]borrador\b/.test(location.search)) return;
+    var s = document.createElement('script');
+    s.src = 'marca-borrador.js';
+    document.body.appendChild(s);
+  }
+
   function init() {
     safe(initMenu, 'menu');
     safe(initI18n, 'i18n');
     safe(initSelectorIdioma, 'idioma');
     safe(initContact, 'contact');
     safe(initAnchors, 'anchors');
+    safe(initBorradorMarca, 'borrador');
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

@@ -124,7 +124,7 @@
     function mover(e) { px = e.clientX; py = e.clientY; b.pedir(); }
     function enganchar() {
       botones.forEach(function (el) { el.classList.remove('iman'); });
-      botones = $$('.hero .boton, .seccion .boton, .club');
+      botones = $$('.hero .boton, .seccion .boton');
       botones.forEach(function (el) { el.classList.add('iman'); });
     }
     function quitar() {

@@ -125,7 +125,7 @@ html.mov .encendida-ya::before, html.mov .encendida-ya::after { animation: none;
    Llegan grandes y con las letras separadas y se asientan en su tamaño e
    interletraje (rango: la pieza entra y sube media pantalla). Legibles en
    todo momento. */
-html.mov :is(.precio-cifra, .politica h3) { animation: sd-precio 1s linear both; }
+html.mov :is(.precio-cifra, .politica h3, .filas h3) { animation: sd-precio 1s linear both; }
 html.mov .cin > span > span { animation: sd-tracking 1s linear both; }
 
 /* ── Pools: abanico que termina en rejilla ───────────────────────────
@@ -179,7 +179,7 @@ html.cursor-propio :is(input, textarea, select, [contenteditable]) { cursor: aut
 /* ── Línea de tiempo movida por JS ──────────────────────────────────
    En pausa en el primer fotograma (igual al estado estático); scroll.js
    mueve su currentTime. */
-html.mov :is(.hero-mascara, .hero-tinte, .hero-velo, .hero-linea, .marca-logo, .insignia, .precio-cifra, .politica h3, .cin > span > span),
+html.mov :is(.hero-mascara, .hero-tinte, .hero-velo, .hero-linea, .marca-logo, .insignia, .precio-cifra, .politica h3, .filas h3, .cin > span > span),
 html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paused; }
 
 /* ── Keyframes ──────────────────────────────────────────────────────

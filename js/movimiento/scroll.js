@@ -23,7 +23,7 @@
 
   /* ── Cifras y títulos en piezas (por palabras: nunca se parte una) ── */
   function prepararPiezas() {
-    $$('.precio-cifra:not([data-cin]), .politica h3:not([data-cin])').forEach(function (el) {
+    $$('.precio-cifra:not([data-cin]), .politica h3:not([data-cin]), .filas h3:not([data-cin])').forEach(function (el) {
       var texto = el.textContent;
       var legible = document.createElement('span');
       legible.className = 'vh';
@@ -120,7 +120,7 @@
       if (nombre.indexOf('sd-hero') === 0) tipo = 'hero';
       else if (nombre.indexOf('sd-corte') === 0) { tipo = 'corte'; sujeto = t; }
       else if (nombre === 'sd-abanico') { tipo = 'abanico'; sujeto = t.closest('.insignias'); }
-      else { tipo = 'precio'; sujeto = t.closest('.precio, .politica .bloque'); }
+      else { tipo = 'precio'; sujeto = t.closest('.precio, .politica .bloque, .filas .fila'); }
       if (tipo !== 'hero' && !sujeto) return;
       a.pause();
       pistas.push({ a: a, tipo: tipo, sujeto: sujeto });
