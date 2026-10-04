@@ -26,3 +26,7 @@ capturas/
 # Material interno
 CONTRIBUTING.md
 .gitattributes
+
+# Borrador local de la web de la marca (textos sin confirmar)
+MARCA-borrador.md
+marca-borrador.js

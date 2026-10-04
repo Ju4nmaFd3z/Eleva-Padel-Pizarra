@@ -29,3 +29,7 @@ borradores/
 capturas/
 tools/qa/node_modules/
 tools/qa/test-results/
+
+# Borrador local de la web de la marca (textos sin confirmar): nunca al repo ni a Vercel
+MARCA-borrador.md
+marca-borrador.js
