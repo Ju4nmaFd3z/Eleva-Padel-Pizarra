@@ -122,10 +122,14 @@ html.mov .encendida-ya::before, html.mov .encendida-ya::after { animation: none;
 }
 
 /* ── Precios y títulos de fila que se asientan ───────────────────────
-   Llegan grandes y con las letras separadas y se asientan en su tamaño e
-   interletraje (rango: la pieza entra y sube media pantalla). Legibles en
-   todo momento. */
-html.mov :is(.precio-cifra, .politica h3, .filas h3) { animation: sd-precio 1s linear both; }
+   Rango: la pieza entra y sube media pantalla. Legibles en todo momento.
+   · Precios: llegan grandes (×1,28) y con las cifras separadas y se
+     asientan en su tamaño e interletraje (dos o tres cifras: caben).
+   · Títulos de fila («Reservas de pista»…): ocupan hasta el ancho de su
+     columna, así que crecen desde ×0,9 hasta su tamaño, sin separar las
+     letras: nunca son más anchos que su caja ni se cortan. */
+html.mov .precio-cifra { animation: sd-precio 1s linear both; }
+html.mov :is(.politica h3, .filas h3) { animation: sd-titulo 1s linear both; }
 html.mov .cin > span > span { animation: sd-tracking 1s linear both; }
 
 /* ── Pools: abanico que termina en rejilla ───────────────────────────
@@ -201,6 +205,7 @@ html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paus
   to   { transform: none; }
 }
 @keyframes sd-precio   { from { scale: 1.28; } to { scale: 1; } }
+@keyframes sd-titulo   { from { scale: .9; } to { scale: 1; } }
 @keyframes sd-tracking { from { translate: calc(var(--k, 0) * var(--dist-tracking)) 0; } to { translate: 0 0; } }
 @keyframes sd-hero-mascara { 0% { scale: 1; } 2.5% { scale: 1.0827; } 5% { scale: 1.1722; } 7.5% { scale: 1.2692; } 10% { scale: 1.3741; } 12.5% { scale: 1.4877; } 15% { scale: 1.6108; } 17.5% { scale: 1.744; } 20% { scale: 1.8882; } 22.5% { scale: 2.0443; } 25% { scale: 2.2134; } 27.5% { scale: 2.3964; } 30% { scale: 2.5946; } 32.5% { scale: 2.8091; } 35% { scale: 3.0414; } 37.5% { scale: 3.2929; } 40% { scale: 3.5652; } 42.5% { scale: 3.86; } 45% { scale: 4.1792; } 47.5% { scale: 4.5248; } 50% { scale: 4.899; } 52.5% { scale: 5.3041; } 55% { scale: 5.7427; } 57.5% { scale: 6.2176; } 60% { scale: 6.7317; } 62.5% { scale: 7.2884; } 65% { scale: 7.8911; } 67.5% { scale: 8.5436; } 70% { scale: 9.2501; } 72.5% { scale: 10.0151; } 75% { scale: 10.8432; } 77.5% { scale: 11.7399; } 80% { scale: 12.7107; } 82.5% { scale: 13.7618; } 85% { scale: 14.8998; } 87.5% { scale: 16.1319; } 90% { scale: 17.4659; } 92.5% { scale: 18.9102; } 95% { scale: 20.4739; } 97.5% { scale: 22.167; } 100% { scale: 24; } }
 

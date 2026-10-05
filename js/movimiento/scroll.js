@@ -21,9 +21,9 @@
 
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
-  /* ── Cifras y títulos en piezas (por palabras: nunca se parte una) ── */
+  /* ── Cifras de los precios en piezas (por palabras: nunca se parte una) ── */
   function prepararPiezas() {
-    $$('.precio-cifra:not([data-cin]), .politica h3:not([data-cin]), .filas h3:not([data-cin])').forEach(function (el) {
+    $$('.precio-cifra:not([data-cin])').forEach(function (el) {
       var texto = el.textContent;
       var legible = document.createElement('span');
       legible.className = 'vh';
