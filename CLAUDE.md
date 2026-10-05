@@ -68,8 +68,9 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - Tipografía: Barlow Condensed 600 (títulos, botones) y Barlow 400/500 (texto),
   autoalojadas, subconjunto latino, OFL en `assets/fonts/OFL-Barlow.txt`.
 - Colores muestreados de las insignias: negro `#000`, crema `#EDE4DC`, claro `#DBD2CC`,
-  beige `#947E6B`, anillo `#A18572`, tinta `#181411` (superficie alterna de secciones).
-  Crema sobre beige (3,1:1) no se usa.
+  beige `#947E6B`, anillo `#A18572`. Crema sobre beige (3,1:1) no se usa.
+- Tinta `#181411`: **derivada, no muestreada** (beige al 16 % sobre negro); solo como
+  superficie alterna de las secciones. Pendiente de aprobación del cliente con la web viva.
 - **Color por insignia, no por género**: campo `color` de cada insignia en
   `pizarra/manifest.js` (muestreado de la palabra de la categoría de su imagen de 720 px,
   04/10/2026; la mixta añade `colorAro`). `render.js` lo lleva al HTML como `--acento` y
