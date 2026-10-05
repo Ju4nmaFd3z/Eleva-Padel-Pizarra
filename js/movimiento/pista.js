@@ -111,8 +111,12 @@ function Quads() {
 function panelLateral(q, x, z0, z1, y0, y1) { q.add([x, y0, z0], [x, y0, z1], [x, y1, z1], [x, y1, z0], Math.abs(z1 - z0), y1 - y0); }
 function panelFondo(q, z, x0, x1, y0, y1) { q.add([x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z], Math.abs(x1 - x0), y1 - y0); }
 
-export function crearPista(canvas, opciones) {
+/* Se crea por pasos (async): entre paso y paso cede el hilo principal
+   (opciones.ceder, una función que devuelve una promesa), así ninguna tarea
+   bloquea el scroll ni la entrada del usuario. */
+export async function crearPista(canvas, opciones) {
   const op = opciones || {};
+  const ceder = op.ceder || (() => Promise.resolve());
   ColorManagement.enabled = false;
 
   const renderer = new WebGLRenderer({
@@ -121,6 +125,13 @@ export function crearPista(canvas, opciones) {
   });
   renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setClearColor(0x000000, 1);
+  if (op.sinSoftware) {
+    const gl = renderer.getContext();
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const nombre = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
+    if (/swiftshader|llvmpipe|software|basic render/i.test(nombre)) { renderer.dispose(); throw new Error('WebGL por software'); }
+  }
+  await ceder();
 
   const escena = new Scene();
   const pista = new Group();
@@ -156,6 +167,8 @@ export function crearPista(canvas, opciones) {
       void main() { gl_FragColor = vec4(uColor * (0.32 + 0.68 * uEnc), 1.0); }`,
       { uEnc: enc, uColor: { value: CREMA } }, { transparent: false })));
   }
+
+  await ceder();
 
   /* ── Cristal: planos translúcidos ─────────────────────────── */
   const cristal = Quads(), cantos = [];
@@ -202,6 +215,8 @@ export function crearPista(canvas, opciones) {
     }`;
   pista.add(new Mesh(malla.geo(), material(RETICULA,
     { uEnc: enc, uColor: { value: ANILLO }, uCelda: { value: 0.1 }, uAlfa: { value: 0.75 } })));
+
+  await ceder();
 
   /* ── Red: 10 m, 0,88 en el centro y 0,92 en los extremos ───── */
   const alturaRed = x => RED_CENTRO + (RED_EXTREMO - RED_CENTRO) * (x / MEDIO_A) * (x / MEDIO_A);
@@ -280,6 +295,8 @@ export function crearPista(canvas, opciones) {
       }`, { uEnc: enc, uColor: { value: CREMA } }, { blending: AdditiveBlending })));
   }
 
+  await ceder();
+
   /* ── Cámara ───────────────────────────────────────────────── */
   let modo = 'horizontal', ancho = 1, alto = 1;
   const pos = new Vector3(), mira = new Vector3(), a = new Vector3(), b = new Vector3();
@@ -327,7 +344,14 @@ export function crearPista(canvas, opciones) {
 
   return {
     renderer, redimensionar, pintar, destruir,
-    /* compila los shaders sin bloquear (KHR_parallel_shader_compile si existe) */
-    preparar() { return renderer.compileAsync ? renderer.compileAsync(escena, camara) : Promise.resolve(); }
+    /* Compila los shaders pieza a pieza, cediendo entre una y otra
+       (KHR_parallel_shader_compile si existe) */
+    async preparar() {
+      if (!renderer.compileAsync) return;
+      for (const pieza of pista.children.slice()) {
+        await renderer.compileAsync(pieza, camara, escena);
+        await ceder();
+      }
+    }
   };
 }

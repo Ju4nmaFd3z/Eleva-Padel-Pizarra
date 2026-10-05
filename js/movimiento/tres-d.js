@@ -27,32 +27,13 @@
   var version = script && /[?&]v=([^&]+)/.exec(script.src);
   var URL_PISTA = './pista.js' + (version ? '?v=' + version[1] : '');
 
-  var hero, escena, penumbra, lienzo, pista = null, cargando = false, activo = false;
+  var hero, escena, penumbra, lienzo, pista = null, lista = false, cargando = false, activo = false;
   var pausado = true, raf = 0, ultimoT = 0, ro = null, programada = false;
   var vertical = window.matchMedia('(max-aspect-ratio: 1/1)');
   var tactil = window.matchMedia('(pointer: coarse)');
   var objetivo = { progreso: 0, px: 0, py: 0, giro: 0 };
   var actual = { progreso: 0, px: 0, py: 0, giro: 0, encendido: 0 };
   var velGiro = 0, arrastre = null;
-
-  /* WebGL por software (sin GPU: SwiftShader, llvmpipe…): la escena a
-     pantalla completa cuesta un fotograma de cada diez en escritorio y
-     gasta batería; se queda la imagen fija. Se mira una vez, con un
-     contexto de prueba que se libera enseguida. */
-  var software = null;
-  function esSoftware() {
-    if (software !== null) return software;
-    software = false;
-    try {
-      var gl = document.createElement('canvas').getContext('webgl2');
-      var info = gl && gl.getExtension('WEBGL_debug_renderer_info');
-      var r = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
-      software = /swiftshader|llvmpipe|software|basic render/i.test(r);
-      var perder = gl && gl.getExtension('WEBGL_lose_context');
-      if (perder) perder.loseContext();
-    } catch (e) { /* sin contexto: lo decide apto() */ }
-    return software;
-  }
 
   /* ── ¿Lo aguanta el dispositivo? ───────────────────────────── */
   function apto() {
@@ -62,7 +43,6 @@
     if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return false;
     if (navigator.deviceMemory && navigator.deviceMemory < 4) return false;
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
-    if (esSoftware()) return false;
     return true;
   }
 
@@ -83,8 +63,14 @@
     despertar();
   }
 
+  /* Cede el hilo principal entre pasos de la creación de la escena */
+  function ceder() {
+    if (window.scheduler && typeof window.scheduler.yield === 'function') return window.scheduler.yield();
+    return new Promise(function (r) { setTimeout(r, 0); });
+  }
+
   /* ── Bucle: solo mientras algo se mueve ────────────────────── */
-  function despertar() { if (!raf && pista && !pausado) { ultimoT = 0; raf = requestAnimationFrame(cuadro); } }
+  function despertar() { if (!raf && pista && lista && !pausado) { ultimoT = 0; raf = requestAnimationFrame(cuadro); } }
   function cuadro(t) {
     raf = 0;
     var dt = ultimoT ? Math.min(0.05, (t - ultimoT) / 1000) : 1 / 60;
@@ -146,18 +132,29 @@
   function cargar() {
     if (pista || cargando || !activo || pausado || !apto()) return;
     cargando = true;
+    /* Por pasos, cediendo el hilo entre uno y otro: contexto WebGL, escena,
+       cada shader y el primer fotograma van en tareas separadas */
     import(URL_PISTA).then(function (mod) {
-      if (!activo) { cargando = false; return; }
+      if (!activo) throw new Error('desactivado');
       lienzo = document.createElement('canvas');
       lienzo.className = 'hero-lienzo';
       escena.appendChild(lienzo);
-      try { pista = mod.crearPista(lienzo, { suavizado: !tactil.matches }); } catch (err) { quitar(); cargando = false; return; }
       lienzo.addEventListener('webglcontextlost', function (ev) { ev.preventDefault(); quitar(); });
+      /* sinSoftware: con WebGL por software (sin GPU) la escena a pantalla
+         completa cuesta fotogramas y batería; pista.js lo detecta en su
+         propio contexto (sin crear otro de prueba) y se queda la imagen fija */
+      return mod.crearPista(lienzo, { suavizado: !tactil.matches, ceder: ceder, sinSoftware: true });
+    }).then(function (p) {
+      if (!activo || !lienzo) { try { p.destruir(); } catch (e) { /* no-op */ } throw new Error('desactivado'); }
+      pista = p;
       medir();
-      return pista.preparar();
-    }).then(function () {
+      return ceder();
+    }).then(function () { return pista.preparar(); })
+      .then(ceder)
+      .then(function () {
       cargando = false;
       if (!pista) return;
+      lista = true;
       actual.progreso = objetivo.progreso;
       actual.encendido = encendidoCSS();
       pista.pintar(actual);
@@ -170,14 +167,29 @@
       quitar();
     });
   }
+  /* Cuándo: después de la carga, cuando la persona interactúa por primera
+     vez (scroll, puntero, toque o teclado) o, si no lo hace, a los 6 s; y
+     siempre en un momento de inactividad. Hasta entonces se ve la imagen
+     fija de la misma escena. Así la creación no compite con la carga ni con
+     el primer gesto (medido: una tarea de hasta 576 ms en móvil lento). */
+  var GESTOS = ['scroll', 'wheel', 'pointerdown', 'pointermove', 'touchstart', 'keydown'];
   function programarCarga() {
     if (programada) return;
     programada = true;
+    var hecho = false, espera = 0;
     var ir = function () {
+      if (hecho) return;
+      hecho = true;
+      clearTimeout(espera);
+      GESTOS.forEach(function (g) { window.removeEventListener(g, ir, true); });
       var hacer = function () { cargar(); };
-      if ('requestIdleCallback' in window) requestIdleCallback(hacer, { timeout: 1500 }); else setTimeout(hacer, 200);
+      if ('requestIdleCallback' in window) requestIdleCallback(hacer, { timeout: 2000 }); else setTimeout(hacer, 300);
     };
-    if (document.readyState === 'complete') ir(); else window.addEventListener('load', ir, { once: true });
+    var tras = function () {
+      GESTOS.forEach(function (g) { window.addEventListener(g, ir, { capture: true, passive: true, once: true }); });
+      espera = setTimeout(ir, 6000);
+    };
+    if (document.readyState === 'complete') tras(); else window.addEventListener('load', tras, { once: true });
   }
 
   function quitar() {
@@ -186,6 +198,7 @@
     if (hero) hero.classList.remove('tres-d-lista');
     if (pista) { try { pista.destruir(); } catch (e) { /* no-op */ } }
     pista = null;
+    lista = false;
     if (lienzo && lienzo.parentNode) lienzo.parentNode.removeChild(lienzo);
     lienzo = null;
   }
