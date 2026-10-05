@@ -180,7 +180,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* La maqueta por defecto es la de con JS; la de sin JS va en un <noscript>
    de cada página. Así no hay salto de maquetación cuando carga el JS.
    Orden: logo · Reservar · idioma · menú. A 320 px caben los cuatro: por
-   debajo de 23,5rem el nombre junto al logo se oculta a la vista (el enlace
+   debajo de 25,5rem el nombre junto al logo se oculta a la vista (el enlace
    conserva su nombre accesible en aria-label). */
 .cabecera {
   position: sticky; top: 0; z-index: 50;
@@ -202,7 +202,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font: 600 clamp(1rem, 4.5vw, 1.25rem)/1 var(--fuente-titulos);
   text-transform: uppercase; letter-spacing: .03em;
 }
-@media (max-width: 23.49rem) {
+@media (max-width: 25.49rem) {
   body:not(.marca) .logo-nombre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 .boton-reservar { min-height: 2.75rem; padding-inline: .875rem; flex-shrink: 0; }
@@ -599,6 +599,30 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .politica .bloque, .filas .fila { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 2.5rem; align-items: start; }
   .club { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: end; }
   .club img { aspect-ratio: auto; height: 100%; min-height: 22rem; }
+}
+
+/* ── Pantallas apaisadas estrechas (móvil en horizontal, zoom 200 %):
+   el logo a la derecha y el titular a la izquierda, como en escritorio,
+   para que el hero quepa a lo alto. ── */
+@media (min-aspect-ratio: 1/1) and (max-width: 63.99rem) {
+  .hero {
+    --L: min(calc((100svh - var(--alto-cabecera)) * .8), 46vw);
+    --mx: calc(100% - var(--sangrado) - 3vw);
+    --my: 50%;
+    --ox: calc(100% - var(--sangrado) - 3vw - var(--L) / 2);
+    --oy: calc(50% - var(--L) * .26);
+    min-height: calc(100svh - var(--alto-cabecera));
+    padding-top: 2rem;
+  }
+  .hero-titulo { font-size: clamp(2.75rem, min(12vw, 17svh), 9rem); }
+  .hero-contenido { max-width: 55%; margin-inline: 0; }
+  .marca-hero {
+    --L: min(calc((100svh - var(--alto-cabecera)) * .75), 42vw);
+    grid-template-rows: 1fr; grid-template-columns: minmax(0, 1fr) auto;
+    min-height: calc(100svh - var(--alto-cabecera));
+  }
+  .marca-logo { grid-row: 1; grid-column: 2; }
+  .marca-titulo { grid-row: 1; grid-column: 1; align-self: end; font-size: clamp(3rem, min(15vw, 26svh), 9rem); }
 }
 
 /* ── 64rem: escritorio y tablets grandes ──────────────────────── */

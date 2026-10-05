@@ -92,7 +92,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - **Selector de idioma**: en la cabecera, fuera del menú (logo · Reservar · idioma · menú),
   en `/` y `/pizarra`. Botón con el idioma actual que despliega ES, EN, NL: Enter/Espacio/
   flechas abren, flechas/Inicio/Fin recorren, Escape cierra y devuelve el foco, la opción
-  activa lleva `aria-current`. Sin JS se oculta (`<noscript>`). Por debajo de 23,5rem el
+  activa lleva `aria-current`. Sin JS se oculta (`<noscript>`). Por debajo de 25,5rem el
   nombre del club junto al logo se oculta a la vista en `/pizarra` (queda en `aria-label`).
 - **Sistema de movimiento** (uno para las dos páginas): tokens `--dur-*`, `--curva-*`,
   `--retardo-*`, `--dist-*`, `--prof-*`, `--fisica-*` en `:root` de `css/main.css` (versión
