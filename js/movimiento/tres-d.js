@@ -34,6 +34,7 @@
   var objetivo = { progreso: 0, px: 0, py: 0, giro: 0 };
   var actual = { progreso: 0, px: 0, py: 0, giro: 0, encendido: 0 };
   var velGiro = 0, arrastre = null;
+  var porAncla = !!(location.hash && location.hash !== '#inicio' && location.hash.length > 1);
 
   /* ── ¿Lo aguanta el dispositivo? ───────────────────────────── */
   function apto() {
@@ -131,6 +132,12 @@
   /* ── Carga ──────────────────────────────────────────────────── */
   function cargar() {
     if (pista || cargando || !activo || pausado || !apto()) return;
+    /* Solo si el hero se ve. Quien entra por un ancla a otra sección
+       (#contacto…) no descarga la escena mientras el navegador baja hasta
+       ella; si vuelve arriba, el núcleo la reanuda y entonces se carga. */
+    if (porAncla) return;
+    var r = hero.getBoundingClientRect();
+    if (r.bottom <= 0 || r.top >= window.innerHeight) return;
     cargando = true;
     /* Por pasos, cediendo el hilo entre uno y otro: contexto WebGL, escena,
        cada shader y el primer fotograma van en tareas separadas */
@@ -223,7 +230,12 @@
       programarCarga();
     },
     pausar: function () { pausado = true; arrastre = null; if (raf) cancelAnimationFrame(raf); raf = 0; },
-    reanudar: function () { pausado = false; if (pista) despertar(); else if (programada) cargar(); },
+    reanudar: function () {
+      /* tras una pausa por salir de pantalla, volver al hero ya es verlo */
+      if (pausado && porAncla && window.scrollY < hero.offsetHeight) porAncla = false;
+      pausado = false;
+      if (pista) despertar(); else if (programada) cargar();
+    },
     desactivar: function () {
       activo = false; pausado = true; programada = false;
       window.removeEventListener('pointermove', alMoverRaton);
