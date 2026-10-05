@@ -44,7 +44,32 @@
     if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return false;
     if (navigator.deviceMemory && navigator.deviceMemory < 4) return false;
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
+    if (gpu === false) return false;
     return true;
+  }
+
+  /* ¿Hay GPU? Sin ella (WebGL por software: SwiftShader, llvmpipe…) la
+     escena a pantalla completa cuesta fotogramas y batería: se queda la
+     imagen fija y no se descarga nada. Se mira una sola vez, en el momento
+     diferido de la carga (no al abrir la página), con un contexto mínimo de
+     1 × 1 px que se libera enseguida y ANTES de pedir el módulo 3D. */
+  var gpu = null;
+  function hayGPU() {
+    if (gpu !== null) return gpu;
+    gpu = false;
+    try {
+      var c = document.createElement('canvas');
+      c.width = c.height = 1;
+      var gl = c.getContext('webgl2', { failIfMajorPerformanceCaveat: true, antialias: false, depth: false, alpha: false });
+      if (gl) {
+        var info = gl.getExtension('WEBGL_debug_renderer_info');
+        var nombre = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
+        gpu = !/swiftshader|llvmpipe|software|basic render/i.test(nombre);
+        var perder = gl.getExtension('WEBGL_lose_context');
+        if (perder) perder.loseContext();
+      }
+    } catch (e) { gpu = false; }
+    return gpu;
   }
 
   /* Encendido de las LED: mientras dure la animación CSS de la penumbra
@@ -138,6 +163,7 @@
     if (porAncla) return;
     var r = hero.getBoundingClientRect();
     if (r.bottom <= 0 || r.top >= window.innerHeight) return;
+    if (!hayGPU()) return;          /* sin GPU: imagen fija, sin descargas */
     cargando = true;
     /* Por pasos, cediendo el hilo entre uno y otro: contexto WebGL, escena,
        cada shader y el primer fotograma van en tareas separadas */
@@ -147,10 +173,7 @@
       lienzo.className = 'hero-lienzo';
       escena.appendChild(lienzo);
       lienzo.addEventListener('webglcontextlost', function (ev) { ev.preventDefault(); quitar(); });
-      /* sinSoftware: con WebGL por software (sin GPU) la escena a pantalla
-         completa cuesta fotogramas y batería; pista.js lo detecta en su
-         propio contexto (sin crear otro de prueba) y se queda la imagen fija */
-      return mod.crearPista(lienzo, { suavizado: !tactil.matches, ceder: ceder, sinSoftware: true });
+      return mod.crearPista(lienzo, { suavizado: !tactil.matches, ceder: ceder });
     }).then(function (p) {
       if (!activo || !lienzo) { try { p.destruir(); } catch (e) { /* no-op */ } throw new Error('desactivado'); }
       pista = p;
@@ -170,7 +193,8 @@
       despertar();
     }).catch(function (err) {
       cargando = false;
-      console.warn('[Eleva 3D] sin escena 3D, se queda la imagen fija:', err && err.message);
+      /* desactivado a mitad de carga: no es un fallo, no se avisa */
+      if (!err || err.message !== 'desactivado') console.info('[Eleva 3D] se queda la imagen fija:', err && err.message);
       quitar();
     });
   }

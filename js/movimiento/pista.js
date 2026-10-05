@@ -125,12 +125,6 @@ export async function crearPista(canvas, opciones) {
   });
   renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setClearColor(0x000000, 1);
-  if (op.sinSoftware) {
-    const gl = renderer.getContext();
-    const info = gl.getExtension('WEBGL_debug_renderer_info');
-    const nombre = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
-    if (/swiftshader|llvmpipe|software|basic render/i.test(nombre)) { renderer.dispose(); throw new Error('WebGL por software'); }
-  }
   await ceder();
 
   const escena = new Scene();
