@@ -15,7 +15,8 @@
    · solo pinta cuando algo cambia; el núcleo la pausa fuera de pantalla,
      con la pestaña oculta y al salir de la página (bfcache);
    · DPR limitado (1,5 en táctil, 2 con ratón) y sin antialiasing en
-     táctil (la densidad de píxeles ya suaviza los bordes).
+     táctil (la densidad de píxeles ya suaviza los bordes); con WebGL por
+     software (sin GPU) no se carga.
    ================================================================ */
 (function () {
   'use strict';
@@ -34,6 +35,25 @@
   var actual = { progreso: 0, px: 0, py: 0, giro: 0, encendido: 0 };
   var velGiro = 0, arrastre = null;
 
+  /* WebGL por software (sin GPU: SwiftShader, llvmpipe…): la escena a
+     pantalla completa cuesta un fotograma de cada diez en escritorio y
+     gasta batería; se queda la imagen fija. Se mira una vez, con un
+     contexto de prueba que se libera enseguida. */
+  var software = null;
+  function esSoftware() {
+    if (software !== null) return software;
+    software = false;
+    try {
+      var gl = document.createElement('canvas').getContext('webgl2');
+      var info = gl && gl.getExtension('WEBGL_debug_renderer_info');
+      var r = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
+      software = /swiftshader|llvmpipe|software|basic render/i.test(r);
+      var perder = gl && gl.getExtension('WEBGL_lose_context');
+      if (perder) perder.loseContext();
+    } catch (e) { /* sin contexto: lo decide apto() */ }
+    return software;
+  }
+
   /* ── ¿Lo aguanta el dispositivo? ───────────────────────────── */
   function apto() {
     if (M.reducido()) return false;
@@ -42,6 +62,7 @@
     if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return false;
     if (navigator.deviceMemory && navigator.deviceMemory < 4) return false;
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
+    if (esSoftware()) return false;
     return true;
   }
 
