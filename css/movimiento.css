@@ -129,9 +129,10 @@ html.mov :is(.precio-cifra, .politica h3, .filas h3) { animation: sd-precio 1s l
 html.mov .cin > span > span { animation: sd-tracking 1s linear both; }
 
 /* ── Pools: abanico que termina en rejilla ───────────────────────────
-   Las insignias salen en abanico desde el centro de la lista y se colocan
-   en su celda con el scroll. --dx, --dy, --rot y --z los calcula scroll.js;
-   sin ellos no hay abanico. */
+   Las insignias salen en abanico hacia el centro de la lista y se colocan
+   en su celda con el scroll; nunca salen de su celda más de media celda
+   (en táctil y en móvil, solo giran y crecen en su sitio). --dx, --dy,
+   --rot, --esc y --z los calcula scroll.js; sin ellos no hay abanico. */
 html.mov .insignia { z-index: var(--z, auto); animation: sd-abanico 1s linear both; }
 
 /* Inclinación hacia el puntero (puntero.js escribe --rx / --ry) */
@@ -192,7 +193,7 @@ html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paus
 @keyframes sd-hero-linea { to { translate: calc(var(--sentido, 0) * var(--dist-linea)) 0; } }
 @keyframes sd-corte-telon { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes sd-abanico {
-  from { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg)) scale(.72); }
+  from { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg)) scale(var(--esc, .72)); }
   to   { transform: none; }
 }
 @keyframes sd-precio   { from { scale: 1.28; } to { scale: 1; } }

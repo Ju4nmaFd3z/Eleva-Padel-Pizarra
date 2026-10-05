@@ -52,7 +52,12 @@
     });
   }
 
-  /* ── Pools: posición de partida del abanico ────────────────── */
+  /* ── Pools: posición de partida del abanico ────────────────────
+     Ninguna insignia sale de su sitio: en táctil o si la lista es más alta
+     que el 60 % de la pantalla (móvil), cada una solo gira y crece en su
+     propia celda; en el resto, el desplazamiento se limita a media celda,
+     así cada insignia se ve siempre, al menos en parte, sobre su celda. */
+  var tactil = window.matchMedia('(pointer: coarse)');
   function medirAbanico() {
     var paso = M.tokens().profAbanico || 8;
     $$('.insignias').forEach(function (ul) {
@@ -60,6 +65,7 @@
       var n = items.length;
       if (!n) return;
       var W = ul.clientWidth, H = ul.clientHeight;
+      var enCelda = tactil.matches || H > window.innerHeight * 0.6;
       var mitad = (n - 1) / 2;
       var R = Math.min(H * 0.9, W * 0.8);
       items.forEach(function (li, i) {
@@ -68,9 +74,13 @@
         var fy = H / 2 + (1 - Math.cos(a)) * R * 0.5;
         var cx = li.offsetLeft - ul.offsetLeft + li.offsetWidth / 2;
         var cy = li.offsetTop - ul.offsetTop + li.offsetHeight / 2;
-        li.style.setProperty('--dx', (fx - cx).toFixed(1) + 'px');
-        li.style.setProperty('--dy', (fy - cy).toFixed(1) + 'px');
-        li.style.setProperty('--rot', ((i - mitad) * paso).toFixed(2) + 'deg');
+        var tope = li.offsetWidth * 0.5;
+        var dx = enCelda ? 0 : M.limitar(fx - cx, -tope, tope);
+        var dy = enCelda ? 0 : M.limitar(fy - cy, -tope, tope);
+        li.style.setProperty('--dx', dx.toFixed(1) + 'px');
+        li.style.setProperty('--dy', dy.toFixed(1) + 'px');
+        li.style.setProperty('--rot', ((i - mitad) * paso * (enCelda ? 0.5 : 1)).toFixed(2) + 'deg');
+        li.style.setProperty('--esc', enCelda ? '.86' : '.72');
         li.style.setProperty('--z', String(n - Math.round(Math.abs(i - mitad))));
       });
     });
