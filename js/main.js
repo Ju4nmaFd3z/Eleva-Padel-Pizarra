@@ -179,10 +179,12 @@
       if (!abierto()) return;
       if (e.key === 'Escape') { cerrar(true); return; }
       if (e.key !== 'Tab') return;
+      /* El foco no sale del menú abierto: botón y enlaces, en ciclo (el
+         <nav> va antes que el botón en el DOM, así que se ordena a mano) */
       var items = [boton].concat($$('a[href], button', menu).filter(function (el) { return el.offsetParent !== null; }));
-      var first = items[0], last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      var i = items.indexOf(document.activeElement);
+      e.preventDefault();
+      items[(i + (e.shiftKey ? -1 : 1) + items.length) % items.length].focus();
     });
     var onMq = function (e) { if (e.matches && abierto()) cerrar(false); };
     if (escritorio.addEventListener) escritorio.addEventListener('change', onMq); else escritorio.addListener(onMq);

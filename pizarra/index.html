@@ -68,11 +68,15 @@
   <link rel="icon" href="../favicon.ico" sizes="48x48">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-  <!-- Sin JS no hay botón de menú: los enlaces se muestran desplegados -->
+  <!-- Sin JS no hay botón de menú: los enlaces se muestran desplegados,
+       en una fila propia bajo el logo y «Reservar» -->
   <noscript><style>
     .menu-boton, .idioma-selector { display: none; }
     @media (max-width: 63.99rem) {
       .cabecera { position: relative; }
+      .cabecera-barra { flex-wrap: wrap; }
+      .menu { order: 5; flex-basis: 100%; }
+      .logo-nombre { position: static; width: auto; height: auto; clip: auto; overflow: visible; white-space: normal; }
       .menu { display: block; position: static; padding: 0 0 .75rem; background: none; overflow: visible; }
       .menu ul { flex-direction: row; flex-wrap: wrap; column-gap: 1.25rem; margin-bottom: .5rem; }
       .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
@@ -89,6 +93,16 @@
       <img src="../assets/img/logo-sin-fondo.svg" width="40" height="40" alt="">
       <span class="logo-nombre">Eleva Pádel Pizarra</span>
     </a>
+    <nav id="menu" class="menu" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
+      <ul>
+        <li data-seccion="club"><a href="#club" data-i18n="nav.club">El club</a></li>
+        <li data-seccion="clases"><a href="#clases" data-i18n="nav.classes">Clases</a></li>
+        <li data-seccion="pools"><a href="#pools" data-i18n="nav.pools">Pools</a></li>
+        <li data-seccion="cancelaciones"><a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a></li>
+        <li data-seccion="contacto"><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
+        <li><a href="../index.html" data-i18n="nav.network">Eleva Pádel</a></li>
+      </ul>
+    </nav>
     <a class="boton boton-reservar" href="https://vola.plus/app-link/club/1498" data-href="reservas" target="_blank" rel="noopener noreferrer" data-i18n="nav.book">Reservar</a>
     <div class="idioma-selector">
       <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#chevron-down"></use></svg></button>
@@ -103,16 +117,6 @@
       <svg class="icono icono-cerrar" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#x"></use></svg>
     </button>
   </div>
-  <nav id="menu" class="menu" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
-    <ul>
-      <li data-seccion="club"><a href="#club" data-i18n="nav.club">El club</a></li>
-      <li data-seccion="clases"><a href="#clases" data-i18n="nav.classes">Clases</a></li>
-      <li data-seccion="pools"><a href="#pools" data-i18n="nav.pools">Pools</a></li>
-      <li data-seccion="cancelaciones"><a href="#cancelaciones" data-i18n="nav.cancellations">Cancelaciones</a></li>
-      <li data-seccion="contacto"><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
-      <li><a href="../index.html" data-i18n="nav.network">Eleva Pádel</a></li>
-    </ul>
-  </nav>
 </header>
 
 <main id="contenido">

@@ -179,7 +179,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* ── Cabecera ─────────────────────────────────────────────────── */
 /* La maqueta por defecto es la de con JS; la de sin JS va en un <noscript>
    de cada página. Así no hay salto de maquetación cuando carga el JS.
-   Orden: logo · Reservar · idioma · menú. A 320 px caben los cuatro: por
+   Orden del DOM = orden visual y de foco: logo · navegación · Reservar ·
+   idioma · menú. En pantalla estrecha la navegación es la capa del botón
+   de menú (fija, fuera del flujo). A 320 px caben los cuatro: por
    debajo de 25,5rem el nombre junto al logo se oculta a la vista (el enlace
    conserva su nombre accesible en aria-label). */
 .cabecera {
