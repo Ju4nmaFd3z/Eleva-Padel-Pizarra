@@ -129,10 +129,11 @@ html.mov :is(.precio-cifra, .politica h3, .filas h3) { animation: sd-precio 1s l
 html.mov .cin > span > span { animation: sd-tracking 1s linear both; }
 
 /* ── Pools: abanico que termina en rejilla ───────────────────────────
-   Las insignias salen en abanico hacia el centro de la lista y se colocan
-   en su celda con el scroll; nunca salen de su celda más de media celda
-   (en táctil y en móvil, solo giran y crecen en su sitio). --dx, --dy,
-   --rot, --esc y --z los calcula scroll.js; sin ellos no hay abanico. */
+   Con ratón, las insignias salen en abanico hacia el centro de la lista y
+   se colocan en su celda con el scroll; el centro de cada una nunca sale de
+   su celda (desplazamiento ≤ 45 % de la celda). En táctil solo giran y
+   crecen en su sitio. --dx, --dy, --rot, --esc y --z los calcula scroll.js;
+   sin ellos no hay abanico. */
 html.mov .insignia { z-index: var(--z, auto); animation: sd-abanico 1s linear both; }
 
 /* Inclinación hacia el puntero (puntero.js escribe --rx / --ry) */

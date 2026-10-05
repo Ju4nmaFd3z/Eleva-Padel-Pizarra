@@ -53,10 +53,12 @@
   }
 
   /* ── Pools: posición de partida del abanico ────────────────────
-     Ninguna insignia sale de su sitio: en táctil o si la lista es más alta
-     que el 60 % de la pantalla (móvil), cada una solo gira y crece en su
-     propia celda; en el resto, el desplazamiento se limita a media celda,
-     así cada insignia se ve siempre, al menos en parte, sobre su celda. */
+     Con ratón, las insignias parten en abanico hacia el centro de la lista,
+     pero el desplazamiento de cada una se limita (en distancia, no por eje)
+     al 45 % de su celda: su centro nunca sale de la celda y siempre se ve
+     sobre ella. En táctil (móviles y tabletas) solo giran y crecen en su
+     propia celda: la lista es más alta que la pantalla y el dedo puede
+     tocar una insignia en cualquier momento del recorrido. */
   var tactil = window.matchMedia('(pointer: coarse)');
   function medirAbanico() {
     var paso = M.tokens().profAbanico || 8;
@@ -65,7 +67,7 @@
       var n = items.length;
       if (!n) return;
       var W = ul.clientWidth, H = ul.clientHeight;
-      var enCelda = tactil.matches || H > window.innerHeight * 0.6;
+      var enCelda = tactil.matches;
       var mitad = (n - 1) / 2;
       var R = Math.min(H * 0.9, W * 0.8);
       items.forEach(function (li, i) {
@@ -74,9 +76,12 @@
         var fy = H / 2 + (1 - Math.cos(a)) * R * 0.5;
         var cx = li.offsetLeft - ul.offsetLeft + li.offsetWidth / 2;
         var cy = li.offsetTop - ul.offsetTop + li.offsetHeight / 2;
-        var tope = li.offsetWidth * 0.5;
-        var dx = enCelda ? 0 : M.limitar(fx - cx, -tope, tope);
-        var dy = enCelda ? 0 : M.limitar(fy - cy, -tope, tope);
+        var dx = 0, dy = 0;
+        if (!enCelda) {
+          dx = fx - cx; dy = fy - cy;
+          var d = Math.hypot(dx, dy), tope = li.offsetWidth * 0.45;
+          if (d > tope) { dx *= tope / d; dy *= tope / d; }
+        }
         li.style.setProperty('--dx', dx.toFixed(1) + 'px');
         li.style.setProperty('--dy', dy.toFixed(1) + 'px');
         li.style.setProperty('--rot', ((i - mitad) * paso * (enCelda ? 0.5 : 1)).toFixed(2) + 'deg');
