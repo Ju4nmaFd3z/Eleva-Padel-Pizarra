@@ -16,3 +16,7 @@ js/movimiento/pista.js. Se genera fuera del repo (el repo no usa npm):
 
 Las cabeceras @license de three.js se conservan dentro del archivo.
 Si pista.js importa algo nuevo, se añade a entrada.js y se regenera.
+
+Se importa sin ?v= (pista.js). Si se regenera el bundle, el archivo nuevo va con
+otro nombre (p. ej. three.eleva-2.js) y se cambia el import en pista.js: la caché
+del navegador guarda /lib un día (regla 12 de CLAUDE.md).

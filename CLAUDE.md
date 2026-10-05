@@ -113,8 +113,9 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   ≤ 160 KB gzip): reglamento FIP «Rules of Padel» versión «in force as of 1.01.2026»,
   pág. 6 del documento (7 del PDF), diagrama «Laterales – Variante 1»: 2 | 2 | 12 | 2 | 2 m;
   primer tramo pared 3 m + malla hasta 4 m, segundo pared 2 m + malla hasta 3 m, 12 m
-  centrales malla hasta 3 m; fondos 3 + 1 m. Sin puerta, suelo, focos ni entorno. Se carga
-  diferida, solo visible y en equipos aptos; imagen fija `assets/img/pista-*` de la misma
+  centrales malla hasta 3 m; fondos 3 + 1 m. Sin puerta, suelo, focos ni entorno. Se crea
+  por pasos (cediendo el hilo) tras la carga, con el primer gesto o a los 6 s, solo si el hero
+  se ve (no al entrar por un ancla) y en equipos aptos (WebGL2 con GPU, sin Save-Data); imagen fija `assets/img/pista-*` de la misma
   escena (si cambia la escena: re-render con nombre nuevo).
 - **Borrador de la marca**: `MARCA-borrador.md` y `marca-borrador.js` (raíz, en
   `.gitignore` y `.vercelignore`). `main.js` carga el `.js` solo en localhost con

@@ -186,7 +186,10 @@ html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paus
 /* ── Keyframes ──────────────────────────────────────────────────────
    Zoom exponencial (escala = S^t) en pasos: S = --prof-escala-hero (24)
    en el hero, --prof-escala-corte (30) en los cortes y 9 en la marca.
-   Generados con un guion de 5 líneas (ver docs en CLAUDE.md). */
+   Generados con este guion de Node (fuera del repo):
+     const kf = (nombre, S, n) => '@keyframes ' + nombre + ' { ' + Array.from({ length: n + 1 },
+       (_, i) => (+(i / n * 100).toFixed(2)) + '% { scale: ' + (+Math.pow(S, i / n).toFixed(4)) + '; }').join(' ') + ' }';
+     console.log(kf('sd-hero-mascara', 24, 40), kf('sd-corte-logo', 30, 10), kf('sd-hero-marca', 9, 20)); */
 @keyframes sd-hero-abre  { 0%, 55% { opacity: 1; } 92%, 100% { opacity: 0; } }
 @keyframes sd-hero-tinte { 0%, 8% { opacity: .32; } 40%, 100% { opacity: 0; } }
 @keyframes sd-hero-velo  { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
