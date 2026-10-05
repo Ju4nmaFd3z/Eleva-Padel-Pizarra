@@ -118,7 +118,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   escena (si cambia la escena: re-render con nombre nuevo).
 - **Borrador de la marca**: `MARCA-borrador.md` y `marca-borrador.js` (raíz, en
   `.gitignore` y `.vercelignore`). `main.js` carga el `.js` solo en localhost con
-  `?borrador`. `/` publicado lleva solo lo confirmado.
+  `?borrador`; `tools/servidor-local.js` los sirve igualmente (lista `SOLO_LOCAL`), Vercel
+  nunca. `/` publicado lleva solo lo confirmado.
 - `tools/validar.js`: pendientes, fechas de verificación, eventos, claves i18n,
   cache-buster, scripts inline y HTML sincronizado con el manifest.
 - Hooks (`tools/hooks/`): `pre-commit` (generar + validar) y `commit-msg` (convención).

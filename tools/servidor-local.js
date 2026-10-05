@@ -47,7 +47,12 @@ const MIME = {
   '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml'
 };
 
-const ignored = rel => ignore.some(p => {
+/* Borrador local de la web de la marca: está en .vercelignore (Vercel no lo
+   sirve nunca) pero el servidor local sí, para ver /?borrador. Si el archivo
+   no existe (no está en Git), da 404 como cualquier otro. */
+const SOLO_LOCAL = ['marca-borrador.js', 'MARCA-borrador.md'];
+
+const ignored = rel => !SOLO_LOCAL.includes(rel) && ignore.some(p => {
   p = p.replace(/^\//, '');
   return p.endsWith('/') ? rel.startsWith(p) : (rel === p || rel.startsWith(p + '/'));
 });

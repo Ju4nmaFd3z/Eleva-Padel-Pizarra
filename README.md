@@ -174,10 +174,13 @@ desactivado.
 **El club no tiene email, ¿es un olvido?** No: es una decisión. Canales:
 WhatsApp +34 659 14 31 03 e Instagram @elevapadelpizarra.
 
+**¿Cómo se ve la web de la marca con los textos propuestos?** Solo en local: arranca
+`node tools/servidor-local.js` y abre `http://localhost:3000/?borrador`. `js/main.js`
+carga `marca-borrador.js` solo en localhost y con `?borrador`; el servidor local lo sirve
+aunque esté en `.vercelignore` (excepción `SOLO_LOCAL` en `tools/servidor-local.js`). Los
+textos y la arquitectura están en `MARCA-borrador.md`. Los dos archivos están fuera de Git
+y de Vercel: en un clon nuevo no existen y `/?borrador` se ve como `/`.
+
 ---
 
 *Desarrollado por [Biznaga Consulting](https://biznagaconsulting.es/)*
-
-**¿Cómo se ve la web de la marca con los textos propuestos?** Solo en local: con el
-servidor local, abre `/?borrador`. Carga `marca-borrador.js` (fuera de Git y de Vercel);
-los textos y la arquitectura están en `MARCA-borrador.md`, también local.
