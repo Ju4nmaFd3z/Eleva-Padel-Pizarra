@@ -48,7 +48,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 11. **i18n ES/EN/NL**: `js/translations.js` (solo interfaz) con las mismas claves en los
     tres idiomas. Los datos del club son `{ es, en, nl }` en su manifest (respaldo `es`).
     Textos nuevos: primero en español, a revisión del cliente; EN/NL después.
-12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261005a`) igual en todos los HTML;
+12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261005b`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según
     `CONTRIBUTING.md`: `tipo(ámbito): resumen` en español, presente, minúscula, ≤72,
