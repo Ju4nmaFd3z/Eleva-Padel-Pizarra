@@ -76,7 +76,8 @@
       .cabecera { position: relative; }
       .cabecera-barra { flex-wrap: wrap; }
       .menu { order: 5; flex-basis: 100%; }
-      .logo-nombre { position: static; width: auto; height: auto; clip: auto; overflow: visible; white-space: normal; }
+      /* misma especificidad que la regla que lo oculta en main.css: gana por ir después */
+      body:not(.marca) .logo-nombre { position: static; width: auto; height: auto; clip: auto; overflow: visible; white-space: normal; }
       .menu { display: block; position: static; padding: 0 0 .75rem; background: none; overflow: visible; }
       .menu ul { flex-direction: row; flex-wrap: wrap; column-gap: 1.25rem; margin-bottom: .5rem; }
       .menu a { min-height: 44px; font: 500 1rem/1.2 var(--fuente-texto); text-transform: none; }
