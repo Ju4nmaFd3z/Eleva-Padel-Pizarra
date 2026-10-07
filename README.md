@@ -54,12 +54,12 @@ Convención de commits y normas de trabajo: **[CONTRIBUTING.md](CONTRIBUTING.md)
 ## Batería de QA
 
 Pruebas de navegador (Playwright y axe-core) en `tools/qa/`, con sus dependencias
-aisladas ahí: la raíz sigue sin `npm`. Se pasa antes de cada commit que toque la web.
+aisladas ahí: la raíz sigue sin `npm`. Se pasa **completa** antes de cada commit que toque la web.
 
 ```sh
 cd tools/qa && npm ci && npx playwright install chromium   # una vez
-node tools/qa/bateria.js --rapido   # antes de cada commit (desde la raíz)
-node tools/qa/bateria.js            # completa: tamaños, idiomas, sin JS, zoom 200 %…
+node tools/qa/bateria.js            # completa, antes de cada commit (desde la raíz, ~80 s)
+node tools/qa/bateria.js --rapido   # subconjunto, solo como ayuda mientras se trabaja
 ```
 
 Arranca su propio servidor local y sale con error si algo falla. Opciones, qué

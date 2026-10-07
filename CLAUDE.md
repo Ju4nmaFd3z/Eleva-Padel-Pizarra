@@ -54,10 +54,11 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     `CONTRIBUTING.md`: `tipo(ámbito): resumen` en español, presente, minúscula, ≤72,
     cuerpo con fuente y fecha si toca datos, un cambio lógico por commit, sin emojis y
     **sin firmas ni `Co-Authored-By` de IA**. Hooks: `git config core.hooksPath tools/hooks`.
-14. **Batería de QA antes de cada commit** que toque HTML, CSS, JS, manifest o configuración:
-    `node tools/qa/bateria.js --rapido` (entera, sin `--rapido`, en la QA final y tras cambios
-    amplios). Ningún commit sube con fallos nuevos. Los fallos reales pendientes van en
-    `tools/qa/lib/conocidos.js` (visibles en cada ejecución; quien los arregla borra la entrada).
+14. **Batería de QA COMPLETA antes de cada commit** que toque HTML, CSS, JS, manifest o
+    configuración: `node tools/qa/bateria.js` (unos 80 s). `--rapido` solo como ayuda mientras se
+    trabaja, nunca para dar un commit por bueno. Ningún commit sube con fallos nuevos. Los fallos
+    reales pendientes van en `tools/qa/lib/conocidos.js`, uno a uno con su elemento y su medida
+    exactos (visibles en cada ejecución; quien los arregla quita su línea en el mismo commit).
 
 ## Identidad visual
 - **Logo oficial: `assets/img/favicon.svg`**, diseñado por Juanma y aprobado por el club.
@@ -130,7 +131,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - `tools/qa/`: batería permanente (Playwright 1.63.0 + axe-core 4.13.0, versiones exactas, con
   su propio `package.json`; `npm ci` dentro de `tools/qa`, nunca en la raíz). Punto de entrada
   único `node tools/qa/bateria.js` (arranca su servidor local normal y otro con mantenimiento;
-  `--rapido`, `--modulo`, `--pagina`, `--caso`, `--lista`, `--puerto`). Módulos en
+  `--rapido`, `--modulo`, `--pagina`, `--caso`, `--lista`, `--puerto`, `--paralelo`). La CSP
+  esperada está fijada en `tools/qa/modulos/servidor.js`: cambiarla obliga a tocarla también ahí. Módulos en
   `tools/qa/modulos/` (responsive, interaccion, servidor, accesibilidad), registrados en la
   lista `MODULOS` de `bateria.js`; cómo añadir uno en `tools/qa/README.md`.
 - Hooks (`tools/hooks/`): `pre-commit` (generar + validar) y `commit-msg` (convención).

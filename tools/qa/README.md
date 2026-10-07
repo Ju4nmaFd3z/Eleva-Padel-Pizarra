@@ -4,8 +4,9 @@ Pruebas de navegador del sitio con Playwright (Chromium) y axe-core. Es una
 herramienta de desarrollo: no se publica (`tools/` está en `.vercelignore`) y
 sus dependencias viven solo aquí, nunca en la raíz del repo.
 
-**Se pasa antes de cada commit** que toque HTML, CSS, JS, manifest o la
-configuración del sitio, y entera en la QA final. Ningún commit se sube con
+**Se pasa completa antes de cada commit** que toque HTML, CSS, JS, manifest o
+la configuración del sitio, y en la QA final. `--rapido` es solo una ayuda
+mientras se trabaja: nunca da un commit por bueno. Ningún commit se sube con
 fallos nuevos.
 
 ## Instalar (una vez, y cuando cambie `package-lock.json`)
@@ -22,8 +23,8 @@ Node 22 o superior.
 ## Ejecutar (desde la raíz del repo)
 
 ```sh
-node tools/qa/bateria.js            # todo (unos minutos)
-node tools/qa/bateria.js --rapido   # subconjunto representativo, para cada commit
+node tools/qa/bateria.js            # todo: antes de cada commit (~80 s con 8 a la vez)
+node tools/qa/bateria.js --rapido   # subconjunto, solo como ayuda mientras se trabaja
 ```
 
 La batería arranca su propio `tools/servidor-local.js` (dos instancias: la
@@ -39,7 +40,7 @@ los para al terminar. Sale con código 0 si todo está bien, 1 si hay fallos y
 | `--caso texto` | casos cuyo id contiene el texto; `--caso "/regex/"` para una expresión |
 | `--lista` | muestra los casos que se ejecutarían y sale |
 | `--puerto N` | puerto del servidor normal (el de mantenimiento, el siguiente libre) |
-| `--paralelo N` | casos a la vez (por defecto 4) |
+| `--paralelo N` | casos a la vez (por defecto los núcleos menos dos, entre 2 y 8) |
 
 Resultados en `tools/qa/resultados/` (fuera de Git): `resultado.json` con
 todos los casos y `capturas/` con una captura de página completa de cada caso
@@ -54,7 +55,12 @@ que falla.
   contenido fuera de la vista, texto recortado, objetivos de menos de 44 px en
   táctil (24 px con ratón, con la excepción de espaciado de WCAG 2.5.8; los
   enlaces dentro de un texto quedan exentos), campos con letra de menos de
-  16 px; la cabecera sin solapes ni segunda línea; el nombre del club oculto
+  16 px, cajas sin texto (fondo o borde) que salen de la vista, y contenido
+  que debería verse y no se ve (opacidad 0 o `visibility: hidden` en
+  pantalla; `display: none` en cualquier sitio), con o sin JS. Solo dos
+  ocultaciones están previstas: el selector de idioma sin JS y el menú móvil
+  cerrado. Un contenedor con scroll horizontal solo vale si es una región
+  accesible (`tabindex="0"` y nombre, como las tablas de `/privacidad`); la cabecera sin solapes ni segunda línea; el nombre del club oculto
   por debajo de 408 px (con y sin JS); el menú y el selector de idioma
   abiertos; y en cada carga, errores y avisos de consola, errores de página,
   peticiones fallidas o con error, peticiones a terceros, CSP (cabecera y
@@ -64,7 +70,9 @@ que falla.
   las insignias, abanico de los pools dentro de su celda, idioma recordado
   solo al elegirlo, sin JS (menú desplegado, selector oculto) y que la pista
   3D no se pide al entrar por un ancla ni sin GPU.
-- **servidor**: cabeceras y CSP de `vercel.json`, URLs limpias, 404,
+- **servidor**: CSP fijada en el módulo (la de `vercel.json` y la del
+  mantenimiento tienen que ser exactamente esas, sin orígenes externos, comodines,
+  eval ni scripts inline), cabeceras de seguridad, URLs limpias, 404,
   excluidos de `.vercelignore` y el modo mantenimiento (503, `Retry-After`,
   noindex, clave y cookie).
 - **accesibilidad**: axe-core, WCAG 2.2 A/AA, infracciones graves y críticas.
@@ -76,10 +84,12 @@ un caso falla una vez, es un fallo.
 ## Fallos conocidos
 
 `lib/conocidos.js` lista los fallos reales del sitio ya apuntados y pendientes
-de arreglo. La batería los imprime en su propio bloque en cada ejecución y no
-cambian el código de salida mientras sigan ocurriendo igual. Si uno deja de
-ocurrir, la batería falla hasta que se borra su entrada: quien lo arregla la
-quita en el mismo commit. Nunca se añade una entrada para silenciar un fallo
+de arreglo, uno a uno, con tipo, elemento y medida exactos (se comparan como
+texto): un fallo nuevo en el mismo elemento o con otra medida no queda tapado.
+La batería los imprime en su propio bloque en cada ejecución y no cambian el
+código de salida mientras sigan ocurriendo igual. Si uno deja de ocurrir, la
+batería falla hasta que se quita su línea: quien lo arregla la quita en el
+mismo commit. Nunca se añade una entrada para silenciar un fallo
 nuevo: los fallos se arreglan.
 
 ## Añadir un módulo
