@@ -13,11 +13,11 @@
 'use strict';
 const { VISTAS, vista, PAGINAS } = require('../lib/vistas');
 const { abrir, estabilizar, recorrer, problemasDeRegistro, agrupar } = require('../lib/pagina');
-const { revisarVista, revisarCabecera } = require('../lib/en-pagina');
+const { revisarVista, revisarCabecera, revisarRetirados } = require('../lib/en-pagina');
 
 /* Objetivos: 44 px en táctil (regla del proyecto); con ratón, 24 px con la
    excepción de espaciado de WCAG 2.5.8 */
-const objetivos = v => (v.movil ? { minObjetivo: 44, espaciado: false, anchoVista: v.ancho } : { minObjetivo: 24, espaciado: true, anchoVista: v.ancho });
+const objetivos = (v, modo) => Object.assign(v.movil ? { minObjetivo: 44, espaciado: false } : { minObjetivo: 24, espaciado: true }, { anchoVista: v.ancho, sinJs: modo === 'sinjs' });
 
 /* Tamaños con cobertura extra (idiomas y modos) */
 const EXTRA_IDIOMAS = ['320x640', '390x844', '1440x900'];
@@ -34,7 +34,7 @@ async function revisarDesplegables(p, pag, v) {
     await estabilizar(p);
     const abierto = await p.evaluate(() => document.querySelector('.menu-boton').getAttribute('aria-expanded'));
     if (abierto !== 'true') prob.push({ tipo: 'menu', clave: 'no se abre con un clic', detalle: 'aria-expanded=' + abierto });
-    for (const x of await p.evaluate(revisarVista, objetivos(v))) prob.push(Object.assign(x, { tipo: x.tipo + ' (menú abierto)' }));
+    for (const x of await p.evaluate(revisarVista, objetivos(v, 'normal'))) prob.push(Object.assign(x, { tipo: x.tipo + ' (menú abierto)' }));
     for (const x of await p.evaluate(revisarCabecera, { reglaNombre: !!pag.reglaNombre, anchoVista: v.ancho })) prob.push(Object.assign(x, { tipo: x.tipo + ' (menú abierto)' }));
     await p.click('.menu-boton');
     await estabilizar(p);
@@ -44,7 +44,7 @@ async function revisarDesplegables(p, pag, v) {
   if (haySelector) {
     await p.click('.idioma-boton');
     await estabilizar(p);
-    for (const x of await p.evaluate(revisarVista, objetivos(v))) prob.push(Object.assign(x, { tipo: x.tipo + ' (idiomas abiertos)' }));
+    for (const x of await p.evaluate(revisarVista, objetivos(v, 'normal'))) prob.push(Object.assign(x, { tipo: x.tipo + ' (idiomas abiertos)' }));
     await p.keyboard.press('Escape');
     await estabilizar(p);
   }
@@ -70,8 +70,15 @@ function caso(v, pag, lang, modo, rapido) {
           if (l !== lang) prob.push({ tipo: 'idioma', clave: 'lang=' + l, detalle: 'se esperaba ' + lang });
         }
         if (pag.cabecera) prob.push(...await p.evaluate(revisarCabecera, { reglaNombre: !!pag.reglaNombre, anchoVista: v.ancho, sinJs: modo === 'sinjs' }));
-        await recorrer(p, async () => { prob.push(...await p.evaluate(revisarVista, objetivos(v))); });
-        if (pag.cabecera && modo !== 'sinjs') prob.push(...await revisarDesplegables(p, pag, v));
+        await recorrer(p, async () => { prob.push(...await p.evaluate(revisarVista, objetivos(v, modo))); });
+        prob.push(...await p.evaluate(revisarRetirados, { sinJs: modo === 'sinjs' }));
+        if (pag.cabecera && modo !== 'sinjs') {
+          /* Si algo tapa el botón (p. ej. una cabecera solapada), el clic no llega:
+             es un fallo más, sin perder los ya encontrados */
+          try { prob.push(...await revisarDesplegables(p, pag, v)); } catch (e) {
+            prob.push({ tipo: 'desplegables', clave: 'no se pueden abrir el menú o el selector de idioma', detalle: String(e.message).split('\n')[0] });
+          }
+        }
         prob.push(...await problemasDeRegistro(p, registro, { esperado: pag.estado }));
         const fallos = agrupar(prob);
         if (fallos.length) await entorno.capturar(p, id);

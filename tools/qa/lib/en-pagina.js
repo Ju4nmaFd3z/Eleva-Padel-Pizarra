@@ -36,14 +36,26 @@ function revisarVista(opc) {
     for (let a = e; a && a.nodeType === 1; a = a.parentElement) o *= parseFloat(getComputedStyle(a).opacity);
     return o;
   };
-  const oculto = e => {
+  /* Retirado a propósito: fuera del árbol accesible y visual (hidden, aria-hidden,
+     inert…), sin caja o con el patrón «solo lectores de pantalla» */
+  const retirado = e => {
     if (e.closest('[hidden], [aria-hidden="true"], [inert], template, noscript')) return true;
     const cs = getComputedStyle(e);
-    if (cs.visibility !== 'visible' || cs.display === 'none') return true;
+    if (cs.display === 'none') return true;
     const r = e.getBoundingClientRect();
-    if (r.width <= 1 || r.height <= 1) return true; /* incluido el patrón «solo lectores de pantalla» */
-    if (cs.clip === 'rect(0px, 0px, 0px, 0px)' || cs.clipPath === 'inset(50%)') return true;
-    return opacidad(e) < 0.05;
+    if (r.width <= 1 || r.height <= 1) return true;
+    return cs.clip === 'rect(0px, 0px, 0px, 0px)' || cs.clipPath === 'inset(50%)';
+  };
+  /* Invisible aunque ocupa su sitio: visibility o opacidad efectiva ~0 */
+  const invisible = e => getComputedStyle(e).visibility !== 'visible' || opacidad(e) < 0.05;
+  /* Ocultaciones previstas por el diseño (no son fallos): sin JS, el selector
+     de idioma (necesita JS; <noscript> lo oculta); el menú móvil cerrado (su
+     botón está a la vista con aria-expanded=false). Repetido en revisarVista y
+     revisarRetirados: cada función se evalúa sola dentro de la página. */
+  const permitido = e => {
+    if (opc.sinJs && e.closest('.idioma-selector')) return true;
+    const b = document.querySelector('.menu-boton');
+    return !!e.closest('#menu') && !!b && b.getBoundingClientRect().width > 0 && b.getAttribute('aria-expanded') === 'false';
   };
   const enPantalla = r => r.bottom > 0 && r.top < H;
   /* Caja que encierra el texto propio del elemento (sus nodos de texto directos) */
@@ -62,10 +74,15 @@ function revisarVista(opc) {
   };
   /* Antepasado con desplazamiento propio (carrusel, lista con scroll):
      ahí estar fuera de la vista es intencionado */
+  /* Solo cuenta si es una región accesible: se alcanza con el teclado
+     (tabindex ≥ 0) y tiene nombre (aria-label o aria-labelledby). Una tabla de
+     datos que se desplaza así cumple WCAG 1.4.10; sin eso, es un desborde más. */
   const enContenedorConScroll = e => {
     for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) {
       const cs = getComputedStyle(a);
-      if (/(auto|scroll)/.test(cs.overflowX + cs.overflowY) && (a.scrollWidth > a.clientWidth + 1 || a.scrollHeight > a.clientHeight + 1)) return true;
+      if (/(auto|scroll)/.test(cs.overflowX + cs.overflowY) && (a.scrollWidth > a.clientWidth + 1 || a.scrollHeight > a.clientHeight + 1)) {
+        return a.tabIndex >= 0 && a.hasAttribute('tabindex') && (a.hasAttribute('aria-label') || a.hasAttribute('aria-labelledby'));
+      }
     }
     return false;
   };
@@ -96,6 +113,14 @@ function revisarVista(opc) {
     return false;
   };
 
+  /* Caja que se ve aunque no tenga texto: fondo, imagen de fondo o borde */
+  const cajaVisible = e => {
+    const cs = getComputedStyle(e);
+    const fondo = cs.backgroundImage !== 'none' || !/^(rgba\(0, 0, 0, 0\)|transparent)$/.test(cs.backgroundColor);
+    const borde = ['Top', 'Right', 'Bottom', 'Left'].some(l => parseFloat(cs['border' + l + 'Width']) > 0 && cs['border' + l + 'Style'] !== 'none');
+    return fondo || borde;
+  };
+
   /* 1. Desborde horizontal del documento */
   const sw = Math.max(document.documentElement.scrollWidth, document.body ? document.body.scrollWidth : 0);
   if (sw > W) salida.push({ tipo: 'desborde-horizontal', clave: 'documento', detalle: 'scrollWidth ' + sw + ' > ' + W });
@@ -109,10 +134,27 @@ function revisarVista(opc) {
     const interactivo = e.matches('a[href], button, input:not([type="hidden"]), select, textarea, [role="button"], summary');
     const tieneTexto = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
     const medio = /^(IMG|PICTURE|VIDEO|CANVAS|IFRAME)$/.test(e.tagName);
-    if (!interactivo && !tieneTexto && !medio) continue;
-    if (oculto(e)) continue;
+    const conCaja = !interactivo && !tieneTexto && !medio && cajaVisible(e);
+    if (!interactivo && !tieneTexto && !medio && !conCaja) continue;
+    if (retirado(e)) continue;
     const r = e.getBoundingClientRect();
     if (!enPantalla(r)) continue;
+
+    /* 1b. Contenido que debería verse y no se ve (opacidad 0, visibility hidden) */
+    if (invisible(e)) {
+      if ((tieneTexto || interactivo || (medio && e.getAttribute('alt'))) && !enEfectoScroll(e) && !permitido(e)) {
+        salida.push({ tipo: 'contenido-invisible', clave: desc(e), detalle: 'opacidad ' + opacidad(e).toFixed(2) + ', visibility ' + getComputedStyle(e).visibility });
+      }
+      continue;
+    }
+
+    /* 1c. Caja sin texto (fondo o borde) que sale de la vista por los lados */
+    if (conCaja) {
+      if ((r.left < -TOL || r.right > W + TOL) && !enContenedorConScroll(e) && !enEfectoScroll(e)) {
+        salida.push({ tipo: 'caja-fuera-de-la-vista', clave: desc(e), detalle: 'x ' + Math.round(r.left) + '…' + Math.round(r.right) + ' (vista 0…' + W + ')' });
+      }
+      continue;
+    }
 
     /* 2. Contenido fuera de la vista por los lados */
     const caja = tieneTexto ? (cajaTexto(e) || r) : r;
@@ -213,6 +255,42 @@ function revisarVista(opc) {
   return salida;
 }
 
+/* Texto del documento que no se pinta (display: none en su cadena) y no está
+   retirado a propósito (hidden, aria-hidden, template, noscript, inert) ni
+   en la lista de ocultaciones previstas. Una entrada por bloque oculto. */
+function revisarRetirados(opc) {
+  const salida = [];
+  /* Ocultaciones previstas por el diseño (no son fallos): sin JS, el selector
+     de idioma (necesita JS; <noscript> lo oculta); el menú móvil cerrado (su
+     botón está a la vista con aria-expanded=false). Repetido en revisarVista y
+     revisarRetirados: cada función se evalúa sola dentro de la página. */
+  const permitido = e => {
+    if (opc.sinJs && e.closest('.idioma-selector')) return true;
+    const b = document.querySelector('.menu-boton');
+    return !!e.closest('#menu') && !!b && b.getBoundingClientRect().width > 0 && b.getAttribute('aria-expanded') === 'false';
+  };
+  const vistos = new Set();
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n; (n = w.nextNode());) {
+    if (!n.textContent.trim()) continue;
+    const e = n.parentElement;
+    if (!e || e.closest('[hidden], [aria-hidden="true"], template, noscript, script, style, [inert], title, option')) continue;
+    const rg = document.createRange();
+    rg.selectNodeContents(n);
+    if (rg.getClientRects().length) continue;
+    if (permitido(e)) continue;
+    let t = e;
+    while (t.parentElement && t.parentElement !== document.body && t.parentElement.getClientRects().length === 0 && getComputedStyle(t.parentElement).display !== 'contents') t = t.parentElement;
+    if (vistos.has(t)) continue;
+    vistos.add(t);
+    let s = t.tagName.toLowerCase() + (t.id ? '#' + t.id : '');
+    const cl = (typeof t.className === 'string' ? t.className : '').trim().split(/\s+/).filter(Boolean).slice(0, 2);
+    if (cl.length) s += '.' + cl.join('.');
+    salida.push({ tipo: 'contenido-oculto', clave: s + ' «' + t.textContent.trim().replace(/\s+/g, ' ').slice(0, 30) + '»', detalle: 'display: none' });
+  }
+  return salida;
+}
+
 /* Cabecera: sus piezas no se solapan, caben en la vista y no
    saltan a una segunda línea. Y la regla del nombre del club:
    en /pizarra se oculta a la vista por debajo de 25,5 rem (408 px),
@@ -257,4 +335,4 @@ function revisarCabecera(opc) {
   return salida;
 }
 
-module.exports = { revisarVista, revisarCabecera };
+module.exports = { revisarVista, revisarCabecera, revisarRetirados };

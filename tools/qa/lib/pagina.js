@@ -44,6 +44,8 @@ async function abrir(navegador, { vista, modo = 'normal', lang = null, base }) {
   });
   const p = await ctx.newPage();
   p.__qaSinJs = modo === 'sinjs';
+  /* Un clic o una espera que no se cumple falla en 10 s, no en 30 */
+  p.setDefaultTimeout(10000);
   p.on('console', m => {
     if (m.type() === 'error' || m.type() === 'warning') registro.consola.push({ texto: m.type() + ': ' + m.text(), url: (m.location() || {}).url || '' });
   });
