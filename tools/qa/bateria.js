@@ -97,20 +97,30 @@ function conRelojTope(promesa, ms, id) {
   ]);
 }
 
-/* Marca los fallos de un caso que coinciden con un conocido (f.conocido = índice) */
+/* Marca los fallos de un caso que coinciden EXACTAMENTE (tipo, clave y
+   detalle) con un fallo de una entrada conocida: f.conocido = índice */
+const mismo = (f, x) => f.tipo === x.tipo && f.clave === x.clave && f.detalle === x.detalle;
 function marcarConocidos(r) {
   for (const f of r.fallos) {
-    const i = CONOCIDOS.findIndex(k => k.caso.test(r.id) && k.tipo.test(f.tipo) && k.clave.test(f.clave));
+    const i = CONOCIDOS.findIndex(k => k.caso.test(r.id) && k.fallos.some(x => mismo(f, x)));
     if (i > -1) f.conocido = i;
   }
 }
 
-/* Conocidos que ya no ocurren en ninguno de los casos ejecutados que cubren */
-function clasificar(resultados) {
-  const usados = new Set();
-  for (const r of resultados) for (const f of r.fallos) if (f.conocido !== undefined) usados.add(f.conocido);
-  const resueltos = CONOCIDOS.map((k, i) => ({ k, i }))
-    .filter(({ k, i }) => !usados.has(i) && resultados.some(r => k.caso.test(r.id) && !r.error));
+/* Fallos conocidos que ya no ocurren en ningún caso ejecutado que cubre su
+   entrada: [{ k, x }] (x = el fallo de la lista que hay que quitar) */
+function clasificar(resultados, todosLosIds) {
+  const resueltos = [];
+  CONOCIDOS.forEach(k => {
+    /* Solo se puede decir que un fallo ya no ocurre si esta ejecución ha
+       pasado por TODOS los casos que cubre su entrada (con filtros o con
+       --rapido puede faltar justo el caso donde aparece) */
+    const ejecutados = new Set(resultados.filter(r => !r.error).map(r => r.id));
+    const debidos = todosLosIds.filter(id => k.caso.test(id));
+    if (!debidos.length || !debidos.every(id => ejecutados.has(id))) return;
+    const cubiertos = resultados.filter(r => k.caso.test(r.id) && !r.error);
+    for (const x of k.fallos) if (!cubiertos.some(r => r.fallos.some(f => mismo(f, x)))) resueltos.push({ k, x });
+  });
   return resueltos;
 }
 
@@ -176,7 +186,7 @@ async function principal() {
   }
 
   resultados.sort((a, b) => casos.findIndex(c => c.id === a.id) - casos.findIndex(c => c.id === b.id));
-  const resueltos = clasificar(resultados);
+  const resueltos = clasificar(resultados, seleccionarCasos({ rapido: false, modulos: null, paginas: null, caso: null }).map(c => c.id));
   const nuevos = resultados.filter(r => r.error || r.fallos.some(f => f.conocido === undefined));
   const conConocidos = resultados.filter(r => r.fallos.some(f => f.conocido !== undefined));
   const seg = ((Date.now() - t0) / 1000).toFixed(0);
@@ -200,8 +210,8 @@ async function principal() {
     });
   }
   if (resueltos.length) {
-    console.log('\n' + linea + '\nCONOCIDOS QUE YA NO FALLAN: quita su entrada de lib/conocidos.js\n' + linea);
-    for (const { k } of resueltos) console.log('  · ' + k.motivo);
+    console.log('\n' + linea + '\nCONOCIDOS QUE YA NO FALLAN: quítalos de lib/conocidos.js (y la entrada si queda vacía)\n' + linea);
+    for (const { k, x } of resueltos) console.log('  · ' + k.motivo.slice(0, 70) + '…\n      [' + x.tipo + '] ' + x.clave + ' — ' + x.detalle);
   }
 
   const ok = !nuevos.length && !resueltos.length;
