@@ -1,0 +1,15 @@
+{
+  "name": "eleva-qa",
+  "private": true,
+  "description": "Batería permanente de QA de Eleva Pádel (solo desarrollo, no se publica)",
+  "license": "UNLICENSED",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "bateria": "node bateria.js",
+    "rapida": "node bateria.js --rapido"
+  },
+  "dependencies": {
+    "axe-core": "4.13.0",
+    "playwright": "1.63.0"
+  }
+}

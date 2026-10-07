@@ -28,7 +28,7 @@ CONFIRMAR.md
 borradores/
 capturas/
 tools/qa/node_modules/
-tools/qa/test-results/
+tools/qa/resultados/
 
 # Borrador local de la web de la marca (textos sin confirmar): nunca al repo ni a Vercel
 MARCA-borrador.md
