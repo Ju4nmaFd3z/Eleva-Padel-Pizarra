@@ -54,6 +54,10 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     `CONTRIBUTING.md`: `tipo(ámbito): resumen` en español, presente, minúscula, ≤72,
     cuerpo con fuente y fecha si toca datos, un cambio lógico por commit, sin emojis y
     **sin firmas ni `Co-Authored-By` de IA**. Hooks: `git config core.hooksPath tools/hooks`.
+14. **Batería de QA antes de cada commit** que toque HTML, CSS, JS, manifest o configuración:
+    `node tools/qa/bateria.js --rapido` (entera, sin `--rapido`, en la QA final y tras cambios
+    amplios). Ningún commit sube con fallos nuevos. Los fallos reales pendientes van en
+    `tools/qa/lib/conocidos.js` (visibles en cada ejecución; quien los arregla borra la entrada).
 
 ## Identidad visual
 - **Logo oficial: `assets/img/favicon.svg`**, diseñado por Juanma y aprobado por el club.
@@ -123,6 +127,12 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   nunca. `/` publicado lleva solo lo confirmado.
 - `tools/validar.js`: pendientes, fechas de verificación, eventos, claves i18n,
   cache-buster, scripts inline y HTML sincronizado con el manifest.
+- `tools/qa/`: batería permanente (Playwright 1.63.0 + axe-core 4.13.0, versiones exactas, con
+  su propio `package.json`; `npm ci` dentro de `tools/qa`, nunca en la raíz). Punto de entrada
+  único `node tools/qa/bateria.js` (arranca su servidor local normal y otro con mantenimiento;
+  `--rapido`, `--modulo`, `--pagina`, `--caso`, `--lista`, `--puerto`). Módulos en
+  `tools/qa/modulos/` (responsive, interaccion, servidor, accesibilidad), registrados en la
+  lista `MODULOS` de `bateria.js`; cómo añadir uno en `tools/qa/README.md`.
 - Hooks (`tools/hooks/`): `pre-commit` (generar + validar) y `commit-msg` (convención).
 - Plano del pie: SVG propio generado con `clubs/_plantilla/generar-mapa.js` desde las
   coordenadas confirmadas; atribución «© OpenStreetMap contributors» bajo el plano.

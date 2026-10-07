@@ -51,6 +51,20 @@ git config core.hooksPath tools/hooks
 
 Convención de commits y normas de trabajo: **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
+## Batería de QA
+
+Pruebas de navegador (Playwright y axe-core) en `tools/qa/`, con sus dependencias
+aisladas ahí: la raíz sigue sin `npm`. Se pasa antes de cada commit que toque la web.
+
+```sh
+cd tools/qa && npm ci && npx playwright install chromium   # una vez
+node tools/qa/bateria.js --rapido   # antes de cada commit (desde la raíz)
+node tools/qa/bateria.js            # completa: tamaños, idiomas, sin JS, zoom 200 %…
+```
+
+Arranca su propio servidor local y sale con error si algo falla. Opciones, qué
+comprueba y cómo añadir un módulo: [`tools/qa/README.md`](tools/qa/README.md).
+
 ---
 
 ## Modo mantenimiento
@@ -156,7 +170,7 @@ como plantilla vacía.
 ├── lib/three/           ← three.js r186 reducido (MIT; cómo regenerarlo en README.txt)
 ├── assets/              ← fuentes, imágenes, insignias, credits.json (interno)
 ├── clubs/_plantilla/    ← alta de clubes (no se publica)
-├── tools/               ← servidor local, generar, validar y hooks (no se publica)
+├── tools/               ← servidor local, generar, validar, hooks y qa/ (no se publica)
 ├── CONTRIBUTING.md      ← convención de commits
 ├── robots.txt · sitemap.xml · vercel.json · .vercelignore
 ```
