@@ -14,11 +14,12 @@
      node tools/qa/bateria.js --caso "390x844 · en"   (texto o /regex/)
      node tools/qa/bateria.js --lista         muestra los casos y sale
      node tools/qa/bateria.js --puerto 3801   puerto del servidor (y el siguiente libre)
-     node tools/qa/bateria.js --paralelo 2    casos a la vez (por defecto 4)
+     node tools/qa/bateria.js --paralelo 2    casos a la vez (por defecto: núcleos − 2, entre 2 y 8)
    Resultados: tools/qa/resultados/ (JSON y capturas de los fallos).
    ========================================================= */
 'use strict';
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { chromium } = require('playwright');
 const { arrancarServidores } = require('./lib/servidor');
@@ -36,9 +37,11 @@ const MODULOS = [
 
 const RESULTADOS = path.join(__dirname, 'resultados');
 const LIMITE_CASO_MS = 180000;
+/* Casos a la vez: los núcleos menos dos, entre 2 y 8 (8 en un equipo de 12) */
+const PARALELO = Math.max(2, Math.min(8, os.cpus().length - 2));
 
 function leerArgumentos(argv) {
-  const o = { rapido: false, lista: false, modulos: null, paginas: null, caso: null, puerto: null, paralelo: 4 };
+  const o = { rapido: false, lista: false, modulos: null, paginas: null, caso: null, puerto: null, paralelo: PARALELO };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i], sig = () => {
       const v = argv[++i];
