@@ -35,7 +35,7 @@ los para al terminar. Sale con código 0 si todo está bien, 1 si hay fallos y
 | Opción | Qué hace |
 |---|---|
 | `--rapido` | solo los casos marcados como rápidos |
-| `--modulo a,b` | solo esos módulos (`responsive`, `interaccion`, `servidor`, `accesibilidad`) |
+| `--modulo a,b` | solo esos módulos (`responsive`, `interaccion`, `servidor`, `accesibilidad`, `hero`) |
 | `--pagina a,b` | solo esas páginas (`marca`, `pizarra`, `privacidad`, `404`, `mantenimiento`) |
 | `--caso texto` | casos cuyo id contiene el texto; `--caso "/regex/"` para una expresión |
 | `--lista` | muestra los casos que se ejecutarían y sale |
@@ -76,6 +76,22 @@ que falla.
   excluidos de `.vercelignore` y el modo mantenimiento (503, `Retry-After`,
   noindex, clave y cookie).
 - **accesibilidad**: axe-core, WCAG 2.2 A/AA, infracciones graves y críticas.
+- **hero**: el hero de /pizarra en 14 escenarios × 5 dispositivos (1920,
+  1440 y 1280 con ratón; 390 y 360 táctiles) con GPU real (ANGLE): carga en
+  frío, recarga a mitad de página, atrás/adelante con bfcache (ventana fuera
+  de la pantalla), cambio de tamaño u orientación y de densidad durante la
+  entrada, pestaña oculta antes de los 6 s del 3D, primer gesto, scroll
+  rápido mientras se crea la escena, fuentes lentas, CPU y red lentas,
+  contexto WebGL perdido y recuperado, sin WebGL, movimiento reducido y
+  GPU con poca memoria (`gpu-justa`: `--force-gpu-mem-available-mb`
+  proporcional a los píxeles de la pantalla; se comprueba en reposo). En
+  cada momento comprueba (`lib/hero.js`) que la caja del logo es la que
+  dicta el CSS (`--L`, `--mx`, `--my`, escala del progreso) y muestrea la
+  captura: fuera del logo solo negro, dentro el tinte; y al final, o la
+  pista 3D a la vista o la imagen fija, nunca nada a medias. Los tiempos
+  salen de una semilla por repetición (aparece en el fallo). Una repetición
+  por caso; la QA final, 50:
+  `QA_HERO_REP=50 node tools/qa/bateria.js --modulo hero` (más de una hora).
 
 La espera es siempre por condición (fuentes, imágenes de la pantalla y
 animaciones con fin terminadas), nunca por tiempo fijo, y sin reintentos: si
