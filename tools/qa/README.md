@@ -108,6 +108,34 @@ batería falla hasta que se quita su línea: quien lo arregla la quita en el
 mismo commit. Nunca se añade una entrada para silenciar un fallo
 nuevo: los fallos se arreglan.
 
+- **Cuándo se da por resuelto.** Solo en una ejecución que pasa por *todos*
+  los casos que cubre su entrada (su `caso`). Con `--rapido`, `--pagina`,
+  `--caso` o `--modulo` puede faltar justo el caso donde aparece, así que ahí
+  no se decide: hace falta la batería completa.
+- **Si cambia la medida** de un conocido (otro tamaño, otro elemento, otro
+  destino), es un fallo nuevo: se investiga qué ha cambiado. No se reescribe
+  la línea solo para que vuelva a pasar.
+- La clave de enlaces y controles lleva su destino (`href`, `aria-controls`,
+  `name` o `data-lang`): dos enlaces con el mismo texto y la misma medida
+  pero distinto destino son fallos distintos.
+
+## Qué no cubre
+
+- **WebKit / Safari de iOS**: la batería usa solo Chromium. Lo de iPhone se
+  prueba a mano (lista para el iPhone de la QA final).
+- **Firefox** y otros motores.
+- **La pista 3D en los módulos responsive e interaccion**: su Chromium sin
+  interfaz no tiene GPU, así que la escena no se crea y se ve la imagen fija.
+  La pista con GPU real solo la ejerce el módulo `hero`, y depende de la GPU
+  del equipo que lo ejecuta.
+- **Idiomas a fondo** (encargo, punto 7.4): aquí solo se comprueba que EN y NL
+  se aplican y caben. Que no quede texto en español, la ida y vuelta
+  ES → EN → NL → ES con el DOM idéntico y los atributos traducidos son de su
+  propio módulo, pendiente.
+- **Rendimiento** (Lighthouse, fps, trazas): herramientas aparte, en la QA final.
+- **Contenido y datos**: si un texto es correcto o está confirmado lo revisan
+  `tools/validar.js` y las personas, no la batería.
+
 ## Añadir un módulo
 
 1. Crea `modulos/<nombre>.js` que exporte:
