@@ -164,8 +164,9 @@
     var y = window.scrollY;
     /* …luego las escrituras */
     pistas.forEach(function (x, i) { x.a.currentTime = p[i] * 1000; });
-    if (heroEl && y < vh * 1.5) {
-      /* el hero se mueve: capas compuestas mientras dure (nucleo.js) */
+    if (heroEl) {
+      /* solo si cambia (por encima del hero el progreso ya vale 1): el hero
+         se mueve y pide sus capas compuestas mientras dure (nucleo.js) */
       var ph = progresoHero.toFixed(4);
       if (heroEl.style.getPropertyValue('--p-hero') !== ph) { M.enMovimiento(heroEl); heroEl.style.setProperty('--p-hero', ph); }
     }
