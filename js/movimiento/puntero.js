@@ -33,8 +33,9 @@
 
   /* ── Paralaje del hero: logo y titular, opuestos ───────────── */
   (function () {
-    var telon, titulo, obj = { x: 0, y: 0 }, act = { x: 0, y: 0 };
+    var telon, titulo, hero, obj = { x: 0, y: 0 }, act = { x: 0, y: 0 };
     var b = bucle(function () {
+      M.enMovimiento(hero);
       act.x += (obj.x - act.x) * 0.12;
       act.y += (obj.y - act.y) * 0.12;
       var t = T();
@@ -47,7 +48,7 @@
       obj.y = (e.clientY / window.innerHeight - 0.5) * 2;
       b.pedir();
     }
-    function enganchar() { telon = $('.hero-telon, .marca-logo'); titulo = $('.hero-titulo, .marca-titulo'); }
+    function enganchar() { telon = $('.hero-telon, .marca-logo'); titulo = $('.hero-titulo, .marca-titulo'); hero = $('.hero, .marca-hero'); }
     M.registrar('paralaje', {
       activar: function () { enganchar(); window.addEventListener('pointermove', mover, { passive: true }); },
       pausar: function () { window.removeEventListener('pointermove', mover); b.parar(); },

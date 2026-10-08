@@ -9,8 +9,13 @@
      --z);
    · mueve el currentTime de esas animaciones con el scroll (solo lectura
      de posiciones y escritura de tiempos);
-   · publica el progreso del hero (canal «hero», 0 → 1) para la cámara 3D
-     y desplaza el fondo del hero con un paralaje suave (solo transform);
+   · publica el progreso del hero (canal «hero», 0 → 1) para la cámara 3D,
+     escala el telón del logo (--prof-escala-hero ^ progreso, desde el
+     vértice: transform-origin del CSS) y desplaza el fondo del hero con un
+     paralaje suave (solo transform). El progreso sale solo de scrollY y del
+     alto de la ventana: no se mide nada de la maquetación, así que no
+     depende de fuentes ni imágenes y se recalcula igual tras un cambio de
+     tamaño, de densidad o la vuelta desde el bfcache;
    · enciende la luz LED de las tarjetas de clases una vez, al entrar en
      pantalla (IntersectionObserver).
    ================================================================ */
@@ -115,7 +120,7 @@
   }
 
   /* ── Motor: currentTime de las animaciones sd-* ─────────────── */
-  var pistas = [], pendiente = false, escuchando = false, fondo = null;
+  var pistas = [], pendiente = false, escuchando = false, fondo = null, telon = null, heroEl = null;
   function rem() { return parseFloat(getComputedStyle(document.documentElement).fontSize) || 16; }
   /* Rangos (0 → 1) de cada tipo */
   var RANGOS = {
@@ -159,7 +164,13 @@
     var y = window.scrollY;
     /* …luego las escrituras */
     pistas.forEach(function (x, i) { x.a.currentTime = p[i] * 1000; });
-    if (fondo && y < vh * 1.5) fondo.style.transform = 'translate3d(0,' + (Math.max(0, y) * M.tokens().distEscena).toFixed(1) + 'px,0)';
+    if (heroEl && y < vh * 1.5) {
+      /* el hero se mueve: capas compuestas mientras dure (nucleo.js) */
+      var ph = progresoHero.toFixed(4);
+      if (heroEl.style.getPropertyValue('--p-hero') !== ph) { M.enMovimiento(heroEl); heroEl.style.setProperty('--p-hero', ph); }
+    }
+    if (telon) telon.style.scale = Math.pow(M.tokens().profEscalaHero || 1, progresoHero).toFixed(4);
+    if (fondo && y < vh * 1.5) fondo.style.translate = '0 ' + (Math.max(0, y) * M.tokens().distEscena).toFixed(1) + 'px';
     M.emitir('hero', progresoHero);
   }
   function pedir() { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }
@@ -176,6 +187,8 @@
     medirAbanico();
     tarjetas();
     fondo = document.querySelector('.hero-fondo');
+    telon = document.querySelector('.hero-mascara');
+    heroEl = document.querySelector('.hero, .marca-hero');
     /* Espera un fotograma: las animaciones CSS del HTML nuevo ya existen */
     requestAnimationFrame(function () { recolectar(); escucharScroll(true); pedir(); });
   }
@@ -188,7 +201,9 @@
     desactivar: function () {
       escucharScroll(false); pistas = [];
       if (ioTarjetas) ioTarjetas.disconnect();
-      if (fondo) fondo.style.transform = '';
+      if (fondo) fondo.style.translate = '';
+      if (telon) telon.style.scale = '';
+      if (heroEl) heroEl.style.removeProperty('--p-hero');
     }
   });
 })();

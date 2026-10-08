@@ -267,18 +267,28 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    Capas (todas decorativas, aria-hidden):
    · .hero-escena: la pista 3D (js/movimiento/pista.js) o, sin JS, sin
      WebGL, con Save-Data, en movimiento reducido y mientras carga, su
-     imagen fija renderizada de la misma escena;
+     imagen fija renderizada de la misma escena; encima, la penumbra del
+     encendido y el tinte (colores planos, sin máscara: el telón ya tapa
+     todo lo que queda fuera del logo);
    · .hero-mascara: telón negro con el hueco del logo oficial sin fondo
      (assets/img/logo-sin-fondo.svg, máscara por alfa: el logo se ve sin
-     el «cuadrado fantasma»). Estado estático = el logo a su tamaño; con el
-     scroll crece desde el vértice hasta abrir la pista a sangre (solo
-     transform y opacity: css/movimiento.css);
+     el «cuadrado fantasma»). Es la ÚNICA capa enmascarada del hero y la
+     única que usa la geometría del logo. Estado estático = el logo a su
+     tamaño; con el scroll crece desde el vértice hasta abrir la pista a
+     sangre (scroll.js escribe su escala; solo transform y opacity);
    · .hero-velo: degradado que garantiza el contraste del texto cuando la
      pista queda abierta.
    El texto es HTML por encima y se ve desde el primer pintado.
-   Geometría del logo: --L lado · --mx/--my posición dentro de la máscara
-   (semántica de mask-position) · --ox/--oy punto de zoom (el vértice del
-   triángulo, 50 % · 24 % del logo). */
+   Geometría del logo (una sola fuente, en .hero y sus puntos de corte):
+   --L lado · --mx/--my posición dentro de la máscara (semántica de
+   mask-position) · --ox/--oy punto de zoom (el vértice del triángulo,
+   50 % · 24 % del logo).
+   Memoria de GPU: cada capa de pantalla completa del hero es una textura
+   del tamaño de la pantalla en píxeles físicos. Si no caben, el navegador
+   deja teselas sin pintar (bloques negros, pista fuera del logo): por eso
+   hay una sola máscara, el tinte y la penumbra son colores planos y nada
+   se queda como capa cuando ya no se anima (prueba de regresión:
+   tools/qa/modulos/hero.js, escenario «gpu-justa»). */
 .hero {
   --sangrado: 24px;
   --L: min(84vw, 44svh);
@@ -303,7 +313,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 /* Penumbra: las LED se encienden al cargar (solo opacity, por debajo del
    texto). En movimiento reducido no hay animación: ya está encendida. */
-.hero-penumbra { position: absolute; inset: 0; background: var(--negro); opacity: 0; }
+.hero-penumbra, .hero-tinte { position: absolute; inset: 0; }
+.hero-penumbra { background: var(--negro); opacity: 0; }
 /* Relevo: la escena viva entra fundida sobre la imagen fija */
 .hero-lienzo { opacity: 0; transition: opacity var(--dur-corta) linear; }
 .tres-d-lista .hero-lienzo { opacity: 1; }
@@ -323,24 +334,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   transform-origin: var(--ox) var(--oy);
 }
 .hero-pulso { transform-origin: var(--ox) var(--oy); }
-/* Tinte del logo: el anillo de la marca, translúcido, dentro del logo para
-   que se lea como tal sobre la pista en penumbra; se retira al abrirse */
-.hero-tinte {
-  position: absolute; inset: 0;
-  background: var(--anillo); opacity: .32;
-  -webkit-mask: url('../assets/img/logo-sin-fondo.svg') no-repeat;
-  mask: url('../assets/img/logo-sin-fondo.svg') no-repeat;
-  -webkit-mask-size: var(--L) var(--L); mask-size: var(--L) var(--L);
-  -webkit-mask-position: var(--mx) var(--my); mask-position: var(--mx) var(--my);
-  transform-origin: var(--ox) var(--oy);
-}
+/* Tinte del logo: el anillo de la marca, translúcido, sobre la escena; solo
+   se ve a través del hueco del telón, así el logo se lee como tal sobre la
+   pista en penumbra. Se retira al abrirse (css/movimiento.css) */
+.hero-tinte { background: var(--anillo); opacity: .32; }
 .hero-velo {
   background: linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.72) 34%, rgba(0,0,0,0) 68%);
   opacity: 0;
 }
 /* Sin máscaras compuestas (navegadores antiguos): la pista a sangre con velo */
 @supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
-  .hero-telon { display: none; }
+  .hero-telon, .hero-tinte { display: none; }
   .hero-velo { opacity: 1; }
 }
 

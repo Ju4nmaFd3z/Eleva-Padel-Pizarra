@@ -48,20 +48,34 @@
    crece desde el vértice del logo (rango 0 → 70svh de scroll) y, al final,
    se funde; la pista queda a sangre y la cámara 3D (tres-d.js) baja de la
    vista alta a la altura del jugador con ese mismo progreso. El velo
-   asegura el contraste del texto. Las líneas del titular se separan. */
-html.mov .hero-mascara { animation: sd-hero-mascara 1s linear both, sd-hero-abre 1s linear both; }
-html.mov .hero-tinte   { animation: sd-hero-mascara 1s linear both, sd-hero-tinte 1s linear both; }
-html.mov .hero-velo    { animation: sd-hero-velo 1s linear both; }
-html.mov .hero-linea   { animation: sd-hero-linea 1s linear both; }
+   asegura el contraste del texto. Las líneas del titular se separan.
+   Un solo dato mueve todo el hero: --p-hero (progreso 0 → 1), que
+   scroll.js escribe en el hero en cada fotograma; las curvas están aquí
+   (los mismos tramos que tenían los keyframes). La escala del telón,
+   --prof-escala-hero ^ progreso, también la escribe scroll.js.
+   Sin animaciones CSS en el hero del club, a propósito: una animación en
+   pausa hace de cada pieza una capa compuesta permanente (y la de escala
+   rasteriza la máscara a ×24). En reposo, esté donde esté el scroll, el
+   hero se pinta como una imagen quieta, sin capas propias; mientras algo
+   lo mueve (scroll, paralaje del ratón), .en-movimiento (nucleo.js) las
+   pide con will-change y se sueltan 400 ms después. Así cabe en la memoria
+   de GPU de cualquier equipo (tools/qa/modulos/hero.js, «gpu-justa»). */
+html.mov :is(.hero, .marca-hero) { --p-hero: 0; }
+html.mov .hero-mascara { opacity: clamp(0, (.92 - var(--p-hero)) / .37, 1); }
+html.mov .hero-tinte   { opacity: calc(.32 * clamp(0, (.4 - var(--p-hero)) / .32, 1)); }
+html.mov .hero-velo    { opacity: clamp(0, (var(--p-hero) - .35) / .65, 1); }
+html.mov .hero-linea   { translate: calc(var(--sentido, 0) * var(--dist-linea) * var(--p-hero)) 0; }
 html.mov .hero-linea:nth-child(1) { --sentido: -1; }
 html.mov .hero-linea:nth-child(2) { --sentido: 1; }
 html.mov .hero-linea:nth-child(3) { --sentido: -.6; }
-html.mov .hero-fondo, html.mov .hero-telon { will-change: transform; }
+html.mov .en-movimiento :is(.hero-fondo, .hero-telon, .hero-tinte, .hero-velo, .hero-linea) { will-change: transform, opacity; }
 
 /* Encendido de las LED: la penumbra se retira una vez al cargar (decorativo,
-   por debajo del texto; la pista 3D continúa desde su mismo punto) */
+   por debajo del texto; la pista 3D continúa desde su mismo punto). Relleno
+   solo hacia atrás: al terminar, la animación desaparece y la penumbra
+   (opacidad 0) deja de ser una capa de pantalla completa. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero-penumbra { animation: encender var(--dur-encendido) var(--curva-tension) var(--retardo-encendido) both; }
+  .hero-penumbra { animation: encender var(--dur-encendido) var(--curva-tension) var(--retardo-encendido) backwards; }
 }
 @keyframes encender {
   from { opacity: var(--penumbra-inicial); }
@@ -185,20 +199,17 @@ html.cursor-propio :is(input, textarea, select, [contenteditable]) { cursor: aut
 /* ── Línea de tiempo movida por JS ──────────────────────────────────
    En pausa en el primer fotograma (igual al estado estático); scroll.js
    mueve su currentTime. */
-html.mov :is(.hero-mascara, .hero-tinte, .hero-velo, .hero-linea, .marca-logo, .insignia, .precio-cifra, .politica h3, .filas h3, .cin > span > span),
+html.mov :is(.marca-logo, .insignia, .precio-cifra, .politica h3, .filas h3, .cin > span > span),
 html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paused; }
 
 /* ── Keyframes ──────────────────────────────────────────────────────
-   Zoom exponencial (escala = S^t) en pasos: S = --prof-escala-hero (24)
-   en el hero, --prof-escala-corte (30) en los cortes y 9 en la marca.
+   Zoom exponencial (escala = S^t) en pasos: S = --prof-escala-corte (30)
+   en los cortes y 9 en la marca (el del hero lo calcula scroll.js).
    Generados con este guion de Node (fuera del repo):
      const kf = (nombre, S, n) => '@keyframes ' + nombre + ' { ' + Array.from({ length: n + 1 },
        (_, i) => (+(i / n * 100).toFixed(2)) + '% { scale: ' + (+Math.pow(S, i / n).toFixed(4)) + '; }').join(' ') + ' }';
-     console.log(kf('sd-hero-mascara', 24, 40), kf('sd-corte-logo', 30, 10), kf('sd-hero-marca', 9, 20)); */
+     console.log(kf('sd-corte-logo', 30, 10), kf('sd-hero-marca', 9, 20)); */
 @keyframes sd-hero-abre  { 0%, 55% { opacity: 1; } 92%, 100% { opacity: 0; } }
-@keyframes sd-hero-tinte { 0%, 8% { opacity: .32; } 40%, 100% { opacity: 0; } }
-@keyframes sd-hero-velo  { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
-@keyframes sd-hero-linea { to { translate: calc(var(--sentido, 0) * var(--dist-linea)) 0; } }
 @keyframes sd-corte-telon { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes sd-abanico {
   from { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg)) scale(var(--esc, .72)); }
@@ -207,8 +218,6 @@ html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paus
 @keyframes sd-precio   { from { scale: 1.28; } to { scale: 1; } }
 @keyframes sd-titulo   { from { scale: .9; } to { scale: 1; } }
 @keyframes sd-tracking { from { translate: calc(var(--k, 0) * var(--dist-tracking)) 0; } to { translate: 0 0; } }
-@keyframes sd-hero-mascara { 0% { scale: 1; } 2.5% { scale: 1.0827; } 5% { scale: 1.1722; } 7.5% { scale: 1.2692; } 10% { scale: 1.3741; } 12.5% { scale: 1.4877; } 15% { scale: 1.6108; } 17.5% { scale: 1.744; } 20% { scale: 1.8882; } 22.5% { scale: 2.0443; } 25% { scale: 2.2134; } 27.5% { scale: 2.3964; } 30% { scale: 2.5946; } 32.5% { scale: 2.8091; } 35% { scale: 3.0414; } 37.5% { scale: 3.2929; } 40% { scale: 3.5652; } 42.5% { scale: 3.86; } 45% { scale: 4.1792; } 47.5% { scale: 4.5248; } 50% { scale: 4.899; } 52.5% { scale: 5.3041; } 55% { scale: 5.7427; } 57.5% { scale: 6.2176; } 60% { scale: 6.7317; } 62.5% { scale: 7.2884; } 65% { scale: 7.8911; } 67.5% { scale: 8.5436; } 70% { scale: 9.2501; } 72.5% { scale: 10.0151; } 75% { scale: 10.8432; } 77.5% { scale: 11.7399; } 80% { scale: 12.7107; } 82.5% { scale: 13.7618; } 85% { scale: 14.8998; } 87.5% { scale: 16.1319; } 90% { scale: 17.4659; } 92.5% { scale: 18.9102; } 95% { scale: 20.4739; } 97.5% { scale: 22.167; } 100% { scale: 24; } }
-
 @keyframes sd-corte-logo { 0% { scale: 1; } 10% { scale: 1.4051; } 20% { scale: 1.9744; } 30% { scale: 2.7742; } 40% { scale: 3.8981; } 50% { scale: 5.4772; } 60% { scale: 7.6961; } 70% { scale: 10.814; } 80% { scale: 15.1949; } 90% { scale: 21.3506; } 100% { scale: 30; } }
 
 @keyframes sd-hero-marca { 0% { scale: 1; } 5% { scale: 1.1161; } 10% { scale: 1.2457; } 15% { scale: 1.3904; } 20% { scale: 1.5518; } 25% { scale: 1.7321; } 30% { scale: 1.9332; } 35% { scale: 2.1577; } 40% { scale: 2.4082; } 45% { scale: 2.6879; } 50% { scale: 3; } 55% { scale: 3.3484; } 60% { scale: 3.7372; } 65% { scale: 4.1712; } 70% { scale: 4.6555; } 75% { scale: 5.1962; } 80% { scale: 5.7995; } 85% { scale: 6.473; } 90% { scale: 7.2247; } 95% { scale: 8.0636; } 100% { scale: 9; } }

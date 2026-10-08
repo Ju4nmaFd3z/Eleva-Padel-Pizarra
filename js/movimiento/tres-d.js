@@ -15,7 +15,8 @@
    · solo pinta cuando algo cambia; el núcleo la pausa fuera de pantalla,
      con la pestaña oculta y al salir de la página (bfcache);
    · DPR limitado (1,5 en táctil, 2 con ratón) y sin antialiasing en
-     táctil (la densidad de píxeles ya suaviza los bordes); con WebGL por
+     táctil ni con densidad 2 o más (la densidad ya suaviza los bordes y el
+     búfer multimuestra cuadruplica la memoria de GPU); con WebGL por
      software (sin GPU) no se carga.
    ================================================================ */
 (function () {
@@ -27,7 +28,7 @@
   var version = script && /[?&]v=([^&]+)/.exec(script.src);
   var URL_PISTA = './pista.js' + (version ? '?v=' + version[1] : '');
 
-  var hero, escena, penumbra, lienzo, pista = null, lista = false, cargando = false, activo = false;
+  var hero, escena, penumbra, tinte, lienzo, pista = null, lista = false, cargando = false, activo = false;
   var pausado = true, raf = 0, ultimoT = 0, ro = null, programada = false;
   var vertical = window.matchMedia('(max-aspect-ratio: 1/1)');
   var tactil = window.matchMedia('(pointer: coarse)');
@@ -171,9 +172,12 @@
       if (!activo) throw new Error('desactivado');
       lienzo = document.createElement('canvas');
       lienzo.className = 'hero-lienzo';
-      escena.appendChild(lienzo);
+      /* por encima de la imagen y la penumbra, por debajo del tinte */
+      escena.insertBefore(lienzo, tinte);
       lienzo.addEventListener('webglcontextlost', function (ev) { ev.preventDefault(); quitar(); });
-      return mod.crearPista(lienzo, { suavizado: !tactil.matches, ceder: ceder });
+      /* MSAA solo con densidad baja: con 2 o más la densidad ya suaviza los
+         bordes, y el búfer multimuestra multiplica por 4 la memoria de GPU */
+      return mod.crearPista(lienzo, { suavizado: !tactil.matches && (window.devicePixelRatio || 1) < 2, ceder: ceder });
     }).then(function (p) {
       if (!activo || !lienzo) { try { p.destruir(); } catch (e) { /* no-op */ } throw new Error('desactivado'); }
       pista = p;
@@ -241,6 +245,7 @@
       hero = document.querySelector('.hero');
       escena = hero && hero.querySelector('.hero-escena');
       penumbra = hero && hero.querySelector('.hero-penumbra');
+      tinte = hero && hero.querySelector('.hero-tinte');
       if (!escena || !apto()) return;          /* se queda la imagen fija (la misma escena) */
       activo = true;
       pausado = false;

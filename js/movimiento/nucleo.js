@@ -17,6 +17,10 @@
          eleva:repintado), resize y vuelta desde bfcache → reenganchar
    · Canal entre módulos: emitir(canal, dato) / escuchar(canal, fn), p. ej.
      el progreso del hero que publica scroll.js y usa la cámara 3D.
+   · enMovimiento(el): marca el elemento con .en-movimiento mientras algo lo
+     mueve (scroll, ratón) y la quita 400 ms después del último aviso. El
+     CSS pide capas compuestas (will-change) solo con esa clase: en reposo no
+     ocupan memoria de GPU y, si la GPU va justa, nada se queda a medio pintar.
    · Motor del scroll: JS (scroll.js mueve el currentTime de las
      animaciones CSS). Medido en Chromium con CPU ×4 y arrastres táctiles:
      motor JS p95 16,7 ms entre fotogramas; scroll-driven animations
@@ -125,6 +129,20 @@
     });
   }
 
+  /* ── Capas solo mientras algo se mueve ──────────────────────── */
+  var REPOSO_MS = 400;
+  var enMov = new Map();
+  function enMovimiento(el) {
+    if (!el) return;
+    var t = enMov.get(el);
+    if (t) clearTimeout(t); else el.classList.add('en-movimiento');
+    enMov.set(el, setTimeout(function () { enMov.delete(el); el.classList.remove('en-movimiento'); }, REPOSO_MS));
+  }
+  function soltarMovimiento() {
+    enMov.forEach(function (t, el) { clearTimeout(t); el.classList.remove('en-movimiento'); });
+    enMov.clear();
+  }
+
   /* ── Estado global ──────────────────────────────────────────── */
   function aplicarClases() { raiz.classList.toggle('mov', !estado.reducido); }
   function onCambio(mq, fn) { if (mq.addEventListener) mq.addEventListener('change', fn); else mq.addListener(fn); }
@@ -134,7 +152,7 @@
   document.addEventListener('visibilitychange', function () { estado.oculto = document.hidden; evaluarTodos(); });
   document.addEventListener('eleva:repintado', function () { reenganchar('repintado'); });
   /* bfcache: al salir se pausa todo; al volver se reengancha y reanuda */
-  window.addEventListener('pagehide', function () { estado.oculto = true; evaluarTodos(); });
+  window.addEventListener('pagehide', function () { estado.oculto = true; evaluarTodos(); soltarMovimiento(); });
   window.addEventListener('pageshow', function (e) {
     estado.oculto = document.hidden;
     if (e.persisted) reenganchar('bfcache'); else evaluarTodos();
@@ -160,6 +178,7 @@
     registrar: registrar,
     emitir: emitir,
     escuchar: escuchar,
+    enMovimiento: enMovimiento,
     reducido: function () { return estado.reducido; },
     raton: function () { return mqRaton.matches; },
     /* utilidades comunes */

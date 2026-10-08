@@ -87,7 +87,7 @@ function revisarVista(opc) {
     return false;
   };
 
-  /* Efectos ligados al scroll (animaciones sd-* que mueve js/movimiento/scroll.js)
+  /* Efectos ligados al scroll (animaciones sd-* y progreso del hero que mueve js/movimiento/scroll.js)
      fuera de su posición de reposo: el elemento está, a propósito, de camino.
      Reposo = 0 en los de salida (sd-hero-*, sd-corte-*) y = final en los de
      entrada (abanico, precios, títulos). En reposo se revisa como todo lo demás,
@@ -96,7 +96,9 @@ function revisarVista(opc) {
   const cacheEfecto = new Map();
   const deCamino = a => {
     if (cacheEfecto.has(a)) return cacheEfecto.get(a);
-    let si = false;
+    /* El hero se mueve con una variable de progreso (--p-hero, que escribe
+       scroll.js), no con animaciones: reposo = 0 */
+    let si = a.matches && a.matches('.hero, .marca-hero') && (parseFloat(getComputedStyle(a).getPropertyValue('--p-hero')) || 0) > 0.001;
     for (const an of (a.getAnimations ? a.getAnimations() : [])) {
       const nombre = an.animationName || '';
       if (nombre.indexOf('sd-') !== 0 || !an.effect) continue;
