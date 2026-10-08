@@ -55,7 +55,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     cuerpo con fuente y fecha si toca datos, un cambio lógico por commit, sin emojis y
     **sin firmas ni `Co-Authored-By` de IA**. Hooks: `git config core.hooksPath tools/hooks`.
 14. **Batería de QA COMPLETA antes de cada commit** que toque HTML, CSS, JS, manifest o
-    configuración: `node tools/qa/bateria.js` (unos 80 s). `--rapido` solo como ayuda mientras se
+    configuración: `node tools/qa/bateria.js` (unos 150 s). `--rapido` solo como ayuda mientras se
     trabaja, nunca para dar un commit por bueno. Ningún commit sube con fallos nuevos. Los fallos
     reales pendientes van en `tools/qa/lib/conocidos.js`, uno a uno con su elemento y su medida
     exactos (visibles en cada ejecución; quien los arregla quita su línea en el mismo commit).
@@ -114,6 +114,17 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   movimiento reducido. Solo `transform`/`opacity` (excepción documentada: la transición
   entre páginas). Nada de cursores ni hovers con el logo. Formato de filas reutilizable:
   `.filas > .fila` (el de Cancelaciones).
+- **Hero del club y memoria de GPU** (fallo del hero «a trozos», octubre de 2026): si las
+  capas compuestas no caben en la memoria de GPU, el navegador deja teselas sin pintar
+  (bloques negros, pista fuera del logo, texto que falta). Reglas: una sola capa
+  enmascarada (`.hero-mascara`, la única que usa la geometría del logo: `--L`, `--mx`,
+  `--my`, `--ox`, `--oy`); el tinte y la penumbra, colores planos de la escena; sin
+  animaciones CSS en el hero del club (`scroll.js` escribe un solo progreso, `--p-hero`, y
+  la escala del telón; las curvas, en `movimiento.css`); capas (`will-change`) solo con
+  `.en-movimiento` (`ElevaMov.enMovimiento`, se sueltan 400 ms después); el telón no se
+  compone nunca; la pista 3D sin MSAA con densidad ≥ 2, vuelve a la imagen fija si se pierde
+  el contexto WebGL y se rehace al recuperarlo. Prueba: módulo `hero` de `tools/qa`
+  (`QA_HERO_REP=50` en la QA final), con el escenario `gpu-justa` (memoria limitada).
 - **Pista 3D** (`js/movimiento/pista.js`, three.js r186 reducido en `lib/three/`, MIT,
   ≤ 160 KB gzip): reglamento FIP «Rules of Padel» versión «in force as of 1.01.2026»,
   pág. 6 del documento (7 del PDF), diagrama «Laterales – Variante 1»: 2 | 2 | 12 | 2 | 2 m;

@@ -58,7 +58,7 @@ aisladas ahí: la raíz sigue sin `npm`. Se pasa **completa** antes de cada comm
 
 ```sh
 cd tools/qa && npm ci && npx playwright install chromium   # una vez
-node tools/qa/bateria.js            # completa, antes de cada commit (desde la raíz, ~80 s)
+node tools/qa/bateria.js            # completa, antes de cada commit (desde la raíz, ~150 s)
 node tools/qa/bateria.js --rapido   # subconjunto, solo como ayuda mientras se trabaja
 ```
 
