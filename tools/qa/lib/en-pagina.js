@@ -28,6 +28,10 @@ function revisarVista(opc) {
     if (e.id) s += '#' + e.id;
     const cl = (typeof e.className === 'string' ? e.className : '').trim().split(/\s+/).filter(Boolean).slice(0, 2);
     if (cl.length) s += '.' + cl.join('.');
+    /* Destino de enlaces y controles: identifica el elemento aunque otro
+       repita su texto y su medida (dos «Aviso Legal» con distinto destino) */
+    const destino = e.getAttribute('href') || e.getAttribute('aria-controls') || e.getAttribute('name') || e.getAttribute('data-lang');
+    if (destino && e.matches('a, button, input, select, textarea')) s += '[' + destino.slice(0, 60) + ']';
     const t = (e.textContent || e.getAttribute('aria-label') || e.getAttribute('alt') || '').trim().replace(/\s+/g, ' ').slice(0, 30);
     return t ? s + ' «' + t + '»' : s;
   };

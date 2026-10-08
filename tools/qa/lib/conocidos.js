@@ -32,20 +32,20 @@ module.exports = [
   {
     caso: new RegExp('^responsive · privacidad · ' + TACTILES + ' · es · (normal|reducido|sinjs)$'),
     fallos: [
-      pequeno('a.back-link «Eleva Pádel · marca»', '160×21'),
-      pequeno('a.back-link «Club de Pizarra»', '134×21'),
-      pequeno('a «Aviso Legal»', '69×29'),
-      pequeno('a «Política de Cancelaciones»', '154×29'),
-      pequeno('a «Normas del Club»', '98×29'),
-      pequeno('a «Política de Privacidad»', '130×29'),
-      pequeno('a «Datos que tratamos fuera de la»', '212×29'),
-      pequeno('a «Política de Cookies»', '114×29'),
-      pequeno('a «Google Chrome»', '95×29'),
-      pequeno('a «Mozilla Firefox»', '89×29'),
-      pequeno('a «Apple Safari»', '75×29'),
-      pequeno('a «Microsoft Edge»', '94×29'),
-      pequeno('a «eleva-padel-pizarra.vercel.app»', '185×17'),
-      pequeno('a «eleva-padel-pizarra.vercel.app»', '109×42')
+      pequeno('a.back-link[index.html] «Eleva Pádel · marca»', '160×21'),
+      pequeno('a.back-link[pizarra/index.html] «Club de Pizarra»', '134×21'),
+      pequeno('a[#aviso-legal] «Aviso Legal»', '69×29'),
+      pequeno('a[#cancelaciones] «Política de Cancelaciones»', '154×29'),
+      pequeno('a[#normas] «Normas del Club»', '98×29'),
+      pequeno('a[#privacidad] «Política de Privacidad»', '130×29'),
+      pequeno('a[#fuera-web] «Datos que tratamos fuera de la»', '212×29'),
+      pequeno('a[#cookies] «Política de Cookies»', '114×29'),
+      pequeno('a[https://support.google.com/chrome/answer/95647] «Google Chrome»', '95×29'),
+      pequeno('a[https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-c] «Mozilla Firefox»', '89×29'),
+      pequeno('a[https://support.apple.com/es-es/guide/safari/sfri11471/mac] «Apple Safari»', '75×29'),
+      pequeno('a[https://support.microsoft.com/es-es/windows/eliminar-y-admin] «Microsoft Edge»', '94×29'),
+      pequeno('a[https://eleva-padel-pizarra.vercel.app/] «eleva-padel-pizarra.vercel.app»', '185×17'),
+      pequeno('a[https://eleva-padel-pizarra.vercel.app/] «eleva-padel-pizarra.vercel.app»', '109×42')
     ],
     motivo: '/privacidad: en táctil, los enlaces del índice (29 px), «volver» (21 px), los de navegadores (29 px) y el de la tabla (17-42 px) miden menos de 44 px',
     apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 1'
@@ -55,8 +55,8 @@ module.exports = [
     fallos: [
       partida('td «eleva-lang» «eleva-lang»', '63 px en 45 px'),
       partida('td «eleva-splash-seen» «eleva-splash-seen»', '111 px en 45 px'),
-      partida('a «eleva-padel-pizarra.vercel.app» «eleva-padel-pizarra.vercel.app»', '185 px en 144 px'),
-      partida('a «eleva-padel-pizarra.vercel.app» «eleva-padel-pizarra.vercel.app»', '185 px en 182 px')
+      partida('a[https://eleva-padel-pizarra.vercel.app/] «eleva-padel-pizarra.vercel.app» «eleva-padel-pizarra.vercel.app»', '185 px en 144 px'),
+      partida('a[https://eleva-padel-pizarra.vercel.app/] «eleva-padel-pizarra.vercel.app» «eleva-padel-pizarra.vercel.app»', '185 px en 182 px')
     ],
     motivo: '/privacidad: en móvil, las claves de almacenamiento y la URL de la tabla no caben en su columna y se parten',
     apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 2'
