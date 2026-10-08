@@ -35,7 +35,9 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 6. **Previsualizar solo con `node tools/servidor-local.js`** (imita Vercel e
    incluye el middleware).
 7. **Sin CDN ni terceros en ejecución.** CSP `'self'` en `vercel.json`, sin scripts
-   inline (salvo JSON-LD). Añadir un tercero obliga a tocar la CSP **y** `privacidad.html`.
+   inline (salvo JSON-LD). Añadir un tercero obliga a tocar la CSP **y** `privacidad.html`,
+   y las constantes `CSP_SITIO` / `CSP_MANTENIMIENTO` de `tools/qa/modulos/servidor.js`
+   (la batería falla si la CSP servida no es exactamente esa).
 8. **Sin email.** Ninguna dirección de correo en ningún archivo. Canales del club:
    WhatsApp +34 659 14 31 03 e Instagram @elevapadelpizarra. Se rotula «WhatsApp»;
    nada de enlaces `tel:` hasta confirmar que atienden llamadas.
