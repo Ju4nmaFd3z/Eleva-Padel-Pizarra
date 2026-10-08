@@ -397,7 +397,7 @@ const ESCENARIOS = {
 
 /* Ejecuta un escenario en un dispositivo con una semilla. Devuelve
    { fallos, medidas }. navegadores(clave) → navegador lanzado con LANZAR[clave]. */
-async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, capturar }) {
+async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, capturar, video }) {
   const disp = DISPOSITIVOS[dispositivo];
   const sinGL = escenario === 'sin-webgl';
   const clave = sinGL ? 'sinwebgl' : escenario === 'bfcache' ? 'ventana' : escenario === 'gpu-justa' ? 'justa-' + memoriaJusta(disp) : 'gpu';
@@ -406,7 +406,9 @@ async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, ca
     viewport: { width: disp.ancho, height: disp.alto }, deviceScaleFactor: disp.dpr,
     isMobile: disp.movil, hasTouch: disp.movil,
     reducedMotion: escenario === 'reducido' ? 'reduce' : 'no-preference',
-    locale: 'es-ES', serviceWorkers: 'block'
+    locale: 'es-ES', serviceWorkers: 'block',
+    /* vídeo opcional (carpeta): para enseñar el hero cargando en cada escenario */
+    recordVideo: video ? { dir: video, size: { width: disp.ancho, height: disp.alto } } : undefined
   });
   await ctx.addInitScript(INIT_VISIBILIDAD);
   const p = await ctx.newPage();
@@ -428,7 +430,8 @@ async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, ca
     errores.forEach(t => e.fallos.push({ tipo: 'error-de-pagina', clave: t.slice(0, 160), detalle: '' }));
     await ctx.close().catch(() => {});
   }
-  return { fallos: e.fallos, medidas: e.medidas };
+  const ruta = video && p.video() ? await p.video().path().catch(() => null) : null;
+  return { fallos: e.fallos, medidas: e.medidas, video: ruta };
 }
 
 /* Opciones de lanzamiento de Chromium para una clave de ejecutar() */
