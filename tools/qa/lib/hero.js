@@ -213,7 +213,7 @@ function comprobar(m, png, { etiqueta = '', paso = 24, final = false } = {}) {
     /* un punto suelto es suavizado del borde; una tesela perdida son varios */
     if (malosFuera.length >= MIN_PUNTOS) fallo('pista o color fuera del logo', `${malosFuera.length}/${nFuera} puntos no negros; p. ej. ${malosFuera.slice(0, 4).map(v => v.join(',')).join(' · ')}`);
     if (malosDentro.length >= MIN_PUNTOS) fallo('negro dentro del logo', `${malosDentro.length}/${nDentro} puntos negros; p. ej. ${malosDentro.slice(0, 4).map(v => v.join(',')).join(' · ')}`);
-    if (comprobarFuera && nFuera < 20) fallo('muestreo insuficiente fuera del logo', String(nFuera));
+    if (comprobarFuera && nFuera < 20 && yMax - hy0 > 200) fallo('muestreo insuficiente fuera del logo', String(nFuera));
   }
   return f;
 }

@@ -118,9 +118,17 @@ async function chequear(ctxEsc, etiqueta) {
   const { p, fallos, capturar } = ctxEsc;
   /* el pulso del logo al tocar (tacto.js) dura --dur-larga: se mide quieto */
   await p.waitForFunction(() => !document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.classList && a.effect.target.classList.contains('hero-pulso')), null, { timeout: 3000, polling: 50 }).catch(() => {});
-  await fotogramas(p, 2).catch(() => {});
-  const png = await p.screenshot({ animations: 'allow', caret: 'initial' });
-  const m = await H.medir(p);
+  /* La captura y la medida tienen que ser del mismo estado: si el scroll o
+     el tamaño cambian entre una y otra (restauración del scroll en varios
+     pasos, métricas nuevas), se repiten. Hasta 5 intentos. */
+  let png, m;
+  for (let i = 0; i < 5; i++) {
+    await fotogramas(p, 2).catch(() => {});
+    const antes = await p.evaluate(() => [scrollY, innerWidth, innerHeight, devicePixelRatio].join());
+    png = await p.screenshot({ animations: 'allow', caret: 'initial' });
+    m = await H.medir(p);
+    if ([m.scrollY, m.vw, m.vh, m.dpr].join() === antes) break;
+  }
   const f = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
   if (f.length && capturar) await capturar(png, etiqueta);
   fallos.push(...f);
