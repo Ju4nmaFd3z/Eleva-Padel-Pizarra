@@ -17,7 +17,11 @@
    · DPR limitado (1,5 en táctil, 2 con ratón) y sin antialiasing en
      táctil ni con densidad 2 o más (la densidad ya suaviza los bordes y el
      búfer multimuestra cuadruplica la memoria de GPU); con WebGL por
-     software (sin GPU) no se carga.
+     software (sin GPU) no se carga. Si cambia la densidad (zoom, otra
+     pantalla), el lienzo se redimensiona;
+   · si el navegador pierde el contexto WebGL (GPU reiniciada, falta de
+     memoria), vuelve la imagen fija al momento; cuando lo devuelve, la
+     escena se crea de nuevo desde cero en un lienzo nuevo.
    ================================================================ */
 (function () {
   'use strict';
@@ -83,6 +87,17 @@
   }
 
   function dpr() { return Math.min(window.devicePixelRatio || 1, tactil.matches ? 1.5 : 2); }
+  /* La densidad cambia sin que cambie la caja (zoom, otra pantalla): se
+     escucha la densidad actual y, al cambiar, se vuelve a escuchar la nueva */
+  var mqDensidad = null;
+  function vigilarDensidad(si) {
+    if (mqDensidad) { mqDensidad.removeEventListener('change', alCambiarDensidad); mqDensidad = null; }
+    if (si && window.matchMedia) {
+      mqDensidad = window.matchMedia('(resolution: ' + (window.devicePixelRatio || 1) + 'dppx)');
+      mqDensidad.addEventListener('change', alCambiarDensidad);
+    }
+  }
+  function alCambiarDensidad() { vigilarDensidad(activo); medir(); }
   function medir() {
     if (!pista || !escena) return;
     var r = escena.getBoundingClientRect();
@@ -174,7 +189,8 @@
       lienzo.className = 'hero-lienzo';
       /* por encima de la imagen y la penumbra, por debajo del tinte */
       escena.insertBefore(lienzo, tinte);
-      lienzo.addEventListener('webglcontextlost', function (ev) { ev.preventDefault(); quitar(); });
+      lienzo.addEventListener('webglcontextlost', alPerderContexto);
+      lienzo.addEventListener('webglcontextrestored', alRecuperarContexto);
       /* MSAA solo con densidad baja: con 2 o más la densidad ya suaviza los
          bordes, y el búfer multimuestra multiplica por 4 la memoria de GPU */
       return mod.crearPista(lienzo, { suavizado: !tactil.matches && (window.devicePixelRatio || 1) < 2, ceder: ceder });
@@ -227,6 +243,22 @@
     if (document.readyState === 'complete') tras(); else window.addEventListener('load', tras, { once: true });
   }
 
+  /* ── Contexto WebGL perdido y recuperado ───────────────────── */
+  function alPerderContexto(ev) {
+    /* preventDefault: el navegador avisará cuando pueda devolverlo */
+    ev.preventDefault();
+    if (raf) cancelAnimationFrame(raf);
+    raf = 0;
+    lista = false;
+    if (hero) hero.classList.remove('tres-d-lista');     /* vuelve la imagen fija (fundido) */
+  }
+  function alRecuperarContexto() {
+    /* La escena se rehace entera en un lienzo nuevo: nada del contexto
+       perdido se reutiliza. Si el hero no se ve, se carga al volver a él. */
+    quitar();
+    cargar();
+  }
+
   function quitar() {
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
@@ -234,7 +266,11 @@
     if (pista) { try { pista.destruir(); } catch (e) { /* no-op */ } }
     pista = null;
     lista = false;
-    if (lienzo && lienzo.parentNode) lienzo.parentNode.removeChild(lienzo);
+    if (lienzo) {
+      lienzo.removeEventListener('webglcontextlost', alPerderContexto);
+      lienzo.removeEventListener('webglcontextrestored', alRecuperarContexto);
+      if (lienzo.parentNode) lienzo.parentNode.removeChild(lienzo);
+    }
     lienzo = null;
   }
 
@@ -256,6 +292,7 @@
       hero.addEventListener('pointercancel', alSoltar, { passive: true });
       if ('ResizeObserver' in window) { ro = new ResizeObserver(medir); ro.observe(escena); }
       if (vertical.addEventListener) vertical.addEventListener('change', medir);
+      vigilarDensidad(true);
       programarCarga();
     },
     pausar: function () { pausado = true; arrastre = null; if (raf) cancelAnimationFrame(raf); raf = 0; },
@@ -276,6 +313,7 @@
       }
       if (ro) ro.disconnect();
       if (vertical.removeEventListener) vertical.removeEventListener('change', medir);
+      vigilarDensidad(false);
       quitar();
     },
     /* para medir y para los vídeos */
