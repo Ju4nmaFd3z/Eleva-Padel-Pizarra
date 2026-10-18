@@ -68,7 +68,11 @@ html.mov .hero-linea   { translate: calc(var(--sentido, 0) * var(--dist-linea) *
 html.mov .hero-linea:nth-child(1) { --sentido: -1; }
 html.mov .hero-linea:nth-child(2) { --sentido: 1; }
 html.mov .hero-linea:nth-child(3) { --sentido: -.6; }
-html.mov .en-movimiento :is(.hero-fondo, .hero-telon, .hero-tinte, .hero-velo, .hero-linea) { will-change: transform, opacity; }
+html.mov .en-movimiento :is(.hero-fondo, .hero-telon, .hero-tinte, .hero-velo, .marca-titulo .hero-linea) { will-change: transform, opacity; }
+/* El texto del hero del club, siempre en su capa (pequeña): el texto compuesto y el
+   pintado se suavizan distinto y, si cambiara al empezar y parar el scroll,
+   el titular daría un salto de un píxel */
+html.mov .hero :is(.hero-linea, .hero-lugar, .botones) { will-change: transform; }
 
 /* Encendido de las LED: la penumbra se retira una vez al cargar (decorativo,
    por debajo del texto; la pista 3D continúa desde su mismo punto). Relleno

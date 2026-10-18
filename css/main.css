@@ -361,6 +361,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   line-height: .98; letter-spacing: -.005em;
 }
 .hero-linea { display: block; }
+.hero .hero-linea { width: fit-content; }   /* la capa de cada línea, del tamaño de su texto */
 .hero-linea:last-child { color: var(--anillo); }
 .hero-lugar { color: var(--crema); font-size: 1.25rem; margin-bottom: 1.5rem; }
 
