@@ -20,6 +20,7 @@ const DISPOSITIVOS = {
   'e1920': { ancho: 1920, alto: 1080, dpr: 1, movil: false },
   'e1440': { ancho: 1440, alto: 900, dpr: 1, movil: false },
   'e1280': { ancho: 1280, alto: 720, dpr: 1, movil: false },
+  'e1920d2': { ancho: 1920, alto: 1080, dpr: 2, movil: false },
   'm390':  { ancho: 390, alto: 844, dpr: 3, movil: true },
   'm360':  { ancho: 360, alto: 800, dpr: 3, movil: true }
 };
@@ -27,14 +28,14 @@ const DISPOSITIVOS = {
 /* Chromium con GPU real (ANGLE) y bfcache; «sin-webgl» sin APIs 3D */
 const ARGS_GPU = ['--enable-gpu', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'];
 if (process.platform === 'win32') ARGS_GPU.push('--use-angle=d3d11');
-/* Memoria de GPU del escenario «gpu-justa»: 32 MB para una pantalla de
-   1920×1080 a densidad 1, en proporción a los píxeles físicos de cada
-   dispositivo. Con ella el hero anterior al arreglo (octubre de 2026) perdía
-   teselas en casi todas las cargas; el de ahora pasa con 24 MB a 1920×1080. */
+/* Memoria de GPU del escenario «gpu-justa»: 32 MB para 1920×1080 a densidad 1
+   y, al crecer los píxeles físicos, en proporción a su raíz (64 MB a densidad 2):
+   más justa que proporcional, a propósito. Con ella el hero anterior al arreglo
+   (octubre de 2026) perdía teselas en casi todas las cargas. */
 const MEMORIA_JUSTA_REF_MB = 32;
 function memoriaJusta(disp) {
-  const px = disp.ancho * disp.alto * disp.dpr * disp.dpr;
-  return Math.max(MEMORIA_JUSTA_REF_MB, Math.ceil(MEMORIA_JUSTA_REF_MB * px / (1920 * 1080)));
+  const k = disp.ancho * disp.alto * disp.dpr * disp.dpr / (1920 * 1080);
+  return Math.max(MEMORIA_JUSTA_REF_MB, Math.round(MEMORIA_JUSTA_REF_MB * Math.sqrt(k)));
 }
 const LANZAR = {
   gpu: { args: ARGS_GPU, ignoreDefaultArgs: ['--disable-back-forward-cache'] },
@@ -114,7 +115,7 @@ async function irA(p, y) {
 }
 
 /* Comprobación en un momento: captura + medida + comparación */
-async function chequear(ctxEsc, etiqueta) {
+async function chequear(ctxEsc, etiqueta, { reintento = 0 } = {}) {
   const { p, fallos, capturar } = ctxEsc;
   /* el pulso del logo al tocar (tacto.js) dura --dur-larga: se mide quieto */
   await p.waitForFunction(() => !document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.classList && a.effect.target.classList.contains('hero-pulso')), null, { timeout: 3000, polling: 50 }).catch(() => {});
@@ -129,12 +130,29 @@ async function chequear(ctxEsc, etiqueta) {
     m = await H.medir(p);
     if ([m.scrollY, m.vw, m.vh, m.dpr].join() === antes) break;
   }
-  const f = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
+  let f = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
+  /* Con la memoria de GPU justa, rasterizar puede ir por detrás un momento:
+     se exige que nada se QUEDE a medias. Si falla, se repite pasados
+     reintento ms; solo es fallo si sigue igual (se apunta como transitorio). */
+  if (f.length && reintento) {
+    if (capturar) await capturar(png, etiqueta + ' (transitorio)');
+    await espera(reintento);
+    await fotogramas(p, 2).catch(() => {});
+    png = await p.screenshot({ animations: 'allow', caret: 'initial' });
+    m = await H.medir(p);
+    const f2 = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
+    ctxEsc.medidas.push({ etiqueta: etiqueta + ' (transitorio)', fallos: f.map(x => x.clave) });
+    f = f2;
+  }
   if (f.length && capturar) await capturar(png, etiqueta);
   fallos.push(...f);
   ctxEsc.medidas.push({ etiqueta, p: +m.p.toFixed(3), scrollY: m.scrollY, lienzo: !!m.lienzo, lista: m.lista, fuentes: m.fuentes });
   return m;
 }
+
+/* Plazo para que el compositor termine de rasterizar con la memoria justa
+   (con seis navegadores con GPU a la vez, a densidad 2, tarda hasta unos segundos) */
+const REINTENTO_MS = 5000;
 
 /* Espera a que la página esté quieta (fuentes, imagen del hero) */
 async function quieta(p, ms = 8000) {
@@ -150,7 +168,8 @@ async function noLlega(e) {
 
 /* Nada se mueve en el hero: sin .en-movimiento ni animaciones o transiciones en marcha */
 async function enReposo(p) {
-  await p.waitForFunction(() => !document.querySelector('.en-movimiento') &&
+  /* y, con la pista 3D, ya congelada en su último fotograma (tres-d.js) */
+  await p.waitForFunction(() => !document.querySelector('.en-movimiento') && (!document.querySelector('.hero.tres-d-lista') || !!document.querySelector('.hero.tres-d-congelada')) &&
     !document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('.hero')),
   null, { timeout: 8000, polling: 50 }).catch(() => {});
   await fotogramas(p, 3);
@@ -365,20 +384,34 @@ const ESCENARIOS = {
      verse entero. Durante el movimiento puede faltar memoria un instante;
      lo que se comprueba es que nada se quede así. */
   'gpu-justa': async e => {
+    /* gpu-compartida: antes, otras 4 páginas del hero abiertas en el mismo
+       navegador (la misma memoria de GPU), con su pista 3D y en reposo */
+    if (e.compartida) {
+      for (let i = 0; i < 4; i++) {
+        const otra = await e.ctx.newPage();
+        await otra.goto(URL_PIZARRA(e.base), { waitUntil: 'load' });
+        await otra.mouse.move(200 + i * 50, 300);
+        await otra.evaluate(() => dispatchEvent(new Event('scroll')));
+      }
+    }
+    await e.p.bringToFront();
     await e.p.goto(URL_PIZARRA(e.base), { waitUntil: 'load' });
     await quieta(e.p);
     await enReposo(e.p);
-    await chequear(e, 'al cargar');
+    await chequear(e, 'al cargar', { reintento: REINTENTO_MS });
     await gesto(e.p, e.cdp, e.disp, e.r);
     const y = Math.round(e.disp.alto * e.r.entre(0.05, 0.9));
     await irA(e.p, y);
     await enReposo(e.p);
-    await chequear(e, 'en ' + y);
+    await chequear(e, 'en ' + y, { reintento: REINTENTO_MS });
     await irA(e.p, 0);
     await esperar3D(e.p, 12000);
     await enReposo(e.p);
-    await chequear(e, 'final');
+    await chequear(e, 'final', { reintento: REINTENTO_MS });
   },
+
+  /* 32 MB (proporcional) con otras 4 páginas del hero a la vez en el mismo navegador */
+  'gpu-compartida': async e => { e.compartida = true; return ESCENARIOS['gpu-justa'](e); },
 
   /* Movimiento reducido */
   'reducido': async e => {
@@ -400,7 +433,11 @@ const ESCENARIOS = {
 async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, capturar, video }) {
   const disp = DISPOSITIVOS[dispositivo];
   const sinGL = escenario === 'sin-webgl';
-  const clave = sinGL ? 'sinwebgl' : escenario === 'bfcache' ? 'ventana' : escenario === 'gpu-justa' ? 'justa-' + memoriaJusta(disp) : 'gpu';
+  /* gpu-justa y gpu-compartida: un navegador propio por ejecución (la memoria
+     de GPU forzada es de todo el navegador; con otras ejecuciones a la vez
+     sería otro escenario) que se cierra al terminar */
+  const justa = escenario === 'gpu-justa' || escenario === 'gpu-compartida';
+  const clave = sinGL ? 'sinwebgl' : escenario === 'bfcache' ? 'ventana' : justa ? 'justa-' + memoriaJusta(disp) + '-' + dispositivo + '-' + semilla + '-' + escenario : 'gpu';
   const nav = await navegadores(clave);
   const ctx = await nav.newContext({
     viewport: { width: disp.ancho, height: disp.alto }, deviceScaleFactor: disp.dpr,
@@ -429,6 +466,7 @@ async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, ca
   } finally {
     errores.forEach(t => e.fallos.push({ tipo: 'error-de-pagina', clave: t.slice(0, 160), detalle: '' }));
     await ctx.close().catch(() => {});
+    if (justa) await nav.close().catch(() => {});
   }
   const ruta = video && p.video() ? await p.video().path().catch(() => null) : null;
   return { fallos: e.fallos, medidas: e.medidas, video: ruta };
@@ -436,7 +474,7 @@ async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, ca
 
 /* Opciones de lanzamiento de Chromium para una clave de ejecutar() */
 function opcionesLanzar(clave) {
-  const m = /^justa-([0-9]+)$/.exec(clave);
+  const m = /^justa-([0-9]+)/.exec(clave);
   return m ? LANZAR.justa(Number(m[1])) : LANZAR[clave];
 }
 

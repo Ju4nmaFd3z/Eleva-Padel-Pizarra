@@ -21,7 +21,13 @@
      pantalla), el lienzo se redimensiona;
    · si el navegador pierde el contexto WebGL (GPU reiniciada, falta de
      memoria), vuelve la imagen fija al momento; cuando lo devuelve, la
-     escena se crea de nuevo desde cero en un lienzo nuevo.
+     escena se crea de nuevo desde cero en un lienzo nuevo;
+   · en reposo la escena se congela: el último fotograma pasa a un <img>
+     (.hero-congelada, el mismo píxel a píxel) y el lienzo sale del árbol de
+     capas (display: none). Un lienzo WebGL visible obliga a componer todo lo
+     que tiene encima (telón, tinte, texto) en capas de pantalla completa; con
+     la memoria de GPU justa faltaban teselas. Al volver el movimiento, el
+     lienzo se muestra y pinta en el mismo fotograma, sin salto.
    ================================================================ */
 (function () {
   'use strict';
@@ -34,6 +40,8 @@
 
   var hero, escena, penumbra, tinte, lienzo, pista = null, lista = false, cargando = false, activo = false;
   var pausado = true, raf = 0, ultimoT = 0, ro = null, programada = false;
+  var foto = null, congelado = false, tCongelar = 0, vFoto = 0, pintadoDesdeFoto = true;
+  var REPOSO_MS = 400;
   var vertical = window.matchMedia('(max-aspect-ratio: 1/1)');
   var tactil = window.matchMedia('(pointer: coarse)');
   var objetivo = { progreso: 0, px: 0, py: 0, giro: 0 };
@@ -115,6 +123,9 @@
   function despertar() { if (!raf && pista && lista && !pausado) { ultimoT = 0; raf = requestAnimationFrame(cuadro); } }
   function cuadro(t) {
     raf = 0;
+    if (congelado) descongelar();
+    clearTimeout(tCongelar);
+    vFoto++;                                   /* invalida una congelación en curso */
     var dt = ultimoT ? Math.min(0.05, (t - ultimoT) / 1000) : 1 / 60;
     ultimoT = t;
     var tk = M.tokens(), k = tk.fisicaSuavizado;
@@ -131,12 +142,49 @@
     }
     var enc = encendidoCSS();
     actual.encendido = enc;
-    pista.pintar(actual);
-
     var quieto = Math.abs(actual.progreso - objetivo.progreso) < 1e-4 &&
       Math.abs(actual.px - objetivo.px) < 1e-3 && Math.abs(actual.py - objetivo.py) < 1e-3 &&
       Math.abs(actual.giro) < 1e-4 && Math.abs(velGiro) < 1e-4 && !arrastre && enc >= 1;
+    /* en reposo, exactamente en el objetivo: el último fotograma (y su foto)
+       es el mismo que se pintará al despertar sin cambios */
+    if (quieto) { actual.progreso = objetivo.progreso; actual.px = objetivo.px; actual.py = objetivo.py; actual.giro = 0; velGiro = 0; }
+    pista.pintar(actual);
+    pintadoDesdeFoto = true;
+    M.enMovimiento(hero);
     if (!quieto) raf = requestAnimationFrame(cuadro);
+    else tCongelar = setTimeout(congelar, REPOSO_MS);
+  }
+
+  /* ── Congelar en reposo ─────────────────────────────────────── */
+  function congelar() {
+    if (!pista || !lista || congelado || raf || !lienzo || !lienzo.toBlob) return;
+    if (!pintadoDesdeFoto && foto && foto.getAttribute('src')) { mostrarFoto(); return; }
+    var v = ++vFoto;
+    /* el búfer de dibujo solo es válido justo después de pintar */
+    pista.pintar(actual);
+    lienzo.toBlob(function (blob) {
+      if (!blob || v !== vFoto) return;
+      var lector = new FileReader();                 /* data: (la CSP no admite blob:) */
+      lector.onload = function () {
+        if (v !== vFoto || !foto) return;
+        foto.src = lector.result;
+        var listo = foto.decode ? foto.decode() : Promise.resolve();
+        listo.then(function () { if (v === vFoto) { pintadoDesdeFoto = false; mostrarFoto(); } }, function () { /* se queda el lienzo */ });
+      };
+      lector.readAsDataURL(blob);
+    }, 'image/webp', 1);                              /* calidad 1: sin pérdidas */
+  }
+  function mostrarFoto() {
+    if (raf || !lienzo) return;
+    hero.classList.add('tres-d-congelada');           /* el <img> a la vista… */
+    lienzo.style.display = 'none';                    /* …y el lienzo fuera de las capas */
+    congelado = true;
+  }
+  function descongelar() {
+    congelado = false;
+    if (lienzo) lienzo.style.display = '';
+    /* la foto se quita en el fotograma siguiente: el lienzo ya la tapa */
+    requestAnimationFrame(function () { if (!congelado && hero) hero.classList.remove('tres-d-congelada'); });
   }
 
   /* ── Entradas ───────────────────────────────────────────────── */
@@ -187,7 +235,13 @@
       if (!activo) throw new Error('desactivado');
       lienzo = document.createElement('canvas');
       lienzo.className = 'hero-lienzo';
-      /* por encima de la imagen y la penumbra, por debajo del tinte */
+      /* por encima de la imagen y la penumbra, por debajo del tinte; la foto
+         del último fotograma, justo debajo del lienzo */
+      foto = document.createElement('img');
+      foto.className = 'hero-foto';
+      foto.alt = '';
+      foto.decoding = 'async';
+      escena.insertBefore(foto, tinte);
       escena.insertBefore(lienzo, tinte);
       lienzo.addEventListener('webglcontextlost', alPerderContexto);
       lienzo.addEventListener('webglcontextrestored', alRecuperarContexto);
@@ -250,7 +304,9 @@
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
     lista = false;
-    if (hero) hero.classList.remove('tres-d-lista');     /* vuelve la imagen fija (fundido) */
+    clearTimeout(tCongelar); vFoto++;
+    if (hero) hero.classList.remove('tres-d-lista', 'tres-d-congelada');   /* vuelve la imagen fija (fundido) */
+    if (congelado && lienzo) { lienzo.style.display = ''; congelado = false; }
   }
   function alRecuperarContexto() {
     /* La escena se rehace entera en un lienzo nuevo: nada del contexto
@@ -262,7 +318,11 @@
   function quitar() {
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
-    if (hero) hero.classList.remove('tres-d-lista');
+    clearTimeout(tCongelar); vFoto++;
+    congelado = false;
+    if (hero) hero.classList.remove('tres-d-lista', 'tres-d-congelada');
+    if (foto && foto.parentNode) foto.parentNode.removeChild(foto);
+    foto = null;
     if (pista) { try { pista.destruir(); } catch (e) { /* no-op */ } }
     pista = null;
     lista = false;

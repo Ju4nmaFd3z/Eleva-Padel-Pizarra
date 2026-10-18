@@ -3,8 +3,9 @@
    ---------------------------------------------------------
    Regresión del fallo intermitente del hero (pista fuera del
    triángulo, bloques negros, barra del logo desplazada):
-   escenarios de lib/hero-escenarios.js en cinco dispositivos
-   (1920, 1440 y 1280 con ratón; 390 y 360 táctiles), con el
+   escenarios de lib/hero-escenarios.js en seis dispositivos
+   (1920, 1440 y 1280 con ratón, 1920 también a densidad 2; 390 y
+   360 táctiles), con el
    oráculo de lib/hero.js (geometría según el CSS y muestreo
    de la captura). Un caso = un escenario en un dispositivo.
 

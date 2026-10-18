@@ -306,7 +306,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .hero-fondo { position: absolute; inset: 0; z-index: -1; }
 .hero-escena, .hero-telon, .hero-pulso, .hero-velo { position: absolute; inset: 0; }
 .hero-escena { background: var(--negro); }
-.hero-imagen img, .hero-lienzo {
+.hero-imagen img, .hero-lienzo, .hero-foto {
   position: absolute; inset: 0;
   width: 100%; height: 100%; max-width: none;
   object-fit: cover; object-position: center;
@@ -318,6 +318,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Relevo: la escena viva entra fundida sobre la imagen fija */
 .hero-lienzo { opacity: 0; transition: opacity var(--dur-corta) linear; }
 .tres-d-lista .hero-lienzo { opacity: 1; }
+/* En reposo, el último fotograma de la escena viva en un <img> (tres-d.js):
+   el lienzo WebGL sale de las capas y nada de encima tiene que componerse */
+.hero-foto { display: none; }
+.tres-d-congelada .hero-foto { display: block; }
+.tres-d-congelada .hero-imagen { display: none; }   /* tapada por la foto: que no ocupe memoria */
 
 .hero-telon { inset: calc(-1 * var(--sangrado)); }
 .hero-mascara {

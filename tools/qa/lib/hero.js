@@ -87,7 +87,7 @@ function medirEnPagina(rango) {
     let perdido = null;
     try { const gl = lienzo.getContext('webgl2'); perdido = gl ? gl.isContextLost() : null; } catch (e) { perdido = 'error'; }
     lz = { x: r.left, y: r.top, w: r.width, h: r.height, ew: re.width, eh: re.height, bw: lienzo.width, bh: lienzo.height,
-           opacidad: parseFloat(cs(lienzo).opacity), perdido };
+           opacidad: parseFloat(cs(lienzo).opacity), perdido, oculto: cs(lienzo).display === 'none' };
   }
   const img = document.querySelector('.hero-imagen img');
   const excluir = [];
@@ -104,6 +104,9 @@ function medirEnPagina(rango) {
     real: { x: real.left, y: real.top, lado: real.width, alto: real.height },
     esperado, escalaReal, opacidad, opTinte,
     lienzo: lz, lista: hero.classList.contains('tres-d-lista'),
+    /* en reposo, el último fotograma en un <img> y el lienzo fuera (tres-d.js) */
+    congelada: hero.classList.contains('tres-d-congelada'),
+    foto: (f => f ? { completa: f.complete && f.naturalWidth > 0, visible: getComputedStyle(f).display !== 'none' } : null)(document.querySelector('.hero-foto')),
     imagen: img ? { completa: img.complete && img.naturalWidth > 0, src: (img.currentSrc || '').split('/').pop() } : null,
     tresD: tresD ? { cargada: tresD.cargada } : null,
     fuentes: document.fonts ? document.fonts.status : '?',
@@ -162,7 +165,9 @@ function comprobar(m, png, { etiqueta = '', paso = 24, final = false } = {}) {
   const opEsperada = !m.mov ? 1 : m.p <= 0.55 ? 1 : m.p >= 0.92 ? 0 : 1 - (m.p - 0.55) / 0.37;
   if (Math.abs(m.opacidad - opEsperada) > 0.02) fallo('opacidad del telón', `real ${m.opacidad} esperada ${opEsperada.toFixed(3)}`);
   /* 3. Lienzo 3D: ocupa la escena, con su resolución, y su contexto vive */
-  if (m.lienzo) {
+  if (m.lienzo && m.lienzo.oculto) {
+    if (!(m.congelada && m.foto && m.foto.completa && m.foto.visible)) fallo('lienzo 3D fuera sin su último fotograma a la vista', JSON.stringify(m.foto));
+  } else if (m.lienzo) {
     const l = m.lienzo;
     if (Math.abs(l.w - l.ew) > 1 || Math.abs(l.h - l.eh) > 1) fallo('lienzo 3D con otra caja que la escena', `${r1(l.w)}×${r1(l.h)} frente a ${r1(l.ew)}×${r1(l.eh)}`);
     if (l.perdido === true && m.lista) fallo('contexto WebGL perdido y el lienzo sigue a la vista', '');
@@ -171,7 +176,8 @@ function comprobar(m, png, { etiqueta = '', paso = 24, final = false } = {}) {
     if (m.lista && Math.abs(l.bw - esperadoW) > 2 && Math.abs(l.bw - Math.round(l.ew * Math.min(m.dpr, 1.5))) > 2) fallo('resolución del lienzo 3D', `${l.bw} px de ancho para ${r1(l.ew)} CSS px a dpr ${m.dpr}`);
   } else if (m.lista) fallo('marcado tres-d-lista sin lienzo', '');
   /* Al final de cada escenario: o la pista 3D a la vista o la imagen fija cargada, nunca nada a medias */
-  if (final && !(m.lista && m.lienzo && m.lienzo.opacidad > 0.99) && !(m.imagen && m.imagen.completa)) fallo('ni pista 3D ni imagen fija', JSON.stringify(m.imagen));
+  const pistaViva = m.lista && m.lienzo && (m.lienzo.oculto ? m.congelada && m.foto && m.foto.completa : m.lienzo.opacidad > 0.99);
+  if (final && !pistaViva && !(m.imagen && m.imagen.completa)) fallo('ni pista 3D ni imagen fija', JSON.stringify(m.imagen));
   /* 4. Píxeles: fuera del logo, negro; dentro, tinte o pista */
   if (png) {
     const img = leerPng(png);

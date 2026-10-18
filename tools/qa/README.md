@@ -76,15 +76,17 @@ que falla.
   excluidos de `.vercelignore` y el modo mantenimiento (503, `Retry-After`,
   noindex, clave y cookie).
 - **accesibilidad**: axe-core, WCAG 2.2 A/AA, infracciones graves y críticas.
-- **hero**: el hero de /pizarra en 14 escenarios × 5 dispositivos (1920,
-  1440 y 1280 con ratón; 390 y 360 táctiles) con GPU real (ANGLE): carga en
+- **hero**: el hero de /pizarra en 14 escenarios × 6 dispositivos (1920,
+  1440 y 1280 con ratón, 1920 también a densidad 2; 390 y 360 táctiles) con
+  GPU real (ANGLE): carga en
   frío, recarga a mitad de página, atrás/adelante con bfcache (ventana fuera
   de la pantalla), cambio de tamaño u orientación y de densidad durante la
   entrada, pestaña oculta antes de los 6 s del 3D, primer gesto, scroll
   rápido mientras se crea la escena, fuentes lentas, CPU y red lentas,
   contexto WebGL perdido y recuperado, sin WebGL, movimiento reducido y
   GPU con poca memoria (`gpu-justa`: `--force-gpu-mem-available-mb`
-  proporcional a los píxeles de la pantalla; se comprueba en reposo). En
+  32 MB a 1920×1080 y en proporción a la raíz de los píxeles físicos, 64 MB
+  a densidad 2; se comprueba en reposo, con la pista 3D congelada). En
   cada momento comprueba (`lib/hero.js`) que la caja del logo es la que
   dicta el CSS (`--L`, `--mx`, `--my`, escala del progreso) y muestrea la
   captura: fuera del logo solo negro, dentro el tinte; y al final, o la
