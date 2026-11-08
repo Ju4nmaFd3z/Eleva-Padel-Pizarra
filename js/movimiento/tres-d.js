@@ -377,9 +377,9 @@
       quitar();
     },
     /* para medir y para los vídeos */
-    estado: function () { return { cargada: !!pista, actual: actual, objetivo: objetivo }; }
+    estado: function () { return { cargada: !!pista, cargando: cargando, congelada: congelado, actual: actual, objetivo: objetivo }; }
   }, { raiz: '.hero' });
 
   /* Acceso de solo lectura para las pruebas */
-  window.ElevaTresD = { estado: function () { return { cargada: !!pista, actual: actual, objetivo: objetivo }; } };
+  window.ElevaTresD = { estado: function () { return { cargada: !!pista, cargando: cargando, congelada: congelado, actual: actual, objetivo: objetivo }; } };
 })();

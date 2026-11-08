@@ -120,6 +120,9 @@
   }
 
   /* ── Motor: currentTime de las animaciones sd-* ─────────────── */
+  /* progreso a partir del cual el velo del hero deja de ser transparente
+     (el mismo .35 de .hero-velo en css/movimiento.css) */
+  var VELO_DESDE = 0.35;
   var pistas = [], pendiente = false, escuchando = false, fondo = null, telon = null, heroEl = null;
   function rem() { return parseFloat(getComputedStyle(document.documentElement).fontSize) || 16; }
   /* Rangos (0 → 1) de cada tipo */
@@ -169,6 +172,9 @@
          se mueve y pide sus capas compuestas mientras dure (nucleo.js) */
       var ph = progresoHero.toFixed(4);
       if (heroEl.style.getPropertyValue('--p-hero') !== ph) { M.enMovimiento(heroEl); heroEl.style.setProperty('--p-hero', ph); }
+      /* el velo es transparente hasta VELO_DESDE: mientras, no se pinta (una
+         capa de pantalla completa menos en movimiento; memoria de GPU) */
+      heroEl.classList.toggle('hero-con-velo', progresoHero > VELO_DESDE);
     }
     if (telon) telon.style.scale = Math.pow(M.tokens().profEscalaHero || 1, progresoHero).toFixed(4);
     if (fondo && y < vh * 1.5) fondo.style.translate = '0 ' + (Math.max(0, y) * M.tokens().distEscena).toFixed(1) + 'px';
@@ -204,7 +210,7 @@
       if (ioTarjetas) ioTarjetas.disconnect();
       if (fondo) fondo.style.translate = '';
       if (telon) telon.style.scale = '';
-      if (heroEl) heroEl.style.removeProperty('--p-hero');
+      if (heroEl) { heroEl.style.removeProperty('--p-hero'); heroEl.classList.remove('hero-con-velo'); }
     }
   });
 })();

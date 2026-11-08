@@ -63,7 +63,12 @@
 html.mov :is(.hero, .marca-hero) { --p-hero: 0; }
 html.mov .hero-mascara { opacity: clamp(0, (.92 - var(--p-hero)) / .37, 1); }
 html.mov .hero-tinte   { opacity: calc(.32 * clamp(0, (.4 - var(--p-hero)) / .32, 1)); }
-html.mov .hero-velo    { opacity: clamp(0, (var(--p-hero) - .35) / .65, 1); }
+html.mov .hero-velo    { opacity: clamp(0, (var(--p-hero) - .35) / .65, 1); }   /* .35 = VELO_DESDE de scroll.js */
+/* Mientras es transparente, el velo no se pinta (scroll.js marca .hero-con-velo):
+   una capa de pantalla completa menos en movimiento */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  html.mov .hero:not(.hero-con-velo) .hero-velo { visibility: hidden; }
+}
 html.mov .hero-linea   { translate: calc(var(--sentido, 0) * var(--dist-linea) * var(--p-hero)) 0; }
 html.mov .hero-linea:nth-child(1) { --sentido: -1; }
 html.mov .hero-linea:nth-child(2) { --sentido: 1; }

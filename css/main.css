@@ -318,6 +318,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Relevo: la escena viva entra fundida sobre la imagen fija */
 .hero-lienzo { opacity: 0; transition: opacity var(--dur-corta) linear; }
 .tres-d-lista .hero-lienzo { opacity: 1; }
+/* Con la escena viva ya opaca encima (al terminar su fundido), la imagen fija
+   no se pinta: con la pista en movimiento, una capa de pantalla completa menos
+   (memoria de GPU). Si se pierde el contexto WebGL, vuelve al momento. */
+.tres-d-lista .hero-imagen { visibility: hidden; transition: visibility 0s var(--dur-corta); }
 /* En reposo, el último fotograma de la escena viva en un <img> (tres-d.js):
    el lienzo WebGL sale de las capas y nada de encima tiene que componerse */
 .hero-foto { display: none; }
