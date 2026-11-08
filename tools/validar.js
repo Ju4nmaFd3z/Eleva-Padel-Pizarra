@@ -8,6 +8,7 @@
    Comprueba:
    · PENDIENTE_CLUB / PENDIENTE_MARCA en los archivos servidos (los lista)
    · datos con `verificado` más antiguos que el plazo (90 días por defecto)
+   · bloques que caducan publicados sin `verificado` o sin `fuente`
    · eventos sin `hasta` válido o ya caducados
    · mismas claves de i18n en ES, EN y NL
    · mismo ?v= en todos los HTML
@@ -66,10 +67,28 @@ function revisarFechas(obj, ruta, archivo) {
   }
   for (const k of Object.keys(obj)) revisarFechas(obj[k], ruta ? `${ruta}.${k}` : k, archivo);
 }
+/* Bloques que caducan: si se publican, llevan `verificado` (AAAA-MM-DD) y `fuente` */
+const CADUCAN = ['instalaciones', 'reservas', 'tarifas.pistas', 'tarifas.clases', 'tarifas.infantil',
+  'otrosServicios', 'cancelaciones', 'pools', 'pools.horario', 'colaborar', 'colaborar.disponibilidad', 'contacto.geo'];
+const { presente } = require('../js/render.js');
+function revisarCaducables(m, archivo) {
+  for (const ruta of CADUCAN) {
+    const v = ruta.split('.').reduce((o, k) => (o && typeof o === 'object' ? o[k] : undefined), m);
+    if (!presente(v) || typeof v !== 'object') continue;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.verificado || '')) errores.push(`${archivo}: ${ruta} se publica sin \`verificado\` (AAAA-MM-DD)`);
+    if (!presente(v.fuente)) errores.push(`${archivo}: ${ruta} se publica sin \`fuente\``);
+  }
+  /* El número que pinta «Colaborar» es el mismo WhatsApp del club */
+  const co = m.colaborar, wa = m.contacto && m.contacto.whatsapp;
+  if (presente(co) && typeof co === 'object' && presente(co.numero)) {
+    if (!presente(wa) || !wa.endsWith(String(co.numero).replace(/\D/g, ''))) errores.push(`${archivo}: colaborar.numero no coincide con contacto.whatsapp`);
+  }
+}
 for (const p of servidos.filter(p => p.endsWith('manifest.js'))) {
   let m;
   try { m = cargarManifest(p); } catch (e) { errores.push(`${rel(p)}: no se puede cargar (${e.message})`); continue; }
   revisarFechas(m, '', rel(p));
+  revisarCaducables(m, rel(p));
   (m.eventos || []).forEach(ev => {
     const hasta = Date.parse(ev && ev.hasta);
     if (isNaN(hasta)) errores.push(`${rel(p)}: evento «${ev && ev.id}» sin fecha de fin válida`);
