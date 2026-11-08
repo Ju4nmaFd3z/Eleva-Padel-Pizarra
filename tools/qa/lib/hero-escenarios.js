@@ -29,13 +29,19 @@ const DISPOSITIVOS = {
 const ARGS_GPU = ['--enable-gpu', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'];
 if (process.platform === 'win32') ARGS_GPU.push('--use-angle=d3d11');
 /* Memoria de GPU del escenario «gpu-justa»: 32 MB para 1920×1080 a densidad 1
-   y, al crecer los píxeles físicos, en proporción a su raíz (64 MB a densidad 2):
-   más justa que proporcional, a propósito. Con ella el hero anterior al arreglo
-   (octubre de 2026) perdía teselas en casi todas las cargas. */
+   y, con más píxeles físicos, en proporción (128 MB a 1920 con densidad 2;
+   46 MB en 390×844 a densidad 3): la misma presión por píxel en todos. Chrome
+   da a cada pestaña 512 MB en escritorio (el doble con pantallas de 3500 px
+   físicos o más) y en Android 1/8 de la RAM, hasta 256 MB: esto queda muy por
+   debajo. El hero anterior al arreglo (octubre de 2026) perdía teselas con esta
+   memoria en casi todas las cargas (6 de 6 a 1920 con densidad 2 y 128 MB).
+   Por debajo de la proporción ya no cabe ni lo mínimo de un diseño con una
+   imagen a pantalla completa: a densidad 2 la ventana sola son 33 MB de
+   teselas y la escena congelada, otros 31 MB de imagen. */
 const MEMORIA_JUSTA_REF_MB = 32;
 function memoriaJusta(disp) {
   const k = disp.ancho * disp.alto * disp.dpr * disp.dpr / (1920 * 1080);
-  return Math.max(MEMORIA_JUSTA_REF_MB, Math.round(MEMORIA_JUSTA_REF_MB * Math.sqrt(k)));
+  return Math.max(MEMORIA_JUSTA_REF_MB, Math.round(MEMORIA_JUSTA_REF_MB * k));
 }
 const LANZAR = {
   gpu: { args: ARGS_GPU, ignoreDefaultArgs: ['--disable-back-forward-cache'] },
@@ -115,44 +121,65 @@ async function irA(p, y) {
 }
 
 /* Comprobación en un momento: captura + medida + comparación */
-async function chequear(ctxEsc, etiqueta, { reintento = 0 } = {}) {
+async function chequear(ctxEsc, etiqueta, { reposo = false } = {}) {
   const { p, fallos, capturar } = ctxEsc;
   /* el pulso del logo al tocar (tacto.js) dura --dur-larga: se mide quieto */
   await p.waitForFunction(() => !document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.classList && a.effect.target.classList.contains('hero-pulso')), null, { timeout: 3000, polling: 50 }).catch(() => {});
   /* La captura y la medida tienen que ser del mismo estado: si el scroll o
      el tamaño cambian entre una y otra (restauración del scroll en varios
-     pasos, métricas nuevas), se repiten. Hasta 5 intentos. */
-  let png, m;
-  for (let i = 0; i < 5; i++) {
+     pasos, métricas nuevas), no son del mismo momento y se vuelven a tomar.
+     Con «reposo» (gpu-justa), además, el estado del hero tiene que ser el
+     estable definido en enReposo() antes y después de la captura (sin que la
+     pista 3D empiece o termine de moverse entre una y otra); si no lo es, se
+     espera a que lo sea. Nunca se repite una captura que sí era de un estado válido: un fallo
+     a la primera es un fallo. Hasta 5 intentos. */
+  let png, m, estable = false;
+  for (let i = 0; i < 5 && !estable; i++) {
+    if (reposo && i) await enReposo(p);
+    await scrollParado(p);
     await fotogramas(p, 2).catch(() => {});
-    const antes = await p.evaluate(() => [scrollY, innerWidth, innerHeight, devicePixelRatio].join());
+    const antes = await p.evaluate(ESTADO_HERO, false);
     png = await p.screenshot({ animations: 'allow', caret: 'initial' });
     m = await H.medir(p);
-    if ([m.scrollY, m.vw, m.vh, m.dpr].join() === antes) break;
+    const despues = await p.evaluate(ESTADO_HERO, false);
+    /* la geometría, la de la propia medida (medir() añade y quita sondas) */
+    estable = antes.geometria === [m.scrollY, m.vw, m.vh, m.dpr].join() &&
+      (!reposo || (antes.hero === despues.hero && antes.quieto && despues.quieto));
   }
-  let f = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
-  /* Con la memoria de GPU justa, rasterizar puede ir por detrás un momento:
-     se exige que nada se QUEDE a medias. Si falla, se repite pasados
-     reintento ms; solo es fallo si sigue igual (se apunta como transitorio). */
-  if (f.length && reintento) {
-    if (capturar) await capturar(png, etiqueta + ' (transitorio)');
-    await espera(reintento);
-    await fotogramas(p, 2).catch(() => {});
-    png = await p.screenshot({ animations: 'allow', caret: 'initial' });
-    m = await H.medir(p);
-    const f2 = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
-    ctxEsc.medidas.push({ etiqueta: etiqueta + ' (transitorio)', fallos: f.map(x => x.clave) });
-    f = f2;
-  }
+  const f = H.comprobar(m, png, { etiqueta, final: /^final|recuperado/.test(etiqueta) });
+  if (!estable) f.push({ tipo: 'hero', clave: etiqueta + ': ' + (reposo ? 'el hero no llega a reposo' : 'el hero no se está quieto para medirlo'), detalle: '' });
   if (f.length && capturar) await capturar(png, etiqueta);
   fallos.push(...f);
   ctxEsc.medidas.push({ etiqueta, p: +m.p.toFixed(3), scrollY: m.scrollY, lienzo: !!m.lienzo, lista: m.lista, fuentes: m.fuentes });
   return m;
 }
 
-/* Plazo para que el compositor termine de rasterizar con la memoria justa
-   (con seis navegadores con GPU a la vez, a densidad 2, tarda hasta unos segundos) */
-const REINTENTO_MS = 5000;
+/* El scroll no se mueve (la restauración al recargar puede ir en varios pasos
+   o suave): el mismo scrollY en 4 fotogramas seguidos, hasta 5 s */
+async function scrollParado(p) {
+  await p.evaluate(() => new Promise(r => {
+    let y = scrollY, n = 0; const t0 = performance.now();
+    const paso = () => { if (scrollY === y) n++; else { y = scrollY; n = 0; } if (n >= 4 || performance.now() - t0 > 5000) r(); else requestAnimationFrame(paso); };
+    requestAnimationFrame(paso);
+  })).catch(() => {});
+}
+
+/* Estado del hero que tiene que ser el mismo en la captura y en la medida;
+   «quieto» = el estado estable de enReposo() (se ejecuta en la página) */
+const ESTADO_HERO = soloQuieto => {
+  const h = document.querySelector('.hero');
+  const t = window.ElevaTresD ? window.ElevaTresD.estado() : {};
+  const mov = !!document.querySelector('.en-movimiento');
+  const lista = !!(h && h.classList.contains('tres-d-lista')), cong = !!(h && h.classList.contains('tres-d-congelada'));
+  const anim = document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('.hero'));
+  const quieto = !mov && !anim && !t.cargando && (!lista || cong);
+  if (soloQuieto) return quieto;
+  return {
+    geometria: [scrollY, innerWidth, innerHeight, devicePixelRatio].join(),
+    hero: [mov, lista, cong, !!t.cargando, anim].join(),
+    quieto
+  };
+};
 
 /* Espera a que la página esté quieta (fuentes, imagen del hero) */
 async function quieta(p, ms = 8000) {
@@ -166,12 +193,11 @@ async function noLlega(e) {
   e.fallos.push({ tipo: 'hero', clave: 'la pista 3D no llega', detalle: JSON.stringify(est) + (e.consola.length ? ' · ' + e.consola.join(' | ') : '') });
 }
 
-/* Nada se mueve en el hero: sin .en-movimiento ni animaciones o transiciones en marcha */
+/* Estado estable del hero: nada se mueve (sin .en-movimiento ni animaciones
+   o transiciones en marcha), la pista 3D no se está creando y, si está, ya
+   congelada en su último fotograma (tres-d.js) */
 async function enReposo(p) {
-  /* y, con la pista 3D, ya congelada en su último fotograma (tres-d.js) */
-  await p.waitForFunction(() => !document.querySelector('.en-movimiento') && (!document.querySelector('.hero.tres-d-lista') || !!document.querySelector('.hero.tres-d-congelada')) &&
-    !document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('.hero')),
-  null, { timeout: 8000, polling: 50 }).catch(() => {});
+  await p.waitForFunction(ESTADO_HERO, true, { timeout: 15000, polling: 50 }).catch(() => {});
   await fotogramas(p, 3);
 }
 
@@ -398,16 +424,16 @@ const ESCENARIOS = {
     await e.p.goto(URL_PIZARRA(e.base), { waitUntil: 'load' });
     await quieta(e.p);
     await enReposo(e.p);
-    await chequear(e, 'al cargar', { reintento: REINTENTO_MS });
+    await chequear(e, 'al cargar', { reposo: true });
     await gesto(e.p, e.cdp, e.disp, e.r);
     const y = Math.round(e.disp.alto * e.r.entre(0.05, 0.9));
     await irA(e.p, y);
     await enReposo(e.p);
-    await chequear(e, 'en ' + y, { reintento: REINTENTO_MS });
+    await chequear(e, 'en ' + y, { reposo: true });
     await irA(e.p, 0);
     await esperar3D(e.p, 12000);
     await enReposo(e.p);
-    await chequear(e, 'final', { reintento: REINTENTO_MS });
+    await chequear(e, 'final', { reposo: true });
   },
 
   /* 32 MB (proporcional) con otras 4 páginas del hero a la vez en el mismo navegador */
