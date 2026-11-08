@@ -62,21 +62,6 @@ module.exports = [
     apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 2'
   },
   {
-    caso: /^responsive · marca · (1920x1080|2560x1440) · es · normal$/,
-    fallos: [
-      partida('span.hero-linea «Eleva» «Eleva»', '549 px en 508 px'),
-      partida('span.hero-linea «Pádel» «Pádel»', '563 px en 508 px'),
-      partida('span.hero-linea «Eleva» «Eleva»', '549 px en 238 px'),
-      partida('span.hero-linea «Pádel» «Pádel»', '563 px en 238 px'),
-      Object.assign(partida('span.hero-linea «Eleva» «Eleva»', '549 px en 508 px'), { tipo: 'palabra-partida (idiomas abiertos)' }),
-      Object.assign(partida('span.hero-linea «Pádel» «Pádel»', '563 px en 508 px'), { tipo: 'palabra-partida (idiomas abiertos)' }),
-      Object.assign(partida('span.hero-linea «Eleva» «Eleva»', '549 px en 238 px'), { tipo: 'palabra-partida (idiomas abiertos)' }),
-      Object.assign(partida('span.hero-linea «Pádel» «Pádel»', '563 px en 238 px'), { tipo: 'palabra-partida (idiomas abiertos)' })
-    ],
-    motivo: '/ en pantallas anchas (1920 y 2560 px): el titular del hero se parte dentro de las palabras («ELEV / A», «PÁ- / DEL»; a 2560 en tres trozos): la columna mide 508 y 238 px y la letra 256 px',
-    apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 3'
-  },
-  {
     caso: /^responsive · pizarra · (667x375-apaisado · es · normal|768x1024 · es · normal|zoom200 · es · (normal|sinjs))$/,
     fallos: [
       partida('h3 «Reservas de pista» «Reservas»', '276 px en 249 px'),

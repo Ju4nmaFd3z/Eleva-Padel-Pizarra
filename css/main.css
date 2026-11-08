@@ -624,6 +624,15 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   width: 100%; max-width: var(--ancho); margin-inline: auto;
 }
 .marca-titulo .hero-linea:last-child { color: var(--anillo); }
+/* Desde 40rem el titular va en la columna que deja el logo. --cabe es el
+   ancho de esa columna (contenido − logo − hueco, con 1,25rem de reserva
+   para la barra de scroll que cuenta en 100vw): la letra nunca pasa de
+   --cabe / 2,3, y «Eleva» y «Pádel» (2,15 y 2,2 em) caben enteras. */
+@media (min-width: 40rem) {
+  .marca-titulo {
+    --cabe: calc(min(100vw - max(var(--margen), env(safe-area-inset-left)) - max(var(--margen), env(safe-area-inset-right)), var(--ancho)) - var(--L) - 2.25rem);
+  }
+}
 .clubes { display: grid; gap: 1.5rem; margin-top: 2rem; }
 .club {
   position: relative; display: grid; isolation: isolate; overflow: hidden;
@@ -681,7 +690,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
     min-height: calc(100svh - var(--alto-cabecera));
   }
   .marca-logo { grid-row: 1; grid-column: 2; }
-  .marca-titulo { grid-row: 1; grid-column: 1; align-self: end; font-size: clamp(3rem, min(15vw, 26svh), 9rem); }
+  .marca-titulo { grid-row: 1; grid-column: 1; align-self: end; font-size: min(clamp(3rem, min(15vw, 26svh), 9rem), var(--cabe) / 2.3); }
 }
 
 /* ── 64rem: escritorio y tablets grandes ──────────────────────── */
@@ -728,12 +737,14 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .pie-columnas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .marca .logo { margin-right: auto; }
   .marca-hero {
-    --L: min(calc((100svh - var(--alto-cabecera)) * .75), 42vw);
+    /* el logo, como mucho la mitad del contenido: en pantallas anchas deja
+       sitio al titular (a 2560 px llegaba a 1026 px y el titular, a 238) */
+    --L: min(calc((100svh - var(--alto-cabecera)) * .75), 42vw, var(--ancho) / 2);
     grid-template-rows: 1fr; grid-template-columns: minmax(0, 1fr) auto;
     padding-top: 3rem; padding-inline: max(var(--margen), calc((100% - var(--ancho)) / 2));
   }
   .marca-logo { grid-row: 1; grid-column: 2; }
-  .marca-titulo { grid-row: 1; grid-column: 1; align-self: end; font-size: clamp(5rem, min(15vw, 26svh), 16rem); }
+  .marca-titulo { grid-row: 1; grid-column: 1; align-self: end; font-size: min(clamp(5rem, min(15vw, 26svh), 16rem), var(--cabe) / 2.3); }
 }
 
 /* ── 90rem: pantallas grandes ─────────────────────────────────── */
