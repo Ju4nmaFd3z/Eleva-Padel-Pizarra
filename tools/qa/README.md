@@ -65,7 +65,8 @@ que falla.
   abiertos; y en cada carga, errores y avisos de consola, errores de página,
   peticiones fallidas o con error, peticiones a terceros, CSP (cabecera y
   violaciones) y estado HTTP.
-- **interaccion**: selector de idioma con teclado y ratón, menú móvil (foco
+- **interaccion**: cursor del sistema siempre visible bajo el punto propio,
+  selector de idioma con teclado y ratón, menú móvil (foco
   en ciclo, Escape, paso a escritorio), orden e indicador del foco, giro de
   las insignias, abanico de los pools dentro de su celda, idioma recordado
   solo al elegirlo, sin JS (menú desplegado, selector oculto) y que la pista

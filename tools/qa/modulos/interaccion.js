@@ -7,6 +7,7 @@
    · selector de idioma con teclado y ratón;
    · menú móvil: apertura, foco en ciclo, Escape, paso a escritorio;
    · orden y visibilidad del foco en la cabecera;
+   · cursor del sistema siempre visible bajo el punto propio;
    · giro de las insignias con teclado y tras cambiar de idioma;
    · abanico de los pools: ninguna insignia sale de su celda;
    · idioma: solo se guarda al elegirlo y se recuerda entre / y
@@ -249,8 +250,35 @@ function sinPista(id, ruta, gesto) {
   });
 }
 
+/* Cursor del sistema (decisión 1.2 del encargo): con ratón, el punto propio
+   acompaña al cursor del sistema, que se ve siempre debajo. Ningún elemento
+   puede calcular `cursor: none`, ni antes ni después de mover el ratón. */
+function cursorSistema(pagina, ruta) {
+  return caso('cursor-sistema · ' + pagina + ' · 1440x900', pagina, true, { vista: '1440x900', ruta }, async (p, ok) => {
+    const ocultos = () => p.evaluate(() => [...document.querySelectorAll('*')]
+      .filter(e => getComputedStyle(e).cursor === 'none')
+      .map(e => e.tagName.toLowerCase() + (e.className && typeof e.className === 'string' ? '.' + e.className.split(' ')[0] : '')));
+    const antes = await ocultos();
+    ok(!antes.length, 'cursor del sistema oculto antes de mover el ratón', antes.slice(0, 5).join(', '));
+    const caja = await p.locator('.cabecera a[href]').first().boundingBox();
+    await p.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2, { steps: 4 });
+    await p.mouse.move(caja.x + caja.width / 2 + 3, caja.y + caja.height / 2 + 3, { steps: 2 });
+    await estabilizar(p);
+    const d = await p.evaluate(() => {
+      const c = document.querySelector('.cursor');
+      return { hay: !!c, visible: !!c && c.classList.contains('visible'), sobre: !!c && c.classList.contains('sobre') };
+    });
+    ok(d.hay && d.visible, 'el punto no acompaña al ratón', JSON.stringify(d));
+    ok(d.sobre, 'el punto no crece sobre un enlace', JSON.stringify(d));
+    const despues = await ocultos();
+    ok(!despues.length, 'cursor del sistema oculto con el ratón encima', despues.slice(0, 5).join(', '));
+  });
+}
+
 function casos() {
   return [
+    cursorSistema('pizarra', '/pizarra'),
+    cursorSistema('marca', '/'),
     selectorIdioma('pizarra', '/pizarra'),
     selectorIdioma('marca', '/'),
     menuMovil(),
