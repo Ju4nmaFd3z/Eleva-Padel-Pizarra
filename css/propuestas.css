@@ -40,8 +40,20 @@ html.mov[data-marron="2"] .seccion::before {
 }
 html.mov[data-marron="2"] .seccion:first-of-type::before { content: none; }
 
+/* M3 · Tinta en reposo: las superficies alternas se quedan, pero el color
+   entra fundido (sin telón marrón en las negras ni triángulo que crece).
+   El tinte del logo del hero, en claro. */
+html.mov[data-marron="3"] .seccion { background: var(--negro); }
+html.mov[data-marron="3"] .seccion::after { content: none; }
+html.mov[data-marron="3"] .seccion::before {
+  inset: 0; height: auto;
+  background: var(--fondo);
+  animation: sd-corte-fundido 1s linear both;
+}
 
-html[data-marron="2"] .hero-tinte { background: var(--claro); opacity: .2; }
-html.mov[data-marron="2"] .hero-tinte { opacity: calc(.2 * clamp(0, (.4 - var(--p-hero)) / .32, 1)); }
+html:is([data-marron="2"], [data-marron="3"]) .hero-tinte { background: var(--claro); opacity: .2; }
+html.mov:is([data-marron="2"], [data-marron="3"]) .hero-tinte { opacity: calc(.2 * clamp(0, (.4 - var(--p-hero)) / .32, 1)); }
 
 @keyframes sd-corte-filete { 0% { scale: 0 1; opacity: 1; } 75% { opacity: 1; } 100% { scale: 1 1; opacity: .45; } }
+@keyframes sd-corte-fundido { from { opacity: 0; } to { opacity: 1; } }
+
