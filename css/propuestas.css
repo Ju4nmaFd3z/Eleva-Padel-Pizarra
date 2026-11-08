@@ -57,3 +57,58 @@ html.mov:is([data-marron="2"], [data-marron="3"]) .hero-tinte { opacity: calc(.2
 @keyframes sd-corte-filete { 0% { scale: 0 1; opacity: 1; } 75% { opacity: 1; } 100% { scale: 1 1; opacity: .45; } }
 @keyframes sd-corte-fundido { from { opacity: 0; } to { opacity: 1; } }
 
+/* ── Punto 5 · Política de cancelaciones ──────────────────────────────
+   El texto es el del cartel, sin cambiar una palabra (render.js solo pone
+   en su pieza el rótulo de cada norma, lo que va antes de los dos puntos).
+   Todo el texto se ve desde el primer fotograma: lo que se mueve es luz y
+   decoración, nunca las letras. */
+
+/* C1 · Carril LED: cada lista es un tramo de carril con un punto por
+   norma. Al bajar, la luz recorre el carril y enciende cada punto cuando
+   pasa por él (al 62 % de la pantalla). El título del bloque se queda a la
+   vista mientras se leen sus normas (sticky, sin secuestrar el scroll). */
+html[data-cancel="1"] .politica .lista {
+  position: relative; display: grid; gap: 1.5rem;
+  padding-left: 2.25rem; list-style: none;
+}
+html[data-cancel="1"] .politica .lista::before,
+html[data-cancel="1"] .politica .lista::after {
+  content: ""; position: absolute; left: .5rem; top: .55em; bottom: .55em;
+  width: 2px; margin-left: -1px; pointer-events: none;
+}
+html[data-cancel="1"] .politica .lista::before { background: var(--linea); }
+html[data-cancel="1"] .politica .lista::after {
+  background: linear-gradient(to bottom, var(--beige), var(--crema));
+  box-shadow: 0 0 10px 1px rgba(237, 228, 220, .45);
+  transform-origin: 50% 0;
+}
+html[data-cancel="1"] .politica .lista li { position: relative; margin: 0; }
+html[data-cancel="1"] .politica .lista li::before,
+html[data-cancel="1"] .politica .lista li::after {
+  content: ""; position: absolute; left: calc(-2.25rem + .5rem - 7px); top: calc(.8em - 7px);
+  width: 14px; height: 14px; border-radius: 50%; pointer-events: none;
+}
+html[data-cancel="1"] .politica .lista li::before { background: var(--fondo); border: 2px solid var(--anillo); }
+html[data-cancel="1"] .politica .lista li::after { background: var(--crema); box-shadow: 0 0 12px 3px rgba(237, 228, 220, .55); }
+html[data-cancel="1"] .norma-rotulo {
+  display: block; margin-bottom: .25rem;
+  color: var(--crema); font: 600 1.375rem/1.1 var(--fuente-titulos);
+  letter-spacing: .02em; text-transform: uppercase;
+}
+html[data-cancel="1"] .politica .nota {
+  max-width: 40ch; margin-top: 2.5rem;
+  color: var(--crema); font: 500 clamp(1.25rem, 3.6vw, 1.75rem)/1.3 var(--fuente-texto);
+}
+@media (min-width: 40rem) {
+  html[data-cancel="1"] .politica h3 { position: sticky; top: calc(var(--alto-cabecera) + 1.5rem); }
+}
+html.mov[data-cancel="1"] .politica .lista::after { animation: sd-carril 1s linear both; }
+html.mov[data-cancel="1"] .politica .lista li::after { animation: sd-punto 1s linear both; }
+
+
+/* En pausa en su primer fotograma hasta que scroll.js las recoge */
+html.mov[data-cancel] .politica :is(.lista, .lista li, .bloque)::before,
+html.mov[data-cancel] .politica :is(.lista, .lista li, .bloque)::after { animation-play-state: paused; }
+
+@keyframes sd-carril { from { scale: 1 0; } to { scale: 1 1; } }
+@keyframes sd-punto  { from { opacity: 0; scale: .4; } to { opacity: 1; scale: 1; } }
