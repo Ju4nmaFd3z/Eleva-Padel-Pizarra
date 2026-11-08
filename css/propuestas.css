@@ -25,3 +25,23 @@
 html.mov[data-marron="1"] .seccion:not([data-superficie="tinta"])::before,
 html.mov[data-marron="1"] .seccion:not([data-superficie="tinta"])::after { content: none; }
 
+/* M2 · Negro continuo: todas las superficies negras; el corte es un filete
+   de luz crema que se abre desde el centro al entrar cada sección y se
+   queda como separador. El tinte del logo del hero, en claro. */
+html[data-marron="2"] .seccion[data-superficie="tinta"] { --fondo: var(--negro); --fondo-previo: var(--negro); }
+html[data-marron="2"] .seccion + .seccion { border-top: 1px solid var(--linea); }
+html.mov[data-marron="2"] .seccion + .seccion { border-top: 0; }
+html.mov[data-marron="2"] .seccion::after { content: none; }
+html.mov[data-marron="2"] .seccion::before {
+  inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(to right, rgba(237, 228, 220, 0), var(--crema) 50%, rgba(237, 228, 220, 0));
+  transform-origin: 50% 0;
+  animation: sd-corte-filete 1s linear both;
+}
+html.mov[data-marron="2"] .seccion:first-of-type::before { content: none; }
+
+
+html[data-marron="2"] .hero-tinte { background: var(--claro); opacity: .2; }
+html.mov[data-marron="2"] .hero-tinte { opacity: calc(.2 * clamp(0, (.4 - var(--p-hero)) / .32, 1)); }
+
+@keyframes sd-corte-filete { 0% { scale: 0 1; opacity: 1; } 75% { opacity: 1; } 100% { scale: 1 1; opacity: .45; } }
