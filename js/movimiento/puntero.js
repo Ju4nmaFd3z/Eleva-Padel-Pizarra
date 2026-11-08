@@ -6,8 +6,9 @@
                    opuestos (la cámara de la pista lo hace en tres-d.js)
    · inclinacion — las insignias de los pools se inclinan hacia el puntero
    · iman        — botones magnéticos suaves (como mucho --dist-iman)
-   · cursor      — un punto que crece sobre lo interactivo; cursor nativo
-                   en los campos de texto
+   · cursor      — un punto que acompaña al cursor del sistema (siempre
+                   visible) y crece sobre lo interactivo; se oculta en los
+                   campos de texto
    Cada uno es un módulo del núcleo (activar, pausar, reanudar, desactivar,
    reenganchar).
    ================================================================ */
@@ -152,10 +153,8 @@
     });
     function mover(e) {
       if (!el) return;
-      if (e.pointerType && e.pointerType !== 'mouse') { el.classList.remove('visible'); document.documentElement.classList.remove('cursor-propio'); return; }
+      if (e.pointerType && e.pointerType !== 'mouse') { el.classList.remove('visible'); return; }
       x = e.clientX; y = e.clientY;
-      /* El nativo se oculta solo cuando el punto ya está en su sitio */
-      document.documentElement.classList.add('cursor-propio');
       var t = e.target && e.target.closest ? e.target : null;
       var enTexto = !!(t && t.closest(TEXTO));
       el.classList.toggle('visible', !enTexto);
@@ -186,7 +185,6 @@
       reanudar: function () { escuchar(true); },
       desactivar: function () {
         escuchar(false); b.parar();
-        document.documentElement.classList.remove('cursor-propio');
         if (el) el.remove();
         el = null;
       }

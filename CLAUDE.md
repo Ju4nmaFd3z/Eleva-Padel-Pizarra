@@ -115,7 +115,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `eleva:repintado`). Módulos: `scroll.js` (motor JS que mueve el `currentTime` de las
   animaciones `sd-*`: las scroll-driven nativas bajaban a 30 fps en móvil; progreso del
   hero; luz LED de las tarjetas), `puntero.js` (paralaje, inclinación de insignias, imán,
-  puntero «punto»; solo ratón), `tacto.js` (giro de insignias por toque/clic/teclado,
+  puntero «punto» sobre el cursor del sistema, que nunca se oculta; solo ratón), `tacto.js` (giro de insignias por toque/clic/teclado,
   pulso del logo), `tres-d.js` + `pista.js` (pista 3D). Todo lo animado vive en
   `css/movimiento.css`; `main.css` es el estado estático, completo sin JS y con
   movimiento reducido. Solo `transform`/`opacity` (excepción documentada: la transición

@@ -59,7 +59,7 @@ una mezcla de dos en `rediseno`.
   y al foco.
 - Titular cinético en el hero, cortes de sección y transición entre `/` y `/pizarra` a través
   del logo, precios que se asientan al entrar y, solo con ratón, botones magnéticos y un
-  puntero propio en forma de punto.
+  punto que acompaña al cursor del sistema, que se ve siempre.
 - **Logo sin fondo** (`assets/img/logo-sin-fondo.svg`, el logo oficial sin su rectángulo) en
   cabecera, pie, `/`, 404, mantenimiento y máscaras.
 - **Pools**: color propio de cada insignia, muestreado de su imagen, como único marcador de

@@ -184,9 +184,10 @@ html.mov .iman {
 }
 
 /* ── Puntero propio (solo ratón): un punto ──────────────────────────
-   Sobre lo interactivo crece y, en modo diferencia, invierte lo que
-   cubre; al pulsar se encoge. En campos de texto desaparece y vuelve el
-   cursor nativo. En táctil no existe. */
+   Acompaña al cursor del sistema, que se ve siempre (respeta los
+   cursores grandes o de alto contraste). Sobre lo interactivo crece y,
+   en modo diferencia, invierte lo que cubre; al pulsar se encoge. En
+   campos de texto desaparece. En táctil no existe. */
 .cursor {
   position: fixed; left: 0; top: 0; z-index: 300; pointer-events: none;
   width: 40px; height: 40px; margin: -20px 0 0 -20px;
@@ -202,8 +203,6 @@ html.mov .iman {
 .cursor.sobre .cursor-punto { scale: 1; }
 .cursor.pulsando .cursor-punto { scale: .18; }
 .cursor.sobre.pulsando .cursor-punto { scale: .8; }
-html.cursor-propio, html.cursor-propio * { cursor: none; }
-html.cursor-propio :is(input, textarea, select, [contenteditable]) { cursor: auto; }
 
 /* ── Línea de tiempo movida por JS ──────────────────────────────────
    En pausa en el primer fotograma (igual al estado estático); scroll.js
