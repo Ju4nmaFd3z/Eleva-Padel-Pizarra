@@ -38,7 +38,7 @@
     reservas:       PENDIENTE_CLUB,      /* { verificado, fuente, canales: {es} } */
 
     tarifas: {
-      pistas:      PENDIENTE_CLUB,
+      pistas:      PENDIENTE_CLUB,       /* { verificado, fuente, tramos:[ { cuando:{es}, precios:[ {duracion, precio} ] } ] } */
       ivaIncluido: PENDIENTE_CLUB,
       clases:      PENDIENTE_CLUB,       /* { verificado, fuente, grupo:{titulo,precio,unidad,detalle}, otras:{…} } */
       infantil:    PENDIENTE_CLUB
@@ -46,10 +46,13 @@
 
     otrosServicios: PENDIENTE_CLUB,      /* { verificado, fuente, texto: {es} } */
     cancelaciones:  PENDIENTE_CLUB,      /* { verificado, fuente, pistas:{titulo,items}, clases:{…}, nota } */
-    pools:          PENDIENTE_CLUB,      /* { verificado, fuente, texto, insignias:[ {img, alt} ] } */
+    pools:          PENDIENTE_CLUB,      /* { verificado, fuente, texto, horario?, insignias:[ {img, alt, color} ] }
+                                            horario: { verificado, fuente, titulo, items:[ {dia, hora, pool, pistas} ] } */
     equipo:         [],                  /* [ { nombre, foto|null, rol, bio } ] */
     patrocinadores: { listaCompleta: PENDIENTE_CLUB, items: [] },   /* items: [ { nombre, tipo } ]; se pinta solo con listaCompleta: true */
-    colaborar:      PENDIENTE_CLUB,
+    colaborar:      PENDIENTE_CLUB,      /* { verificado, fuente, titulo, intro, opcionesTitulo, opciones:[{es}],
+                                            disponibilidad?:{verificado, fuente, texto}, cierre, pregunta,
+                                            contacto:{es:'…{numero}…'}, numero } (número = WhatsApp del club) */
     galeria:        [],                  /* [ { base, w, h, alt:{es} } ] */
     eventos:        []                   /* [ { id, titulo, texto, desde?, hasta (OBLIGATORIO), enlace? } ] */
   };

@@ -42,12 +42,16 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 8. **Sin email.** Ninguna dirección de correo en ningún archivo. Canales del club:
    WhatsApp +34 659 14 31 03 e Instagram @elevapadelpizarra. Se rotula «WhatsApp»;
    nada de enlaces `tel:` hasta confirmar que atienden llamadas.
-9. **Horarios de pools**: el club tiene horario semanal (en `CONFIRMAR.md`) pero no
-   se publica hasta saber si es fijo, cuánto dura y cómo se avisan los cambios. Mientras,
-   ni «horario fijo» ni «horarios variables»: «Información e inscripciones por WhatsApp».
-   Cuando se publique, irá en el manifest con `verificado`.
+9. **Horario semanal de pools**: se publica tal cual el cartel «Pools semanales» (día,
+   hora, pool y pistas) en `pools.horario` del manifest, con `verificado` y `fuente`;
+   `tools/validar.js` falla si faltan y avisa a los 90 días para reconfirmarlo. Solo los
+   pools del cartel se presentan como semanales (las insignias no llevan horario). Ni
+   «horario fijo» ni «horarios variables».
 10. **Patrocinadores**: la sección solo se pinta con la lista completa confirmada
-    (`patrocinadores.listaCompleta === true`); nunca una lista parcial.
+    (`patrocinadores.listaCompleta === true`); nunca una lista parcial. «Colaborar con el
+    club» (`colaborar`, anuncio «Buscamos patrocinadores») es otra sección: opciones,
+    disponibilidad de pistas (caduca: `colaborar.disponibilidad` con su `verificado`) y
+    contacto solo por WhatsApp; nunca nombres de patrocinadores.
 11. **i18n ES/EN/NL**: `js/translations.js` (solo interfaz) con las mismas claves en los
     tres idiomas. Los datos del club son `{ es, en, nl }` en su manifest (respaldo `es`).
     Textos nuevos: primero en español, a revisión del cliente; EN/NL después.
@@ -148,7 +152,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `.gitignore` y `.vercelignore`). `main.js` carga el `.js` solo en localhost con
   `?borrador`; `tools/servidor-local.js` los sirve igualmente (lista `SOLO_LOCAL`), Vercel
   nunca. `/` publicado lleva solo lo confirmado.
-- `tools/validar.js`: pendientes, fechas de verificación, eventos, claves i18n,
+- `tools/validar.js`: pendientes, fechas de verificación (y que todo bloque que caduca
+  publicado lleve `verificado` y `fuente`), eventos, claves i18n,
   cache-buster, scripts inline y HTML sincronizado con el manifest.
 - `tools/qa/`: batería permanente (Playwright 1.63.0 + axe-core 4.13.0, versiones exactas, con
   su propio `package.json`; `npm ci` dentro de `tools/qa`, nunca en la raíz). Punto de entrada

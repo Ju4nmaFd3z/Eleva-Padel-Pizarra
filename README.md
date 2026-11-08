@@ -95,7 +95,8 @@ borradores) que está fuera de Git y de `.vercelignore`.
 ## Cambiar los datos del club
 
 Todo lo del club está en `pizarra/manifest.js`: contacto, coordenadas, instalaciones,
-clases y tarifas, pools, otros servicios, cancelaciones, equipo, patrocinadores,
+tarifas de pista, clases, pools y su horario semanal, otros servicios, cancelaciones,
+equipo, «Colaborar con el club», patrocinadores,
 galería y avisos. Después de cambiarlo, `node tools/generar.js`.
 
 - **Solo datos confirmados por el club.** Lo pendiente se marca `PENDIENTE_CLUB`
