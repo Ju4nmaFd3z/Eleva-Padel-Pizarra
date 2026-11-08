@@ -393,6 +393,20 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .dato dd { color: var(--crema); }
 .dato dd p { margin-bottom: .25rem; }
 
+/* ── Tarifas de pista (dentro de El club): un tramo por recuadro, cada
+   duración con su precio en cifra grande ── */
+.tarifas { margin-top: 3rem; }
+.tarifas h3 { margin-bottom: .5rem; font-size: clamp(2rem, 8vw, 3rem); }
+.tramos { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.tramo { padding: 1.5rem 1.25rem; border: 1px solid var(--linea); }
+.tramo h4 {
+  margin: 0 0 1.25rem; color: var(--crema);
+  font: 500 1.125rem/1.35 var(--fuente-texto);   /* sin mayúsculas: el texto del cartel, tal cual */
+}
+.tarifa { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.tarifa dt { color: var(--claro); font: 500 .875rem/1.3 var(--fuente-texto); letter-spacing: .12em; text-transform: uppercase; }
+.tarifa dd { margin-top: .25rem; color: var(--crema); font: 600 clamp(2.75rem, 12vw, 4rem)/1 var(--fuente-titulos); white-space: nowrap; }
+
 .lista { list-style: disc; padding-left: 1.25rem; }
 .lista li { margin-bottom: .375rem; }
 .lista li::marker { color: var(--beige); }
@@ -607,6 +621,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
 @media (min-width: 40rem) {
   .datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tramos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .insignias { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .insignia:last-child:nth-child(odd) { grid-column: auto; justify-self: stretch; width: auto; }
   .personas { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 52rem; }

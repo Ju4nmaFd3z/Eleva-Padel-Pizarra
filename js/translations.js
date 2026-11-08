@@ -21,7 +21,7 @@
         book: 'Reservar', bookCourt: 'Reservar pista'
       },
       hero:    { ctaPrimary: 'Reservar pista', ctaCancel: 'Política de cancelaciones' },
-      club:    { heading: 'El club', facilities: 'Instalaciones', hours: 'Horario', bookings: 'Reservas', bookOnline: 'Reservar en Vola', community: 'Comunidad' },
+      club:    { heading: 'El club', facilities: 'Instalaciones', hours: 'Horario', bookings: 'Reservas', bookOnline: 'Reservar en Vola', community: 'Comunidad', rates: 'Tarifas de pista' },
       classes: { heading: 'Clases', vat: 'Precios con IVA incluido.', cta: 'Consultar por WhatsApp' },
       pools:   { heading: 'Pools', cta: 'Consultar por WhatsApp' },
       other:   { heading: 'Otros servicios' },
@@ -69,7 +69,7 @@
         book: 'Book', bookCourt: 'Book a court'
       },
       hero:    { ctaPrimary: 'Book a court', ctaCancel: 'Cancellation policy' },
-      club:    { heading: 'The club', facilities: 'Facilities', hours: 'Opening hours', bookings: 'Bookings', bookOnline: 'Book on Vola', community: 'Community' },
+      club:    { heading: 'The club', facilities: 'Facilities', hours: 'Opening hours', bookings: 'Bookings', bookOnline: 'Book on Vola', community: 'Community', rates: 'Court prices' },
       classes: { heading: 'Lessons', vat: 'Prices include VAT.', cta: 'Ask on WhatsApp' },
       pools:   { heading: 'Pools', cta: 'Ask on WhatsApp' },
       other:   { heading: 'Other services' },
@@ -117,7 +117,7 @@
         book: 'Reserveren', bookCourt: 'Baan reserveren'
       },
       hero:    { ctaPrimary: 'Baan reserveren', ctaCancel: 'Annuleringsbeleid' },
-      club:    { heading: 'De club', facilities: 'Faciliteiten', hours: 'Openingstijden', bookings: 'Reserveren', bookOnline: 'Reserveren via Vola', community: 'Community' },
+      club:    { heading: 'De club', facilities: 'Faciliteiten', hours: 'Openingstijden', bookings: 'Reserveren', bookOnline: 'Reserveren via Vola', community: 'Community', rates: 'Baantarieven' },
       classes: { heading: 'Lessen', vat: 'Prijzen inclusief btw.', cta: 'Vraag het via WhatsApp' },
       pools:   { heading: 'Pools', cta: 'Vraag het via WhatsApp' },
       other:   { heading: 'Andere diensten' },

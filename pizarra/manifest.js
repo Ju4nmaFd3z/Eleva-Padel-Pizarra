@@ -63,7 +63,17 @@
     },
 
     tarifas: {
-      pistas:  PENDIENTE_CLUB,                 /* falta saber si el precio es por pista o por persona */
+      /* Tal cual el cartel: sin unidad añadida */
+      pistas: {
+        verificado: '2026-10-06',
+        fuente:     'carteles del club en Instagram, confirmados por el club',
+        tramos: [
+          { cuando: { es: 'L–V hasta las 17:00 h' },
+            precios: [ { duracion: '60 min', precio: '10 €' }, { duracion: '90 min', precio: '16 €' } ] },
+          { cuando: { es: 'Desde las 17:00 h, fines de semana y festivos' },
+            precios: [ { duracion: '60 min', precio: '15 €' }, { duracion: '90 min', precio: '22 €' } ] }
+        ]
+      },
       ivaIncluido: true,
       clases: {
         verificado: '2026-09-30',

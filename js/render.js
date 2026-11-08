@@ -74,6 +74,20 @@
       visible: filas.length > 0
     };
 
+    /* Tarifas de pista: cada tramo con sus duraciones y precios, tal cual */
+    var tp = (d.tarifas || {}).pistas;
+    var hayTarifas = presente(tp) && presente(tp.tramos);
+    s.tarifas = {
+      html: hayTarifas ? ((d.tarifas.ivaIncluido === true ? '<p class="aviso-iva">' + esc(t('classes.vat')) + '</p>' : '') +
+        '<div class="tramos">' + tp.tramos.map(function (tr) {
+          return '<div class="tramo"><h4>' + esc(L(tr.cuando)) + '</h4><dl class="tarifa">' +
+            tr.precios.map(function (x) {
+              return '<div><dt>' + esc(L(x.duracion)) + '</dt><dd>' + esc(L(x.precio)) + '</dd></div>';
+            }).join('') + '</dl></div>';
+        }).join('') + '</div>') : '',
+      visible: hayTarifas
+    };
+
     /* Clases */
     function tarjeta(b) {
       if (!b) return '';
