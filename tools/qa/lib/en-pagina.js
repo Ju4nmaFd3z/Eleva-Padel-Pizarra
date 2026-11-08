@@ -227,11 +227,14 @@ function revisarVista(opc) {
       }
     }
 
-    /* 4. Objetivos interactivos (WCAG 2.5.8: se exime el enlace en línea dentro de un texto) */
+    /* 4. Objetivos interactivos (WCAG 2.5.8: se exime el enlace en línea dentro de un texto).
+       El texto que lo rodea puede ir suelto o en un elemento en línea que no
+       sea otro objetivo (p. ej. el <span data-i18n> de «Desarrollado por») */
     if (interactivo && opc.minObjetivo) {
       const cs = getComputedStyle(e);
       const enLinea = e.tagName === 'A' && cs.display === 'inline' &&
-        [...e.parentElement.childNodes].some(n => n !== e && n.nodeType === 3 && n.textContent.trim());
+        [...e.parentElement.childNodes].some(n => n !== e && n.textContent.trim() && (n.nodeType === 3 ||
+          (n.nodeType === 1 && getComputedStyle(n).display === 'inline' && !n.matches('a, button, input, select, textarea, [tabindex]'))));
       objetivos.push({ e, r, enLinea });
     }
 

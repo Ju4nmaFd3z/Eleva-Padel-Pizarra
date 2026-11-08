@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Eleva Pádel Pizarra · Pizarra, Málaga</title>
-  <meta name="description" content="Eleva Pádel Pizarra: 4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga. Reservas por Vola, por WhatsApp o en recepción.">
+  <meta name="description" content="Eleva Pádel Pizarra: 4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga. Reservas por Vola, por WhatsApp o en recepción." data-i18n-attr="content:meta.pizarra.description">
   <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="dark">
 
@@ -19,11 +19,11 @@
   <meta property="og:site_name"    content="Eleva Pádel Pizarra">
   <meta property="og:url"          content="https://eleva-padel-pizarra.vercel.app/pizarra">
   <meta property="og:title"        content="Eleva Pádel Pizarra · Pizarra, Málaga">
-  <meta property="og:description"  content="4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga.">
+  <meta property="og:description"  content="4 pistas exteriores de cristal con iluminación LED y zona chill-out en Pizarra, Málaga." data-i18n-fijo="content:meta.pizarra.ogDescription">
   <meta property="og:image"        content="https://eleva-padel-pizarra.vercel.app/assets/img/og-pizarra.jpg">
   <meta property="og:image:width"  content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt"    content="Jugador de pádel golpeando la bola">
+  <meta property="og:image:alt"    content="Jugador de pádel golpeando la bola" data-i18n-fijo="content:meta.pizarra.ogImageAlt">
   <meta property="og:locale"       content="es_ES">
   <meta name="twitter:card"        content="summary_large_image">
 
@@ -62,6 +62,8 @@
 }
 </script><!--/gen:jsonld-->
 
+  <!-- Idioma inicial antes de pintar (sin defer, ver js/idioma.js) -->
+  <script src="../js/idioma.js?v=20261108c"></script>
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
   <link rel="stylesheet" href="../css/fonts.css?v=20261108c">
   <link rel="stylesheet" href="../css/main.css?v=20261108c">
@@ -89,11 +91,11 @@
 
 <header class="cabecera">
   <div class="cabecera-barra">
-    <a href="#inicio" class="logo" aria-label="Eleva Pádel Pizarra, inicio" data-i18n-arialabel="nav.logoLabel">
+    <a href="#inicio" class="logo" aria-label="Eleva Pádel Pizarra, inicio" data-i18n-attr="aria-label:nav.logoLabel">
       <img src="../assets/img/logo-sin-fondo.svg" width="40" height="40" alt="">
       <span class="logo-nombre">Eleva Pádel Pizarra</span>
     </a>
-    <nav id="menu" class="menu" aria-label="Navegación principal" data-i18n-arialabel="nav.ariaLabel">
+    <nav id="menu" class="menu" aria-label="Navegación principal" data-i18n-attr="aria-label:nav.ariaLabel">
       <ul>
         <li data-seccion="club"><a href="#club" data-i18n="nav.club">El club</a></li>
         <li data-seccion="clases"><a href="#clases" data-i18n="nav.classes">Clases</a></li>
@@ -105,14 +107,14 @@
     </nav>
     <a class="boton boton-reservar" href="https://vola.plus/app-link/club/1498" data-href="reservas" target="_blank" rel="noopener noreferrer" data-i18n="nav.book">Reservar</a>
     <div class="idioma-selector">
-      <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#chevron-down"></use></svg></button>
+      <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES" data-i18n-attr="aria-label:nav.langLabel"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#chevron-down"></use></svg></button>
       <ul id="idiomas" class="idioma-lista" hidden>
         <li><button type="button" class="idioma" data-lang="es" lang="es" aria-current="true"><span class="idioma-codigo">ES</span> Español</button></li>
         <li><button type="button" class="idioma" data-lang="en" lang="en"><span class="idioma-codigo">EN</span> English</button></li>
         <li><button type="button" class="idioma" data-lang="nl" lang="nl"><span class="idioma-codigo">NL</span> Nederlands</button></li>
       </ul>
     </div>
-    <button type="button" class="menu-boton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-i18n-arialabel="nav.menuOpen">
+    <button type="button" class="menu-boton" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-i18n-attr="aria-label:nav.menuOpen">
       <svg class="icono icono-abrir" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#menu"></use></svg>
       <svg class="icono icono-cerrar" aria-hidden="true" focusable="false"><use href="../assets/icons/lucide.svg#x"></use></svg>
     </button>
@@ -240,7 +242,7 @@
 
 </main>
 
-<footer class="pie" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
+<footer class="pie" aria-label="Pie de página" data-i18n-attr="aria-label:footer.ariaLabel">
   <div class="pie-columnas">
     <div>
       <img class="pie-logo" src="../assets/img/logo-sin-fondo.svg" width="48" height="48" alt="Eleva Pádel">

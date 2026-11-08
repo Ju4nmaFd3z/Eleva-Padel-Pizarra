@@ -1,16 +1,25 @@
 /* ================================================================
    Eleva Pádel — main.js
    Idioma (selector de la cabecera), menú móvil, enlaces de WhatsApp,
-   avisos con fecha y formulario.
+   avisos con fecha y formulario. Sirve también a la 404 y a la página de
+   mantenimiento: cada parte solo actúa si su elemento existe.
    El contenido del club ya viene en el HTML (tools/generar.js); al
    cambiar de idioma se vuelve a pintar con js/render.js.
+
+   Textos: js/translations.js (window.ElevaTextos), una entrada por clave
+   con sus tres idiomas. En el HTML:
+     data-i18n="clave"                 el texto del elemento
+     data-i18n-attr="atributo:clave;…" atributos (aria-label, alt, content…)
+     data-i18n-fijo="atributo:clave"   solo español (og:*): main.js no lo toca
+   Traducción pendiente (sin en/nl): se pinta el español y el elemento
+   lleva lang="es". El idioma inicial lo decide js/idioma.js (en <head>).
    ================================================================ */
 (function () {
   'use strict';
 
-  var DEFAULT_LANG = 'es';
-  var LANG_KEY = 'eleva-lang';
-  var currentLang = DEFAULT_LANG;
+  var ES = 'es';
+  var I = window.ElevaIdioma || { idiomas: [ES], inicial: ES, guardado: function () { return null; }, guardar: function () {}, listo: function () {} };
+  var currentLang = ES;
   var R = window.ElevaRender;
 
   document.documentElement.classList.add('js');
@@ -22,30 +31,38 @@
   function waURL(phone, msg) { return 'https://wa.me/' + phone + (msg ? '?text=' + encodeURIComponent(msg) : ''); }
   function reducedMotion() { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
 
-  /* El almacenamiento puede lanzar (ventana privada): nunca debe romper */
-  function getStoredLang() { try { return window.localStorage.getItem(LANG_KEY) || DEFAULT_LANG; } catch (e) { return DEFAULT_LANG; } }
-  function setStoredLang(l) { try { window.localStorage.setItem(LANG_KEY, l); } catch (e) { /* no-op */ } }
-
   /* ── i18n ───────────────────────────────────────────────────── */
-  function hasOwn(o, k) { return !!o && Object.prototype.hasOwnProperty.call(o, k); }
-  function tr(key, fallback) {
-    var g = window.__ELEVA_I18N__ || {};
-    var get = function (l) {
-      return hasOwn(g, l) ? key.split('.').reduce(function (o, k) { return (o != null && hasOwn(o, k)) ? o[k] : undefined; }, g[l]) : undefined;
-    };
-    var v = get(currentLang);
-    if (v === undefined) v = get(DEFAULT_LANG);
-    return v === undefined ? (fallback || '') : v;
+  function entrada(key) {
+    var T = (window.ElevaTextos || {}).textos || {};
+    return Object.prototype.hasOwnProperty.call(T, key) ? T[key] : null;
+  }
+  /* { v: texto en el idioma activo (o en español si falta), falta: true si cae al español } */
+  function texto(key) {
+    var e = entrada(key);
+    if (!e) return { v: '', falta: currentLang !== ES };
+    var v = e[currentLang], falta = false;
+    if (v == null || v === '') { v = e.es || ''; falta = currentLang !== ES; }
+    return { v: v.replace(/\{codigo\}/g, currentLang.toUpperCase()), falta: falta };
+  }
+  function tr(key) { return texto(key).v; }
+
+  /* Pares «atributo:clave» de data-i18n-attr */
+  function pares(el) {
+    return (el.getAttribute('data-i18n-attr') || '').split(';').map(function (p) {
+      var i = p.indexOf(':');
+      return i > 0 ? [p.slice(0, i).trim(), p.slice(i + 1).trim()] : null;
+    }).filter(Boolean);
   }
 
-  /* Vuelve a pintar las zonas del manifest en el idioma activo */
+  /* Vuelve a pintar las zonas del manifest en el idioma activo. Con sus
+     marcadores <!--gen-->: el DOM queda igual que el HTML generado. */
   function renderClub() {
     var d = window.__ELEVA__;
     if (!d || !R) return;
-    var s = R.crear(d, currentLang, function (k) { return tr(k); });
+    var s = R.crear(d, currentLang, tr);
     $$('[data-gen]').forEach(function (el) {
       var z = s[el.getAttribute('data-gen')];
-      if (z) el.innerHTML = z.html;
+      if (z) el.innerHTML = '<!--gen-->' + z.html + '<!--/gen-->';
     });
     $$('[data-seccion]').forEach(function (el) {
       var z = s[el.getAttribute('data-seccion')];
@@ -55,20 +72,22 @@
     document.dispatchEvent(new CustomEvent('eleva:repintado', { detail: { lang: currentLang } }));
   }
 
-  function applyLang(lang) {
-    var g = window.__ELEVA_I18N__ || {};
-    if (!hasOwn(g, lang)) lang = DEFAULT_LANG;
+  /* Cambia TODO al idioma: lang, <title> y metas, textos y atributos de la
+     interfaz, zonas del club, WhatsApp, avisos y mensajes del formulario.
+     Mismo orden siempre; volver al idioma anterior deja el DOM igual. */
+  function aplicarIdioma(lang) {
+    if (I.idiomas.indexOf(lang) < 0) lang = ES;
     var cambia = lang !== currentLang;
     currentLang = lang;
     document.documentElement.setAttribute('lang', lang);
 
     $$('[data-i18n]').forEach(function (el) {
-      var v = tr(el.getAttribute('data-i18n'));
-      if (v) el.textContent = v;
+      var r = texto(el.getAttribute('data-i18n'));
+      el.textContent = r.v;
+      if (r.falta) el.setAttribute('lang', ES); else el.removeAttribute('lang');
     });
-    $$('[data-i18n-arialabel]').forEach(function (el) {
-      var v = tr(el.getAttribute('data-i18n-arialabel'));
-      if (v) el.setAttribute('aria-label', v);
+    $$('[data-i18n-attr]').forEach(function (el) {
+      pares(el).forEach(function (p) { el.setAttribute(p[0], tr(p[1])); });
     });
     $$('.idioma').forEach(function (b) {
       if (b.getAttribute('data-lang') === lang) b.setAttribute('aria-current', 'true');
@@ -76,19 +95,26 @@
     });
     var codigo = lang.toUpperCase();
     $$('.idioma-actual').forEach(function (el) { el.textContent = codigo; });
-    $$('.idioma-boton').forEach(function (b) { b.setAttribute('aria-label', tr('nav.langLabel', 'Idioma') + ': ' + codigo); });
     var mb = $('.menu-boton');
     if (mb) mb.setAttribute('aria-label', tr(mb.getAttribute('aria-expanded') === 'true' ? 'nav.menuClose' : 'nav.menuOpen'));
 
     if (cambia) renderClub();       /* en español el HTML ya viene pintado */
     applyWaLinks();
     renderEventos();
+    limpiarValidacion();
+    I.listo();
+    document.dispatchEvent(new CustomEvent('eleva:idioma', { detail: { lang: lang } }));
   }
 
   function initI18n() {
-    var inicial = getStoredLang();
-    currentLang = DEFAULT_LANG;
-    applyLang(inicial);
+    currentLang = ES;
+    aplicarIdioma(I.inicial);
+    /* Vuelta desde la caché atrás/adelante: si se eligió otro idioma en
+       otra página, se aplica */
+    window.addEventListener('pageshow', function (e) {
+      var l = e.persisted && I.guardado();
+      if (l && l !== currentLang) aplicarIdioma(l);
+    });
   }
 
   /* ── Selector de idioma (cabecera) ──────────────────────────
@@ -140,8 +166,8 @@
     opciones().forEach(function (b) {
       b.addEventListener('click', function () {
         var l = b.getAttribute('data-lang');
-        applyLang(l);
-        setStoredLang(l);           /* solo se guarda cuando el usuario elige */
+        aplicarIdioma(l);
+        I.guardar(l);               /* solo se guarda cuando el usuario elige */
         cerrar(true);
       });
     });
@@ -159,14 +185,14 @@
     function abierto() { return boton.getAttribute('aria-expanded') === 'true'; }
     function cerrar(devolverFoco) {
       boton.setAttribute('aria-expanded', 'false');
-      boton.setAttribute('aria-label', tr('nav.menuOpen', 'Abrir menú'));
+      boton.setAttribute('aria-label', tr('nav.menuOpen'));
       menu.classList.remove('abierto');
       document.body.classList.remove('sin-scroll');
       if (devolverFoco) boton.focus();
     }
     function abrir() {
       boton.setAttribute('aria-expanded', 'true');
-      boton.setAttribute('aria-label', tr('nav.menuClose', 'Cerrar menú'));
+      boton.setAttribute('aria-label', tr('nav.menuClose'));
       menu.classList.add('abierto');
       document.body.classList.add('sin-scroll');
       var primero = $('a, button', menu);
@@ -204,6 +230,7 @@
     var d = window.__ELEVA__;
     if (!box || !d || !R) return;
     var L = function (v) { return typeof v === 'string' ? v : (v && (v[currentLang] || v.es)) || ''; };
+    var cae = function (v) { return currentLang !== ES && !!v && typeof v === 'object' && !v[currentLang]; };
     var now = Date.now();
     var vigentes = (Array.isArray(d.eventos) ? d.eventos : []).filter(function (ev) {
       var hasta = Date.parse(ev && ev.hasta);
@@ -215,12 +242,19 @@
       var link = ev.enlace && presente(ev.enlace.url)
         ? ' <a href="' + R.esc(ev.enlace.url) + '" target="_blank" rel="noopener noreferrer">' + R.esc(L(ev.enlace.texto)) + '</a>'
         : '';
-      return '<p><strong>' + R.esc(L(ev.titulo)) + '</strong> ' + R.esc(L(ev.texto)) + link + '</p>';
+      var la = (cae(ev.titulo) || cae(ev.texto) || (ev.enlace && cae(ev.enlace.texto))) ? ' lang="es"' : '';
+      return '<p' + la + '><strong>' + R.esc(L(ev.titulo)) + '</strong> ' + R.esc(L(ev.texto)) + link + '</p>';
     }).join('');
     box.hidden = !vigentes.length;
   }
 
   /* ── Formulario → WhatsApp ──────────────────────────────────── */
+  /* Al cambiar de idioma no puede quedar un error en el idioma anterior */
+  function limpiarValidacion() {
+    var form = document.getElementById('contact-form');
+    if (form) $$('input, textarea', form).forEach(function (el) { el.setCustomValidity(''); });
+  }
+
   function initContact() {
     var form = document.getElementById('contact-form');
     var d = window.__ELEVA__;
@@ -228,12 +262,15 @@
     if (!form || !presente(phone)) return;
     var submit = $('[type="submit"]', form);
     if (submit) submit.disabled = false;
+    /* La validación es nuestra (en el idioma de la página), no la nativa del
+       navegador (en el idioma del sistema). Sin JS el botón está desactivado. */
+    form.noValidate = true;
 
     var PHONE_OK = /^[0-9 +()-]{6,20}$/;
     function error(el) {
       var v = (el.value || '').trim();
-      if (el.required && !v) return tr('contact.errRequired', 'Rellena este campo.');
-      if (el.name === 'telefono' && (!PHONE_OK.test(v) || v.replace(/\D/g, '').length < 6)) return tr('contact.errPhone', 'Escribe un teléfono válido.');
+      if (el.required && !v) return tr('contact.errRequired');
+      if (el.name === 'telefono' && (!PHONE_OK.test(v) || v.replace(/\D/g, '').length < 6)) return tr('contact.errPhone');
       return '';
     }
     $$('input, textarea', form).forEach(function (el) {
@@ -248,9 +285,9 @@
       }
       var v = function (n) { return (form.elements[n].value || '').trim(); };
       var msg = tr('wa.contact') + '\n\n' +
-        tr('contact.labelName', 'Nombre') + ': ' + v('nombre') + '\n' +
-        tr('contact.labelPhone', 'Teléfono') + ': ' + v('telefono') + '\n' +
-        tr('contact.labelMessage', 'Mensaje') + ': ' + v('mensaje');
+        tr('contact.labelName') + ': ' + v('nombre') + '\n' +
+        tr('contact.labelPhone') + ': ' + v('telefono') + '\n' +
+        tr('contact.labelMessage') + ': ' + v('mensaje');
       var link = document.createElement('a');
       link.href = waURL(phone, msg);
       link.target = '_blank';

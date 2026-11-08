@@ -10,7 +10,9 @@
    · Lo que puede cambiar (tarifas, condiciones…) lleva `verificado`
      (fecha AAAA-MM-DD de la última confirmación) y `fuente`.
      tools/validar.js avisa cuando pasan 90 días.
-   · Textos traducibles: { es, en, nl }. Si falta un idioma se usa `es`.
+   · Textos traducibles: { es, en, nl, h: { en, nl } } (h: huella del
+     español de cada traducción, tools/i18n.js). Sin en/nl: traducción
+     pendiente; se pinta el español con lang="es" y validar.js lo avisa.
    · Rutas de assets con "../" (la página se sirve en /pizarra, sin barra).
    · Tras cualquier cambio, sube el ?v= en los HTML.
    ========================================================= */
@@ -144,6 +146,8 @@
     /* Insignias reales (assets/pools/opt/<img>-240|480|720.avif + -480.jpg).
        Qué pools con insignia siguen en marcha: PENDIENTE_CLUB. Semanales
        son solo los del horario (cartel), con su propia verificación.
+       nombre: el de la insignia (traducible); el alt y el reverso son
+       «nombre · nombre del club» (render.js).
        color: muestreado de la palabra de la categoría de su imagen 720 px,
        04/10/2026. Es el único color que marca la categoría de cada insignia
        (aro y reverso). colorAro (solo la mixta): el de su aro, con el que
@@ -164,15 +168,15 @@
         ]
       },
       insignias: [
-        { img: 'pool_snp_masculina', alt: 'Pool SNP masculina · Eleva Pádel Pizarra', color: '#957E6D' },
-        { img: 'pool_snp_femenina',  alt: 'Pool SNP femenina · Eleva Pádel Pizarra',  color: '#997E6D' },
-        { img: 'pool_3a_masculina',  alt: 'Pool 3.ª masculina · Eleva Pádel Pizarra', color: '#937C6A' },
-        { img: 'pool_4a_masculina',  alt: 'Pool 4.ª masculina · Eleva Pádel Pizarra', color: '#947E6B' },
-        { img: 'pool_4a_femenina',   alt: 'Pool 4.ª femenina · Eleva Pádel Pizarra',  color: '#E27D93' },
-        { img: 'pool_5a_masculina',  alt: 'Pool 5.ª masculina · Eleva Pádel Pizarra', color: '#8D7965' },
-        { img: 'pool_5a_femenina',   alt: 'Pool 5.ª femenina · Eleva Pádel Pizarra',  color: '#E38B9B' },
-        { img: 'pool_mixta',         alt: 'Pool mixta · Eleva Pádel Pizarra',         color: '#945BA4', colorAro: '#7D72AB' },
-        { img: 'pool_rocha',         alt: 'Pool Rocha · Eleva Pádel Pizarra',         color: '#A49183' }
+        { img: 'pool_snp_masculina', nombre: { es: 'Pool SNP masculina' }, color: '#957E6D' },
+        { img: 'pool_snp_femenina',  nombre: { es: 'Pool SNP femenina' }, color: '#997E6D' },
+        { img: 'pool_3a_masculina',  nombre: { es: 'Pool 3.ª masculina' }, color: '#937C6A' },
+        { img: 'pool_4a_masculina',  nombre: { es: 'Pool 4.ª masculina' }, color: '#947E6B' },
+        { img: 'pool_4a_femenina',   nombre: { es: 'Pool 4.ª femenina' }, color: '#E27D93' },
+        { img: 'pool_5a_masculina',  nombre: { es: 'Pool 5.ª masculina' }, color: '#8D7965' },
+        { img: 'pool_5a_femenina',   nombre: { es: 'Pool 5.ª femenina' }, color: '#E38B9B' },
+        { img: 'pool_mixta',         nombre: { es: 'Pool mixta' }, color: '#945BA4', colorAro: '#7D72AB' },
+        { img: 'pool_rocha',         nombre: { es: 'Pool Rocha' }, color: '#A49183' }
       ]
     },
 

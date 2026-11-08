@@ -37,16 +37,32 @@
     return true;
   }
 
-  /* Contexto de pintado: idioma y función de traducción de la interfaz */
+  /* Contexto de pintado: idioma y función de traducción de la interfaz.
+     Un texto { es, en, nl } sin el idioma pedido (traducción pendiente) se
+     pinta en español y su elemento lleva lang="es": nunca se presenta
+     español como si fuera inglés o neerlandés. En español no cambia nada. */
   function crear(data, lang, t) {
     function L(v) {
       if (v == null) return '';
       if (typeof v === 'string') return v;
       return v[lang] || v.es || '';
     }
+    /* ' lang="es"' si algún texto cae al español; '' si no (o si es neutro) */
+    function la() {
+      if (lang === 'es') return '';
+      for (var i = 0; i < arguments.length; i++) {
+        var v = arguments[i];
+        if (v && typeof v === 'object' && !v[lang]) return ' lang="es"';
+      }
+      return '';
+    }
+    /* Texto suelto de una zona: dentro de <span lang="es"> si cae al español */
+    function H(v) {
+      return la(v) ? '<span lang="es">' + esc(L(v)) + '</span>' : esc(L(v));
+    }
     function lista(items, cls) {
       return '<ul' + (cls ? ' class="' + cls + '"' : '') + '>' +
-        items.map(function (i) { return '<li>' + esc(L(i)) + '</li>'; }).join('') + '</ul>';
+        items.map(function (i) { return '<li' + la(i) + '>' + esc(L(i)) + '</li>'; }).join('') + '</ul>';
     }
     /* antes / despues: HTML de icono ya construido (no texto del usuario) */
     function enlace(url, texto, cls, antes, despues) {
@@ -63,9 +79,9 @@
     if (d.instalaciones && presente(d.instalaciones.items)) {
       filas.push([t('club.facilities'), lista(d.instalaciones.items)]);
     }
-    if (presente(c.horario)) filas.push([t('club.hours'), '<p class="con-icono">' + icono('clock') + '<span>' + esc(L(c.horario)) + '</span></p>']);
+    if (presente(c.horario)) filas.push([t('club.hours'), '<p class="con-icono">' + icono('clock') + '<span' + la(c.horario) + '>' + esc(L(c.horario)) + '</span></p>']);
     if (d.reservas && presente(c.reservas)) {
-      filas.push([t('club.bookings'), '<p>' + esc(L(d.reservas.canales)) + '</p>' +
+      filas.push([t('club.bookings'), '<p' + la(d.reservas.canales) + '>' + esc(L(d.reservas.canales)) + '</p>' +
         enlace(c.reservas, t('club.bookOnline'), 'enlace', '', icono('external-link'))]);
     }
     if (presente(c.comunidad)) filas.push([t('club.community'), enlace(c.comunidad, t('contact.communityLink'), 'enlace', glifo('whatsapp'))]);
@@ -80,9 +96,9 @@
     s.tarifas = {
       html: hayTarifas ? ((d.tarifas.ivaIncluido === true ? '<p class="aviso-iva">' + esc(t('classes.vat')) + '</p>' : '') +
         '<div class="tramos">' + tp.tramos.map(function (tr) {
-          return '<div class="tramo"><h4>' + esc(L(tr.cuando)) + '</h4><dl class="tarifa">' +
+          return '<div class="tramo"><h4' + la(tr.cuando) + '>' + esc(L(tr.cuando)) + '</h4><dl class="tarifa">' +
             tr.precios.map(function (x) {
-              return '<div><dt>' + esc(L(x.duracion)) + '</dt><dd>' + esc(L(x.precio)) + '</dd></div>';
+              return '<div><dt' + la(x.duracion) + '>' + esc(L(x.duracion)) + '</dt><dd' + la(x.precio) + '>' + esc(L(x.precio)) + '</dd></div>';
             }).join('') + '</dl></div>';
         }).join('') + '</div>') : '',
       visible: hayTarifas
@@ -93,9 +109,9 @@
       if (!b) return '';
       /* La cifra del precio va aparte para pintarla a escala grande */
       return '<article class="tarjeta' + (presente(b.precio) ? ' tarjeta-precio' : '') + '">' +
-        '<h3 class="tarjeta-titulo">' + esc(L(b.titulo)) + '</h3>' +
+        '<h3 class="tarjeta-titulo"' + la(b.titulo) + '>' + esc(L(b.titulo)) + '</h3>' +
         (presente(b.precio) ? '<p class="precio">' + esc(b.precio).replace(/^([\d.,]+)/, '<span class="precio-cifra">$1</span>') +
-          ' <span class="precio-unidad">' + esc(L(b.unidad)) + '</span></p>' : '') +
+          ' <span class="precio-unidad"' + la(b.unidad) + '>' + esc(L(b.unidad)) + '</span></p>' : '') +
         (presente(b.detalle) ? lista(b.detalle, 'lista') : '') +
         '</article>';
     }
@@ -111,7 +127,8 @@
     var p = d.pools;
     var hayPools = !!(p && presente(p.insignias));
     /* Cada insignia es una pieza con dos caras: delante la imagen (recortada
-       en círculo por CSS); detrás, el mismo texto del alt (nada nuevo).
+       en círculo por CSS); detrás, el mismo texto del alt (nada nuevo): su
+       nombre (traducible) y el del club. El alt se compone de los dos.
        js/movimiento/tacto.js la convierte en botón para girarla; sin JS el
        reverso no se ve. El color de cada insignia (manifest, muestreado de
        su imagen) es el único que marca su categoría: aro y reverso. */
@@ -119,47 +136,47 @@
     s.pools = {
       html: hayPools ? p.insignias.map(function (i) {
         var b = POOLS_BASE + i.img;
-        var partes = String(i.alt).split(' · ');
+        var nombre = L(i.nombre), club = (d.sede || {}).nombre || '';
         var estilo = (color(i.color) ? '--acento:' + color(i.color) + ';' : '') +
           (color(i.colorAro) ? '--acento-aro:' + color(i.colorAro) + ';' : '');
-        return '<li class="insignia"' + (estilo ? ' style="' + estilo + '"' : '') + '>' +
+        return '<li class="insignia"' + la(i.nombre) + (estilo ? ' style="' + estilo + '"' : '') + '>' +
           '<span class="insignia-pieza">' +
           '<span class="insignia-cara"><picture>' +
           '<source type="image/avif" srcset="' + b + '-240.avif 240w, ' + b + '-480.avif 480w, ' + b + '-720.avif 720w" ' +
           'sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw">' +
-          '<img src="' + b + '-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="' + esc(i.alt) + '">' +
+          '<img src="' + b + '-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="' + esc(club ? nombre + ' · ' + club : nombre) + '">' +
           '</picture></span>' +
-          '<span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">' + esc(partes[0]) + '</span>' +
-          (partes[1] ? '<span class="insignia-club">' + esc(partes.slice(1).join(' · ')) + '</span>' : '') +
+          '<span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">' + esc(nombre) + '</span>' +
+          (club ? '<span class="insignia-club">' + esc(club) + '</span>' : '') +
           '</span></span></li>';
       }).join('') : '',
       visible: hayPools
     };
-    s['pools-texto'] = { html: hayPools ? esc(L(p.texto)) : '', visible: hayPools };
+    s['pools-texto'] = { html: hayPools ? H(p.texto) : '', visible: hayPools };
 
     /* Horario semanal (cartel): día y hora | pool y pistas, una fila por pool */
     var ph = p && p.horario;
     var hayHorario = presente(ph) && presente(ph.items);
     s['pools-horario'] = {
-      html: hayHorario ? '<h3>' + esc(L(ph.titulo)) + '</h3><ul class="horario">' + ph.items.map(function (i) {
-        return '<li><span class="horario-cuando"><span class="horario-dia">' + esc(L(i.dia)) + '</span> ' +
+      html: hayHorario ? '<h3' + la(ph.titulo) + '>' + esc(L(ph.titulo)) + '</h3><ul class="horario">' + ph.items.map(function (i) {
+        return '<li><span class="horario-cuando"><span class="horario-dia"' + la(i.dia) + '>' + esc(L(i.dia)) + '</span> ' +
           '<time class="horario-hora" datetime="' + esc(i.hora) + '">' + esc(i.hora) + '</time></span> ' +
-          '<span class="horario-que"><span class="horario-pool">' + esc(L(i.pool)) + '</span> ' +
-          '<span class="horario-pistas">(' + esc(L(i.pistas)) + ')</span></span></li>';
+          '<span class="horario-que"><span class="horario-pool"' + la(i.pool) + '>' + esc(L(i.pool)) + '</span> ' +
+          '<span class="horario-pistas"' + la(i.pistas) + '>(' + esc(L(i.pistas)) + ')</span></span></li>';
       }).join('') + '</ul>' : '',
       visible: hayHorario
     };
 
     /* Otros servicios */
     var os = d.otrosServicios;
-    s.servicios = { html: presente(os) ? esc(L(os.texto)) : '', visible: presente(os) };
+    s.servicios = { html: presente(os) ? H(os.texto) : '', visible: presente(os) };
 
     /* Cancelaciones */
     var cn = d.cancelaciones;
     s.cancelaciones = {
       html: presente(cn) ? [cn.pistas, cn.clases].filter(Boolean).map(function (b) {
-        return '<div class="bloque"><h3>' + esc(L(b.titulo)) + '</h3>' + lista(b.items, 'lista') + '</div>';
-      }).join('') + (cn.nota ? '<p class="nota">' + esc(L(cn.nota)) + '</p>' : '') : '',
+        return '<div class="bloque"><h3' + la(b.titulo) + '>' + esc(L(b.titulo)) + '</h3>' + lista(b.items, 'lista') + '</div>';
+      }).join('') + (cn.nota ? '<p class="nota"' + la(cn.nota) + '>' + esc(L(cn.nota)) + '</p>' : '') : '',
       visible: presente(cn)
     };
 
@@ -170,8 +187,8 @@
           ? '<img class="persona-foto" src="' + esc(m.foto) + '" width="632" height="800" loading="lazy" decoding="async" alt="">'
           : '<span class="persona-foto persona-inicial" aria-hidden="true">' + esc(String(m.nombre).charAt(0)) + '</span>';
         return '<li class="persona">' + foto + '<h3>' + esc(m.nombre) + '</h3>' +
-          (presente(m.rol) ? '<p class="persona-rol">' + esc(L(m.rol)) + '</p>' : '') +
-          (presente(m.bio) ? '<p>' + esc(L(m.bio)) + '</p>' : '') + '</li>';
+          (presente(m.rol) ? '<p class="persona-rol"' + la(m.rol) + '>' + esc(L(m.rol)) + '</p>' : '') +
+          (presente(m.bio) ? '<p' + la(m.bio) + '>' + esc(L(m.bio)) + '</p>' : '') + '</li>';
       }).join('') : '',
       visible: presente(d.equipo)
     };
@@ -181,7 +198,7 @@
     var hayPatro = pt.listaCompleta === true && presente(pt.items);
     s.patrocinadores = {
       html: hayPatro ? pt.items.map(function (x) {
-        return '<li>' + esc(x.nombre) + (presente(x.tipo) ? ' <span>' + esc(L(x.tipo)) + '</span>' : '') + '</li>';
+        return '<li>' + esc(x.nombre) + (presente(x.tipo) ? ' <span' + la(x.tipo) + '>' + esc(L(x.tipo)) + '</span>' : '') + '</li>';
       }).join('') : '',
       visible: hayPatro
     };
@@ -199,18 +216,18 @@
          frase suelta */
       var antes = partes[0].match(/^([\s\S]*?)(\S*\s*)$/);
       var despues = partes[1].match(/^(\S*)([\s\S]*)$/);
-      return '<p class="colaborar-contacto">' + antes[1] + '<span class="sin-corte">' + antes[2] +
+      return '<p class="colaborar-contacto"' + la(co.contacto) + '>' + antes[1] + '<span class="sin-corte">' + antes[2] +
         '<a class="enlace" href="https://wa.me/' + esc(c.whatsapp) + '" data-wa="wa.collab" target="_blank" rel="noopener noreferrer">' +
         '<img class="glifo" src="' + ASSETS + 'marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="WhatsApp">' +
         '<span>' + esc(co.numero) + '</span></a>' + despues[1] + '</span>' + despues[2] + '</p>';
     }
-    s['colaborar-titulo'] = { html: hayCol ? esc(L(co.titulo)) : '', visible: hayCol };
+    s['colaborar-titulo'] = { html: hayCol ? H(co.titulo) : '', visible: hayCol };
     s.colaborar = {
-      html: hayCol ? '<p class="colaborar-intro">' + esc(L(co.intro)) + '</p>' +
-        '<h3>' + esc(L(co.opcionesTitulo)) + '</h3>' + lista(co.opciones, 'colaborar-opciones') +
-        (presente(co.disponibilidad) ? '<p class="colaborar-disponible">' + esc(L(co.disponibilidad.texto)) + '</p>' : '') +
-        (presente(co.cierre) ? '<p>' + esc(L(co.cierre)) + '</p>' : '') +
-        (presente(co.pregunta) ? '<p class="colaborar-pregunta">' + esc(L(co.pregunta)) + '</p>' : '') +
+      html: hayCol ? '<p class="colaborar-intro"' + la(co.intro) + '>' + esc(L(co.intro)) + '</p>' +
+        '<h3' + la(co.opcionesTitulo) + '>' + esc(L(co.opcionesTitulo)) + '</h3>' + lista(co.opciones, 'colaborar-opciones') +
+        (presente(co.disponibilidad) ? '<p class="colaborar-disponible"' + la(co.disponibilidad.texto) + '>' + esc(L(co.disponibilidad.texto)) + '</p>' : '') +
+        (presente(co.cierre) ? '<p' + la(co.cierre) + '>' + esc(L(co.cierre)) + '</p>' : '') +
+        (presente(co.pregunta) ? '<p class="colaborar-pregunta"' + la(co.pregunta) + '>' + esc(L(co.pregunta)) + '</p>' : '') +
         (presente(co.contacto) ? contactoCol() : '') : '',
       visible: hayCol
     };
@@ -218,7 +235,7 @@
     /* Galería: solo fotos reales, AVIF + JPEG en varios tamaños */
     s.galeria = {
       html: presente(d.galeria) ? d.galeria.map(function (f) {
-        return '<li><picture>' +
+        return '<li' + la(f.alt) + '><picture>' +
           '<source type="image/avif" srcset="' + f.base + '-480.avif 480w, ' + f.base + '-960.avif 960w, ' + f.base + '-1440.avif 1440w" ' +
           'sizes="(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw">' +
           '<img src="' + esc(f.base) + '-960.jpg" width="' + esc(f.w) + '" height="' + esc(f.h) + '" loading="lazy" decoding="async" alt="' + esc(L(f.alt)) + '">' +

@@ -10,7 +10,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Eleva Pádel</title>
-  <meta name="description" content="Eleva Pádel y su club de Pizarra, Málaga.">
+  <meta name="description" content="Eleva Pádel y su club de Pizarra, Málaga." data-i18n-attr="content:meta.marca.description">
   <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="dark">
 
@@ -21,7 +21,7 @@
   <meta property="og:site_name"   content="Eleva Pádel">
   <meta property="og:url"         content="https://eleva-padel-pizarra.vercel.app/">
   <meta property="og:title"       content="Eleva Pádel">
-  <meta property="og:description" content="Eleva Pádel y su club de Pizarra, Málaga.">
+  <meta property="og:description" content="Eleva Pádel y su club de Pizarra, Málaga." data-i18n-fijo="content:meta.marca.description">
   <meta property="og:locale"      content="es_ES">
 
   <script type="application/ld+json">
@@ -41,6 +41,8 @@
   }
   </script>
 
+  <!-- Idioma inicial antes de pintar (sin defer, ver js/idioma.js) -->
+  <script src="js/idioma.js?v=20261108c"></script>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
   <link rel="stylesheet" href="css/fonts.css?v=20261108c">
   <link rel="stylesheet" href="css/main.css?v=20261108c">
@@ -57,12 +59,12 @@
 
 <header class="cabecera">
   <div class="cabecera-barra">
-    <a href="#contenido" class="logo" aria-label="Eleva Pádel, inicio" data-i18n-arialabel="home.logoLabel">
+    <a href="#contenido" class="logo" aria-label="Eleva Pádel, inicio" data-i18n-attr="aria-label:home.logoLabel">
       <img src="assets/img/logo-sin-fondo.svg" width="40" height="40" alt="">
       <span class="logo-nombre">Eleva Pádel</span>
     </a>
     <div class="idioma-selector">
-      <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/icons/lucide.svg#chevron-down"></use></svg></button>
+      <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES" data-i18n-attr="aria-label:nav.langLabel"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="assets/icons/lucide.svg#chevron-down"></use></svg></button>
       <ul id="idiomas" class="idioma-lista" hidden>
         <li><button type="button" class="idioma" data-lang="es" lang="es" aria-current="true"><span class="idioma-codigo">ES</span> Español</button></li>
         <li><button type="button" class="idioma" data-lang="en" lang="en"><span class="idioma-codigo">EN</span> English</button></li>
@@ -101,7 +103,7 @@
 
 </main>
 
-<footer class="pie" aria-label="Pie de página" data-i18n-arialabel="footer.ariaLabel">
+<footer class="pie" aria-label="Pie de página" data-i18n-attr="aria-label:footer.ariaLabel">
   <div class="pie-legal">
     <a href="privacidad.html" data-i18n="footer.legalLink">Aviso legal y privacidad</a>
     <p><span data-i18n="footer.credit">Desarrollado por</span>

@@ -7,7 +7,9 @@
    CONFIRMAR.md, nunca aquí: el repo es público y el manifest llega al
    navegador. Esquema de referencia: pizarra/manifest.js.
 
-   · Textos traducibles: { es, en, nl } (si falta un idioma se usa `es`).
+   · Textos traducibles: { es, en, nl, h: { en, nl } } (h: huella del español
+     de cada traducción, tools/i18n.js; sin en/nl, pendiente: se pinta el español
+     con lang="es" y validar.js lo avisa).
    · Datos que pueden cambiar: `verificado: 'AAAA-MM-DD'` + `fuente`.
    · Rutas de assets con "../".
    ========================================================= */
@@ -46,7 +48,7 @@
 
     otrosServicios: PENDIENTE_CLUB,      /* { verificado, fuente, texto: {es} } */
     cancelaciones:  PENDIENTE_CLUB,      /* { verificado, fuente, pistas:{titulo,items}, clases:{…}, nota } */
-    pools:          PENDIENTE_CLUB,      /* { verificado, fuente, texto, horario?, insignias:[ {img, alt, color} ] }
+    pools:          PENDIENTE_CLUB,      /* { verificado, fuente, texto, horario?, insignias:[ {img, nombre:{es}, color} ] }
                                             horario: { verificado, fuente, titulo, items:[ {dia, hora, pool, pistas} ] } */
     equipo:         [],                  /* [ { nombre, foto|null, rol, bio } ] */
     patrocinadores: { listaCompleta: PENDIENTE_CLUB, items: [] },   /* items: [ { nombre, tipo } ]; se pinta solo con listaCompleta: true */

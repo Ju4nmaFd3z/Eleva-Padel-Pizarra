@@ -52,9 +52,26 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     club» (`colaborar`, anuncio «Buscamos patrocinadores») es otra sección: opciones,
     disponibilidad de pistas (caduca: `colaborar.disponibilidad` con su `verificado`) y
     contacto solo por WhatsApp; nunca nombres de patrocinadores.
-11. **i18n ES/EN/NL**: `js/translations.js` (solo interfaz) con las mismas claves en los
-    tres idiomas. Los datos del club son `{ es, en, nl }` en su manifest (respaldo `es`).
-    Textos nuevos: primero en español, a revisión del cliente; EN/NL después.
+11. **i18n ES/EN/NL, una sola fuente por texto**: interfaz en `js/translations.js`, una
+    entrada por clave `{ es, en, nl, h: { en, nl } }`; datos del club con el mismo formato en
+    su manifest. Nada de textos sueltos: en el HTML, `data-i18n="clave"` (texto),
+    `data-i18n-attr="atributo:clave;…"` (`aria-label`, `alt`, `content` de la meta
+    description…) y `data-i18n-fijo` (og:*, solo español); `tools/generar.js` escribe el
+    español en las páginas y en la de mantenimiento. `h` es la **huella** del español del que
+    salió cada traducción (`tools/i18n.js`): si el español cambia, la traducción queda
+    **desfasada** y `validar.js` falla. Sin `en`/`nl` = **pendiente**: el navegador pinta el
+    español con `lang="es"` (nunca disfrazado de EN/NL) y `validar.js` lo avisa mientras
+    `PERMITIR_PENDIENTES` sea `true` en `tools/i18n.js` (fase A del punto 7; pasa a `false`
+    al integrar las traducciones revisadas; `--estricto` lo trata ya como error). `validar.js`
+    falla también por un texto visible sin clave, una clave sin uso o la lista de nombres
+    propios distinta de la del código. Textos nuevos: primero en español, a revisión del
+    cliente; EN (británico) y NL (de los Países Bajos) después, con traductor y revisor.
+    `node tools/i18n.js estado` lista lo pendiente; `exportar` lo saca para traducir.
+    - **Nombres propios que no se traducen** (copia exacta de `NOMBRES_PROPIOS` en `js/translations.js`; `validar.js` comprueba que coinciden):
+      «Eleva Pádel Pizarra», «Eleva Pádel», «WhatsApp», «Instagram», «Vola», «Bar Restaurante La Herradura», «Biznaga Consulting», «OpenStreetMap», «Google Maps», «Pizarra», «Málaga», «Pasaje Jerez s/n», «@elevapadelpizarra», «Lorena Vano», «Maripaz», «Liga SNP», «Liga LAPI», «Español», «English», «Nederlands»
+
+    Neutros (tampoco se traducen): cifras, precios, horas, «60 min», teléfonos, URL, códigos
+    ES/EN/NL y la atribución «© OpenStreetMap contributors» (licencia ODbL, en inglés).
 12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261108c`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según

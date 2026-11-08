@@ -209,6 +209,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .boton-reservar { min-height: 2.75rem; padding-inline: .875rem; flex-shrink: 0; }
 
+/* Con EN o NL, js/idioma.js pone .i18n-pendiente hasta que main.js cambia
+   los textos: así no se ve un destello en español. visibility no mueve nada
+   (los textos neutros, como el titular del hero, se ven desde el principio). */
+.i18n-pendiente [data-i18n], .i18n-pendiente [data-gen] { visibility: hidden; }
+
 /* Selector de idioma: botón con el idioma actual que despliega ES, EN, NL */
 .idioma-selector { position: relative; flex-shrink: 0; }
 .idioma-boton {

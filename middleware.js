@@ -86,16 +86,16 @@ const PAGINA = `<!DOCTYPE html>
 </head>
 <body>
 <main>
-  <img class="logo" src="/assets/img/logo-sin-fondo.svg" width="88" height="88" alt="Logo de Eleva Pádel">
+  <img class="logo" src="/assets/img/logo-sin-fondo.svg" width="88" height="88" alt="Logo de Eleva Pádel" data-i18n-attr="alt:maint.logoAlt">
   <h1>Eleva Pádel</h1>
-  <p>La web está en mantenimiento. Mientras tanto, puedes escribirnos.</p>
+  <p data-i18n="maint.text">La web está en mantenimiento. Mientras tanto, puedes escribirnos.</p>
   <ul>
     <li><a href="https://wa.me/34659143103" rel="noopener noreferrer"><img src="/assets/marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="">WhatsApp +34 659 14 31 03</a></li>
     <li><a href="https://instagram.com/elevapadelpizarra" rel="noopener noreferrer"><img src="/assets/marcas/instagram-glifo-blanco.svg" width="20" height="20" alt="">Instagram @elevapadelpizarra</a></li>
   </ul>
 </main>
 <footer>
-  Desarrollado por <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
+  <span data-i18n="footer.credit">Desarrollado por</span> <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
 </footer>
 </body>
 </html>
