@@ -35,7 +35,7 @@ los para al terminar. Sale con código 0 si todo está bien, 1 si hay fallos y
 | Opción | Qué hace |
 |---|---|
 | `--rapido` | solo los casos marcados como rápidos |
-| `--modulo a,b` | solo esos módulos (`responsive`, `interaccion`, `servidor`, `accesibilidad`, `hero`) |
+| `--modulo a,b` | solo esos módulos (`responsive`, `interaccion`, `servidor`, `accesibilidad`, `hero`, `idiomas`) |
 | `--pagina a,b` | solo esas páginas (`marca`, `pizarra`, `privacidad`, `404`, `mantenimiento`) |
 | `--caso texto` | casos cuyo id contiene el texto; `--caso "/regex/"` para una expresión |
 | `--lista` | muestra los casos que se ejecutarían y sale |
@@ -77,6 +77,22 @@ que falla.
   excluidos de `.vercelignore` y el modo mantenimiento (503, `Retry-After`,
   noindex, clave y cookie).
 - **accesibilidad**: axe-core, WCAG 2.2 A/AA, infracciones graves y críticas.
+- **idiomas**: en `/`, `/pizarra`, 404 y mantenimiento, a 390 (táctil) y 1280 px,
+  EN y NL sin ningún texto, atributo, `<title>`, meta description ni mensaje de
+  WhatsApp igual al de la página en español, salvo nombres propios y neutros
+  (`tools/i18n.js`) y traducciones iguales a propósito; un texto pendiente de
+  traducir solo pasa si va marcado `lang="es"` y mientras `PERMITIR_PENDIENTES`
+  sea `true`. Ida y vuelta ES → EN → NL → ES con el teclado (tras crearse la pista
+  3D y en reposo): `outerHTML` idéntico, comentarios `<!--gen-->` incluidos. Con
+  EN/NL guardado, ningún fotograma con textos traducibles en español antes de
+  aplicar el idioma, y aplicado en menos de 1,5 s. Idioma recordado de `/` a
+  `/pizarra` y a la 404; con el almacenamiento bloqueado, sin errores. Idioma del
+  navegador sin preferencia guardada (EN y NL sí; otros, español; lo guardado
+  manda y nunca se guarda solo). Formulario: errores en el idioma de la página,
+  ninguno del idioma anterior tras cambiarlo y el mensaje de WhatsApp traducido.
+  Sin JS, 404 y mantenimiento en español y sin selector. Los desbordes en EN/NL
+  (palabras largas del NL a 320 px) los mira `responsive`, que recorre las cuatro
+  páginas con selector también en EN y NL.
 - **hero**: el hero de /pizarra en 16 escenarios × 6 dispositivos (1920,
   1440 y 1280 con ratón, 1920 también a densidad 2; 390 y 360 táctiles) con
   GPU real (ANGLE): carga en
@@ -137,10 +153,6 @@ nuevo: los fallos se arreglan.
   interfaz no tiene GPU, así que la escena no se crea y se ve la imagen fija.
   La pista con GPU real solo la ejerce el módulo `hero`, y depende de la GPU
   del equipo que lo ejecuta.
-- **Idiomas a fondo** (encargo, punto 7.4): aquí solo se comprueba que EN y NL
-  se aplican y caben. Que no quede texto en español, la ida y vuelta
-  ES → EN → NL → ES con el DOM idéntico y los atributos traducidos son de su
-  propio módulo, pendiente.
 - **Rendimiento** (Lighthouse, fps, trazas): herramientas aparte, en la QA final.
 - **Contenido y datos**: si un texto es correcto o está confirmado lo revisan
   `tools/validar.js` y las personas, no la batería.

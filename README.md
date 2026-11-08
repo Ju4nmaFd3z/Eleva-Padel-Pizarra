@@ -107,15 +107,31 @@ galería y avisos. Después de cambiarlo, `node tools/generar.js`.
   la fecha pasa de 90 días.
 - **Avisos con fecha** (`eventos`): `hasta` es obligatorio y se ocultan solos al
   pasar esa fecha. Nunca se ponen en el HTML fijo.
-- El JSON-LD y los enlaces de reservas y WhatsApp los escribe el generador. El
-  `title`, la `description` y el Open Graph de `pizarra/index.html` se editan a mano.
+- El JSON-LD y los enlaces de reservas y WhatsApp los escribe el generador. Los
+  textos del `<head>` (meta description y Open Graph) salen de `js/translations.js`
+  (claves `meta.*`); solo el `<title>` neutro de `/pizarra` se escribe a mano.
 - Patrocinadores: la sección solo se muestra con la lista completa confirmada.
 
 ## Cambiar los textos
 
-- Textos de interfaz (menú, botones, rótulos): `js/translations.js`, con las
-  mismas claves en español, inglés y neerlandés.
-- Textos del club: en su manifest, como `{ es, en, nl }`.
+Cada texto tiene **una sola fuente**, con sus tres idiomas y la huella del español
+de cada traducción (`{ es, en, nl, h: { en, nl } }`):
+
+- Interfaz (menú, botones, rótulos, `<head>`, 404 y mantenimiento):
+  `js/translations.js`, una entrada por clave. En el HTML se enlaza con
+  `data-i18n="clave"` (texto) y `data-i18n-attr="aria-label:clave"` (atributos);
+  el español lo escribe `node tools/generar.js`: no se edita a mano.
+- Datos del club: en su manifest, con el mismo formato.
+- Al cambiar un texto en español, sus traducciones quedan **desfasadas** y
+  `validar.js` falla hasta que se retraducen (y se pone la huella nueva).
+  Un texto sin traducir (**pendiente**) se ve en español, marcado `lang="es"`,
+  y `validar.js` lo avisa.
+- `node tools/i18n.js estado` lista lo pendiente o desfasado;
+  `node tools/i18n.js exportar textos.json` lo saca para traducir.
+- Nombres propios que no se traducen y glosario: `CLAUDE.md` (regla 11).
+- Idioma de la página: el que eligió el usuario (se guarda en `eleva-lang`); si no
+  eligió nunca, el del navegador si es inglés o neerlandés; si no, español. Sin
+  JavaScript, siempre español.
 
 ## Logo y tipografía
 
@@ -167,13 +183,14 @@ como plantilla vacía.
 ├── middleware.js        ← modo mantenimiento
 ├── pizarra/             ← web del club (index.html + manifest.js)
 ├── css/                 ← main.css (estático), movimiento.css (todo lo animado) y fonts.css
-├── js/                  ← main.js, render.js (manifest → HTML) y translations.js
+├── js/                  ← main.js, render.js (manifest → HTML), translations.js (textos)
+│                          e idioma.js (idioma inicial, en el <head>)
 ├── js/movimiento/       ← nucleo.js y un módulo por efecto (scroll, puntero, tacto,
 │                          tres-d + pista.js, la escena 3D)
 ├── lib/three/           ← three.js r186 reducido (MIT; cómo regenerarlo en README.txt)
 ├── assets/              ← fuentes, imágenes, insignias, credits.json (interno)
 ├── clubs/_plantilla/    ← alta de clubes (no se publica)
-├── tools/               ← servidor local, generar, validar, hooks y qa/ (no se publica)
+├── tools/               ← servidor local, generar, validar, i18n, hooks y qa/ (no se publica)
 ├── CONTRIBUTING.md      ← convención de commits
 ├── robots.txt · sitemap.xml · vercel.json · .vercelignore
 ```

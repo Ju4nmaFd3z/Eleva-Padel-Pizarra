@@ -33,7 +33,8 @@ const MODULOS = [
   require('./modulos/interaccion'),
   require('./modulos/servidor'),
   require('./modulos/accesibilidad'),
-  require('./modulos/hero')
+  require('./modulos/hero'),
+  require('./modulos/idiomas')
 ];
 
 const RESULTADOS = path.join(__dirname, 'resultados');

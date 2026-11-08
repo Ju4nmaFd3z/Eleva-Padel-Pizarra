@@ -13,8 +13,9 @@
    ========================================================= */
 'use strict';
 
-/* Contexto de Playwright a partir de una «vista» de lib/vistas.js y un modo */
-function opcionesContexto(vista, modo, lang) {
+/* Contexto de Playwright a partir de una «vista» de lib/vistas.js y un modo.
+   locale: idioma del navegador (por defecto es-ES: el sitio abre en español) */
+function opcionesContexto(vista, modo, lang, locale) {
   const o = {
     viewport: { width: vista.ancho, height: vista.alto },
     deviceScaleFactor: vista.dpr || 1,
@@ -22,14 +23,14 @@ function opcionesContexto(vista, modo, lang) {
     hasTouch: !!vista.movil,
     reducedMotion: modo === 'reducido' ? 'reduce' : 'no-preference',
     javaScriptEnabled: modo !== 'sinjs',
-    locale: 'es-ES',
+    locale: locale || 'es-ES',
     serviceWorkers: 'block'
   };
   return o;
 }
 
-async function abrir(navegador, { vista, modo = 'normal', lang = null, base }) {
-  const ctx = await navegador.newContext(opcionesContexto(vista, modo, lang));
+async function abrir(navegador, { vista, modo = 'normal', lang = null, locale = null, base }) {
+  const ctx = await navegador.newContext(opcionesContexto(vista, modo, lang, locale));
   const registro = { consola: [], errores: [], fallidas: [], respuestas: [], terceros: [], documento: null };
   const origen = new URL(base).host;
   if (lang) {

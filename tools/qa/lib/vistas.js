@@ -37,13 +37,14 @@ const vista = nombre => {
   return v;
 };
 
-/* Páginas. «mantenimiento» se pide al servidor con MANTENIMIENTO=1. */
+/* Páginas. «mantenimiento» se pide al servidor con MANTENIMIENTO=1.
+   idiomas: tiene selector y se prueba también en EN y NL. */
 const PAGINAS = [
   { nombre: 'marca', ruta: '/', estado: 200, idiomas: true, cabecera: true },
   { nombre: 'pizarra', ruta: '/pizarra', estado: 200, idiomas: true, cabecera: true, reglaNombre: true },
   { nombre: 'privacidad', ruta: '/privacidad', estado: 200 },
-  { nombre: '404', ruta: '/no-existe-qa', estado: 404 },
-  { nombre: 'mantenimiento', ruta: '/pizarra', estado: 503, mantenimiento: true }
+  { nombre: '404', ruta: '/no-existe-qa', estado: 404, idiomas: true },
+  { nombre: 'mantenimiento', ruta: '/pizarra', estado: 503, mantenimiento: true, idiomas: true }
 ];
 
 module.exports = { VISTAS, vista, PAGINAS };

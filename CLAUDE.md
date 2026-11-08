@@ -180,14 +180,15 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `?borrador`; `tools/servidor-local.js` los sirve igualmente (lista `SOLO_LOCAL`), Vercel
   nunca. `/` publicado lleva solo lo confirmado.
 - `tools/validar.js`: pendientes, fechas de verificación (y que todo bloque que caduca
-  publicado lleve `verificado` y `fuente`), eventos, claves i18n,
-  cache-buster, scripts inline y HTML sincronizado con el manifest.
+  publicado lleve `verificado` y `fuente`), eventos, i18n (regla 11: huellas, pendientes,
+  textos sin clave, claves sin uso, nombres propios), cache-buster, scripts inline y todo lo
+  generado al día. `tools/i18n.js`: huella, neutros, `estado` y `exportar`.
 - `tools/qa/`: batería permanente (Playwright 1.63.0 + axe-core 4.13.0, versiones exactas, con
   su propio `package.json`; `npm ci` dentro de `tools/qa`, nunca en la raíz). Punto de entrada
   único `node tools/qa/bateria.js` (arranca su servidor local normal y otro con mantenimiento;
   `--rapido`, `--modulo`, `--pagina`, `--caso`, `--lista`, `--puerto`, `--paralelo`). La CSP
   esperada está fijada en `tools/qa/modulos/servidor.js`: cambiarla obliga a tocarla también ahí. Módulos en
-  `tools/qa/modulos/` (responsive, interaccion, servidor, accesibilidad), registrados en la
+  `tools/qa/modulos/` (responsive, interaccion, servidor, accesibilidad, hero, idiomas), registrados en la
   lista `MODULOS` de `bateria.js`; cómo añadir uno en `tools/qa/README.md`.
 - Hooks (`tools/hooks/`): `pre-commit` (generar + validar) y `commit-msg` (convención).
 - Plano del pie: SVG propio generado con `clubs/_plantilla/generar-mapa.js` desde las
