@@ -1,0 +1,14 @@
+/* ================================================================
+   Eleva Pádel — propuestas.css (SOLO PARA LA PREVIEW DE PROPUESTAS)
+   Alternativas en revisión, conmutables con js/propuestas.js:
+     ?marron=1|2|3 → html[data-marron]   (punto 6: el marrón del scroll)
+     ?cancel=1|2   → html[data-cancel]   (punto 5: Política de cancelaciones)
+   Sin parámetro, la web es exactamente la actual. Mismo sistema de
+   movimiento: tokens de main.css, solo transform/opacity, animaciones sd-*
+   movidas por js/movimiento/scroll.js (quietas fuera de pantalla: solo
+   cambian al hacer scroll). Sin html.mov (sin JS o con movimiento
+   reducido), cada propuesta queda en su estado final, completo.
+   Al elegir, la propuesta pasa a main.css / movimiento.css y este archivo
+   desaparece.
+   ================================================================ */
+
