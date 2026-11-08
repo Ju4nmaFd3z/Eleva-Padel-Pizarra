@@ -142,7 +142,8 @@
     },
 
     /* Insignias reales (assets/pools/opt/<img>-240|480|720.avif + -480.jpg).
-       Qué pools siguen en marcha y su horario: PENDIENTE_CLUB.
+       Qué pools con insignia siguen en marcha: PENDIENTE_CLUB. Semanales
+       son solo los del horario (cartel), con su propia verificación.
        color: muestreado de la palabra de la categoría de su imagen 720 px,
        04/10/2026. Es el único color que marca la categoría de cada insignia
        (aro y reverso). colorAro (solo la mixta): el de su aro, con el que
@@ -151,6 +152,17 @@
       verificado: '2026-09-30',
       fuente:     'cartel: Pools semanales',
       texto:      { es: 'Información e inscripciones por WhatsApp.' },
+      horario: {
+        verificado: '2026-10-06',
+        fuente:     'carteles del club en Instagram, confirmados por el club',
+        titulo:     { es: 'Pools semanales' },
+        items: [
+          { dia: { es: 'Martes' },  hora: '20:00', pool: { es: 'Pool 4.ª masculina' }, pistas: { es: '4 pistas' } },
+          { dia: { es: 'Jueves' },  hora: '20:00', pool: { es: 'Pool 5.ª femenina' },  pistas: { es: '2 o 3 pistas' } },
+          { dia: { es: 'Viernes' }, hora: '20:00', pool: { es: 'Pool 4.ª masculina' }, pistas: { es: '4 pistas' } },
+          { dia: { es: 'Domingo' }, hora: '09:30', pool: { es: 'Pool mixta' },         pistas: { es: '3 o 4 pistas' } }
+        ]
+      },
       insignias: [
         { img: 'pool_snp_masculina', alt: 'Pool SNP masculina · Eleva Pádel Pizarra', color: '#957E6D' },
         { img: 'pool_snp_femenina',  alt: 'Pool SNP femenina · Eleva Pádel Pizarra',  color: '#997E6D' },

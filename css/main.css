@@ -452,6 +452,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    enseñan detrás su nombre (el texto del alt); el color de cada insignia
    marca el aro y el reverso. Sin JS: imágenes normales. */
 .pools-intro p { margin-bottom: 0; }
+/* Horario semanal: filas con filete, día y hora a la izquierda */
+.pools-horario { margin-top: 2rem; }
+.pools-horario h3 { margin-bottom: .75rem; }
+.horario li {
+  display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: 1rem;
+  padding-block: .875rem; border-top: 1px solid var(--linea);
+}
+.horario li:last-child { border-bottom: 1px solid var(--linea); }
+.horario-dia, .horario-hora, .horario-pool, .horario-pistas { display: block; }
+.horario-dia { color: var(--crema); font: 600 1.375rem/1.1 var(--fuente-titulos); text-transform: uppercase; }
+.horario-hora { color: var(--claro); font-variant-numeric: tabular-nums; }
+.horario-pool { color: var(--crema); font-weight: 500; }
+.horario-pistas { color: var(--claro); font-size: .9375rem; }
 .insignias {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1rem, 3vw, 1.5rem); margin-block: 2rem;
@@ -690,7 +703,9 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   }
   .seccion-pools h2 { font-size: clamp(4.5rem, 10vw, 10rem); }
   .pools-intro { grid-area: intro; }
-  .insignias { grid-area: lista; margin: 0; max-width: 42rem; justify-self: end; width: 100%; }
+  /* align-self: start: si la columna de la izquierda es más alta, la lista no
+     se estira (sus celdas seguirían cuadradas y el abanico, dentro de ellas) */
+  .insignias { grid-area: lista; margin: 0; max-width: 42rem; justify-self: end; align-self: start; width: 100%; }
   .pools-cta { grid-area: cta; margin-top: 2rem; }
   .galeria { grid-template-columns: repeat(3, 1fr); }
   .contacto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }

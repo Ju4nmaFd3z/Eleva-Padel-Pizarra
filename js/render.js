@@ -137,6 +137,19 @@
     };
     s['pools-texto'] = { html: hayPools ? esc(L(p.texto)) : '', visible: hayPools };
 
+    /* Horario semanal (cartel): día y hora | pool y pistas, una fila por pool */
+    var ph = p && p.horario;
+    var hayHorario = presente(ph) && presente(ph.items);
+    s['pools-horario'] = {
+      html: hayHorario ? '<h3>' + esc(L(ph.titulo)) + '</h3><ul class="horario">' + ph.items.map(function (i) {
+        return '<li><span class="horario-cuando"><span class="horario-dia">' + esc(L(i.dia)) + '</span> ' +
+          '<time class="horario-hora" datetime="' + esc(i.hora) + '">' + esc(i.hora) + '</time></span> ' +
+          '<span class="horario-que"><span class="horario-pool">' + esc(L(i.pool)) + '</span> ' +
+          '<span class="horario-pistas">(' + esc(L(i.pistas)) + ')</span></span></li>';
+      }).join('') + '</ul>' : '',
+      visible: hayHorario
+    };
+
     /* Otros servicios */
     var os = d.otrosServicios;
     s.servicios = { html: presente(os) ? esc(L(os.texto)) : '', visible: presente(os) };
