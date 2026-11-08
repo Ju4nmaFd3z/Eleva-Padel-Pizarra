@@ -127,20 +127,25 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   (bloques negros, pista fuera del logo, texto que falta). Reglas: una sola capa
   enmascarada (`.hero-mascara`, la única que usa la geometría del logo: `--L`, `--mx`,
   `--my`, `--ox`, `--oy`); el tinte y la penumbra, colores planos de la escena; sin
-  animaciones CSS en el hero del club (`scroll.js` escribe un solo progreso, `--p-hero`, y
+  animaciones CSS en el hero del club, salvo el encendido de la penumbra (`encender`, una vez
+  al cargar, relleno solo hacia atrás: deja de ser capa al terminar) (`scroll.js` escribe un solo progreso, `--p-hero`, y
   la escala del telón; las curvas, en `movimiento.css`); capas (`will-change`) solo con
   `.en-movimiento` (`ElevaMov.enMovimiento`, se sueltan 400 ms después). Excepción: el texto
   del hero (líneas, lugar y botones) va siempre en su capa, cada línea del ancho de su texto
   (compuesto y pintado se suavizan distinto: al soltar la capa el titular saltaba un píxel).
   Lo que no se ve no se pinta: la imagen fija, en cuanto la escena viva está opaca encima;
-  el velo, mientras es transparente (`.hero-con-velo` desde `--p-hero` > 0,35). En reposo
+  el velo, mientras es transparente (`.hero-con-velo` desde `--p-hero` > 0,35; solo con
+  máscaras compuestas, `@supports`). En reposo
   (400 ms tras el último fotograma) la pista 3D se congela: su último fotograma pasa a un
   `<img>` (`.hero-foto`, `.tres-d-congelada`) y el lienzo sale de las capas (un lienzo WebGL
   visible obliga a componer todo lo que lleva encima); al volver el movimiento se muestra y
   pinta en el mismo fotograma. La pista 3D sin MSAA con densidad ≥ 2, vuelve a la imagen fija
   si se pierde el contexto WebGL y se rehace al recuperarlo. Prueba: módulo `hero` de
   `tools/qa` (`QA_HERO_REP=50` en la QA final), con `gpu-justa` y `gpu-compartida` (memoria
-  limitada, comprobada en el estado estable, sin reintentos).
+  justa, en el estado estable) y `gpu-movimiento` (en movimiento, con el doble de la memoria
+  justa), sin reintentos. Riesgo que queda: con la memoria justa (128 MB a 1920 con densidad 2,
+  46 MB en 390; Chrome da 512 MB por pestaña en escritorio), al cruzar `--p-hero` = 0,35 en
+  movimiento la aparición del velo deja el telón sin teselas 1,5-2 s; con 1,5× esa memoria, no.
 - **Pista 3D** (`js/movimiento/pista.js`, three.js r186 reducido en `lib/three/`, MIT,
   ≤ 160 KB gzip): reglamento FIP «Rules of Padel» versión «in force as of 1.01.2026»,
   pág. 6 del documento (7 del PDF), diagrama «Laterales – Variante 1»: 2 | 2 | 12 | 2 | 2 m;
