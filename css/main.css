@@ -665,6 +665,13 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .galeria { grid-template-columns: repeat(2, 1fr); }
   .pie-columnas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .politica .bloque, .filas .fila { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 2.5rem; align-items: start; }
+  /* En dos columnas, la letra del título sigue a su columna (contenido
+     − hueco, entre 2,3; 1,25rem de reserva para la barra de scroll) y no
+     al ancho de la pantalla: cabe entera una palabra de hasta 4,5 em
+     (unas once letras). Con 12vw, a 640-800 px «Reservas» no cabía. */
+  .politica h3, .filas h3 {
+    font-size: min(5.5rem, (min(100vw - 2 * max(var(--margen), env(safe-area-inset-left)), var(--ancho)) - 3.75rem) / 2.3 / 4.5);
+  }
   .club { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: end; }
   .club img { aspect-ratio: auto; height: 100%; min-height: 22rem; }
 }

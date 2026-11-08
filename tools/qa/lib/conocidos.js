@@ -62,16 +62,6 @@ module.exports = [
     apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 2'
   },
   {
-    caso: /^responsive · pizarra · (667x375-apaisado · es · normal|768x1024 · es · normal|zoom200 · es · (normal|sinjs))$/,
-    fallos: [
-      partida('h3 «Reservas de pista» «Reservas»', '276 px en 249 px'),
-      partida('h3 «Reservas de pista» «Reservas»', '304 px en 290 px'),
-      partida('h3 «Reservas de pista» «Reservas»', '265 px en 239 px')
-    ],
-    motivo: '/pizarra, Cancelaciones: el título «Reservas de pista» se parte en «RESER- / VAS» a 667, 768 y 640 px (zoom 200 %)',
-    apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 4'
-  },
-  {
     caso: /^responsive · pizarra · (320x640|390x844) · nl · (normal|reducido)$/,
     fallos: [
       partida('h2#cancelaciones-titulo «Annuleringsbeleid» «Annuleringsbeleid»', '351 px en 288 px'),
