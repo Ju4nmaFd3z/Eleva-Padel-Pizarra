@@ -94,14 +94,5 @@ module.exports = [
     ],
     motivo: '/pizarra en NL: el título «Annuleringsbeleid» no cabe a 320 ni a 390 px y se parte',
     apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 5'
-  },
-  {
-    caso: /^responsive · pizarra · (320x640|390x844) · es · sinjs$/,
-    fallos: [
-      { tipo: 'nombre-del-club', clave: 'logo-nombre', detalle: 'visible a 320 px (debe estar oculto desde/por debajo de 408 px)' },
-      { tipo: 'nombre-del-club', clave: 'logo-nombre', detalle: 'visible a 390 px (debe estar oculto desde/por debajo de 408 px)' }
-    ],
-    motivo: '/pizarra sin JS: el nombre del club se ve en la cabecera por debajo de 408 px (decisión 1 del encargo: oculto, con y sin JS)',
-    apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 6'
   }
 ];

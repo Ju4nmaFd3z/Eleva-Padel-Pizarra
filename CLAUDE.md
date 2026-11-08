@@ -106,7 +106,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   en `/` y `/pizarra`. Botón con el idioma actual que despliega ES, EN, NL: Enter/Espacio/
   flechas abren, flechas/Inicio/Fin recorren, Escape cierra y devuelve el foco, la opción
   activa lleva `aria-current`. Sin JS se oculta (`<noscript>`). Por debajo de 25,5rem el
-  nombre del club junto al logo se oculta a la vista en `/pizarra` (queda en `aria-label`).
+  nombre del club junto al logo se oculta a la vista en `/pizarra`, con y sin JS (queda en
+  `aria-label`; el nombre ya está en el hero).
 - **Sistema de movimiento** (uno para las dos páginas): tokens `--dur-*`, `--curva-*`,
   `--retardo-*`, `--dist-*`, `--prof-*`, `--fisica-*` en `:root` de `css/main.css` (versión
   reducida en `prefers-reduced-motion`); espejo en JS en `js/movimiento/nucleo.js`, que
