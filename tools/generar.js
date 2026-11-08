@@ -10,6 +10,7 @@
      HTML en español que produce js/render.js, el mismo código que usa el
      navegador al cambiar de idioma;
    · pone o quita `hidden` en cada elemento data-seccion="…" según haya datos;
+   · alterna data-superficie="tinta" entre las secciones visibles;
    · escribe los href de los enlaces data-href="…" desde el manifest;
    · genera el JSON-LD (entre <!--gen:jsonld--> y <!--/gen:jsonld-->).
    Así todo lo confirmado se ve sin JavaScript. Vercel no ejecuta nada:
@@ -63,6 +64,17 @@ function generar(slug) {
   html = html.replace(/<([a-z]+)([^>]*?)\sdata-seccion="([a-z-]+)"([^>]*?)>/g, (m, tag, antes, id, despues) => {
     if (!s[id]) return m;
     return `<${tag}${antes.replace(/\shidden\b/g, '')} data-seccion="${id}"${despues.replace(/\shidden\b/g, '')}${s[id].visible ? '' : ' hidden'}>`;
+  });
+
+  /* Superficies alternas: entre las secciones visibles, por orden, la
+     primera tinta, la siguiente negro… Así una sección que aparece o
+     desaparece no deja dos del mismo color seguidas. */
+  let orden = 0;
+  html = html.replace(/<section\b([^>]*)>/g, (m, attrs) => {
+    if (!/\sclass="(?:[^"]*\s)?seccion(?:\s[^"]*)?"/.test(attrs)) return m;
+    const limpio = attrs.replace(/\sdata-superficie="[^"]*"/g, '');
+    if (/\shidden\b/.test(limpio) || orden++ % 2) return `<section${limpio}>`;
+    return `<section${limpio.replace(/(\sclass="[^"]*")/, '$1 data-superficie="tinta"')}>`;
   });
 
   /* Enlaces desde el manifest */

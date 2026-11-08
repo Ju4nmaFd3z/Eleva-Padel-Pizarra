@@ -28,7 +28,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
    navegador y se ocultan solos. Nunca en el HTML generado ni en el JSON-LD. Nada de
    textos que caduquen («este verano», «nueva temporada», «recién inaugurado»…).
 4. **El HTML del club se genera**: tras tocar un manifest, `node tools/generar.js`.
-   No se editan a mano las zonas `data-gen` ni el `hidden` de `data-seccion`.
+   No se editan a mano las zonas `data-gen`, el `hidden` de `data-seccion` ni el
+   `data-superficie` de las secciones (tinta y negro alternos entre las visibles).
 5. **Rutas `../` en la página del club** y el manifest siempre como
    `../<slug>/manifest.js` (Vercel sirve `/pizarra` sin barra final). Excepción:
    `404.html`, con rutas absolutas.
