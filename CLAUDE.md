@@ -75,6 +75,26 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 
     Neutros (tampoco se traducen): cifras, precios, horas, «60 min», teléfonos, URL, códigos
     ES/EN/NL y la atribución «© OpenStreetMap contributors» (licencia ODbL, en inglés).
+    - **Glosario (PROPUESTA, pendiente de aprobación del usuario; D6: lo cierran el traductor
+      y el revisor de cada idioma en la fase B).** Se usa igual en toda la web.
+
+      | ES | EN (británico) | NL (Países Bajos) | Criterio |
+      |---|---|---|---|
+      | pista | court | baan | |
+      | reservar pista | book a court | baan reserveren | |
+      | pool | por decidir | por decidir | hoy «Pools» en los tres; ¿se entiende fuera de España? |
+      | americano | por decidir | por decidir | formato de torneo; suele quedarse «Americano» |
+      | 4.ª / 5.ª (categoría) | por decidir | por decidir | nivel de juego, no ordinal suelto |
+      | masculina / femenina / mixta | men's / women's / mixed | heren / dames / gemengd | |
+      | clases de grupo · particulares | group · private lessons | groeps- · privélessen | |
+      | escuela infantil | por decidir | por decidir | hasta 12 años, 1 clase semanal |
+      | modalidad puntual · mensual | por decidir | por decidir | clase suelta frente a cuota |
+      | colaborar (con el club) | por decidir | por decidir | hoy EN/NL dicen «patrocinio»: el ES no |
+      | zona chill-out | chill-out area | chill-outzone | |
+      | IVA incluido | VAT included | inclusief btw | |
+      | recepción | reception | receptie | |
+      | L–V · 17:00 h | Mon–Fri · 17:00 | ma–vr · 17:00 | sin la «h» española |
+      | «SNP», «Rocha» | sin traducir | sin traducir | siguen pendientes de qué son |
 12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261108c`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según
