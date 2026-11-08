@@ -149,7 +149,7 @@ imagen, usa un nombre nuevo: la caché del navegador guarda las imágenes hasta 
 
 ## Cache-buster
 
-Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261108b`), igual en todos
+Cada `<link>` y `<script>` lleva `?v=YYYYMMDD[letra]` (hoy `20261108c`), igual en todos
 los HTML. Súbelo al cambiar CSS, JS o manifest. `tools/validar.js` comprueba que
 coincide.
 
