@@ -39,10 +39,17 @@ if (process.platform === 'win32') ARGS_GPU.push('--use-angle=d3d11');
    imagen a pantalla completa: a densidad 2 la ventana sola son 33 MB de
    teselas y la escena congelada, otros 31 MB de imagen. */
 const MEMORIA_JUSTA_REF_MB = 32;
-function memoriaJusta(disp) {
+function memoriaJusta(disp, factor = 1) {
   const k = disp.ancho * disp.alto * disp.dpr * disp.dpr / (1920 * 1080);
-  return Math.max(MEMORIA_JUSTA_REF_MB, Math.round(MEMORIA_JUSTA_REF_MB * k));
+  return Math.round(factor * Math.max(MEMORIA_JUSTA_REF_MB, Math.round(MEMORIA_JUSTA_REF_MB * k)));
 }
+/* «gpu-movimiento»: el hero EN MOVIMIENTO con el doble de la memoria justa
+   (256 MB a 1920 con densidad 2, 92 MB en 390). Con la justa, en movimiento,
+   el hero actual aún pierde teselas 1,5-2 s al aparecer el velo (riesgo que
+   queda, CLAUDE.md); con 1,5× ya no. El hero anterior al arreglo falla aquí
+   en movimiento (revisión del 08/11: 13 de 30 tomas a 1920 d2, 10 de 30 en 390)
+   e incluso sin límite de memoria a 1920 d2. */
+const FACTOR_MOVIMIENTO = 2;
 const LANZAR = {
   gpu: { args: ARGS_GPU, ignoreDefaultArgs: ['--disable-back-forward-cache'] },
   sinwebgl: { args: ['--disable-webgl', '--disable-3d-apis'], ignoreDefaultArgs: ['--disable-back-forward-cache'] },
@@ -154,6 +161,23 @@ async function chequear(ctxEsc, etiqueta, { reposo = false } = {}) {
   return m;
 }
 
+/* Comprobación EN MOVIMIENTO: captura y medida del mismo scroll (si el scroll
+   cambia entre una y otra se toman otra vez al momento, sin esperar), y nada
+   más: un fallo a la primera es un fallo */
+async function enMovimiento(e, etiqueta) {
+  let png, m;
+  for (let i = 0; i < 5; i++) {
+    const antes = await e.p.evaluate(() => [scrollY, innerWidth, innerHeight, devicePixelRatio].join());
+    png = await e.p.screenshot({ animations: 'allow', caret: 'initial' });
+    m = await H.medir(e.p);
+    if (antes === [m.scrollY, m.vw, m.vh, m.dpr].join()) break;
+  }
+  const f = H.comprobar(m, png, { etiqueta });
+  if (f.length && e.capturar) await e.capturar(png, etiqueta);
+  e.fallos.push(...f);
+  e.medidas.push({ etiqueta, p: +m.p.toFixed(3), scrollY: m.scrollY, lienzo: !!m.lienzo, lista: m.lista });
+}
+
 /* El scroll no se mueve (la restauración al recargar puede ir en varios pasos
    o suave): el mismo scrollY en 4 fotogramas seguidos, hasta 5 s */
 async function scrollParado(p) {
@@ -172,7 +196,10 @@ const ESTADO_HERO = soloQuieto => {
   const mov = !!document.querySelector('.en-movimiento');
   const lista = !!(h && h.classList.contains('tres-d-lista')), cong = !!(h && h.classList.contains('tres-d-congelada'));
   const anim = document.getAnimations().some(a => a.playState === 'running' && a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('.hero'));
-  const quieto = !mov && !anim && !t.cargando && (!lista || cong);
+  /* una pista 3D sin congelación (versiones anteriores, sin «congelada» en su
+     estado) está quieta sin congelarse: así se la juzga por lo que se ve */
+  const congela = 'congelada' in t;
+  const quieto = !mov && !anim && !t.cargando && (!lista || cong || !congela);
   if (soloQuieto) return quieto;
   return {
     geometria: [scrollY, innerWidth, innerHeight, devicePixelRatio].join(),
@@ -436,6 +463,27 @@ const ESCENARIOS = {
     await chequear(e, 'final', { reposo: true });
   },
 
+  /* En movimiento, con el doble de la memoria justa: primer gesto, la pista 3D
+     lista, y tomas mientras la rueda mueve el hero (sin esperar a reposo),
+     cruzando los tramos del velo (p = 0,35) y de la apertura. La captura y la
+     medida, del mismo scroll; un fallo a la primera es un fallo. */
+  'gpu-movimiento': async e => {
+    await e.p.goto(URL_PIZARRA(e.base), { waitUntil: 'load' });
+    await e.p.mouse.move(e.disp.ancho / 2, e.disp.alto / 2);
+    await e.p.mouse.wheel(0, 1); await e.p.mouse.wheel(0, -1);
+    if (!await esperar3D(e.p, 20000)) { await noLlega(e); return; }
+    await espera(1500);
+    const k = 1 + 0.1 * Math.floor(e.r() * 3);
+    const posiciones = [0.08, 0.25, 0.45, 0.15, 0.6, 0.02, 0.3, 0.1];
+    for (let i = 0; i < posiciones.length; i++) {
+      const objetivo = Math.round(e.disp.alto * posiciones[i] * k);
+      const y0 = await e.p.evaluate(() => scrollY);
+      for (let j = 0; j < 5; j++) { await e.p.mouse.wheel(0, (objetivo - y0) / 5); await espera(16); }
+      await espera(60 + 20 * (i % 5));
+      await enMovimiento(e, 'en movimiento hacia ' + objetivo);
+    }
+  },
+
   /* 32 MB (proporcional) con otras 4 páginas del hero a la vez en el mismo navegador */
   'gpu-compartida': async e => { e.compartida = true; return ESCENARIOS['gpu-justa'](e); },
 
@@ -462,8 +510,9 @@ async function ejecutar(navegadores, { escenario, dispositivo, semilla, base, ca
   /* gpu-justa y gpu-compartida: un navegador propio por ejecución (la memoria
      de GPU forzada es de todo el navegador; con otras ejecuciones a la vez
      sería otro escenario) que se cierra al terminar */
-  const justa = escenario === 'gpu-justa' || escenario === 'gpu-compartida';
-  const clave = sinGL ? 'sinwebgl' : escenario === 'bfcache' ? 'ventana' : justa ? 'justa-' + memoriaJusta(disp) + '-' + dispositivo + '-' + semilla + '-' + escenario : 'gpu';
+  const justa = escenario === 'gpu-justa' || escenario === 'gpu-compartida' || escenario === 'gpu-movimiento';
+  const mb = memoriaJusta(disp, escenario === 'gpu-movimiento' ? FACTOR_MOVIMIENTO : 1);
+  const clave = sinGL ? 'sinwebgl' : escenario === 'bfcache' ? 'ventana' : justa ? 'justa-' + mb + '-' + dispositivo + '-' + semilla + '-' + escenario : 'gpu';
   const nav = await navegadores(clave);
   const ctx = await nav.newContext({
     viewport: { width: disp.ancho, height: disp.alto }, deviceScaleFactor: disp.dpr,
@@ -504,4 +553,4 @@ function opcionesLanzar(clave) {
   return m ? LANZAR.justa(Number(m[1])) : LANZAR[clave];
 }
 
-module.exports = { DISPOSITIVOS, ESCENARIOS, LANZAR, opcionesLanzar, memoriaJusta, ejecutar, azar };
+module.exports = { DISPOSITIVOS, ESCENARIOS, LANZAR, opcionesLanzar, memoriaJusta, FACTOR_MOVIMIENTO, ejecutar, azar };

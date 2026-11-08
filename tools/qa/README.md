@@ -77,7 +77,7 @@ que falla.
   excluidos de `.vercelignore` y el modo mantenimiento (503, `Retry-After`,
   noindex, clave y cookie).
 - **accesibilidad**: axe-core, WCAG 2.2 A/AA, infracciones graves y críticas.
-- **hero**: el hero de /pizarra en 15 escenarios × 6 dispositivos (1920,
+- **hero**: el hero de /pizarra en 16 escenarios × 6 dispositivos (1920,
   1440 y 1280 con ratón, 1920 también a densidad 2; 390 y 360 táctiles) con
   GPU real (ANGLE): carga en
   frío, recarga a mitad de página, atrás/adelante con bfcache (ventana fuera
@@ -88,7 +88,9 @@ que falla.
   GPU con poca memoria (`gpu-justa`: `--force-gpu-mem-available-mb`
   32 MB a 1920×1080 y en proporción a los píxeles físicos, 128 MB a 1920 con
   densidad 2; `gpu-compartida`: lo mismo con otras cuatro páginas del hero
-  abiertas en el mismo navegador). Estos dos se comprueban en el estado
+  abiertas en el mismo navegador; `gpu-movimiento`: el doble de esa memoria,
+  con tomas mientras la rueda mueve el hero, sin esperar a reposo). Los dos
+  primeros se comprueban en el estado
   estable del hero: nada en movimiento, la pista 3D sin crearse a medias y,
   si está, congelada; si el estado cambia durante la captura, se espera a
   que vuelva a ser estable (no es un reintento: esa captura no valía). En
