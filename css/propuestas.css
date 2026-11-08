@@ -105,6 +105,54 @@ html[data-cancel="1"] .politica .nota {
 html.mov[data-cancel="1"] .politica .lista::after { animation: sd-carril 1s linear both; }
 html.mov[data-cancel="1"] .politica .lista li::after { animation: sd-punto 1s linear both; }
 
+/* C2 · Cristal de pista: cada bloque es un panel de cristal con su canto
+   LED, que se enciende al entrar, y un reflejo que lo cruza con el scroll.
+   Las normas, en filas con su rótulo en columna propia desde 40rem. */
+html[data-cancel="2"] .politica { gap: clamp(1.25rem, 3vw, 2rem); }
+html[data-cancel="2"] .politica .bloque,
+html[data-cancel="2"] .politica .bloque:last-of-type {
+  position: relative; isolation: isolate; overflow: hidden;
+  grid-template-columns: minmax(0, 1fr);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border: 1px solid var(--linea);
+  background: linear-gradient(160deg, rgba(237, 228, 220, .07), rgba(237, 228, 220, .015) 45%, rgba(237, 228, 220, 0) 70%);
+}
+html[data-cancel="2"] .politica .bloque::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; pointer-events: none;
+  background: linear-gradient(to right, var(--beige), var(--crema) 50%, var(--beige));
+  box-shadow: 0 0 18px 1px rgba(237, 228, 220, .45);
+  transform-origin: 0 50%;
+}
+html[data-cancel="2"] .politica .bloque::after {
+  content: ""; position: absolute; z-index: -1; top: -20%; bottom: -20%; left: 0; width: 45%; pointer-events: none;
+  background: linear-gradient(105deg, rgba(237, 228, 220, 0) 20%, rgba(237, 228, 220, .07) 46%, rgba(237, 228, 220, .11) 50%, rgba(237, 228, 220, .07) 54%, rgba(237, 228, 220, 0) 80%);
+  opacity: 0;
+}
+html[data-cancel="2"] .politica h3 { font-size: clamp(2.75rem, 11vw, 7rem); }
+html[data-cancel="2"] .politica .lista { display: grid; padding: 0; list-style: none; }
+html[data-cancel="2"] .politica .lista li { margin: 0; padding-block: 1rem; border-top: 1px solid var(--linea); }
+html[data-cancel="2"] .politica .lista li:first-child { border-top: 0; padding-top: 0; }
+html[data-cancel="2"] .politica .lista li:last-child { padding-bottom: 0; }
+html[data-cancel="2"] .norma-rotulo {
+  display: block; margin-bottom: .25rem;
+  color: var(--crema); font: 600 1.375rem/1.1 var(--fuente-titulos);
+  letter-spacing: .02em; text-transform: uppercase;
+}
+html[data-cancel="2"] .politica .nota {
+  margin-top: 2rem; color: var(--crema);
+  font: 500 clamp(1.25rem, 3.6vw, 1.75rem)/1.3 var(--fuente-texto);
+}
+@media (min-width: 40rem) {
+  html[data-cancel="2"] .politica .lista li:has(.norma-rotulo) {
+    display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); column-gap: 2rem; align-items: baseline;
+  }
+  html[data-cancel="2"] .norma-rotulo { margin-bottom: 0; }
+}
+@media (min-width: 64rem) {
+  html[data-cancel="2"] .politica .lista li:has(.norma-rotulo) { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); }
+}
+html.mov[data-cancel="2"] .politica .bloque::before { animation: sd-canto 1s linear both; }
+html.mov[data-cancel="2"] .politica .bloque::after { animation: sd-paso-reflejo 1s linear both; }
 
 /* En pausa en su primer fotograma hasta que scroll.js las recoge */
 html.mov[data-cancel] .politica :is(.lista, .lista li, .bloque)::before,
@@ -112,3 +160,5 @@ html.mov[data-cancel] .politica :is(.lista, .lista li, .bloque)::after { animati
 
 @keyframes sd-carril { from { scale: 1 0; } to { scale: 1 1; } }
 @keyframes sd-punto  { from { opacity: 0; scale: .4; } to { opacity: 1; scale: 1; } }
+@keyframes sd-canto  { 0% { scale: 0 1; opacity: .3; } 100% { scale: 1 1; opacity: 1; } }
+@keyframes sd-paso-reflejo { 0% { opacity: 1; translate: -110% 0; } 100% { opacity: 1; translate: 260% 0; } }
