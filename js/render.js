@@ -194,10 +194,15 @@
     function contactoCol() {
       var partes = esc(L(co.contacto)).split('{numero}');
       if (partes.length !== 2 || !presente(co.numero) || !presente(c.whatsapp)) return '';
-      return '<p class="colaborar-contacto">' + partes[0] +
+      /* La última palabra antes del número va unida al enlace (y lo que le
+         sigue pegado, como el punto): el enlace nunca baja solo y deja la
+         frase suelta */
+      var antes = partes[0].match(/^([\s\S]*?)(\S*\s*)$/);
+      var despues = partes[1].match(/^(\S*)([\s\S]*)$/);
+      return '<p class="colaborar-contacto">' + antes[1] + '<span class="sin-corte">' + antes[2] +
         '<a class="enlace" href="https://wa.me/' + esc(c.whatsapp) + '" data-wa="wa.collab" target="_blank" rel="noopener noreferrer">' +
         '<img class="glifo" src="' + ASSETS + 'marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="WhatsApp">' +
-        '<span>' + esc(co.numero) + '</span></a>' + partes[1] + '</p>';
+        '<span>' + esc(co.numero) + '</span></a>' + despues[1] + '</span>' + despues[2] + '</p>';
     }
     s['colaborar-titulo'] = { html: hayCol ? esc(L(co.titulo)) : '', visible: hayCol };
     s.colaborar = {

@@ -560,6 +560,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   font: 600 clamp(1.75rem, 6vw, 2.5rem)/1.05 var(--fuente-titulos); text-transform: uppercase;
 }
 .colaborar-contacto .enlace { vertical-align: middle; }
+.colaborar-contacto .sin-corte { white-space: nowrap; }
 
 .patrocinadores li { padding-block: .75rem; border-bottom: 1px solid var(--linea); color: var(--crema); }
 .patrocinadores span { color: var(--claro); }

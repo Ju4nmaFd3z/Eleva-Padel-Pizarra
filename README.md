@@ -102,7 +102,9 @@ galería y avisos. Después de cambiarlo, `node tools/generar.js`.
 - **Solo datos confirmados por el club.** Lo pendiente se marca `PENDIENTE_CLUB`
   y no se pinta; su valor propuesto se apunta en `CONFIRMAR.md`, nunca en el repo.
 - Los datos que pueden cambiar llevan `verificado` (fecha de la confirmación) y
-  `fuente`. Al reconfirmarlos, actualiza la fecha.
+  `fuente`. Al reconfirmarlos, actualiza la fecha. `tools/validar.js` da error si
+  un dato que caduca se publica sin `verificado` o sin `fuente`, y avisa cuando
+  la fecha pasa de 90 días.
 - **Avisos con fecha** (`eventos`): `hasta` es obligatorio y se ocultan solos al
   pasar esa fecha. Nunca se ponen en el HTML fijo.
 - El JSON-LD y los enlaces de reservas y WhatsApp los escribe el generador. El
