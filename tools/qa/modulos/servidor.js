@@ -18,7 +18,7 @@ const { RAIZ } = require('../lib/servidor');
    o en middleware.js, la batería falla. Cambiarla de verdad (un tercero nuevo)
    obliga a tocar vercel.json, privacidad.html y estas constantes (regla 7). */
 const CSP_SITIO = "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
-const CSP_MANTENIMIENTO = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
+const CSP_MANTENIMIENTO = "default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
 
 /* Lo que una CSP del proyecto no puede tener nunca: orígenes externos,
    comodines, eval ni scripts inline */
@@ -106,7 +106,7 @@ function mantenimiento() {
       for (const m of cspDebil(r.headers.get('content-security-policy') || '')) ok(false, ruta + ': CSP de mantenimiento debilitada', m);
       ok(/<meta name="robots" content="noindex">/.test(cuerpo), ruta + ': la página no lleva meta robots noindex');
     }
-    for (const ruta of ['/favicon.ico', '/assets/img/logo-sin-fondo.svg', '/robots.txt']) {
+    for (const ruta of ['/favicon.ico', '/assets/img/logo-sin-fondo.svg', '/robots.txt', '/assets/icons/lucide.svg', '/js/idioma.js', '/js/translations.js', '/js/main.js']) {
       const r = await pedir(b + ruta);
       ok(r.status === 200, ruta + ' no se sirve en mantenimiento', r.status);
       await r.arrayBuffer();

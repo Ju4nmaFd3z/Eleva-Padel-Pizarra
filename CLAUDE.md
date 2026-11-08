@@ -16,6 +16,9 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - Activar: variable `MANTENIMIENTO=1` en Vercel (Production) + Redeploy.
 - Desactivar: borrar la variable o ponerla a `0` + Redeploy.
 - Saltárselo: `?acceso=<MANTENIMIENTO_CLAVE>` (cookie `eleva-acceso`, 30 días). La clave nunca va al repo.
+- La página sale en el idioma guardado o del navegador, con selector (CSP propia con
+  `script-src 'self'`; `js/idioma.js`, `translations.js`, `main.js` y el sprite se sirven
+  también en mantenimiento). Sin JS, en español. Sus textos los escribe `generar.js`.
 
 ## Reglas que no se rompen
 1. **No inventar datos.** Solo se publica lo confirmado por el cliente. Lo
@@ -120,7 +123,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   WhatsApp con mensaje, avisos con fecha y formulario. No hay botón flotante: «Reservar»
   va siempre en la cabecera. Tras repintar al cambiar de idioma emite `eleva:repintado`.
 - **Selector de idioma**: en la cabecera, fuera del menú (logo · Reservar · idioma · menú),
-  en `/` y `/pizarra`. Botón con el idioma actual que despliega ES, EN, NL: Enter/Espacio/
+  en `/` y `/pizarra` (en la 404 y en mantenimiento, arriba a la derecha, con el mismo
+  código y su CSS propio). Botón con el idioma actual que despliega ES, EN, NL: Enter/Espacio/
   flechas abren, flechas/Inicio/Fin recorren, Escape cierra y devuelve el foco, la opción
   activa lleva `aria-current`. Sin JS se oculta (`<noscript>`). Por debajo de 25,5rem el
   nombre del club junto al logo se oculta a la vista en `/pizarra`, con y sin JS (queda en

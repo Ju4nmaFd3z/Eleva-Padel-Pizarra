@@ -12,6 +12,12 @@
    La clave NUNCA se escribe en el repo (es público).
    Sin dependencias: solo Request/Response estándar.
    tools/servidor-local.js carga este mismo archivo.
+
+   La página sale en el idioma guardado o en el del navegador, con el
+   selector de la web (js/idioma.js, js/translations.js y js/main.js, que
+   se sirven también en mantenimiento); sin JS, en español. Sus textos los
+   escribe tools/generar.js desde js/translations.js (data-i18n): no se
+   editan a mano.
    ========================================================= */
 
 export const config = { runtime: 'nodejs' };
@@ -28,10 +34,14 @@ const LIBRES = new Set([
   '/assets/img/logo-sin-fondo.svg',
   '/robots.txt',
   '/assets/marcas/whatsapp-glifo-blanco.svg',
-  '/assets/marcas/instagram-glifo-blanco.svg'
+  '/assets/marcas/instagram-glifo-blanco.svg',
+  '/assets/icons/lucide.svg',
+  '/js/idioma.js',
+  '/js/translations.js',
+  '/js/main.js'
 ]);
 
-const CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; " +
+const CSP = "default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self'; " +
   "base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
 
 const PAGINA = `<!DOCTYPE html>
@@ -43,6 +53,7 @@ const PAGINA = `<!DOCTYPE html>
 <title>Eleva Pádel</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<script src="/js/idioma.js?v=20261108c"></script>
 <style>
   :root { --fondo:#000000; --texto:#EDE4DC; --suave:#DBD2CC; --oro:#947E6B; }
   * { box-sizing: border-box; }
@@ -73,6 +84,32 @@ const PAGINA = `<!DOCTYPE html>
   ul a img { width: 1.125em; height: 1.125em; flex-shrink: 0; }
   ul a:hover, ul a:focus-visible { border-color: var(--texto); }
   footer { margin-top: 3rem; font-size: .875rem; color: var(--suave); }
+  /* Selector de idioma: el mismo de la web (css/main.css), arriba a la derecha */
+  .i18n-pendiente [data-i18n] { visibility: hidden; }
+  .idioma-selector { position: absolute; top: max(.75rem, env(safe-area-inset-top)); right: max(1rem, env(safe-area-inset-right)); text-align: left; }
+  .idioma-boton {
+    display: inline-flex; align-items: center; justify-content: center; gap: .125rem;
+    min-width: 44px; min-height: 44px; padding: 0 .375rem;
+    background: transparent; color: var(--texto); border: 1px solid rgba(161, 133, 114, .35); border-radius: 2px;
+    font-family: inherit; font-size: 1rem; font-weight: 500; line-height: 1; cursor: pointer;
+  }
+  .icono { width: 1.125em; height: 1.125em; flex-shrink: 0; stroke: currentColor; }
+  .idioma-boton[aria-expanded="true"] .icono { transform: rotate(180deg); }
+  ul.idioma-lista {
+    display: block; position: absolute; right: 0; top: calc(100% + .5rem); z-index: 60;
+    min-width: 11rem; padding: .375rem;
+    background: var(--fondo); border: 1px solid rgba(161, 133, 114, .35); border-radius: 2px;
+  }
+  .idioma {
+    display: flex; align-items: center; gap: .75rem; width: 100%;
+    min-height: 44px; padding: 0 .75rem;
+    background: transparent; color: var(--texto); border: 0; border-radius: 2px;
+    font: inherit; text-align: left; cursor: pointer;
+  }
+  .idioma-codigo { min-width: 1.75em; font-weight: 600; }
+  .idioma[aria-current="true"] { background: var(--texto); color: var(--fondo); }
+  .idioma:focus-visible, .idioma-boton:focus-visible { outline: 3px solid var(--texto); outline-offset: -3px; }
+  @media (hover: hover) { .idioma:not([aria-current="true"]):hover { background: #181411; } }
   /* Móvil en horizontal: todo en una pantalla */
   @media (max-height: 30rem) and (orientation: landscape) {
     .logo { width: 3rem; margin-bottom: .75rem; }
@@ -83,8 +120,17 @@ const PAGINA = `<!DOCTYPE html>
     footer { margin-top: 1.5rem; }
   }
 </style>
+<noscript><style>.idioma-selector { display: none; }</style></noscript>
 </head>
 <body>
+<div class="idioma-selector">
+  <button type="button" class="idioma-boton" aria-expanded="false" aria-controls="idiomas" aria-label="Idioma: ES" data-i18n-attr="aria-label:nav.langLabel"><span class="idioma-actual">ES</span><svg class="icono" aria-hidden="true" focusable="false"><use href="/assets/icons/lucide.svg#chevron-down"></use></svg></button>
+  <ul id="idiomas" class="idioma-lista" hidden>
+    <li><button type="button" class="idioma" data-lang="es" lang="es" aria-current="true"><span class="idioma-codigo">ES</span> Español</button></li>
+    <li><button type="button" class="idioma" data-lang="en" lang="en"><span class="idioma-codigo">EN</span> English</button></li>
+    <li><button type="button" class="idioma" data-lang="nl" lang="nl"><span class="idioma-codigo">NL</span> Nederlands</button></li>
+  </ul>
+</div>
 <main>
   <img class="logo" src="/assets/img/logo-sin-fondo.svg" width="88" height="88" alt="Logo de Eleva Pádel" data-i18n-attr="alt:maint.logoAlt">
   <h1>Eleva Pádel</h1>
@@ -97,6 +143,8 @@ const PAGINA = `<!DOCTYPE html>
 <footer>
   <span data-i18n="footer.credit">Desarrollado por</span> <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
 </footer>
+<script src="/js/translations.js?v=20261108c" defer></script>
+<script src="/js/main.js?v=20261108c" defer></script>
 </body>
 </html>
 `;
