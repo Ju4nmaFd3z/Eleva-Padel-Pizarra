@@ -12,3 +12,16 @@
    desaparece.
    ================================================================ */
 
+/* ── Punto 6 · Origen del marrón ─────────────────────────────────────
+   El corte de cada sección (movimiento.css) pinta detrás del contenido un
+   telón del color de la sección anterior (::before) y el logo del color de
+   la sección (::after), que crece hasta cubrirla. En las secciones negras
+   el telón es tinta (#181411): mientras entran, hasta una pantalla entera
+   se ve marrón y luego vuelve a negro. En las de tinta, un triángulo
+   marrón crece hasta llenar la pantalla. */
+
+/* M1 · Sin destello: las secciones negras entran negras (sin telón ni
+   logo); las de tinta conservan su corte con el logo. */
+html.mov[data-marron="1"] .seccion:not([data-superficie="tinta"])::before,
+html.mov[data-marron="1"] .seccion:not([data-superficie="tinta"])::after { content: none; }
+
