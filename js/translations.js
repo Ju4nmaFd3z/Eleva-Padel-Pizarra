@@ -17,7 +17,7 @@
         langLabel: 'Idioma', menuOpen: 'Abrir menú', menuClose: 'Cerrar menú',
         logoLabel: 'Eleva Pádel Pizarra, inicio', network: 'Eleva Pádel',
         club: 'El club', classes: 'Clases', pools: 'Pools',
-        cancellations: 'Cancelaciones', contact: 'Contacto',
+        cancellations: 'Cancelaciones', collab: 'Colaborar', contact: 'Contacto',
         book: 'Reservar', bookCourt: 'Reservar pista'
       },
       hero:    { ctaPrimary: 'Reservar pista', ctaCancel: 'Política de cancelaciones' },
@@ -28,6 +28,7 @@
       cancel:  { heading: 'Política de cancelaciones' },
       team:    { heading: 'Equipo' },
       sponsors:{ heading: 'Patrocinadores' },
+      collab:  { cta: 'Consultar por WhatsApp' },
       gallery: { heading: 'Fotos del club' },
       contact: {
         heading: 'Contacto',
@@ -54,6 +55,7 @@
       wa: {
         classes: 'Hola, quiero información sobre las clases.',
         pools:   'Hola, quiero información sobre los pools.',
+        collab:  'Hola, me interesa colaborar con el club.',
         contact: 'Hola, os escribo desde la web.'
       }
     },
@@ -65,7 +67,7 @@
         langLabel: 'Language', menuOpen: 'Open menu', menuClose: 'Close menu',
         logoLabel: 'Eleva Pádel Pizarra, home', network: 'Eleva Pádel',
         club: 'The club', classes: 'Lessons', pools: 'Pools',
-        cancellations: 'Cancellations', contact: 'Contact',
+        cancellations: 'Cancellations', collab: 'Sponsorship', contact: 'Contact',
         book: 'Book', bookCourt: 'Book a court'
       },
       hero:    { ctaPrimary: 'Book a court', ctaCancel: 'Cancellation policy' },
@@ -76,6 +78,7 @@
       cancel:  { heading: 'Cancellation policy' },
       team:    { heading: 'Team' },
       sponsors:{ heading: 'Sponsors' },
+      collab:  { cta: 'Ask on WhatsApp' },
       gallery: { heading: 'Club photos' },
       contact: {
         heading: 'Contact',
@@ -102,6 +105,7 @@
       wa: {
         classes: 'Hi, I would like information about lessons.',
         pools:   'Hi, I would like information about the pools.',
+        collab:  'Hi, I am interested in sponsoring the club.',
         contact: 'Hi, I am writing from your website.'
       }
     },
@@ -113,7 +117,7 @@
         langLabel: 'Taal', menuOpen: 'Menu openen', menuClose: 'Menu sluiten',
         logoLabel: 'Eleva Pádel Pizarra, home', network: 'Eleva Pádel',
         club: 'De club', classes: 'Lessen', pools: 'Pools',
-        cancellations: 'Annuleren', contact: 'Contact',
+        cancellations: 'Annuleren', collab: 'Sponsoring', contact: 'Contact',
         book: 'Reserveren', bookCourt: 'Baan reserveren'
       },
       hero:    { ctaPrimary: 'Baan reserveren', ctaCancel: 'Annuleringsbeleid' },
@@ -124,6 +128,7 @@
       cancel:  { heading: 'Annuleringsbeleid' },
       team:    { heading: 'Team' },
       sponsors:{ heading: 'Sponsors' },
+      collab:  { cta: 'Vraag het via WhatsApp' },
       gallery: { heading: "Foto's van de club" },
       contact: {
         heading: 'Contact',
@@ -150,6 +155,7 @@
       wa: {
         classes: 'Hallo, ik wil graag informatie over de lessen.',
         pools:   'Hallo, ik wil graag informatie over de pools.',
+        collab:  'Hallo, ik heb interesse in sponsoring van de club.',
         contact: 'Hallo, ik schrijf jullie via de website.'
       }
     }

@@ -546,6 +546,21 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   color: var(--beige); font: 600 4rem/1 var(--fuente-titulos);
 }
 
+/* ── Colaborar con el club: el anuncio, con las opciones en filas ── */
+.seccion-colaborar h2 { font-size: clamp(2.25rem, 11vw, 5.5rem); }   /* «patrocinadores» entero a 320 px */
+.colaborar { max-width: 52rem; }
+.colaborar p { color: var(--crema); }
+.colaborar-intro { font-size: clamp(1.125rem, 2.2vw, 1.375rem); }
+.colaborar h3 { margin-top: 2rem; margin-bottom: .75rem; }
+.colaborar-opciones { margin-bottom: 2rem; border-top: 1px solid var(--linea); }
+.colaborar-opciones li { padding-block: .875rem; border-bottom: 1px solid var(--linea); color: var(--crema); font-weight: 500; }
+.colaborar .colaborar-disponible { padding: 1rem 1.25rem; border-left: 3px solid var(--anillo); }
+.colaborar .colaborar-pregunta {
+  margin-top: 2rem; margin-bottom: .5rem;
+  font: 600 clamp(1.75rem, 6vw, 2.5rem)/1.05 var(--fuente-titulos); text-transform: uppercase;
+}
+.colaborar-contacto .enlace { vertical-align: middle; }
+
 .patrocinadores li { padding-block: .75rem; border-bottom: 1px solid var(--linea); color: var(--crema); }
 .patrocinadores span { color: var(--claro); }
 .galeria { display: grid; gap: 1rem; }

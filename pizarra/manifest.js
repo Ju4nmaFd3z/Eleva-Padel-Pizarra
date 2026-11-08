@@ -190,7 +190,32 @@
       ]
     },
 
-    colaborar: PENDIENTE_CLUB,                 /* bloque «Colaborar con el club»: no se pinta hasta confirmarlo */
+    /* «Colaborar con el club»: anuncio «Buscamos patrocinadores», literal.
+       La disponibilidad de pistas caduca: tiene su propia verificación.
+       contacto: {numero} se enlaza solo a WhatsApp (contacto.whatsapp);
+       validar.js comprueba que es el mismo número. */
+    colaborar: {
+      verificado: '2026-10-07',
+      fuente:     'anuncio de patrocinadores del club, enviado por el propietario',
+      titulo:     { es: 'Buscamos patrocinadores' },
+      intro:      { es: 'En Eleva Pádel abrimos nuevas posibilidades de colaboración para empresas que quieran vincular su marca al deporte y formar parte del crecimiento del club.' },
+      opcionesTitulo: { es: 'Opciones disponibles' },
+      opciones: [
+        { es: 'Equipaciones de nuestros equipos de competición de Liga SNP y Liga LAPI.' },
+        { es: 'Patrocinio de pistas completas.' },
+        { es: 'Vallas publicitarias con visibilidad hacia el club y la carretera.' },
+        { es: 'Torneos, eventos y actividades deportivas.' }
+      ],
+      disponibilidad: {
+        verificado: '2026-10-07',
+        fuente:     'anuncio de patrocinadores del club, enviado por el propietario',
+        texto:      { es: 'Tres de nuestras cuatro pistas ya cuentan con patrocinador. Actualmente queda una única pista disponible para nuevas colaboraciones.' }
+      },
+      cierre:     { es: 'Estudiaremos cada propuesta de forma personalizada, buscando una colaboración que aporte valor a ambas partes.' },
+      pregunta:   { es: '¿Te interesa colaborar con Eleva Pádel?' },
+      contacto:   { es: 'Contacta con nosotros en el {numero}.' },
+      numero:     '659 14 31 03'
+    },
 
     /* Fotos reales: { base: '../assets/galeria/<nombre>', w, h, alt: { es } }
        con <base>-480.avif, -960.avif, -1440.avif y -960.jpg. Vacío = no se pinta. */

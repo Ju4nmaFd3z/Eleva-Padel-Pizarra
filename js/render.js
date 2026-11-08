@@ -186,6 +186,30 @@
       visible: hayPatro
     };
 
+    /* Colaborar con el club (anuncio de patrocinadores, literal). El número
+       solo se enlaza a WhatsApp (nunca tel:); data-wa: main.js le pone el
+       mensaje en el idioma activo. */
+    var co = d.colaborar;
+    var hayCol = presente(co) && typeof co === 'object' && presente(co.opciones);
+    function contactoCol() {
+      var partes = esc(L(co.contacto)).split('{numero}');
+      if (partes.length !== 2 || !presente(co.numero) || !presente(c.whatsapp)) return '';
+      return '<p class="colaborar-contacto">' + partes[0] +
+        '<a class="enlace" href="https://wa.me/' + esc(c.whatsapp) + '" data-wa="wa.collab" target="_blank" rel="noopener noreferrer">' +
+        '<img class="glifo" src="' + ASSETS + 'marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="WhatsApp">' +
+        '<span>' + esc(co.numero) + '</span></a>' + partes[1] + '</p>';
+    }
+    s['colaborar-titulo'] = { html: hayCol ? esc(L(co.titulo)) : '', visible: hayCol };
+    s.colaborar = {
+      html: hayCol ? '<p class="colaborar-intro">' + esc(L(co.intro)) + '</p>' +
+        '<h3>' + esc(L(co.opcionesTitulo)) + '</h3>' + lista(co.opciones, 'colaborar-opciones') +
+        (presente(co.disponibilidad) ? '<p class="colaborar-disponible">' + esc(L(co.disponibilidad.texto)) + '</p>' : '') +
+        (presente(co.cierre) ? '<p>' + esc(L(co.cierre)) + '</p>' : '') +
+        (presente(co.pregunta) ? '<p class="colaborar-pregunta">' + esc(L(co.pregunta)) + '</p>' : '') +
+        (presente(co.contacto) ? contactoCol() : '') : '',
+      visible: hayCol
+    };
+
     /* Galería: solo fotos reales, AVIF + JPEG en varios tamaños */
     s.galeria = {
       html: presente(d.galeria) ? d.galeria.map(function (f) {
