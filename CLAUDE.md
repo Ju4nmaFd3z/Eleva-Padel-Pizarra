@@ -93,7 +93,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
       | zona chill-out | chill-out area | chill-outzone | |
       | IVA incluido | VAT included | inclusief btw | |
       | recepción | reception | receptie | |
-      | L–V · 17:00 h | Mon–Fri · 17:00 | ma–vr · 17:00 | sin la «h» española |
+      | lunes a viernes · 17:00 h | Monday to Friday · 17:00 | maandag tot en met vrijdag · 17:00 | días completos (no «L–V»: legibilidad, decisión del usuario 24/11/2026), sin Title Case; horas sin la «h» española |
       | «SNP», «Rocha» | sin traducir | sin traducir | siguen pendientes de qué son |
 12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261108d`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.

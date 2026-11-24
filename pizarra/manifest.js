@@ -70,7 +70,7 @@
         verificado: '2026-10-06',
         fuente:     'carteles del club en Instagram, confirmados por el club',
         tramos: [
-          { cuando: { es: 'L–V hasta las 17:00 h' },
+          { cuando: { es: 'Lunes a viernes hasta las 17:00 h' },
             precios: [ { duracion: '60 min', precio: '10 €' }, { duracion: '90 min', precio: '16 €' } ] },
           { cuando: { es: 'Desde las 17:00 h, fines de semana y festivos' },
             precios: [ { duracion: '60 min', precio: '15 €' }, { duracion: '90 min', precio: '22 €' } ] }
