@@ -381,17 +381,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .avisos a { color: var(--negro); }
 
 /* ── Secciones ────────────────────────────────────────────────────
-   A sangre y alternando negro / tinta: cada una entra por un «corte» con
-   el logo (css/movimiento.css). El contenido siempre está por encima. */
+   A sangre y alternando tinta / negro (data-superficie, lo escribe
+   tools/generar.js; el pie sigue la alternancia). Las de tinta entran por
+   un «corte» con el logo (css/movimiento.css); las negras entran tal cual,
+   sin destello de otro color. El contenido siempre está por encima. */
 .seccion {
   --fondo: var(--negro);
-  --fondo-previo: var(--tinta);
   position: relative; isolation: isolate; overflow: clip;
   padding-block: clamp(3.5rem, 10vw, 7rem);
   padding-inline: max(var(--margen), calc((100% - var(--ancho)) / 2), env(safe-area-inset-left));
   background: var(--fondo);
 }
-.seccion[data-superficie="tinta"] { --fondo: var(--tinta); --fondo-previo: var(--negro); }
+.seccion[data-superficie="tinta"] { --fondo: var(--tinta); }
 .aviso-iva { color: var(--crema); }
 
 .datos { display: grid; gap: 1.5rem; }

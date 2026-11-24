@@ -95,22 +95,24 @@ html.mov .hero :is(.hero-linea, .hero-lugar, .botones) { will-change: transform;
 html.mov .marca-logo { animation: sd-hero-marca 1s linear both, sd-hero-abre 1s linear both; will-change: transform; }
 
 /* ── Cortes de sección ───────────────────────────────────────────────
-   Detrás del contenido: un telón del color de la sección anterior y, encima,
-   el logo en el color de la sección, que escala desde su vértice hasta
-   cubrirla. El contenido nunca se oculta: está por encima y contrasta con
-   los dos fondos. Termina cuando la sección llega a 6rem del borde superior,
-   así quien llega por un ancla la ve ya abierta. */
-html.mov .seccion { --Lc: min(40vh, 70vw); }
-html.mov .seccion::before,
-html.mov .seccion::after {
+   Solo en las secciones de tinta. Las negras entran tal cual: su telón
+   era tinta y, con el scroll, se veía como un destello marrón de hasta una
+   pantalla. Detrás del contenido: un telón negro (la sección anterior
+   siempre es negra o el hero) y, encima, el logo en tinta, que escala desde
+   su vértice hasta cubrirla. El contenido nunca se oculta: está por encima
+   y contrasta con los dos fondos. Termina cuando la sección llega a 6rem
+   del borde superior, así quien llega por un ancla la ve ya abierta. */
+html.mov .seccion[data-superficie="tinta"] { --Lc: min(40vh, 70vw); }
+html.mov .seccion[data-superficie="tinta"]::before,
+html.mov .seccion[data-superficie="tinta"]::after {
   content: ''; position: absolute; z-index: -1; pointer-events: none;
 }
-html.mov .seccion::before {
+html.mov .seccion[data-superficie="tinta"]::before {
   inset: 0 0 auto 0; height: min(100%, 100vh);
-  background: var(--fondo-previo);
+  background: var(--negro);
   animation: sd-corte-telon 1s linear both;
 }
-html.mov .seccion::after {
+html.mov .seccion[data-superficie="tinta"]::after {
   width: var(--Lc); height: var(--Lc);
   left: calc(50% - var(--Lc) / 2);
   top: calc(min(50%, 50vh) - var(--Lc) * .24);
