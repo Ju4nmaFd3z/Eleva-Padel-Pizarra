@@ -1,2 +1,12 @@
-# Los hooks se ejecutan con sh/node: siempre con fin de línea LF
+# Fin de línea LF en todos los archivos de texto, también en Windows con
+# core.autocrlf=true: generar.js y validar.js comparan el texto exacto y
+# los hooks se ejecutan con sh/node
+* text=auto eol=lf
 tools/hooks/* text eol=lf
+
+# Binarios: nunca se convierten
+*.png binary
+*.jpg binary
+*.avif binary
+*.ico binary
+*.woff2 binary
