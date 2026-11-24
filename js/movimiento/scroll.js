@@ -3,7 +3,7 @@
    Todo lo que se mueve con el scroll, sin secuestrarlo (ni pin, ni
    inercia cambiada, ni saltos). Las animaciones están declaradas en
    css/movimiento.css (keyframes sd-*); este módulo:
-   · prepara el DOM que necesitan: cifras de los precios y títulos de fila
+   · prepara el DOM que necesitan: cifras de los precios
      en piezas (con una copia legible para lectores de pantalla) y la
      posición de partida de cada insignia en el abanico (--dx, --dy, --rot,
      --z);
@@ -145,7 +145,7 @@
       else if (nombre.indexOf('sd-corte') === 0) { tipo = 'corte'; sujeto = t; }
       else if (nombre === 'sd-abanico') { tipo = 'abanico'; sujeto = t.closest('.insignias'); }
       else if (nombre.indexOf('sd-paso') === 0) { tipo = 'paso'; sujeto = t.closest('.politica .bloque'); }
-      else { tipo = 'precio'; sujeto = t.closest('.precio, .politica .bloque, .filas .fila'); }
+      else { tipo = 'precio'; sujeto = t.closest('.precio, .politica .bloque'); }
       if (tipo !== 'hero' && !sujeto) return;
       a.pause();
       pistas.push({ a: a, tipo: tipo, sujeto: sujeto });
