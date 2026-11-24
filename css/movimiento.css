@@ -157,6 +157,20 @@ html.mov .precio-cifra { animation: sd-precio 1s linear both; }
 html.mov :is(.politica h3, .filas h3) { animation: sd-titulo 1s linear both; }
 html.mov .cin > span > span { animation: sd-tracking 1s linear both; }
 
+/* ── Cancelaciones: cristal de pista ─────────────────────────────────
+   Solo luz; el texto no se mueve nunca y se lee desde el primer fotograma.
+   · El canto LED de cada panel se enciende mientras el panel entra y sube
+     media pantalla (rango «precio» de scroll.js).
+   · Un reflejo lo cruza en diagonal durante todo su paso por la pantalla
+     (rango «paso»). Sin html.mov (sin JS o con movimiento reducido), el
+     canto queda encendido y no hay reflejo. */
+html.mov .politica .bloque::before { animation: sd-canto 1s linear both; }
+html.mov .politica .bloque::after {
+  content: ""; position: absolute; z-index: -1; top: -20%; bottom: -20%; left: 0; width: 45%; pointer-events: none;
+  background: linear-gradient(105deg, rgba(237, 228, 220, 0) 20%, rgba(237, 228, 220, .07) 46%, rgba(237, 228, 220, .11) 50%, rgba(237, 228, 220, .07) 54%, rgba(237, 228, 220, 0) 80%);
+  animation: sd-paso-reflejo 1s linear both;
+}
+
 /* ── Pools: abanico que termina en rejilla ───────────────────────────
    Con ratón, las insignias salen en abanico hacia el centro de la lista y
    se colocan en su celda con el scroll; el centro de cada una nunca sale de
@@ -210,6 +224,7 @@ html.mov .iman {
    En pausa en el primer fotograma (igual al estado estático); scroll.js
    mueve su currentTime. */
 html.mov :is(.marca-logo, .insignia, .precio-cifra, .politica h3, .filas h3, .cin > span > span),
+html.mov .politica .bloque::before, html.mov .politica .bloque::after,
 html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paused; }
 
 /* ── Keyframes ──────────────────────────────────────────────────────
@@ -227,6 +242,8 @@ html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paus
 }
 @keyframes sd-precio   { from { scale: 1.28; } to { scale: 1; } }
 @keyframes sd-titulo   { from { scale: .9; } to { scale: 1; } }
+@keyframes sd-canto    { from { scale: 0 1; opacity: .3; } to { scale: 1 1; opacity: 1; } }
+@keyframes sd-paso-reflejo { from { translate: -110% 0; } to { translate: 260% 0; } }
 @keyframes sd-tracking { from { translate: calc(var(--k, 0) * var(--dist-tracking)) 0; } to { translate: 0 0; } }
 @keyframes sd-corte-logo { 0% { scale: 1; } 10% { scale: 1.4051; } 20% { scale: 1.9744; } 30% { scale: 2.7742; } 40% { scale: 3.8981; } 50% { scale: 5.4772; } 60% { scale: 7.6961; } 70% { scale: 10.814; } 80% { scale: 15.1949; } 90% { scale: 21.3506; } 100% { scale: 30; } }
 

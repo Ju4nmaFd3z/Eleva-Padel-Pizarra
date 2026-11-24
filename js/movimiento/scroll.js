@@ -130,7 +130,8 @@
     hero:    function (r, vh) { return window.scrollY / (0.7 * vh); },               /* 0 → 70 % de pantalla de scroll */
     corte:   function (r, vh) { return (vh - r.top) / (vh - 6 * rem()); },          /* entra → llega a 6rem del borde */
     abanico: function (r, vh) { return (vh - r.top - 0.05 * vh) / (0.55 * vh); },    /* 5 % → 60 % de pantalla dentro */
-    precio:  function (r, vh) { return (vh - r.top) / (0.5 * vh); }                  /* entra → media pantalla dentro */
+    precio:  function (r, vh) { return (vh - r.top) / (0.5 * vh); },                 /* entra → media pantalla dentro */
+    paso:    function (r, vh) { return (vh - r.top) / (vh + r.height); }              /* entra → sale por arriba */
   };
 
   function recolectar() {
@@ -143,6 +144,7 @@
       if (nombre.indexOf('sd-hero') === 0) tipo = 'hero';
       else if (nombre.indexOf('sd-corte') === 0) { tipo = 'corte'; sujeto = t; }
       else if (nombre === 'sd-abanico') { tipo = 'abanico'; sujeto = t.closest('.insignias'); }
+      else if (nombre.indexOf('sd-paso') === 0) { tipo = 'paso'; sujeto = t.closest('.politica .bloque'); }
       else { tipo = 'precio'; sujeto = t.closest('.precio, .politica .bloque, .filas .fila'); }
       if (tipo !== 'hero' && !sujeto) return;
       a.pause();

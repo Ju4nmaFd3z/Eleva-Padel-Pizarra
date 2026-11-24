@@ -173,9 +173,15 @@
 
     /* Cancelaciones */
     var cn = d.cancelaciones;
+    /* Cada norma, con su rótulo (lo que va antes de los dos puntos, si lo
+       hay) en su propia pieza para destacarlo: el texto no cambia */
+    function norma(i) {
+      var txt = L(i), k = txt.indexOf(': ');
+      return '<li' + la(i) + '>' + (k > 0 && k < 48 ? '<span class="norma-rotulo">' + esc(txt.slice(0, k + 1)) + '</span>' + esc(txt.slice(k + 1)) : esc(txt)) + '</li>';
+    }
     s.cancelaciones = {
       html: presente(cn) ? [cn.pistas, cn.clases].filter(Boolean).map(function (b) {
-        return '<div class="bloque"><h3' + la(b.titulo) + '>' + esc(L(b.titulo)) + '</h3>' + lista(b.items, 'lista') + '</div>';
+        return '<div class="bloque"><h3' + la(b.titulo) + '>' + esc(L(b.titulo)) + '</h3><ul class="lista">' + b.items.map(norma).join('') + '</ul></div>';
       }).join('') + (cn.nota ? '<p class="nota"' + la(cn.nota) + '>' + esc(L(cn.nota)) + '</p>' : '') : '',
       visible: presente(cn)
     };
