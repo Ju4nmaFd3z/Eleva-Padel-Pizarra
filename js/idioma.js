@@ -9,8 +9,11 @@
    · sin almacenamiento (ventana privada que lanza): igual, sin errores.
    Si no es español, pone <html lang> y la clase i18n-pendiente, que
    esconde (visibility, sin mover nada) los textos traducibles hasta que
-   main.js los cambia: no se ve un destello en español. Si main.js no
-   llega a hacerlo en 1,5 s, se muestran en español con lang="es".
+   main.js los cambia: no se ve un destello en español. Seguro: si al
+   terminar de leer la página (DOMContentLoaded, que espera a los scripts
+   defer también con la red lenta) main.js no lo ha hecho porque no cargó
+   o falló, se muestran en español con lang="es"; y como tope, a los 8 s,
+   por si un script se queda colgado.
    Sin JS no pasa nada de esto: la página se ve en español.
    ================================================================ */
 (function () {
@@ -40,11 +43,14 @@
   if (inicial !== 'es') {
     html.setAttribute('lang', inicial);
     html.classList.add('i18n-pendiente');
-    setTimeout(function () {
+    var seguro = function () {
       if (!html.classList.contains('i18n-pendiente')) return;
       html.classList.remove('i18n-pendiente');
       html.setAttribute('lang', 'es');
-    }, 1500);
+    };
+    /* setTimeout 0: después de todos los DOMContentLoaded, también el de main.js */
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(seguro, 0); });
+    setTimeout(seguro, 8000);
   }
 
   window.ElevaIdioma = {
