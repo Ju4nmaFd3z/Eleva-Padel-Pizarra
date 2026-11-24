@@ -592,11 +592,14 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
 .formulario .boton { margin-top: 1.5rem; align-self: flex-start; }
 .nota { margin-top: 1rem; font-size: .9375rem; }
 
-/* ── Pie ──────────────────────────────────────────────────────── */
+/* ── Pie ──────────────────────────────────────────────────────────
+   Sigue la alternancia de superficies (tools/generar.js): tras una última
+   sección negra es tinta, para que no se pegue a ella. */
 .pie {
   border-top: 1px solid var(--linea);
   padding: 3rem max(var(--margen), env(safe-area-inset-right)) calc(2rem + env(safe-area-inset-bottom)) max(var(--margen), env(safe-area-inset-left));
 }
+.pie[data-superficie="tinta"] { background: var(--tinta); }
 .pie-columnas, .pie-legal { max-width: var(--ancho); margin-inline: auto; }
 .pie-columnas { display: grid; gap: 2rem; margin-bottom: 2.5rem; }
 .pie-logo { width: var(--tam-logo-pie); height: var(--tam-logo-pie); margin-bottom: .75rem; }

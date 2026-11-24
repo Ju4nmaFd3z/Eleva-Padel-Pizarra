@@ -10,7 +10,7 @@
         HTML en español que produce js/render.js, el mismo código que usa el
         navegador al cambiar de idioma;
       · pone o quita `hidden` en cada elemento data-seccion="…" según haya datos;
-      · alterna data-superficie="tinta" entre las secciones visibles;
+      · alterna data-superficie="tinta" entre las secciones visibles y el pie;
       · escribe los href de los enlaces data-href="…" desde el manifest;
       · genera el JSON-LD (entre <!--gen:jsonld--> y <!--/gen:jsonld-->).
    2. En cada página servida (las de los clubes, index.html, 404.html,
@@ -122,6 +122,12 @@ function generar(slug) {
     const limpio = attrs.replace(/\sdata-superficie="[^"]*"/g, '');
     if (/\shidden\b/.test(limpio) || orden++ % 2) return `<section${limpio}>`;
     return `<section${limpio.replace(/(\sclass="[^"]*")/, '$1 data-superficie="tinta"')}>`;
+  });
+  /* El pie sigue la alternancia: si la última sección visible es negra
+     (número par de visibles), el pie es tinta y no se pega a ella */
+  html = html.replace(/<footer\b([^>]*\sclass="pie"[^>]*)>/, (m, attrs) => {
+    const limpio = attrs.replace(/\sdata-superficie="[^"]*"/g, '');
+    return `<footer${orden && orden % 2 === 0 ? limpio.replace(/(\sclass="pie")/, '$1 data-superficie="tinta"') : limpio}>`;
   });
 
   /* Enlaces desde el manifest */
