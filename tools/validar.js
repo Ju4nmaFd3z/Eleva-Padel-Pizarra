@@ -141,7 +141,7 @@ for (const p of servidos.filter(p => p.endsWith('manifest.js'))) {
   }
 
   /* NOMBRES_PROPIOS: la copia de CLAUDE.md es exacta */
-  const claude = fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8');
+  const claude = fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8').replace(/\r\n/g, '\n');
   const bloque = (claude.match(/\*\*Nombres propios que no se traducen\*\*[^\n]*\n?((?:[^\n]+\n?)*)/) || [])[0] || '';
   const copia = [...bloque.matchAll(/«([^»]+)»/g)].map(m => m[1]);
   if (copia.join('|') !== T.nombresPropios.join('|')) errores.push('i18n: la lista «Nombres propios que no se traducen» de CLAUDE.md no es igual que NOMBRES_PROPIOS de js/translations.js');

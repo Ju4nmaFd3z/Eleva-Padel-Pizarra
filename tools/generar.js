@@ -34,6 +34,12 @@ const render = require(path.join(ROOT, 'js/render.js'));
 const PAGINAS = ['index.html', '404.html', 'privacidad.html'];
 const MANTENIMIENTO = 'middleware.js';
 
+/* Se lee con fin de línea LF aunque la copia de trabajo venga en CRLF
+   (Windows con core.autocrlf=true): lo generado se compara exacto */
+function leerLF(archivo) {
+  return fs.readFileSync(archivo, 'utf8').replace(/\r\n/g, '\n');
+}
+
 function cargar(archivo, global) {
   const ctx = { window: {} };
   vm.runInNewContext(fs.readFileSync(archivo, 'utf8'), ctx, { filename: archivo });
@@ -94,7 +100,7 @@ function generar(slug) {
   const c = data.contacto || {};
   const ok = render.presente;
 
-  let html = fs.readFileSync(htmlPath, 'utf8');
+  let html = leerLF(htmlPath);
   const original = html;
 
   /* JSON-LD: los marcadores van fuera del <script> para que el JSON sea válido */
@@ -150,7 +156,7 @@ function generar(slug) {
 
 function generarPagina(rel) {
   const archivo = path.join(ROOT, rel);
-  const original = fs.readFileSync(archivo, 'utf8');
+  const original = leerLF(archivo);
   const html = aplicarTextos(original, rel);
   return { rel, archivo, html, cambiado: html !== original };
 }
@@ -158,7 +164,7 @@ function generarPagina(rel) {
 /* La página de mantenimiento es la plantilla PAGINA de middleware.js */
 function generarMantenimiento() {
   const archivo = path.join(ROOT, MANTENIMIENTO);
-  const original = fs.readFileSync(archivo, 'utf8');
+  const original = leerLF(archivo);
   const re = /(const PAGINA = `)([\s\S]*?)(`;)/;
   const m = original.match(re);
   if (!m) throw new Error(MANTENIMIENTO + ': no se encuentra la plantilla PAGINA');
