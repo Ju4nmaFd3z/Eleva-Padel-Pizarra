@@ -125,7 +125,9 @@
      con el foco en la opción actual (flecha arriba: en la última);
      flechas, Inicio y Fin recorren las opciones; Escape cierra y devuelve
      el foco al botón; Tab o un clic fuera la cierran. La opción activa
-     lleva aria-current. */
+     lleva aria-current. El foco se mueve sin desplazar la página: la
+     cabecera es sticky y Chromium la «traería» a la vista. */
+  var FOCO = { preventScroll: true };
   function initSelectorIdioma() {
     var sel = $('.idioma-selector');
     if (!sel) return;
@@ -139,13 +141,13 @@
       if (!foco) return;
       var o = opciones();
       var i = Math.max(0, o.findIndex(function (b) { return b.getAttribute('aria-current') === 'true'; }));
-      (foco === 'ultima' ? o[o.length - 1] : o[i]).focus();
+      (foco === 'ultima' ? o[o.length - 1] : o[i]).focus(FOCO);
     }
     function cerrar(devolverFoco) {
       if (!abierto()) return;
       boton.setAttribute('aria-expanded', 'false');
       lista.hidden = true;
-      if (devolverFoco) boton.focus();
+      if (devolverFoco) boton.focus(FOCO);
     }
     var porTeclado = false;
     boton.addEventListener('keydown', function (e) {
@@ -158,10 +160,10 @@
     });
     lista.addEventListener('keydown', function (e) {
       var o = opciones(), i = o.indexOf(document.activeElement);
-      if (e.key === 'ArrowDown') { e.preventDefault(); o[(i + 1) % o.length].focus(); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); o[(i - 1 + o.length) % o.length].focus(); }
-      else if (e.key === 'Home') { e.preventDefault(); o[0].focus(); }
-      else if (e.key === 'End') { e.preventDefault(); o[o.length - 1].focus(); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); o[(i + 1) % o.length].focus(FOCO); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); o[(i - 1 + o.length) % o.length].focus(FOCO); }
+      else if (e.key === 'Home') { e.preventDefault(); o[0].focus(FOCO); }
+      else if (e.key === 'End') { e.preventDefault(); o[o.length - 1].focus(FOCO); }
       else if (e.key === 'Escape') { e.preventDefault(); cerrar(true); }
       else if (e.key === 'Tab') cerrar(false);
     });
