@@ -100,6 +100,8 @@ const PAGINA = `<!DOCTYPE html>
     min-width: 11rem; padding: .375rem;
     background: var(--fondo); border: 1px solid rgba(161, 133, 114, .35); border-radius: 2px;
   }
+  /* Cerrada: el hidden manda sobre el display de arriba */
+  ul.idioma-lista[hidden] { display: none; }
   .idioma {
     display: flex; align-items: center; gap: .75rem; width: 100%;
     min-height: 44px; padding: 0 .75rem;
