@@ -26,6 +26,27 @@ Hecho a 07/10/2026:
   `package.json`): tamaños de 320 a 2560 px, las cinco páginas, tres idiomas, sin JS,
   movimiento reducido y zoom al 200 %.
 
+Hecho el 08/11/2026:
+
+- En «Colaborar con el club», el número de WhatsApp va unido a la palabra anterior y la
+  línea de contacto ya no se parte a 320 px. Salió en el mismo commit que la nota del README
+  sobre `verificado` y `fuente` (30c56a3), cuyo mensaje solo cita la nota.
+
+Hecho el 24/11/2026:
+
+- **Sin destello marrón con el scroll** (propuesta M1, elegida por el usuario): el corte de
+  sección (telón y logo que crece) queda solo en las secciones de tinta; las negras entran
+  tal cual. Antes, su telón era tinta y se veía hasta una pantalla marrón que volvía a negro.
+- El pie sigue la alternancia de superficies: si la última sección visible es negra, el pie
+  es tinta (en `/pizarra`, Contacto ya no se pega al pie).
+- **Política de cancelaciones como paneles de cristal de pista** (propuesta C2, elegida por
+  el usuario): canto LED que se enciende al entrar, reflejo que cruza el panel con el scroll
+  y el rótulo de cada norma destacado. El texto es el del cartel, sin cambios, y se lee
+  desde el primer fotograma, sin JS y con movimiento reducido.
+- Tarifas de pista: «Lunes a viernes» en lugar de «L–V» (legibilidad); se publica que los
+  precios son por pista y que la tarifa de 15 € y 22 € es de lunes a viernes desde las
+  17:00 h y todo el día los fines de semana y festivos (confirmado por el propietario).
+
 Pendiente en este tramo: publicar los datos de los carteles que el club ha confirmado;
 fallo intermitente del hero; más protagonismo para la pista 3D; rediseño de la sección de
 cancelaciones; color de las superficies con el scroll; traducciones completas en ES, EN y

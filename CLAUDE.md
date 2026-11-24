@@ -32,7 +32,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
    textos que caduquen («este verano», «nueva temporada», «recién inaugurado»…).
 4. **El HTML del club se genera**: tras tocar un manifest, `node tools/generar.js`.
    No se editan a mano las zonas `data-gen`, el `hidden` de `data-seccion` ni el
-   `data-superficie` de las secciones (tinta y negro alternos entre las visibles).
+   `data-superficie` de las secciones y del pie (tinta y negro alternos entre las visibles).
 5. **Rutas `../` en la página del club** y el manifest siempre como
    `../<slug>/manifest.js` (Vercel sirve `/pizarra` sin barra final). Excepción:
    `404.html`, con rutas absolutas.
@@ -122,7 +122,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - Colores muestreados de las insignias: negro `#000`, crema `#EDE4DC`, claro `#DBD2CC`,
   beige `#947E6B`, anillo `#A18572`. Crema sobre beige (3,1:1) no se usa.
 - Tinta `#181411`: **derivada, no muestreada** (beige al 16 % sobre negro); solo como
-  superficie alterna de las secciones. Pendiente de aprobación del cliente con la web viva.
+  superficie alterna de las secciones y del pie. Pendiente de aprobación del cliente con la web viva.
 - **Color por insignia, no por género**: campo `color` de cada insignia en
   `pizarra/manifest.js` (muestreado de la palabra de la categoría de su imagen de 720 px,
   04/10/2026; la mixta añade `colorAro`). `render.js` lo lleva al HTML como `--acento` y
@@ -157,12 +157,22 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `eleva:repintado`). Módulos: `scroll.js` (motor JS que mueve el `currentTime` de las
   animaciones `sd-*`: las scroll-driven nativas bajaban a 30 fps en móvil; progreso del
   hero; luz LED de las tarjetas), `puntero.js` (paralaje, inclinación de insignias, imán,
-  puntero «punto» sobre el cursor del sistema, que nunca se oculta; solo ratón), `tacto.js` (giro de insignias por toque/clic/teclado,
-  pulso del logo), `tres-d.js` + `pista.js` (pista 3D). Todo lo animado vive en
+  puntero «punto» sobre el cursor del sistema, que nunca se oculta; solo ratón),
+  `tacto.js` (giro de insignias por toque/clic/teclado, pulso del logo), `tres-d.js` +
+  `pista.js` (pista 3D). Todo lo animado vive en
   `css/movimiento.css`; `main.css` es el estado estático, completo sin JS y con
   movimiento reducido. Solo `transform`/`opacity` (excepción documentada: la transición
   entre páginas). Nada de cursores ni hovers con el logo. Formato de filas reutilizable:
-  `.filas > .fila` (el de Cancelaciones).
+  `.filas > .fila`.
+- **Superficies y cortes** (propuesta M1 «Sin destello», 24/11/2026): `generar.js` alterna
+  tinta y negro entre las secciones visibles (la primera tras el hero, tinta) y el pie sigue
+  la alternancia (tinta si la última sección visible es negra). Solo las secciones de tinta
+  entran por un corte (telón negro y logo en tinta que crece); las negras entran tal cual:
+  nunca un telón de otro color que se vea como destello marrón con el scroll.
+- **Cancelaciones** (propuesta C2 «Cristal de pista», 24/11/2026): cada bloque es un panel
+  con canto LED (rango `precio` de `scroll.js`) y un reflejo que lo cruza (rango `paso`);
+  `render.js` separa el rótulo de cada norma (antes de «: ») en `.norma-rotulo`, sin cambiar
+  el texto. Solo se anima la luz; sin JS y con movimiento reducido, canto encendido.
 - **Hero del club y memoria de GPU** (fallo del hero «a trozos», octubre de 2026): si las
   capas compuestas no caben en la memoria de GPU, el navegador deja teselas sin pintar
   (bloques negros, pista fuera del logo, texto que falta). Reglas: una sola capa
@@ -187,6 +197,10 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   justa), sin reintentos. Riesgo que queda: con la memoria justa (128 MB a 1920 con densidad 2,
   46 MB en 390; Chrome da 512 MB por pestaña en escritorio), al cruzar `--p-hero` = 0,35 en
   movimiento la aparición del velo deja el telón sin teselas 1,5-2 s; con 1,5× esa memoria, no.
+  Medido otra vez el 24/11/2026: 15/90 tomas rotas en cada uno (3 rondas × 5 cargas × 6
+  tomas). La variante «tinte y velo nunca a la vez» (velo desde 0,4 y tinte sin pintar con
+  velo) baja a 3/90, pero sube los fotogramas lentos del tramo del hero en móvil de 7,8 a
+  8,3 % (7 rondas intercaladas; peor en 6 e igual en 1): no se aplica.
 - **Pista 3D** (`js/movimiento/pista.js`, three.js r186 reducido en `lib/three/`, MIT,
   ≤ 160 KB gzip): reglamento FIP «Rules of Padel» versión «in force as of 1.01.2026»,
   pág. 6 del documento (7 del PDF), diagrama «Laterales – Variante 1»: 2 | 2 | 12 | 2 | 2 m;
