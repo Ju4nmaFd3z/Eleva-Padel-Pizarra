@@ -20,7 +20,13 @@
    · formulario: los mensajes de error salen en el idioma de la
      página y no se quedan en el anterior al cambiarlo; el mensaje
      de WhatsApp lleva las etiquetas traducidas;
-   · sinjs: 404 y mantenimiento en español y sin selector.
+   · sinjs: 404 y mantenimiento en español y sin selector;
+   · lista-cerrada: en las cuatro páginas, la lista de idiomas
+     cerrada no se ve y se abre y cierra con el botón;
+   · sin-salto-scroll: cambiar de idioma a media página (clic o
+     teclado) no mueve el scroll (±2 px).
+   En sin-espanol, además, cada enlace de WhatsApp (a[data-wa])
+   lleva el mensaje de su clave en el idioma: sin text= es fallo.
    Los desbordes en EN/NL los revisa el módulo «responsive» (las
    cuatro páginas con idiomas, también a 320 px).
    ========================================================= */
@@ -147,6 +153,13 @@ function sinEspanol(pag, lang, nv) {
       if (pendiente && I.PERMITIR_PENDIENTES) continue;
       ok(false, (pendiente ? 'pendiente de traducir (PERMITIR_PENDIENTES es false) ' : 'español sin traducir ni marcar ') + x.tipo + ' ' + x.ruta, x.v.slice(0, 90));
     }
+    /* Cada enlace de WhatsApp lleva el mensaje de su clave en este idioma:
+       sin text= (el del HTML generado) también es un fallo */
+    for (const w of await r.p.evaluate(() => Array.from(document.querySelectorAll('a[data-wa]'), a => ({ clave: a.getAttribute('data-wa'), href: a.getAttribute('href') || '' })))) {
+      const m = /[?&]text=([^&]*)/.exec(w.href);
+      const t = m ? decodeURIComponent(m[1]) : null;
+      ok(t === valor(w.clave, lang), 'WhatsApp sin el mensaje de su clave en ' + lang + ' a[data-wa=' + w.clave + ']', t === null ? 'sin text=' : t.slice(0, 90));
+    }
     f.push(...await problemasDeRegistro(r.p, r.registro, { esperado: PAGINAS[pag].estado }));
   });
 }
@@ -207,7 +220,7 @@ function primeraPintura(pag, lang) {
       const q = await p.evaluate(() => window.__qaPintura);
       ok(q.aplicadoMs !== null, 'el idioma no se aplica (no llega eleva:idioma)');
       ok(q.conEspanol === 0, 'fotogramas pintados con textos en español antes de aplicar ' + lang, q.conEspanol + ' de ' + q.fotogramas + ' («' + q.muestra + '»)');
-      ok(q.aplicadoMs === null || q.aplicadoMs < 1500, 'el idioma tarda más que el límite de js/idioma.js (1500 ms)', q.aplicadoMs + ' ms');
+      ok(q.aplicadoMs === null || q.aplicadoMs < 1500, 'el idioma tarda más de 1500 ms con la red sin limitar', q.aplicadoMs + ' ms');
     } finally { await ctx.close(); }
   });
 }
@@ -305,6 +318,70 @@ function sinJs(pag) {
   });
 }
 
+/* La lista de idiomas cerrada no se ve (hidden gana a su display) y se
+   abre y cierra con el botón */
+function listaCerrada(pag, nv) {
+  return caso([pag, 'lista-cerrada', nv].join(' · '), pag, nv === '320x640', async (entorno, ok, cargarP) => {
+    const r = await cargarP(pag, vista(nv));
+    const p = r.p;
+    const estado = () => p.evaluate(() => {
+      const l = document.querySelector('.idioma-lista'), b = document.querySelector('.idioma-boton');
+      const c = l.getBoundingClientRect();
+      return { expandido: b.getAttribute('aria-expanded'), hidden: l.hidden, display: getComputedStyle(l).display, caja: Math.round(c.width) + '×' + Math.round(c.height) };
+    });
+    const cerrada = async (cuando) => {
+      const s = await estado();
+      ok(s.expandido === 'false' && s.hidden, cuando + ': la lista no está cerrada', JSON.stringify(s));
+      ok(s.display === 'none' && s.caja === '0×0', cuando + ': la lista cerrada se ve', s.display + ', ' + s.caja + ' px');
+    };
+    await cerrada('al cargar');
+    await p.focus('.idioma-boton');
+    await p.keyboard.press('Enter');
+    const s = await estado();
+    ok(s.expandido === 'true' && s.display !== 'none' && s.caja !== '0×0', 'la lista no se abre con el botón', JSON.stringify(s));
+    await p.keyboard.press('Escape');
+    await cerrada('tras Escape');
+  });
+}
+
+/* Cambiar de idioma a media página no mueve el scroll: el foco vuelve
+   al botón de la cabecera (sticky) sin desplazar la página */
+function sinSaltoScroll(pag, nv) {
+  return caso([pag, 'sin-salto-scroll', nv].join(' · '), pag, false, async (entorno, ok, cargarP, f) => {
+    const r = await cargarP(pag, vista(nv), { modo: 'reducido' });
+    const p = r.p;
+    const y = () => p.evaluate(() => Math.round(window.scrollY));
+    const clicEn = async (sel) => {
+      const c = await p.evaluate(s => { const r = document.querySelector(s).getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }, sel);
+      await p.mouse.click(c.x, c.y);
+    };
+    await p.evaluate(() => window.scrollTo(0, Math.round((document.documentElement.scrollHeight - innerHeight) / 2)));
+    await p.waitForTimeout(300);
+    await estabilizar(p);
+    for (const l of ['en', 'nl', 'es']) {
+      const antes = await y();
+      /* Clic real en su sitio: p.click() desplazaría antes la página para
+         «traer» el elemento a la vista */
+      await clicEn('.idioma-boton');
+      await clicEn('.idioma[data-lang="' + l + '"]');
+      await p.waitForTimeout(300);
+      await estabilizar(p);
+      const despues = await y();
+      ok(Math.abs(despues - antes) <= 2, 'cambiar a ' + l + ' con clic mueve el scroll', antes + ' → ' + despues + ' px');
+    }
+    const antes = await y();
+    await p.evaluate(() => document.querySelector('.idioma-boton').focus({ preventScroll: true }));
+    await p.keyboard.press('Enter');
+    await p.keyboard.press('ArrowDown');
+    await p.keyboard.press('Enter');
+    await p.waitForTimeout(300);
+    await estabilizar(p);
+    const despues = await y();
+    ok(Math.abs(despues - antes) <= 2, 'cambiar de idioma con el teclado mueve el scroll', antes + ' → ' + despues + ' px');
+    f.push(...await problemasDeRegistro(p, r.registro, { esperado: PAGINAS[pag].estado }));
+  });
+}
+
 function casos() {
   const lista = [];
   for (const pag of Object.keys(PAGINAS)) for (const lang of ['en', 'nl']) for (const nv of ['390x844', '1280x800']) lista.push(sinEspanol(pag, lang, nv));
@@ -314,6 +391,8 @@ function casos() {
   lista.push(recordado(), sinAlmacenamiento());
   for (const pag of ['pizarra', '404', 'mantenimiento']) lista.push(navegador(pag));
   lista.push(formulario(), sinJs('404'), sinJs('mantenimiento'));
+  for (const pag of Object.keys(PAGINAS)) for (const nv of ['320x640', '1280x800']) lista.push(listaCerrada(pag, nv));
+  for (const pag of ['marca', 'pizarra']) lista.push(sinSaltoScroll(pag, '1280x800'));
   return lista;
 }
 

@@ -85,12 +85,16 @@ que falla.
   sea `true`. Ida y vuelta ES → EN → NL → ES con el teclado (tras crearse la pista
   3D y en reposo): `outerHTML` idéntico, comentarios `<!--gen-->` incluidos. Con
   EN/NL guardado, ningún fotograma con textos traducibles en español antes de
-  aplicar el idioma, y aplicado en menos de 1,5 s. Idioma recordado de `/` a
+  aplicar el idioma, y aplicado en menos de 1,5 s (red sin limitar). Idioma recordado de `/` a
   `/pizarra` y a la 404; con el almacenamiento bloqueado, sin errores. Idioma del
   navegador sin preferencia guardada (EN y NL sí; otros, español; lo guardado
   manda y nunca se guarda solo). Formulario: errores en el idioma de la página,
   ninguno del idioma anterior tras cambiarlo y el mensaje de WhatsApp traducido.
-  Sin JS, 404 y mantenimiento en español y sin selector. Los desbordes en EN/NL
+  Sin JS, 404 y mantenimiento en español y sin selector. En las cuatro páginas, a
+  320 y 1280 px, la lista de idiomas cerrada no se ve y se abre y cierra con el
+  botón. Cambiar de idioma a media página, con clic o teclado, no mueve el scroll
+  (±2 px). Cada enlace de WhatsApp lleva en EN/NL el mensaje de su clave (sin
+  `text=` es fallo). Los desbordes en EN/NL
   (palabras largas del NL a 320 px) los mira `responsive`, que recorre las cuatro
   páginas con selector también en EN y NL.
 - **hero**: el hero de /pizarra en 16 escenarios × 6 dispositivos (1920,
