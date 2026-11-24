@@ -93,8 +93,14 @@
     /* Tarifas de pista: cada tramo con sus duraciones y precios, tal cual */
     var tp = (d.tarifas || {}).pistas;
     var hayTarifas = presente(tp) && presente(tp.tramos);
+    /* El aviso dice si el precio es por pista (confirmado) y con IVA */
+    var porPista = tp && tp.unidad && tp.unidad.porPista === true;
+    var clAviso = d.tarifas && d.tarifas.ivaIncluido === true ? (porPista ? 'club.ratesPerCourtVat' : 'classes.vat') : '';
+    /* t('clave') literal: tools/i18n.js busca así los usos de cada clave */
+    var aviso = clAviso ? '<p class="aviso-iva"' + (t.falta && t.falta(clAviso) ? ' lang="es"' : '') + '>' +
+      esc(porPista ? t('club.ratesPerCourtVat') : t('classes.vat')) + '</p>' : '';
     s.tarifas = {
-      html: hayTarifas ? ((d.tarifas.ivaIncluido === true ? '<p class="aviso-iva">' + esc(t('classes.vat')) + '</p>' : '') +
+      html: hayTarifas ? (aviso +
         '<div class="tramos">' + tp.tramos.map(function (tr) {
           return '<div class="tramo"><h4' + la(tr.cuando) + '>' + esc(L(tr.cuando)) + '</h4><dl class="tarifa">' +
             tr.precios.map(function (x) {

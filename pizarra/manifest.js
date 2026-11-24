@@ -65,14 +65,22 @@
     },
 
     tarifas: {
-      /* Tal cual el cartel: sin unidad añadida */
+      /* Precios y tramos del cartel; por pista y el horario del segundo
+         tramo, confirmados después por el propietario */
       pistas: {
         verificado: '2026-10-06',
         fuente:     'carteles del club en Instagram, confirmados por el club',
+        unidad: {
+          verificado: '2026-11-24',
+          fuente:     'confirmado por el propietario',
+          porPista:   true
+        },
         tramos: [
           { cuando: { es: 'Lunes a viernes hasta las 17:00 h' },
             precios: [ { duracion: '60 min', precio: '10 €' }, { duracion: '90 min', precio: '16 €' } ] },
-          { cuando: { es: 'Desde las 17:00 h, fines de semana y festivos' },
+          { verificado: '2026-11-24',
+            fuente:     'confirmado por el propietario',
+            cuando: { es: 'Lunes a viernes desde las 17:00 h; fines de semana y festivos, todo el día' },
             precios: [ { duracion: '60 min', precio: '15 €' }, { duracion: '90 min', precio: '22 €' } ] }
         ]
       },

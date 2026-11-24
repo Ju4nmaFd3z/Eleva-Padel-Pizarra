@@ -56,6 +56,7 @@
     'club.bookOnline': { es: 'Reservar en Vola', en: 'Book on Vola', nl: 'Reserveren via Vola', h: { en: '41b60b7b', nl: '41b60b7b' } },
     'club.community': { es: 'Comunidad', en: 'Community', nl: 'Community', h: { en: '97060b8c', nl: '97060b8c' } },
     'club.rates': { es: 'Tarifas de pista', en: 'Court prices', nl: 'Baantarieven', h: { en: 'b76f35fe', nl: 'b76f35fe' } },
+    'club.ratesPerCourtVat': { es: 'Precios por pista, con IVA incluido.' },
 
     'classes.heading': { es: 'Clases', en: 'Lessons', nl: 'Lessen', h: { en: '86bcee36', nl: '86bcee36' } },
     'classes.vat': { es: 'Precios con IVA incluido.', en: 'Prices include VAT.', nl: 'Prijzen inclusief btw.', h: { en: '814e7dfb', nl: '814e7dfb' } },

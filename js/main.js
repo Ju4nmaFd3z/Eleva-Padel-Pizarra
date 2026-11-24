@@ -45,6 +45,8 @@
     return { v: v.replace(/\{codigo\}/g, currentLang.toUpperCase()), falta: falta };
   }
   function tr(key) { return texto(key).v; }
+  /* Para render.js: si la clave cae al español, su elemento lleva lang="es" */
+  tr.falta = function (key) { return texto(key).falta; };
 
   /* Pares «atributo:clave» de data-i18n-attr */
   function pares(el) {

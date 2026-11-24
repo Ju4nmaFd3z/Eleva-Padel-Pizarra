@@ -40,7 +40,7 @@
     reservas:       PENDIENTE_CLUB,      /* { verificado, fuente, canales: {es} } */
 
     tarifas: {
-      pistas:      PENDIENTE_CLUB,       /* { verificado, fuente, tramos:[ { cuando:{es}, precios:[ {duracion, precio} ] } ] } */
+      pistas:      PENDIENTE_CLUB,       /* { verificado, fuente, unidad:{verificado, fuente, porPista}, tramos:[ { cuando:{es}, precios:[ {duracion, precio} ] } ] } */
       ivaIncluido: PENDIENTE_CLUB,
       clases:      PENDIENTE_CLUB,       /* { verificado, fuente, grupo:{titulo,precio,unidad,detalle}, otras:{…} } */
       infantil:    PENDIENTE_CLUB
