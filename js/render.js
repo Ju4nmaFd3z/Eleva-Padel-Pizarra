@@ -102,7 +102,8 @@
     s.tarifas = {
       html: hayTarifas ? (aviso +
         '<div class="tramos">' + tp.tramos.map(function (tr) {
-          return '<div class="tramo"><h4' + la(tr.cuando) + '>' + esc(L(tr.cuando)) + '</h4><dl class="tarifa">' +
+          /* la hora y su «h» nunca se separan («17:00 h» no se parte a 320 px) */
+          return '<div class="tramo"><h4' + la(tr.cuando) + '>' + esc(L(tr.cuando)).replace(/(\d{1,2}:\d{2}) h\b/g, '<span class="sin-corte">$1 h</span>') + '</h4><dl class="tarifa">' +
             tr.precios.map(function (x) {
               return '<div><dt' + la(x.duracion) + '>' + esc(L(x.duracion)) + '</dt><dd' + la(x.precio) + '>' + esc(L(x.precio)) + '</dd></div>';
             }).join('') + '</dl></div>';
