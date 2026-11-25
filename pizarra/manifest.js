@@ -85,8 +85,9 @@
     },
 
     tarifas: {
-      /* Precios y tramos del cartel; por pista y el horario del segundo
-         tramo, confirmados después por el propietario */
+      /* Precios y tramos del cartel; por pista, el horario del segundo tramo
+         y el tercer tramo (fines de semana y festivos), confirmados después
+         por el propietario */
       pistas: {
         verificado: '2026-10-06',
         fuente:     'carteles del club en Instagram, confirmados por el club',
@@ -96,16 +97,15 @@
           porPista:   true
         },
         tramos: [
-          { cuando: { es: 'Lunes a viernes hasta las 17:00 h', en: 'Monday to Friday until 17:00', nl: 'Maandag t/m vrijdag tot 17:00', h: { en: '46e189b2', nl: '46e189b2' } },
+          { cuando: { es: 'De lunes a viernes hasta las 17:00 h', en: 'Monday to Friday until 17:00', nl: 'Maandag t/m vrijdag tot 17:00', h: { en: '836ed757', nl: '836ed757' } },
             precios: [ { duracion: '60 min', precio: '10 €' }, { duracion: '90 min', precio: '16 €' } ] },
           { verificado: '2026-11-24',
             fuente:     'confirmado por el propietario',
-            cuando: {
-              es: 'Lunes a viernes desde las 17:00 h; fines de semana y festivos, todo el día',
-              en: 'Monday to Friday from 17:00; weekends and public holidays, all day',
-              nl: 'Maandag t/m vrijdag vanaf 17:00; weekenden en feestdagen de hele dag',
-              h: { en: '9fb2007b', nl: '9fb2007b' }
-            },
+            cuando: { es: 'De lunes a viernes desde las 17:00 h', en: 'Monday to Friday from 17:00', nl: 'Maandag t/m vrijdag vanaf 17:00', h: { en: 'fe32e726', nl: 'fe32e726' } },
+            precios: [ { duracion: '60 min', precio: '15 €' }, { duracion: '90 min', precio: '22 €' } ] },
+          { verificado: '2026-11-24',
+            fuente:     'confirmado por el propietario',
+            cuando: { es: 'Fines de semana y festivos, todo el día', en: 'Weekends and public holidays, all day', nl: 'Weekenden en feestdagen, de hele dag', h: { en: 'ac7c01a2', nl: 'ac7c01a2' } },
             precios: [ { duracion: '60 min', precio: '15 €' }, { duracion: '90 min', precio: '22 €' } ] }
         ]
       },

@@ -697,6 +697,14 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tramos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Un tramo impar al final ocupa la fila entera */
+  .tramo:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  /* Los tramos de una fila comparten la altura del rótulo (subgrid): las
+     listas de precios empiezan a la misma altura aunque un rótulo ocupe
+     más líneas. Sin subgrid, cada tramo con su altura, como antes. */
+  @supports (grid-template-rows: subgrid) {
+    .tramo { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; }
+  }
   .hero-contenido .botones { flex-direction: row; align-items: normal; }
   .insignias { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .insignia:last-child:nth-child(odd) { grid-column: auto; justify-self: stretch; width: auto; }
@@ -764,6 +772,8 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   }
   .hero-titulo { font-size: clamp(4rem, min(12.5vw, 19svh), 15rem); }
   .tarjetas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tramos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tramo:last-child:nth-child(odd) { grid-column: auto; }
   .seccion-pools {
     display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
     grid-template-areas: 'intro lista' 'cta lista';
