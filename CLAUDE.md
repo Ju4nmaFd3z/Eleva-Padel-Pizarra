@@ -127,7 +127,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     cuerpo con fuente y fecha si toca datos, un cambio lógico por commit, sin emojis y
     **sin firmas ni `Co-Authored-By` de IA**. Hooks: `git config core.hooksPath tools/hooks`.
 14. **Batería de QA COMPLETA antes de cada commit** que toque HTML, CSS, JS, manifest o
-    configuración: `node tools/qa/bateria.js` (unos 150 s). `--rapido` solo como ayuda mientras se
+    configuración: `node tools/qa/bateria.js` (unos 190 s; con `QA_HERO_REP=50`, hora y media). `--rapido` solo como ayuda mientras se
     trabaja, nunca para dar un commit por bueno. Ningún commit sube con fallos nuevos. Los fallos
     reales pendientes van en `tools/qa/lib/conocidos.js`, uno a uno con su elemento y su medida
     exactos (visibles en cada ejecución; quien los arregla quita su línea en el mismo commit).
@@ -175,7 +175,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   sacado del código: `eleva-lang` (`js/idioma.js`) y `eleva-acceso` (`middleware.js`); si
   cambia, se cambia también la sección IV. Titular y NIF: pendientes, no se publican.
 - `js/main.js`: idioma, menú móvil (con JS; sin JS el menú se ve desplegado), enlaces de
-  WhatsApp con mensaje, avisos con fecha y formulario. No hay botón flotante: «Reservar»
+  WhatsApp con mensaje, avisos con fecha y formulario (sin JS no se muestra: `<noscript>`;
+  los canales de Contacto siguen a la vista). No hay botón flotante: «Reservar»
   va siempre en la cabecera. Tras repintar al cambiar de idioma emite `eleva:repintado`.
 - **Selector de idioma**: en la cabecera, fuera del menú (logo · Reservar · idioma · menú),
   en `/` y `/pizarra` (en la 404, en `/privacidad` y en mantenimiento, arriba a la derecha, con el mismo

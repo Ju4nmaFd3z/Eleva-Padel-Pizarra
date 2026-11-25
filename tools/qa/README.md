@@ -23,7 +23,7 @@ Node 22 o superior.
 ## Ejecutar (desde la raíz del repo)
 
 ```sh
-node tools/qa/bateria.js            # todo: antes de cada commit (~80 s con 8 a la vez)
+node tools/qa/bateria.js            # todo: antes de cada commit (~190 s con 8 a la vez)
 node tools/qa/bateria.js --rapido   # subconjunto, solo como ayuda mientras se trabaja
 ```
 
@@ -57,9 +57,9 @@ que falla.
   enlaces dentro de un texto quedan exentos), campos con letra de menos de
   16 px, cajas sin texto (fondo o borde) que salen de la vista, y contenido
   que debería verse y no se ve (opacidad 0 o `visibility: hidden` en
-  pantalla; `display: none` en cualquier sitio), con o sin JS. Solo dos
-  ocultaciones están previstas: el selector de idioma sin JS y el menú móvil
-  cerrado. Un contenedor con scroll horizontal solo vale si es una región
+  pantalla; `display: none` en cualquier sitio), con o sin JS. Solo tres
+  ocultaciones están previstas: sin JS, el selector de idioma y el formulario
+  de `/pizarra` (necesitan JS), y el menú móvil cerrado. Un contenedor con scroll horizontal solo vale si es una región
   accesible (`tabindex="0"` y nombre, como las tablas de `/privacidad`); la cabecera sin solapes ni segunda línea; el nombre del club oculto
   por debajo de 408 px (con y sin JS); el menú y el selector de idioma
   abiertos; y en cada carga, errores y avisos de consola, errores de página,
@@ -125,7 +125,7 @@ que falla.
   pista 3D a la vista o la imagen fija, nunca nada a medias. Los tiempos
   salen de una semilla por repetición (aparece en el fallo). Una repetición
   por caso; la QA final, 50:
-  `QA_HERO_REP=50 node tools/qa/bateria.js --modulo hero` (más de una hora).
+  `QA_HERO_REP=50 node tools/qa/bateria.js --modulo hero` (más de una hora; la batería entera así, unos 5700 s).
 
 La espera es siempre por condición (fuentes, imágenes de la pantalla y
 animaciones con fin terminadas), nunca por tiempo fijo, y sin reintentos: si

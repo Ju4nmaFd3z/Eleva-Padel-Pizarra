@@ -12,7 +12,9 @@ raíz. Se publica en Vercel desde la rama `main`.
 
 Nada se carga desde internet: fuentes, iconos e imágenes están en el propio sitio.
 Si algún día se añade un servicio externo, hay que actualizar la CSP de
-`vercel.json` **y** la página legal (`js/legal-textos.js`).
+`vercel.json`, la página legal (`js/legal-textos.js`) **y** las constantes
+`CSP_SITIO` / `CSP_MANTENIMIENTO` de `tools/qa/modulos/servidor.js` (la batería falla
+si la CSP servida no es exactamente esa).
 
 ---
 
@@ -63,7 +65,7 @@ aisladas ahí: la raíz sigue sin `npm`. Se pasa **completa** antes de cada comm
 
 ```sh
 cd tools/qa && npm ci && npx playwright install chromium   # una vez
-node tools/qa/bateria.js            # completa, antes de cada commit (desde la raíz, ~150 s)
+node tools/qa/bateria.js            # completa, antes de cada commit (desde la raíz, ~190 s)
 node tools/qa/bateria.js --rapido   # subconjunto, solo como ayuda mientras se trabaja
 ```
 
@@ -146,7 +148,8 @@ de cada traducción (`{ es, en, nl, h: { en, nl } }`):
   `node tools/i18n.js exportar textos.json` lo saca para traducir.
 - Nombres propios que no se traducen y glosario: `CLAUDE.md` (regla 11).
 - Idioma de la página: el que eligió el usuario (se guarda en `eleva-lang`); si no
-  eligió nunca, el del navegador si es inglés o neerlandés; si no, español. Sin
+  eligió nunca, el primero de los idiomas del navegador que sea ES, EN o NL; si no
+  hay ninguno, español. Sin
   JavaScript, siempre español.
 
 ## Logo y tipografía
