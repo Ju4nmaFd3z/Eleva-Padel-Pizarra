@@ -9,6 +9,8 @@
    Textos: js/translations.js (window.ElevaTextos), una entrada por clave
    con sus tres idiomas. En el HTML:
      data-i18n="clave"                 el texto del elemento
+     data-i18n-html="clave"            el texto con marcado en línea
+                                       (ElevaTextos.enLinea; página legal)
      data-i18n-attr="atributo:clave;…" atributos (aria-label, alt, content…)
      data-i18n-fijo="atributo:clave"   solo español (og:*): main.js no lo toca
    Traducción pendiente (sin en/nl): se pinta el español y el elemento
@@ -88,6 +90,14 @@
       el.textContent = r.v;
       if (r.falta) el.setAttribute('lang', ES); else el.removeAttribute('lang');
     });
+    var enLinea = (window.ElevaTextos || {}).enLinea;
+    if (enLinea) $$('[data-i18n-html]').forEach(function (el) {
+      var r = texto(el.getAttribute('data-i18n-html'));
+      el.innerHTML = enLinea(r.v);
+      if (r.falta) el.setAttribute('lang', ES); else el.removeAttribute('lang');
+    });
+    /* Avisos que solo valen en una traducción (página legal: «vale el español») */
+    $$('[data-solo-traduccion]').forEach(function (el) { el.hidden = lang === ES; });
     $$('[data-i18n-attr]').forEach(function (el) {
       pares(el).forEach(function (p) { el.setAttribute(p[0], tr(p[1])); });
     });

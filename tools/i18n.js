@@ -8,7 +8,8 @@
                                       EN/NL actuales y dónde se ven
 
    Una sola fuente por texto:
-   · interfaz: js/translations.js, { es, en, nl, h: { en, nl } } por clave;
+   · interfaz: js/translations.js, { es, en, nl, h: { en, nl } } por clave,
+     y la página legal: js/legal-textos.js, con el mismo formato;
    · datos de cada club: su manifest, los mismos objetos { es, en, nl, h }.
    `h` es la HUELLA del español del que salió cada traducción (los 8 primeros
    caracteres hexadecimales del SHA-256 del texto normalizado). Si el español
@@ -45,6 +46,25 @@ const textos = () => {
   delete require.cache[require.resolve('../js/translations.js')];
   return require('../js/translations.js');
 };
+
+/* Textos de la página legal: js/legal-textos.js, mismo formato. Va aparte
+   para no cargarlos en todas las páginas; el navegador los suma a
+   ElevaTextos y las herramientas los leen con todosLosTextos(). */
+const LEGAL = path.join(ROOT, 'js/legal-textos.js');
+function textosLegales() {
+  if (!fs.existsSync(LEGAL)) return {};
+  delete require.cache[require.resolve(LEGAL)];
+  return require(LEGAL).textos;
+}
+/* Todas las claves de interfaz (translations.js + legal-textos.js) */
+function todosLosTextos() {
+  return Object.assign({}, textos().textos, textosLegales());
+}
+/* Claves que están en los dos archivos (error: una sola fuente por texto) */
+function clavesRepetidas() {
+  const T = textos().textos;
+  return Object.keys(textosLegales()).filter(k => Object.prototype.hasOwnProperty.call(T, k));
+}
 
 function normalizar(s) {
   return String(s == null ? '' : s).normalize('NFC').replace(/\s+/g, ' ').trim();
@@ -113,6 +133,9 @@ function entradas() {
   for (const [clave, obj] of Object.entries(T.textos)) {
     lista.push({ id: clave, origen: 'interfaz', obj, soloEs: obj.soloEs === true });
   }
+  for (const [clave, obj] of Object.entries(textosLegales())) {
+    lista.push({ id: clave, origen: 'legal', obj, soloEs: obj.soloEs === true });
+  }
   for (const slug of clubes()) {
     const m = cargarManifest(path.join(ROOT, slug, 'manifest.js'));
     for (const { ruta, obj } of traduciblesDelManifest(m)) {
@@ -132,6 +155,11 @@ function entradas() {
 function erroresDeFormato(lista) {
   const err = [];
   const marcas = s => (String(s).match(/\{[a-z]+\}/g) || []).sort().join(',');
+  /* Marcado en línea: la traducción enlaza a los mismos sitios. Un enlace
+     externo puede cambiar de idioma (/es/ → /en/…) solo si el traductor lo
+     indica: entonces hay que cambiar aquí la comparación, no el texto. */
+  const destinos = s => [...String(s).matchAll(/\]\(([^)\s]+)\)/g)].map(m => m[1]).sort().join(' ');
+  for (const k of clavesRepetidas()) err.push(`${k}: está en js/translations.js y en js/legal-textos.js (una sola fuente por texto)`);
   for (const e of lista) {
     const permitidas = new Set(IDIOMAS.concat(['h', 'soloEs']));
     for (const k of Object.keys(e.obj)) if (!permitidas.has(k)) err.push(`${e.id}: campo desconocido «${k}»`);
@@ -143,6 +171,7 @@ function erroresDeFormato(lista) {
     for (const l of TRADUCIDOS) {
       const v = e.obj[l];
       if (v != null && v !== '' && marcas(v) !== marcas(e.es)) err.push(`${e.id} (${l}): no tiene las mismas marcas {…} que el español`);
+      if (v != null && v !== '' && destinos(v) !== destinos(e.es)) err.push(`${e.id} (${l}): no enlaza a los mismos destinos [texto](destino) que el español`);
     }
   }
   return err;
@@ -164,6 +193,8 @@ function usosDeInterfaz() {
       const donde = pagina + ' · <' + tag + (id ? '#' + id : '') + (cls ? '.' + cls.split(' ').join('.') : '') + '>';
       const k = (at.match(/\sdata-i18n="([^"]+)"/) || [])[1];
       if (k) anota(k, donde + ' (texto)');
+      const kh = (at.match(/\sdata-i18n-html="([^"]+)"/) || [])[1];
+      if (kh) anota(kh, donde + ' (texto con marcado en línea: **negrita**, `código`, [texto](destino))');
       for (const a of ['data-i18n-attr', 'data-i18n-fijo']) {
         const v = (at.match(new RegExp('\\s' + a + '="([^"]+)"')) || [])[1];
         if (v) for (const par of v.split(';')) { const [atr, clave] = par.split(':'); anota(clave, donde + ' (atributo ' + atr + (a === 'data-i18n-fijo' ? ', solo en español' : '') + ')'); }
@@ -191,7 +222,7 @@ function exportar() {
     en_actual: e.obj.en || null,
     nl_actual: e.obj.nl || null,
     estado: e.estado,
-    donde: e.origen === 'interfaz' ? (usos[e.id] || []) : ['/pizarra · dato del manifest (' + e.id.split(':')[1] + ')']
+    donde: (e.origen === 'interfaz' || e.origen === 'legal') ? (usos[e.id] || []) : ['/pizarra · dato del manifest (' + e.id.split(':')[1] + ')']
   }));
 }
 
@@ -238,7 +269,7 @@ function textosSinClave(html) {
       }
       if (VACIOS.has(tag) || m[4] === '/') continue;
       const padre = pila[pila.length - 1];
-      pila.push({ tag, at, texto: '', clave: /\sdata-i18n="/.test(at) || !!(padre && padre.clave) });
+      pila.push({ tag, at, texto: '', clave: /\sdata-i18n(-html)?="/.test(at) || !!(padre && padre.clave) });
       continue;
     }
     /* Cierre: hasta su apertura (HTML conocido y bien formado) */
@@ -280,7 +311,7 @@ function textosSueltosDelManifest(m, render) {
   return out;
 }
 
-module.exports = { IDIOMAS, TRADUCIDOS, PERMITIR_PENDIENTES, TEXTOS_FIJOS, normalizar, huella, esNeutro, entradas, erroresDeFormato, usosDeInterfaz, exportar, traduciblesDelManifest, cargarManifest, clubes, textosSinClave, textosSueltosDelManifest };
+module.exports = { IDIOMAS, TRADUCIDOS, PERMITIR_PENDIENTES, TEXTOS_FIJOS, todosLosTextos, normalizar, huella, esNeutro, entradas, erroresDeFormato, usosDeInterfaz, exportar, traduciblesDelManifest, cargarManifest, clubes, textosSinClave, textosSueltosDelManifest };
 
 if (require.main === module) {
   const [orden, arg] = process.argv.slice(2);

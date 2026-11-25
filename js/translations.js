@@ -12,6 +12,11 @@
      lang="es" (nunca como si fuera inglés o neerlandés) y validar.js lo avisa.
    · soloEs: true → solo en español a propósito (og:*, ver CLAUDE.md).
    · {codigo}: el código del idioma activo (ES, EN, NL).
+   · Marcado en línea (solo en los textos que se pintan con
+     data-i18n-html, p. ej. los de la página legal, js/legal-textos.js):
+     **negrita**, `código` y [texto](destino), con destino #ancla,
+     página.html[#ancla] o https://… (externo: pestaña nueva). enLinea()
+     lo convierte en HTML; todo lo demás se escapa.
    El HTML en español de cada página lo escribe tools/generar.js desde aquí
    (data-i18n, data-i18n-attr, data-i18n-fijo): no se edita a mano.
 
@@ -127,7 +132,29 @@
     'maint.logoAlt': { es: 'Logo de Eleva Pádel' }
   };
 
-  var api = { textos: TEXTOS, nombresPropios: NOMBRES_PROPIOS };
+  /* Marcado en línea → HTML. El texto se escapa entero y solo se
+     convierten **…**, `…` y [texto](destino) con un destino permitido:
+     cualquier otra cosa queda como texto. La misma función pinta el HTML
+     generado (tools/generar.js) y el del navegador (js/main.js): al volver
+     al español el DOM queda idéntico. */
+  function esc(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  var DESTINO = /^(#[a-z0-9-]+|[a-z0-9-]+(\/[a-z0-9-]+)*\.html(#[a-z0-9-]+)?|https:\/\/[^\s"<>()]+)$/i;
+  function enLinea(s) {
+    return esc(s)
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (m, t, d) {
+        if (!DESTINO.test(d)) return m;
+        var fuera = d.indexOf('https://') === 0;
+        return '<a href="' + d + '"' + (fuera ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + t + '</a>';
+      })
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+  }
+
+  var api = { textos: TEXTOS, nombresPropios: NOMBRES_PROPIOS, enLinea: enLinea };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.ElevaTextos = api;
 })(this);

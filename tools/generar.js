@@ -32,6 +32,11 @@ const render = require(path.join(ROOT, 'js/render.js'));
 
 /* Páginas sin club que llevan textos de interfaz */
 const PAGINAS = ['index.html', '404.html', 'privacidad.html'];
+/* Páginas sin club con zonas data-gen de un club: la política de
+   cancelaciones de /privacidad sale del manifest de pizarra, la misma
+   fuente que la de /pizarra (el navegador la repinta igual al cambiar de
+   idioma: la página carga ese manifest y js/render.js) */
+const ZONAS_DE = { 'privacidad.html': 'pizarra' };
 const MANTENIMIENTO = 'middleware.js';
 
 /* Se lee con fin de línea LF aunque la copia de trabajo venga en CRLF
@@ -45,9 +50,14 @@ function cargar(archivo, global) {
   vm.runInNewContext(fs.readFileSync(archivo, 'utf8'), ctx, { filename: archivo });
   return ctx.window[global];
 }
+/* Claves de interfaz: js/translations.js y las de la página legal
+   (js/legal-textos.js), sumadas como en el navegador */
 function textos() {
+  return require('./i18n.js').todosLosTextos();
+}
+function enLinea(s) {
   delete require.cache[require.resolve('../js/translations.js')];
-  return require('../js/translations.js').textos;
+  return require('../js/translations.js').enLinea(s);
 }
 
 function clubes() {
@@ -59,7 +69,7 @@ function clubes() {
 
 /* Texto en español de una clave (con {codigo} = ES); lanza si no existe */
 function espanol(T, clave, donde) {
-  if (!Object.prototype.hasOwnProperty.call(T, clave)) throw new Error(`${donde}: la clave «${clave}» no está en js/translations.js`);
+  if (!Object.prototype.hasOwnProperty.call(T, clave)) throw new Error(`${donde}: la clave «${clave}» no está en js/translations.js ni en js/legal-textos.js`);
   return T[clave].es.replace(/\{codigo\}/g, 'ES');
 }
 
@@ -74,6 +84,16 @@ function aplicarTextos(html, donde) {
   });
   const total = (html.match(/\sdata-i18n="/g) || []).length;
   if (total !== hechos) throw new Error(`${donde}: hay elementos data-i18n con etiquetas dentro (solo pueden llevar texto)`);
+  /* data-i18n-html: el contenido es el marcado en línea convertido
+     (enLinea: solo <a>, <strong> y <code>). El contenedor no puede ser
+     una de esas etiquetas: su cierre se confundiría con el del contenido. */
+  let hechosHtml = 0;
+  html = html.replace(/(<([a-z0-9]+)\b[^>]*?\sdata-i18n-html="([^"]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g, (m, apertura, tag, clave, dentro, cierre) => {
+    if (['a', 'strong', 'code'].includes(tag)) throw new Error(`${donde}: data-i18n-html="${clave}" no puede ir en un <${tag}>`);
+    hechosHtml++;
+    return apertura + enLinea(espanol(T, clave, donde)) + cierre;
+  });
+  if ((html.match(/\sdata-i18n-html="/g) || []).length !== hechosHtml) throw new Error(`${donde}: hay elementos data-i18n-html sin cerrar`);
   html = html.replace(/<[a-z0-9]+\b[^>]*\sdata-i18n-(?:attr|fijo)="[^"]*"[^>]*>/g, etiqueta => {
     for (const m of etiqueta.matchAll(/\sdata-i18n-(?:attr|fijo)="([^"]*)"/g)) {
       for (const par of m[1].split(';')) {
@@ -89,6 +109,20 @@ function aplicarTextos(html, donde) {
     return etiqueta;
   });
   return html;
+}
+
+/* Zonas generadas desde el manifest (data-gen="…", entre <!--gen--> y <!--/gen-->) */
+function zonas(html, s, donde) {
+  return html.replace(/(data-gen="([a-z-]+)"[^>]*>)<!--gen-->[\s\S]*?<!--\/gen-->/g, (m, apertura, id) => {
+    if (!s[id]) throw new Error(`${donde}: zona data-gen="${id}" desconocida`);
+    return `${apertura}<!--gen-->${s[id].html}<!--/gen-->`;
+  });
+}
+/* El club cuyo manifest pinta el español de una zona en un texto de interfaz */
+function crearClub(slug) {
+  const data = cargar(path.join(ROOT, slug, 'manifest.js'), '__ELEVA__');
+  const T = textos();
+  return { data, s: render.crear(data, 'es', clave => (T[clave] ? T[clave].es : '')) };
 }
 
 function generar(slug) {
@@ -107,11 +141,7 @@ function generar(slug) {
   html = html.replace(/<!--gen:jsonld-->[\s\S]*?<!--\/gen:jsonld-->/, () =>
     '<!--gen:jsonld--><script type="application/ld+json">\n' + render.jsonld(data, BASE) + '\n</script><!--/gen:jsonld-->');
 
-  /* Zonas generadas */
-  html = html.replace(/(data-gen="([a-z-]+)"[^>]*>)<!--gen-->[\s\S]*?<!--\/gen-->/g, (m, apertura, id) => {
-    if (!s[id]) throw new Error(`${slug}: zona data-gen="${id}" desconocida`);
-    return `${apertura}<!--gen-->${s[id].html}<!--/gen-->`;
-  });
+  html = zonas(html, s, slug);
 
   /* Visibilidad de secciones y de sus enlaces */
   html = html.replace(/<([a-z]+)([^>]*?)\sdata-seccion="([a-z-]+)"([^>]*?)>/g, (m, tag, antes, id, despues) => {
@@ -157,7 +187,9 @@ function generar(slug) {
 function generarPagina(rel) {
   const archivo = path.join(ROOT, rel);
   const original = leerLF(archivo);
-  const html = aplicarTextos(original, rel);
+  let html = original;
+  if (ZONAS_DE[rel]) html = zonas(html, crearClub(ZONAS_DE[rel]).s, rel);
+  html = aplicarTextos(html, rel);
   return { rel, archivo, html, cambiado: html !== original };
 }
 
