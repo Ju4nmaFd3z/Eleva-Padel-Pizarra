@@ -13,7 +13,9 @@
    · eventos sin `hasta` válido o ya caducados
    · i18n (tools/i18n.js): cada texto con sus tres idiomas y su huella;
      traducción desfasada = error; pendiente = aviso (error con --estricto
-     o cuando PERMITIR_PENDIENTES sea false); claves sin uso o que no
+     o cuando PERMITIR_PENDIENTES sea false); en cada traducción, las
+     mismas marcas {…}, los mismos destinos [texto](destino) y los mismos
+     fragmentos `…` que en el español; claves sin uso o que no
      existen; ningún texto visible sin clave en las páginas servidas ni en
      los datos del manifest; nombres propios iguales en el código y en
      CLAUDE.md

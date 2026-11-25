@@ -142,6 +142,8 @@ de cada traducción (`{ es, en, nl, h: { en, nl } }`):
   Un texto sin traducir (**pendiente**) se ve en español, marcado `lang="es"`,
   y `validar.js` falla (`PERMITIR_PENDIENTES = false` en `tools/i18n.js` desde que
   se integraron las traducciones revisadas): un texto nuevo entra con su EN y NL.
+- Cada traducción lleva las mismas marcas `{…}`, los mismos destinos de enlace y los
+  mismos fragmentos entre comillas invertidas (`código`, que no se traduce) que el español.
 - Una traducción idéntica al español es error salvo que sea neutra o lleve
   `igual: ['en', 'nl']` en la fuente («Pools»).
 - `node tools/i18n.js estado` lista lo pendiente o desfasado;

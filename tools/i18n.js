@@ -165,6 +165,10 @@ function erroresDeFormato(lista) {
      externo puede cambiar de idioma (/es/ → /en/…) solo si el traductor lo
      indica: entonces hay que cambiar aquí la comparación, no el texto. */
   const destinos = s => [...String(s).matchAll(/\]\(([^)\s]+)\)/g)].map(m => m[1]).sort().join(' ');
+  /* `código`: lo que va entre comillas invertidas no se traduce ni lo mira la
+     prueba sin-espanol de la batería, así que tiene que ser igual en cada
+     idioma (mismos fragmentos, en cualquier orden) */
+  const codigos = s => [...String(s).matchAll(/`([^`]*)`/g)].map(m => m[1]).sort().join('\u0000');
   for (const k of clavesRepetidas()) err.push(`${k}: está en js/translations.js y en js/legal-textos.js (una sola fuente por texto)`);
   for (const e of lista) {
     const permitidas = new Set(IDIOMAS.concat(['h', 'soloEs', 'igual']));
@@ -184,6 +188,7 @@ function erroresDeFormato(lista) {
       if (marcada && normalizar(v) !== normalizar(e.es)) err.push(`${e.id} (${l}): marcado igual pero la traducción no es igual al español`);
       if (v != null && v !== '' && marcas(v) !== marcas(e.es)) err.push(`${e.id} (${l}): no tiene las mismas marcas {…} que el español`);
       if (v != null && v !== '' && destinos(v) !== destinos(e.es)) err.push(`${e.id} (${l}): no enlaza a los mismos destinos [texto](destino) que el español`);
+      if (v != null && v !== '' && codigos(v) !== codigos(e.es)) err.push(`${e.id} (${l}): no tiene los mismos fragmentos \`…\` que el español (${JSON.stringify(codigos(e.es).split('\u0000').filter(Boolean))})`);
     }
   }
   return err;
