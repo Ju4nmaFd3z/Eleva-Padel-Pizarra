@@ -373,6 +373,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .hero .hero-linea { width: fit-content; }   /* la capa de cada línea, del tamaño de su texto */
 .hero-linea:last-child { color: var(--anillo); }
 .hero-lugar { color: var(--crema); font-size: 1.25rem; margin-bottom: 1.5rem; }
+/* En móvil, los dos botones del hero uno debajo de otro: en fila caben o no
+   según haya llegado ya Barlow, y el salto movía la página (CLS) */
+.hero-contenido .botones { flex-direction: column; align-items: flex-start; }
 
 .avisos {
   padding: 1rem max(var(--margen), env(safe-area-inset-left));
@@ -694,6 +697,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tarjetas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tramos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-contenido .botones { flex-direction: row; align-items: normal; }
   .insignias { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .insignia:last-child:nth-child(odd) { grid-column: auto; justify-self: stretch; width: auto; }
   .personas { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 52rem; }
