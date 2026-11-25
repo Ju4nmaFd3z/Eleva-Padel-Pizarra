@@ -74,13 +74,15 @@ que falla.
 - **servidor**: CSP fijada en el módulo (la de `vercel.json` y la del
   mantenimiento tienen que ser exactamente esas, sin orígenes externos, comodines,
   eval ni scripts inline), cabeceras de seguridad, URLs limpias, 404,
-  excluidos de `.vercelignore` y el modo mantenimiento (503, `Retry-After`,
+  excluidos de `.vercelignore` (y `vercel.json` y `middleware.js`, que Vercel
+  no sirve) y el modo mantenimiento (503, `Retry-After`,
   noindex, clave y cookie).
 - **accesibilidad**: axe-core, WCAG 2.2 A/AA, infracciones graves y críticas.
 - **idiomas**: en `/`, `/pizarra`, 404 y mantenimiento, a 390 (táctil) y 1280 px,
   EN y NL sin ningún texto, atributo, `<title>`, meta description ni mensaje de
   WhatsApp igual al de la página en español, salvo nombres propios y neutros
-  (`tools/i18n.js`) y traducciones iguales a propósito; un texto pendiente de
+  (`tools/i18n.js`), traducciones iguales a propósito y fragmentos en línea que no
+  cambian de idioma dentro de un párrafo traducido (`localStorage`, www.aepd.es); un texto pendiente de
   traducir solo pasa si va marcado `lang="es"` y mientras `PERMITIR_PENDIENTES`
   sea `true`. Ida y vuelta ES → EN → NL → ES con el teclado (tras crearse la pista
   3D y en reposo): `outerHTML` idéntico, comentarios `<!--gen-->` incluidos. Con
@@ -92,8 +94,8 @@ que falla.
   ninguno del idioma anterior tras cambiarlo y el mensaje de WhatsApp traducido.
   Sin JS, 404 y mantenimiento en español y sin selector. En las cuatro páginas, a
   320 y 1280 px, la lista de idiomas cerrada no se ve y se abre y cierra con el
-  botón. Cambiar de idioma a media página, con clic o teclado, no mueve el scroll
-  (±2 px). Cada enlace de WhatsApp lleva en EN/NL el mensaje de su clave (sin
+  botón. Cambiar de idioma a media página (clic a 1280 px, toque a 390 px con movimiento
+  normal, y teclado) no mueve lo que se está leyendo (±2 px en la vista). Cada enlace de WhatsApp lleva en EN/NL el mensaje de su clave (sin
   `text=` es fallo). Los desbordes en EN/NL
   (palabras largas del NL a 320 px) los mira `responsive`, que recorre las cuatro
   páginas con selector también en EN y NL.

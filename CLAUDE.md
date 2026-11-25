@@ -252,7 +252,10 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   coordenadas confirmadas; atribución «© OpenStreetMap contributors» bajo el plano.
 - El idioma solo se guarda en `localStorage` (`eleva-lang`) cuando el usuario lo elige.
 - Excluido del despliegue (`.vercelignore`): `clubs/`, `tools/`, docs, `CONFIRMAR.md`,
-  `borradores/`, `capturas/`, `assets/credits.json`, `MARCA-borrador.md`, `marca-borrador.js`.
+  `borradores/`, `capturas/`, `assets/credits.json`, `MARCA-borrador.md`, `marca-borrador.js`,
+  la configuración del repo (`.gitignore`, `.vercelignore`, `.gitattributes`, `.editorconfig`) y
+  `lib/three/README.txt`. `vercel.json` y `middleware.js` se despliegan, pero Vercel no los sirve
+  como archivos (404), y `tools/servidor-local.js` tampoco.
 
 ## Trampas al verificar
 - Las previews de Vercel tienen Vercel Authentication: `curl` recibe 302; usar
