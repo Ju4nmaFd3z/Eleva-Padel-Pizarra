@@ -26,7 +26,7 @@ node tools/servidor-local.js
 
 y abre <http://localhost:3000> y <http://localhost:3000/pizarra>. El servidor imita
 a Vercel: URLs sin `.html` y sin barra final, cabeceras y CSP de `vercel.json`, lo
-excluido en `.vercelignore`, la página 404 y el modo mantenimiento.
+excluido en `.vercelignore` (y `vercel.json` y `middleware.js`, que tampoco se sirven), la página 404 y el modo mantenimiento.
 
 > No previsualices con doble clic ni con `python3 -m http.server`: tratan
 > `/pizarra` como `/pizarra/` y esconden errores de rutas. Por eso todas las rutas

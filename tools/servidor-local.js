@@ -7,7 +7,8 @@
        sirve privacidad.html; /x.html → 308 a /x
      · trailingSlash:false: /pizarra/ → 308 a /pizarra
      · cabeceras de vercel.json (incluida la CSP)
-     · lo que lista .vercelignore no existe
+     · lo que lista .vercelignore no existe, y tampoco vercel.json ni
+       middleware.js (Vercel los usa como configuración y función, no los sirve)
      · 404.html con código 404 para todo lo demás
      · rutas SENSIBLES a mayúsculas (como Vercel, no como macOS)
      · middleware.js (modo mantenimiento): el mismo archivo que usa Vercel
@@ -52,6 +53,9 @@ const MIME = {
    no existe (no está en Git), da 404 como cualquier otro. */
 const SOLO_LOCAL = ['marca-borrador.js', 'MARCA-borrador.md'];
 
+/* Configuración y función de Vercel: no son archivos estáticos (Vercel da 404) */
+const NO_ESTATICOS = ['vercel.json', 'middleware.js'];
+
 const ignored = rel => !SOLO_LOCAL.includes(rel) && ignore.some(p => {
   p = p.replace(/^\//, '');
   return p.endsWith('/') ? rel.startsWith(p) : (rel === p || rel.startsWith(p + '/'));
@@ -59,7 +63,7 @@ const ignored = rel => !SOLO_LOCAL.includes(rel) && ignore.some(p => {
 
 /* Existe como archivo, con el MISMO uso de mayúsculas en cada tramo */
 function exists(rel) {
-  if (!rel || rel.startsWith('.') || rel.includes('/.') || ignored(rel)) return false;
+  if (!rel || rel.startsWith('.') || rel.includes('/.') || ignored(rel) || NO_ESTATICOS.includes(rel)) return false;
   let dir = ROOT;
   for (const seg of rel.split('/')) {
     let names;
