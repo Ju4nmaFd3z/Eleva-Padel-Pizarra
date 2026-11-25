@@ -122,7 +122,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
       | aviso legal · inicio | legal notice · home | juridische informatie · startpagina | |
       | tratamiento | you | je/jij; el club, we/ons; al club, jullie | |
       | «SNP», «Series Nacionales de Pádel», «Rocha» | sin traducir | sin traducir | nombres propios; publicados en `pools.nota` (SNP, competición por equipos para jugadores aficionados; Rocha, pool propia del club) |
-12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261126c`) igual en todos los HTML;
+12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261126d`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según
     `CONTRIBUTING.md`: `tipo(ámbito): resumen` en español, presente, minúscula, ≤72,

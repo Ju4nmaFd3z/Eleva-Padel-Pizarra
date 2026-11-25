@@ -299,8 +299,8 @@
     /* Insignias reales (assets/pools/opt/<img>-240|480|720.avif + -480.jpg).
        Qué pools con insignia siguen en marcha: PENDIENTE_CLUB. Semanales
        son solo los del horario (cartel), con su propia verificación.
-       nombre: el de la insignia (traducible); el alt y el reverso son
-       «nombre · nombre del club» (render.js).
+       nombre: el de la insignia (traducible); el alt es «nombre, nombre
+       del club» y el reverso pinta los dos, uno debajo del otro (render.js).
        color: muestreado de la palabra de la categoría de su imagen 720 px,
        04/10/2026. Es el único color que marca la categoría de cada insignia
        (aro y reverso). colorAro (solo la mixta): el de su aro, con el que

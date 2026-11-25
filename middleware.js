@@ -54,7 +54,7 @@ const PAGINA = `<!DOCTYPE html>
 <title>Eleva Pádel</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<script src="/js/idioma.js?v=20261126c"></script>
+<script src="/js/idioma.js?v=20261126d"></script>
 <style>
   :root { --fondo:#000000; --texto:#EDE4DC; --suave:#DBD2CC; --oro:#947E6B; }
   * { box-sizing: border-box; }
@@ -146,8 +146,8 @@ const PAGINA = `<!DOCTYPE html>
 <footer>
   <span data-i18n="footer.credit">Web hecha por</span> <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
 </footer>
-<script src="/js/translations.js?v=20261126c" defer></script>
-<script src="/js/main.js?v=20261126c" defer></script>
+<script src="/js/translations.js?v=20261126d" defer></script>
+<script src="/js/main.js?v=20261126d" defer></script>
 </body>
 </html>
 `;
