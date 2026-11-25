@@ -136,6 +136,8 @@ Empieza el 07/10/2026, con la integración «web viva» aprobada por el propieta
     `validar.js` falla si aparece escrita a mano. El dominio aún no está activo: tiene que
     servir HTTPS antes de llevarlo a `main` y de quitar el mantenimiento.
   - La cookie `eleva-acceso` guarda un HMAC de la clave de mantenimiento, no la clave.
+    Un `?acceso=` vacío o cualquier error al comprobar el acceso dan la página de
+    mantenimiento (503), nunca un 500.
   - Sin JS, el formulario de contacto (que necesita JS) no se muestra.
   - `validar.js` exige en cada traducción los mismos fragmentos `código` que en el español.
   - Fuentes Barlow registradas en `credits.json`, sin código en comentarios y documentación
