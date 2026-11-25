@@ -32,7 +32,7 @@
     'Google Maps', 'Pizarra', 'Málaga', 'Pasaje Jerez s/n', '@elevapadelpizarra',
     'Lorena Vano', 'Maripaz', 'Liga SNP', 'Liga LAPI',
     'SNP', 'Series Nacionales de Pádel', 'Rocha',
-    'Vercel Inc.', 'Meta Platforms Ireland Ltd.',
+    'Vercel Inc.', 'Meta Platforms Ireland Ltd.', 'WhatsApp Ireland Limited',
     'Español', 'English', 'Nederlands'
   ];
 

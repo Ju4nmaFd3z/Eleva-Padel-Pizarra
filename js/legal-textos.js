@@ -100,12 +100,22 @@
     'legal.priv.sinPerfiles': { es: 'No usamos tus datos para publicidad, no hacemos perfiles y no tomamos decisiones automatizadas sobre ti.' },
     'legal.priv.destTitle': { es: '3.4 Quién más interviene' },
     'legal.priv.destIntro': { es: 'No cedemos tus datos a nadie para sus propios fines. Por cómo funciona el sitio, intervienen estos servicios:' },
-    'legal.priv.destWaDt': { es: 'WhatsApp (Meta Platforms Ireland Ltd.)' },
+    'legal.priv.destWaDt': {
+      es: 'WhatsApp (WhatsApp Ireland Limited)',
+      en: 'WhatsApp (WhatsApp Ireland Limited)',
+      nl: 'WhatsApp (WhatsApp Ireland Limited)',
+      h: { en: 'b3425633', nl: 'b3425633' }
+    },
     'legal.priv.destWaDd': { es: 'El servicio de mensajería por el que nos escribes y en el que está el grupo del club. Trata los datos por su cuenta, según su [política de privacidad](https://www.whatsapp.com/legal/privacy-policy-eea).' },
     'legal.priv.destIgDt': { es: 'Instagram (Meta Platforms Ireland Ltd.)' },
     'legal.priv.destIgDd': { es: 'La red social donde el club publica su actividad, [@elevapadelpizarra](https://instagram.com/elevapadelpizarra). Si entras, Meta trata tus datos según la [política de privacidad de Instagram](https://privacycenter.instagram.com/policy).' },
     'legal.priv.destVolaDt': { es: 'Vola' },
-    'legal.priv.destVolaDd': { es: 'La plataforma de reservas de pistas. Al reservar sales de este sitio: la cuenta, la reserva y el pago los gestiona Vola por su cuenta, con sus propias condiciones.' },
+    'legal.priv.destVolaDd': {
+      es: 'La plataforma de reservas de pistas. Al reservar sales de este sitio: la cuenta y la reserva los gestiona Vola por su cuenta, con sus propias condiciones.',
+      en: 'The court booking platform. When you book, you leave this site: your account and booking are handled by Vola independently, under its own terms.',
+      nl: 'Het platform voor het reserveren van banen. Als je reserveert, verlaat je deze website: je account en de reservering worden zelfstandig door Vola beheerd, volgens zijn eigen voorwaarden.',
+      h: { en: '3d5959b5', nl: '3d5959b5' }
+    },
     'legal.priv.destMapsDt': { es: 'Google Maps (Google)' },
     'legal.priv.destMapsDd': { es: 'Solo si pulsas el enlace para llegar al club: se abre Google Maps, que trata tus datos según la [política de privacidad de Google](https://policies.google.com/privacy).' },
     'legal.priv.destVercelDt': { es: 'Vercel Inc.' },
@@ -115,7 +125,12 @@
     'legal.priv.transTitle': { es: '3.5 Datos fuera del Espacio Económico Europeo' },
     'legal.priv.transIntro': { es: 'Meta y Vercel pueden tratar datos en Estados Unidos. Esas transferencias se apoyan en estas garantías del capítulo V del RGPD:' },
     'legal.priv.transMetaDt': { es: 'Meta (WhatsApp e Instagram)' },
-    'legal.priv.transMetaDd': { es: 'El Marco de Privacidad de Datos UE-EE. UU. (decisión de adecuación de la Comisión Europea de 10 de julio de 2023) y, además, las cláusulas contractuales tipo de la Comisión (Decisión de Ejecución (UE) 2021/914). En el Espacio Económico Europeo, la responsable es Meta Platforms Ireland Ltd.' },
+    'legal.priv.transMetaDd': {
+      es: 'El Marco de Privacidad de Datos UE-EE. UU. (decisión de adecuación de la Comisión Europea de 10 de julio de 2023) y, además, las cláusulas contractuales tipo de la Comisión (Decisión de Ejecución (UE) 2021/914). En el Espacio Económico Europeo, el responsable de WhatsApp es WhatsApp Ireland Limited y el de Instagram, Meta Platforms Ireland Ltd.',
+      en: 'The EU-U.S. Data Privacy Framework (European Commission adequacy decision of 10 July 2023) and, in addition, the Commission\'s standard contractual clauses (Commission Implementing Decision (EU) 2021/914). In the European Economic Area, the controller for WhatsApp is WhatsApp Ireland Limited and the controller for Instagram is Meta Platforms Ireland Ltd.',
+      nl: 'Het EU-VS-kader voor gegevensbescherming (adequaatheidsbesluit van de Europese Commissie van 10 juli 2023) en daarnaast de standaardcontractbepalingen van de Commissie (Uitvoeringsbesluit (EU) 2021/914). In de Europese Economische Ruimte is WhatsApp Ireland Limited de verwerkingsverantwoordelijke voor WhatsApp en Meta Platforms Ireland Ltd. die voor Instagram.',
+      h: { en: 'df317d97', nl: 'df317d97' }
+    },
     'legal.priv.transVercelDt': { es: 'Vercel Inc.' },
     'legal.priv.transVercelDd': { es: 'Las cláusulas contractuales tipo de su acuerdo de tratamiento de datos (Data Processing Addendum).' },
     'legal.priv.transMas': { es: 'Si quieres más información sobre estas garantías, pídenosla por los canales del apartado 3.7.' },
@@ -135,7 +150,12 @@
     'legal.priv.dOpos': { es: 'Oposición' },
     'legal.priv.dOposTxt': { es: 'Oponerte a que usemos tus datos cuando lo hacemos por interés legítimo.' },
     'legal.priv.dLim': { es: 'Limitación' },
-    'legal.priv.dLimTxt': { es: 'Pedir que dejemos de usar tus datos mientras se comprueba si son exactos o se resuelve tu reclamación.' },
+    'legal.priv.dLimTxt': {
+      es: 'Pedir que conservemos tus datos sin usarlos mientras se comprueba si son exactos o, si te has opuesto a que los usemos, mientras se verifica si nuestros motivos legítimos prevalecen sobre los tuyos. También puedes pedirlo si el tratamiento es ilícito y prefieres que no los borremos, o si ya no nos hacen falta pero tú los necesitas para formular, ejercer o defender reclamaciones.',
+      en: 'To ask us to keep your data without using it while its accuracy is being checked or, if you have objected to our use of it, while it is being verified whether our legitimate grounds override yours. You can also ask for this if the processing is unlawful and you would rather we did not delete your data, or if we no longer need it but you need it for the establishment, exercise or defence of legal claims.',
+      nl: 'Vragen dat we je gegevens bewaren zonder ze te gebruiken zolang wordt nagegaan of ze juist zijn of, als je bezwaar hebt gemaakt tegen het gebruik ervan, zolang wordt nagegaan of onze gerechtvaardigde gronden zwaarder wegen dan die van jou. Je kunt dat ook vragen als de verwerking onrechtmatig is en je liever hebt dat we ze niet wissen, of als wij ze niet meer nodig hebben maar jij ze nodig hebt voor de instelling, uitoefening of onderbouwing van een rechtsvordering.',
+      h: { en: '6008f57c', nl: '6008f57c' }
+    },
     'legal.priv.dPort': { es: 'Portabilidad' },
     'legal.priv.dPortTxt': { es: 'Recibir los datos que nos diste en un formato de uso común, o que se los pasemos a otro responsable cuando sea técnicamente posible.' },
     'legal.priv.dRetirar': { es: 'Retirar el consentimiento' },
