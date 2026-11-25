@@ -184,8 +184,9 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   del hero (líneas, lugar y botones) va siempre en su capa, cada línea del ancho de su texto
   (compuesto y pintado se suavizan distinto: al soltar la capa el titular saltaba un píxel).
   Lo que no se ve no se pinta: la imagen fija, en cuanto la escena viva está opaca encima;
-  el velo, mientras es transparente (`.hero-con-velo` desde `--p-hero` > 0,35; solo con
-  máscaras compuestas, `@supports`). En reposo
+  el velo, mientras es transparente (`.hero-con-velo` desde `--p-hero` > 0,4; solo con
+  máscaras compuestas, `@supports`), y el tinte, transparente desde 0,4, mientras hay velo:
+  tinte y velo nunca se pintan a la vez (`VELO_DESDE` de `scroll.js` = 0,4). En reposo
   (400 ms tras el último fotograma) la pista 3D se congela: su último fotograma pasa a un
   `<img>` (`.hero-foto`, `.tres-d-congelada`) y el lienzo sale de las capas (un lienzo WebGL
   visible obliga a componer todo lo que lleva encima); al volver el movimiento se muestra y
@@ -194,12 +195,14 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `tools/qa` (`QA_HERO_REP=50` en la QA final), con `gpu-justa` y `gpu-compartida` (memoria
   justa, en el estado estable) y `gpu-movimiento` (en movimiento, con el doble de la memoria
   justa), sin reintentos. Riesgo que queda: con la memoria justa (128 MB a 1920 con densidad 2,
-  46 MB en 390; Chrome da 512 MB por pestaña en escritorio), al cruzar `--p-hero` = 0,35 en
-  movimiento la aparición del velo deja el telón sin teselas 1,5-2 s; con 1,5× esa memoria, no.
-  Medido otra vez el 24/11/2026: 15/90 tomas rotas en cada uno (3 rondas × 5 cargas × 6
-  tomas). La variante «tinte y velo nunca a la vez» (velo desde 0,4 y tinte sin pintar con
-  velo) baja a 3/90, pero sube los fotogramas lentos del tramo del hero en móvil de 7,8 a
-  8,3 % (7 rondas intercaladas; peor en 6 e igual en 1): no se aplica.
+  46 MB en 390; Chrome da 512 MB por pestaña en escritorio), al cruzar `--p-hero` = 0,4 en
+  movimiento la aparición del velo puede dejar el telón sin teselas 1,5-2 s; con 1,5× esa
+  memoria, no. Con «tinte y velo nunca a la vez» (aplicado el 25/11/2026) bajan las tomas
+  rotas de 15/90 a 3/90 a 1920 d2 y a 390 (3 rondas × 5 cargas × 6 tomas). Motivo: con
+  la memoria justa, el tinte y el velo pintados a la vez eran una capa de pantalla completa
+  de más. Los FPS no empeoran: con orden ABBA contrapesado (3 bloques, 390 d3, CPU ×4),
+  10,5 % de fotogramas > 20 ms antes y 9,5 % después, p95 33,3 ms en todas (la medida
+  anterior, 7,8 → 8,3 %, iba siempre en el mismo orden y estaba dentro del ruido).
 - **Pista 3D** (`js/movimiento/pista.js`, three.js r186 reducido en `lib/three/`, MIT,
   ≤ 160 KB gzip): reglamento FIP «Rules of Padel» versión «in force as of 1.01.2026»,
   pág. 6 del documento (7 del PDF), diagrama «Laterales – Variante 1»: 2 | 2 | 12 | 2 | 2 m;

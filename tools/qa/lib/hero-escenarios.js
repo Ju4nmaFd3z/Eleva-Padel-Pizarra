@@ -465,7 +465,7 @@ const ESCENARIOS = {
 
   /* En movimiento, con el doble de la memoria justa: primer gesto, la pista 3D
      lista, y tomas mientras la rueda mueve el hero (sin esperar a reposo),
-     cruzando los tramos del velo (p = 0,35) y de la apertura. La captura y la
+     cruzando los tramos del velo (p = 0,4) y de la apertura. La captura y la
      medida, del mismo scroll; un fallo a la primera es un fallo. */
   'gpu-movimiento': async e => {
     await e.p.goto(URL_PIZARRA(e.base), { waitUntil: 'load' });

@@ -121,8 +121,9 @@
 
   /* ── Motor: currentTime de las animaciones sd-* ─────────────── */
   /* progreso a partir del cual el velo del hero deja de ser transparente
-     (el mismo .35 de .hero-velo en css/movimiento.css) */
-  var VELO_DESDE = 0.35;
+     (el mismo .4 de .hero-velo en css/movimiento.css; desde ahí el tinte ya es
+     transparente y deja de pintarse: tinte y velo nunca a la vez) */
+  var VELO_DESDE = 0.4;
   var pistas = [], pendiente = false, escuchando = false, fondo = null, telon = null, heroEl = null;
   function rem() { return parseFloat(getComputedStyle(document.documentElement).fontSize) || 16; }
   /* Rangos (0 → 1) de cada tipo */
