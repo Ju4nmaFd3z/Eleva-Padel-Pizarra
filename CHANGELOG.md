@@ -91,14 +91,22 @@ Empieza el 07/10/2026, con la integración «web viva» aprobada por el propieta
   ve el español antes del idioma elegido (el seguro de `js/idioma.js` espera a que la página
   termine de leerse, con un tope de 8 s). La batería lo comprueba, y también que cada enlace
   de WhatsApp lleve su mensaje en el idioma de la página.
+- Hero de `/pizarra` con memoria de GPU justa: el tinte y el velo ya no se pintan nunca a la
+  vez (el velo empieza en 0,4, cuando el tinte ya es transparente). Las tomas rotas en
+  movimiento bajan de 15 de 90 a 3 de 90, sin empeorar los fotogramas por segundo.
+- Cancelaciones: los títulos de los paneles ya no cambian de escala con el scroll (el texto
+  no se mueve; solo se anima la luz), y sin `:has()` el rótulo de cada norma conserva su
+  separación.
 - Repositorio: fin de línea LF fijado en `.gitattributes` (con `core.autocrlf=true`,
   `validar.js` daba errores falsos en un clon nuevo), `.editorconfig`, `.vercelignore` más
   preciso, código muerto fuera y documentación al día.
 
-Pendiente en este tramo: traducciones revisadas al inglés y al neerlandés; textos en español
-(a revisión); página legal en tres idiomas; borrador de la marca solo en local y sin pasar aún
-al sistema de idiomas; QA final con un agente distinto; sustitución del historial de Git por
-un único commit; paso a elevapadel.com. El rediseño visual (paleta clara) llegará después y
+Pendiente en este tramo (a 25/11/2026): integrar las traducciones revisadas al inglés y
+al neerlandés (fase B del punto 7); aprobar los textos en español y retraducir los que
+cambien; página legal en tres idiomas y al día con lo que hace la web; borrador de la marca
+solo en local y sin pasar aún al sistema de idiomas; procedencia de la foto ilustrativa y de
+la imagen para redes; QA final con un agente distinto; sustitución del historial de Git por un
+único commit; paso a elevapadel.com. El rediseño visual (paleta clara) llegará después y
 rehará el hero y la composición, también el protagonismo de la pista 3D.
 
 ---
