@@ -7,12 +7,12 @@ raíz. Se publica en Vercel desde la rama `main`.
 |---------------|-------------------------------------------|------------------------------------------|
 | `/`           | `index.html`                              | Web de la marca Eleva Pádel              |
 | `/pizarra`    | `pizarra/index.html` (generado) + `pizarra/manifest.js` | Web del club Eleva Pádel Pizarra |
-| `/privacidad` | `privacidad.html`                         | Aviso legal, privacidad y cookies        |
+| `/privacidad` | `privacidad.html` + `js/legal-textos.js`   | Aviso legal, cancelaciones, privacidad y cookies (ES, EN, NL; vale el español) |
 | *(404)*       | `404.html`                                | Página de «no encontrado»                |
 
 Nada se carga desde internet: fuentes, iconos e imágenes están en el propio sitio.
 Si algún día se añade un servicio externo, hay que actualizar la CSP de
-`vercel.json` **y** `privacidad.html`.
+`vercel.json` **y** la página legal (`js/legal-textos.js`).
 
 ---
 
@@ -122,7 +122,10 @@ Cada texto tiene **una sola fuente**, con sus tres idiomas y la huella del espa�
 de cada traducción (`{ es, en, nl, h: { en, nl } }`):
 
 - Interfaz (menú, botones, rótulos, `<head>`, 404 y mantenimiento):
-  `js/translations.js`, una entrada por clave. En el HTML se enlaza con
+  `js/translations.js`, una entrada por clave. Página legal: `js/legal-textos.js`,
+  igual; sus párrafos con enlaces usan `data-i18n-html` y un marcado mínimo
+  (`**negrita**`, `` `código` ``, `[texto](destino)`). En la página legal vale el
+  español: en EN y NL sale un aviso que lo dice. En el HTML se enlaza con
   `data-i18n="clave"` (texto) y `data-i18n-attr="aria-label:clave"` (atributos);
   el español lo escribe `node tools/generar.js`: no se edita a mano.
 - Datos del club: en su manifest, con el mismo formato.
@@ -187,8 +190,8 @@ como plantilla vacía.
 ├── middleware.js        ← modo mantenimiento
 ├── pizarra/             ← web del club (index.html + manifest.js)
 ├── css/                 ← main.css (estático), movimiento.css (todo lo animado) y fonts.css
-├── js/                  ← main.js, render.js (manifest → HTML), translations.js (textos)
-│                          e idioma.js (idioma inicial, en el <head>)
+├── js/                  ← main.js, render.js (manifest → HTML), translations.js (textos),
+│                          legal-textos.js (página legal) e idioma.js (idioma inicial)
 ├── js/movimiento/       ← nucleo.js y un módulo por efecto (scroll, puntero, tacto,
 │                          tres-d + pista.js, la escena 3D)
 ├── lib/three/           ← three.js r186 reducido (MIT; cómo regenerarlo en README.txt)
@@ -207,7 +210,9 @@ como plantilla vacía.
 
 **¿La web usa cookies o analítica?** No hay analítica. El navegador guarda el idioma
 solo si el usuario lo elige (`eleva-lang`). La única cookie es `eleva-acceso`, que
-solo recibe quien usa la clave del modo mantenimiento.
+solo recibe quien usa la clave del modo mantenimiento (y, si Vercel muestra su
+comprobación de seguridad, la suya). Está todo en la sección IV de `/privacidad`: si
+cambia lo que se guarda, se cambia también ahí (`js/legal-textos.js`).
 
 **¿Dónde van los datos del formulario?** A ningún servidor: el formulario compone
 un mensaje de WhatsApp y lo envía el propio usuario. Sin JavaScript, el botón está

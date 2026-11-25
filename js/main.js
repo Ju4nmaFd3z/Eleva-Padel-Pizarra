@@ -1,8 +1,8 @@
 /* ================================================================
    Eleva Pádel — main.js
    Idioma (selector de la cabecera), menú móvil, enlaces de WhatsApp,
-   avisos con fecha y formulario. Sirve también a la 404 y a la página de
-   mantenimiento: cada parte solo actúa si su elemento existe.
+   avisos con fecha y formulario. Sirve también a /privacidad, a la 404 y a
+   la página de mantenimiento: cada parte solo actúa si su elemento existe.
    El contenido del club ya viene en el HTML (tools/generar.js); al
    cambiar de idioma se vuelve a pintar con js/render.js.
 

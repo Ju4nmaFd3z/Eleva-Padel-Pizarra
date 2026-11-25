@@ -17,7 +17,10 @@
       privacidad.html y la de mantenimiento, dentro de middleware.js) escribe
       en español, desde js/translations.js, el texto de cada elemento
       data-i18n="clave" y los atributos de data-i18n-attr="atributo:clave;…" y
-      data-i18n-fijo="atributo:clave". Así cada texto tiene una sola fuente.
+      data-i18n-fijo="atributo:clave", y el de data-i18n-html="clave" con su
+      marcado en línea (los de la página legal salen de js/legal-textos.js);
+      en /privacidad, además, la zona de cancelaciones desde el manifest de
+      pizarra (ZONAS_DE). Así cada texto tiene una sola fuente.
    Todo lo confirmado se ve sin JavaScript. Vercel no ejecuta nada: lo
    generado se versiona. El pre-commit lo ejecuta solo.
    ========================================================= */

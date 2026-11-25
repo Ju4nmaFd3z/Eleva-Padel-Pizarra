@@ -10,7 +10,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - `/` → `index.html`: web de la **marca** Eleva Pádel. Sigue siendo de la marca
   (no se convierte en la del club); desde ella se accede a los clubes.
 - `/pizarra` → `pizarra/index.html` (generado) + `pizarra/manifest.js`: club **Eleva Pádel Pizarra**.
-- `/privacidad` → `privacidad.html` (legal, solo en español, CSS propio, sin JS) · `404.html`.
+- `/privacidad` → `privacidad.html` (legal, en tres idiomas: vale el español; CSS propio; textos en
+  `js/legal-textos.js`; cancelaciones desde `pizarra/manifest.js`) · `404.html`.
 
 ## Modo mantenimiento (`middleware.js`: 503 + `Retry-After` + noindex en todo)
 - Activar: variable `MANTENIMIENTO=1` en Vercel (Production) + Redeploy.
@@ -39,7 +40,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 6. **Previsualizar solo con `node tools/servidor-local.js`** (imita Vercel e
    incluye el middleware).
 7. **Sin CDN ni terceros en ejecución.** CSP `'self'` en `vercel.json`, sin scripts
-   inline (salvo JSON-LD). Añadir un tercero obliga a tocar la CSP **y** `privacidad.html`,
+   inline (salvo JSON-LD). Añadir un tercero obliga a tocar la CSP **y** la página legal (`js/legal-textos.js`),
    y las constantes `CSP_SITIO` / `CSP_MANTENIMIENTO` de `tools/qa/modulos/servidor.js`
    (la batería falla si la CSP servida no es exactamente esa).
 8. **Sin email.** Ninguna dirección de correo en ningún archivo. Canales del club:
@@ -55,8 +56,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     club» (`colaborar`, anuncio «Buscamos patrocinadores») es otra sección: opciones,
     disponibilidad de pistas (caduca: `colaborar.disponibilidad` con su `verificado`) y
     contacto solo por WhatsApp; nunca nombres de patrocinadores.
-11. **i18n ES/EN/NL, una sola fuente por texto**: interfaz en `js/translations.js`, una
-    entrada por clave `{ es, en, nl, h: { en, nl } }`; datos del club con el mismo formato en
+11. **i18n ES/EN/NL, una sola fuente por texto**: interfaz en `js/translations.js` (la página
+    legal, en `js/legal-textos.js`), una entrada por clave `{ es, en, nl, h: { en, nl } }`; datos del club con el mismo formato en
     su manifest. Nada de textos sueltos: en el HTML, `data-i18n="clave"` (texto),
     `data-i18n-attr="atributo:clave;…"` (`aria-label`, `alt`, `content` de la meta
     description…) y `data-i18n-fijo` (og:*, solo español); `tools/generar.js` escribe el
@@ -139,11 +140,21 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   HTML en español: todo lo confirmado se ve sin JS) y `js/main.js` (vuelve a pintar al
   cambiar de idioma). `presente(v)`: vacío o `PENDIENTE_*` no se pinta y la sección sin
   datos queda `hidden`.
+- **Página legal** (`privacidad.html`): textos en `js/legal-textos.js` (mismo formato que
+  `translations.js`; el navegador los suma a `ElevaTextos`, las herramientas con
+  `todosLosTextos()` de `tools/i18n.js`). Los párrafos con enlaces o negrita van en
+  `data-i18n-html` con marcado en línea (`**negrita**`, `` `código` ``, `[texto](destino)`;
+  `ElevaTextos.enLinea`, la misma función en `generar.js` y `main.js`). La política de
+  cancelaciones es la zona `data-gen="cancelaciones"` del manifest de pizarra (`ZONAS_DE` en
+  `generar.js`): dice siempre lo mismo que `/pizarra`. El aviso «vale el español»
+  (`data-solo-traduccion`) solo se ve en EN y NL. Lo que se guarda en el navegador está
+  sacado del código: `eleva-lang` (`js/idioma.js`) y `eleva-acceso` (`middleware.js`); si
+  cambia, se cambia también la sección IV. Titular y NIF: pendientes, no se publican.
 - `js/main.js`: idioma, menú móvil (con JS; sin JS el menú se ve desplegado), enlaces de
   WhatsApp con mensaje, avisos con fecha y formulario. No hay botón flotante: «Reservar»
   va siempre en la cabecera. Tras repintar al cambiar de idioma emite `eleva:repintado`.
 - **Selector de idioma**: en la cabecera, fuera del menú (logo · Reservar · idioma · menú),
-  en `/` y `/pizarra` (en la 404 y en mantenimiento, arriba a la derecha, con el mismo
+  en `/` y `/pizarra` (en la 404, en `/privacidad` y en mantenimiento, arriba a la derecha, con el mismo
   código y su CSS propio). Botón con el idioma actual que despliega ES, EN, NL: Enter/Espacio/
   flechas abren, flechas/Inicio/Fin recorren, Escape cierra y devuelve el foco, la opción
   activa lleva `aria-current`. Sin JS se oculta (`<noscript>`). Por debajo de 25,5rem el
@@ -248,8 +259,9 @@ mobile-first, 4 iconos y la integración «web viva» (mezcla de las propuestas 
 04-05/10/2026; las ramas `propuesta-a` y `propuesta-c`, borradas el 07/10/2026; sus
 despliegues, en la limpieza final). Tramo de cierre (07/10-25/11/2026, detalle en
 `CHANGELOG.md`): datos de los carteles, hero, i18n fase A, M1, C2 y correcciones. Siguen:
-5 textos en español (a revisión), 6 EN/NL revisados (fase B), 7 legal y 8 QA con otro
-agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
+5 textos en español (a revisión), 6 EN/NL revisados (fase B), 7 legal (fase 1 en español
+hecha el 25/11/2026: falta titular y NIF del club y traducir `js/legal-textos.js`) y 8 QA con
+otro agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
 documentado en `CHANGELOG.md` (plan aprobado, ver memoria; el repo no tiene forks a
 01/10/2026; los commits van con la identidad de Git actual del propietario, por
 decisión suya). Pendientes del cliente y de
@@ -257,7 +269,7 @@ la marca: `CONFIRMAR.md`.
 
 ## Decisiones tomadas (no reabrir sin preguntar)
 `/` es la web de la marca · sin email (riesgo LSSI asumido) · i18n solo en cliente,
-sin `/en` ni `/nl` · `/privacidad` solo en español · enlaces internos como
+sin `/en` ni `/nl` · `/privacidad` en tres idiomas, vale el español (D1, 08/11/2026) · enlaces internos como
 `…/index.html` (308 en Vercel a cambio de funcionar en local) ·
 `'unsafe-inline'` en `style-src` · `hero.jpg` se queda sin rotular como ilustrativa ·
 lema del Instagram y «Training & Social Club»: no se usan hasta que el cliente decida ·
