@@ -90,6 +90,16 @@
       "status": "definitivo"
     }
   ],
+  "fonts": [
+    {
+      "file": "../fonts/barlow-condensed-600-latin.woff2, ../fonts/barlow-400-latin.woff2, ../fonts/barlow-500-latin.woff2",
+      "description": "Barlow Condensed 600 (títulos y botones) y Barlow 400 y 500 (texto), woff2 con subconjunto latino (ES, EN, NL), autoalojadas (css/fonts.css)",
+      "source": "The Barlow Project (github.com/jpt/barlow); licencia comprobada en google/fonts",
+      "license": "SIL Open Font License 1.1, texto completo en assets/fonts/OFL-Barlow.txt",
+      "credit": "Copyright 2017 The Barlow Project Authors",
+      "status": "definitivo"
+    }
+  ],
   "libraries": [
     {
       "file": "../../lib/three/three.eleva.js",
