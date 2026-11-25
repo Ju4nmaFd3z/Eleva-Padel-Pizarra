@@ -24,8 +24,9 @@
    · sinjs: 404, /privacidad y mantenimiento en español y sin selector;
    · lista-cerrada: en las cinco páginas, la lista de idiomas
      cerrada no se ve y se abre y cierra con el botón;
-   · sin-salto-scroll: cambiar de idioma a media página (clic o
-     teclado) no mueve el scroll (±2 px).
+   · sin-salto-scroll: cambiar de idioma a media página (clic a
+     1280 con movimiento reducido, toque a 390 con movimiento normal,
+     y teclado) no mueve lo que se está leyendo (±2 px en la vista).
    En sin-espanol, además, cada enlace de WhatsApp (a[data-wa])
    lleva el mensaje de su clave en el idioma: sin text= es fallo.
    Los desbordes en EN/NL los revisa el módulo «responsive» (las
@@ -347,40 +348,56 @@ function listaCerrada(pag, nv) {
   });
 }
 
-/* Cambiar de idioma a media página no mueve el scroll: el foco vuelve
-   al botón de la cabecera (sticky) sin desplazar la página */
-function sinSaltoScroll(pag, nv) {
-  return caso([pag, 'sin-salto-scroll', nv].join(' · '), pag, false, async (entorno, ok, cargarP, f) => {
-    const r = await cargarP(pag, vista(nv), { modo: 'reducido' });
+/* Cambiar de idioma a media página no mueve lo que se está leyendo: el
+   foco vuelve al botón de la cabecera (sticky) sin desplazar la página.
+   Se mide el primer bloque de texto visible bajo la cabecera (su índice
+   en el DOM, que es el mismo en los tres idiomas): tiene que seguir en
+   el mismo sitio de la vista (±2 px). scrollY sí puede cambiar: si el
+   texto de arriba ocupa otra altura en otro idioma, el anclaje del
+   scroll del navegador lo compensa. Con ratón (clic) o táctil (toque),
+   y con el teclado. */
+function sinSaltoScroll(pag, nv, modo) {
+  return caso([pag, 'sin-salto-scroll', nv, modo].join(' · '), pag, false, async (entorno, ok, cargarP, f) => {
+    const v = vista(nv);
+    const r = await cargarP(pag, v, { modo });
     const p = r.p;
-    const y = () => p.evaluate(() => Math.round(window.scrollY));
-    const clicEn = async (sel) => {
+    const lectura = (i) => p.evaluate((i) => {
+      const SEL = 'main h2, main h3, main h4, main p, main li, main dt, main dd';
+      const todos = [...document.querySelectorAll(SEL)];
+      const cab = document.querySelector('header');
+      const bajo = cab ? cab.getBoundingClientRect().bottom : 0;
+      if (i == null) i = todos.findIndex(e => { const b = e.getBoundingClientRect(); return b.height > 0 && b.top >= bajo; });
+      const e = todos[i];
+      return { i, top: e ? Math.round(e.getBoundingClientRect().top) : null, y: Math.round(scrollY), texto: e ? e.textContent.trim().slice(0, 40) : '' };
+    }, i);
+    const pulsaEn = async (sel) => {
       const c = await p.evaluate(s => { const r = document.querySelector(s).getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }, sel);
-      await p.mouse.click(c.x, c.y);
+      if (v.movil) await p.touchscreen.tap(c.x, c.y);
+      else await p.mouse.click(c.x, c.y);
     };
+    const compara = (antes, despues, que) => ok(antes.i >= 0 && despues.top !== null && Math.abs(despues.top - antes.top) <= 2,
+      que + ' mueve lo que se lee', '«' + antes.texto + '» ' + antes.top + ' → ' + despues.top + ' px en la vista (scrollY ' + antes.y + ' → ' + despues.y + ')');
     await p.evaluate(() => window.scrollTo(0, Math.round((document.documentElement.scrollHeight - innerHeight) / 2)));
     await p.waitForTimeout(300);
     await estabilizar(p);
     for (const l of ['en', 'nl', 'es']) {
-      const antes = await y();
-      /* Clic real en su sitio: p.click() desplazaría antes la página para
-         «traer» el elemento a la vista */
-      await clicEn('.idioma-boton');
-      await clicEn('.idioma[data-lang="' + l + '"]');
+      const antes = await lectura();
+      /* Pulsación real en su sitio: p.click() desplazaría antes la página
+         para «traer» el elemento a la vista */
+      await pulsaEn('.idioma-boton');
+      await pulsaEn('.idioma[data-lang="' + l + '"]');
       await p.waitForTimeout(300);
       await estabilizar(p);
-      const despues = await y();
-      ok(Math.abs(despues - antes) <= 2, 'cambiar a ' + l + ' con clic mueve el scroll', antes + ' → ' + despues + ' px');
+      compara(antes, await lectura(antes.i), 'cambiar a ' + l + ' con ' + (v.movil ? 'toque' : 'clic'));
     }
-    const antes = await y();
+    const antes = await lectura();
     await p.evaluate(() => document.querySelector('.idioma-boton').focus({ preventScroll: true }));
     await p.keyboard.press('Enter');
     await p.keyboard.press('ArrowDown');
     await p.keyboard.press('Enter');
     await p.waitForTimeout(300);
     await estabilizar(p);
-    const despues = await y();
-    ok(Math.abs(despues - antes) <= 2, 'cambiar de idioma con el teclado mueve el scroll', antes + ' → ' + despues + ' px');
+    compara(antes, await lectura(antes.i), 'cambiar de idioma con el teclado');
     f.push(...await problemasDeRegistro(p, r.registro, { esperado: PAGINAS[pag].estado }));
   });
 }
@@ -396,7 +413,7 @@ function casos() {
   for (const pag of ['pizarra', 'privacidad', '404', 'mantenimiento']) lista.push(navegador(pag));
   lista.push(formulario(), sinJs('404'), sinJs('privacidad'), sinJs('mantenimiento'));
   for (const pag of Object.keys(PAGINAS)) for (const nv of ['320x640', '1280x800']) lista.push(listaCerrada(pag, nv));
-  for (const pag of ['marca', 'pizarra']) lista.push(sinSaltoScroll(pag, '1280x800'));
+  for (const pag of ['marca', 'pizarra']) lista.push(sinSaltoScroll(pag, '1280x800', 'reducido'), sinSaltoScroll(pag, '390x844', 'normal'));
   return lista;
 }
 
