@@ -26,7 +26,15 @@ capturas/
 
 # Material interno
 CONTRIBUTING.md
+
+# Configuración del repo y de los editores (no son páginas públicas)
+.gitignore
+.vercelignore
 .gitattributes
+.editorconfig
+
+# Instrucciones para regenerar three.js (su licencia, LICENSE, sí se publica)
+lib/three/README.txt
 
 # Borrador local de la web de la marca (textos sin confirmar)
 MARCA-borrador.md

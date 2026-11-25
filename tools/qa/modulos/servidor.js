@@ -85,7 +85,7 @@ function urlsLimpias() {
 
 function excluidos() {
   return caso('excluidos', 'todas', async ({ base }, ok) => {
-    for (const ruta of ['/CLAUDE.md', '/README.md', '/CONTRIBUTING.md', '/CONFIRMAR.md', '/tools/validar.js', '/tools/qa/bateria.js', '/clubs/_plantilla/manifest.js', '/assets/credits.json', '/.gitignore']) {
+    for (const ruta of ['/CLAUDE.md', '/README.md', '/CONTRIBUTING.md', '/CONFIRMAR.md', '/tools/validar.js', '/tools/qa/bateria.js', '/clubs/_plantilla/manifest.js', '/assets/credits.json', '/.gitignore', '/.vercelignore', '/.gitattributes', '/.editorconfig', '/CHANGELOG.md', '/lib/three/README.txt']) {
       const r = await pedir(base + ruta);
       ok(r.status === 404, ruta + ' se sirve', r.status);
       await r.arrayBuffer();
