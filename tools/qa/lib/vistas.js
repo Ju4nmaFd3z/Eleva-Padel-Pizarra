@@ -42,7 +42,7 @@ const vista = nombre => {
 const PAGINAS = [
   { nombre: 'marca', ruta: '/', estado: 200, idiomas: true, cabecera: true },
   { nombre: 'pizarra', ruta: '/pizarra', estado: 200, idiomas: true, cabecera: true, reglaNombre: true },
-  { nombre: 'privacidad', ruta: '/privacidad', estado: 200 },
+  { nombre: 'privacidad', ruta: '/privacidad', estado: 200, idiomas: true },
   { nombre: '404', ruta: '/no-existe-qa', estado: 404, idiomas: true },
   { nombre: 'mantenimiento', ruta: '/pizarra', estado: 503, mantenimiento: true, idiomas: true }
 ];

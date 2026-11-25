@@ -13,22 +13,23 @@
      (outerHTML completo, con los comentarios <!--gen-->) idéntico;
    · primera-pintura: con EN/NL guardado no se pinta ningún
      fotograma con textos traducibles en español;
-   · recordado: el idioma elegido pasa de / a /pizarra y a la 404;
+   · recordado: el idioma elegido pasa de / a /pizarra, a /privacidad
+     y a la 404;
      con el almacenamiento bloqueado, sin errores;
    · navegador: sin idioma guardado, el del navegador si es EN o
      NL (si no, español); lo guardado manda;
    · formulario: los mensajes de error salen en el idioma de la
      página y no se quedan en el anterior al cambiarlo; el mensaje
      de WhatsApp lleva las etiquetas traducidas;
-   · sinjs: 404 y mantenimiento en español y sin selector;
-   · lista-cerrada: en las cuatro páginas, la lista de idiomas
+   · sinjs: 404, /privacidad y mantenimiento en español y sin selector;
+   · lista-cerrada: en las cinco páginas, la lista de idiomas
      cerrada no se ve y se abre y cierra con el botón;
    · sin-salto-scroll: cambiar de idioma a media página (clic o
      teclado) no mueve el scroll (±2 px).
    En sin-espanol, además, cada enlace de WhatsApp (a[data-wa])
    lleva el mensaje de su clave en el idioma: sin text= es fallo.
    Los desbordes en EN/NL los revisa el módulo «responsive» (las
-   cuatro páginas con idiomas, también a 320 px).
+   cinco páginas con idiomas, también a 320 px).
    ========================================================= */
 'use strict';
 const { vista } = require('../lib/vistas');
@@ -39,6 +40,7 @@ const T = require('../../../js/translations.js');
 const PAGINAS = {
   marca: { ruta: '/', estado: 200 },
   pizarra: { ruta: '/pizarra', estado: 200 },
+  privacidad: { ruta: '/privacidad', estado: 200 },
   404: { ruta: '/no-existe-qa', estado: 404 },
   mantenimiento: { ruta: '/pizarra', estado: 503, mantenimiento: true }
 };
@@ -231,7 +233,7 @@ function recordado() {
     const p = r.p;
     await elegir(p, 'nl');
     ok(await p.evaluate(() => localStorage.getItem('eleva-lang')) === 'nl', 'el idioma elegido no se guarda');
-    for (const ruta of ['/pizarra', '/no-existe-qa']) {
+    for (const ruta of ['/pizarra', '/privacidad', '/no-existe-qa']) {
       await p.goto(entorno.base + ruta, { waitUntil: 'load' });
       await estabilizar(p);
       const s = await p.evaluate(() => ({ lang: document.documentElement.lang, actual: (document.querySelector('.idioma[aria-current="true"]') || {}).dataset?.lang || null }));
@@ -315,6 +317,7 @@ function sinJs(pag) {
     ok(s.lang === 'es', 'sin JS no está en español', s.lang);
     ok(s.selector === 'none', 'sin JS el selector se ve', s.selector);
     if (pag === '404') ok(s.h1 === valor('e404.heading', 'es'), 'sin JS el título no es el español', s.h1);
+    if (pag === 'privacidad') ok(s.h1 === I.todosLosTextos()['legal.heading'].es, 'sin JS el título no es el español', s.h1);
   });
 }
 
@@ -386,11 +389,12 @@ function casos() {
   const lista = [];
   for (const pag of Object.keys(PAGINAS)) for (const lang of ['en', 'nl']) for (const nv of ['390x844', '1280x800']) lista.push(sinEspanol(pag, lang, nv));
   lista.push(idaVuelta('pizarra', '390x844', 'normal'), idaVuelta('pizarra', '1280x800', 'normal'), idaVuelta('pizarra', '1280x800', 'reducido'),
-    idaVuelta('marca', '390x844', 'normal'), idaVuelta('marca', '1280x800', 'normal'), idaVuelta('404', '1280x800', 'normal'), idaVuelta('mantenimiento', '390x844', 'normal'));
-  lista.push(primeraPintura('pizarra', 'nl'), primeraPintura('pizarra', 'en'), primeraPintura('marca', 'nl'), primeraPintura('404', 'nl'), primeraPintura('mantenimiento', 'en'));
+    idaVuelta('marca', '390x844', 'normal'), idaVuelta('marca', '1280x800', 'normal'), idaVuelta('404', '1280x800', 'normal'),
+    idaVuelta('privacidad', '390x844', 'normal'), idaVuelta('privacidad', '1280x800', 'normal'), idaVuelta('mantenimiento', '390x844', 'normal'));
+  lista.push(primeraPintura('pizarra', 'nl'), primeraPintura('pizarra', 'en'), primeraPintura('marca', 'nl'), primeraPintura('404', 'nl'), primeraPintura('privacidad', 'en'), primeraPintura('mantenimiento', 'en'));
   lista.push(recordado(), sinAlmacenamiento());
-  for (const pag of ['pizarra', '404', 'mantenimiento']) lista.push(navegador(pag));
-  lista.push(formulario(), sinJs('404'), sinJs('mantenimiento'));
+  for (const pag of ['pizarra', 'privacidad', '404', 'mantenimiento']) lista.push(navegador(pag));
+  lista.push(formulario(), sinJs('404'), sinJs('privacidad'), sinJs('mantenimiento'));
   for (const pag of Object.keys(PAGINAS)) for (const nv of ['320x640', '1280x800']) lista.push(listaCerrada(pag, nv));
   for (const pag of ['marca', 'pizarra']) lista.push(sinSaltoScroll(pag, '1280x800'));
   return lista;
