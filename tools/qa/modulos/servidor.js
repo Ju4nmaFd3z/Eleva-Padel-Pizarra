@@ -132,6 +132,22 @@ function mantenimiento() {
       ok(x.status === 503, 'una cookie con ' + nombre + ' deja pasar', x.status);
       await x.arrayBuffer();
     }
+    /* Entradas vacías o basura: siempre la página de mantenimiento, nunca un 500 */
+    const raras = [
+      ['?acceso= vacío', '/pizarra?acceso=', {}],
+      ['?acceso sin valor', '/pizarra?acceso', {}],
+      ['?acceso= incorrecto', '/pizarra?acceso=' + encodeURIComponent('x' + clave), {}],
+      ['?acceso= muy largo', '/pizarra?acceso=' + 'a'.repeat(5000), {}],
+      ['cookie vacía', '/pizarra', { cookie: 'eleva-acceso=' }],
+      ['cookie basura', '/pizarra', { cookie: 'eleva-acceso=%E0%A4%A;%%; x' }],
+      ['cookie sin =', '/pizarra', { cookie: 'eleva-acceso' }]
+    ];
+    for (const [nombre, ruta, cab] of raras) {
+      const x = await pedir(b + ruta, { headers: cab });
+      await x.arrayBuffer();
+      ok(x.status === 503 && /^\d+$/.test(x.headers.get('retry-after') || '') && /noindex/.test(x.headers.get('x-robots-tag') || ''),
+        nombre + ': no da el 503 de mantenimiento (Retry-After y noindex)', x.status);
+    }
     /* En HTTPS (Vercel) la cookie lleva Secure: se llama al middleware directamente */
     const { pathToFileURL } = require('url');
     const { default: mw } = await import(pathToFileURL(path.join(RAIZ, 'middleware.js')).href);

@@ -54,7 +54,7 @@ const PAGINA = `<!DOCTYPE html>
 <title>Eleva Pádel</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<script src="/js/idioma.js?v=20261126a"></script>
+<script src="/js/idioma.js?v=20261126b"></script>
 <style>
   :root { --fondo:#000000; --texto:#EDE4DC; --suave:#DBD2CC; --oro:#947E6B; }
   * { box-sizing: border-box; }
@@ -146,8 +146,8 @@ const PAGINA = `<!DOCTYPE html>
 <footer>
   <span data-i18n="footer.credit">Desarrollado por</span> <a href="https://biznagaconsulting.es/" target="_blank" rel="noopener noreferrer">Biznaga Consulting</a>
 </footer>
-<script src="/js/translations.js?v=20261126a" defer></script>
-<script src="/js/main.js?v=20261126a" defer></script>
+<script src="/js/translations.js?v=20261126b" defer></script>
+<script src="/js/main.js?v=20261126b" defer></script>
 </body>
 </html>
 `;
@@ -188,27 +188,41 @@ export default async function middleware(request) {
   const url = new URL(request.url);
   if (LIBRES.has(url.pathname)) return;
 
-  const clave = env.MANTENIMIENTO_CLAVE;
-  if (clave) {
-    const buena = await firma(clave);
-    const acceso = url.searchParams.get('acceso');
-    /* Se comparan las firmas, no la clave en claro */
-    if (acceso !== null && iguales(await firma(acceso), buena)) {
-      url.searchParams.delete('acceso');
-      const segura = url.protocol === 'https:' ? '; Secure' : '';
-      return new Response(null, {
-        status: 303,
-        headers: {
-          'Location': url.pathname + url.search,
-          'Set-Cookie': `${COOKIE}=${buena}; Path=/; Max-Age=${DIAS_COOKIE * 86400}; HttpOnly; SameSite=Lax${segura}`,
-          'Cache-Control': 'no-store',
-          'Referrer-Policy': 'no-referrer'
-        }
-      });
-    }
-    if (iguales(leerCookie(request, COOKIE), buena)) return;
-  }
+  /* Cualquier error al comprobar el acceso (entrada rara, Web Crypto…) deja
+     la página de mantenimiento: nunca un 500 ni el sitio sin proteger */
+  try {
+    const paso = await comprobarAcceso(request, url, env.MANTENIMIENTO_CLAVE);
+    if (paso === true) return;
+    if (paso) return paso;
+  } catch (e) { /* se responde con la página de mantenimiento */ }
+  return paginaMantenimiento();
+}
 
+/* true: cookie válida (sigue la petición) · Response: clave correcta en
+   ?acceso= (redirige y deja la cookie) · false: mantenimiento */
+async function comprobarAcceso(request, url, clave) {
+  if (typeof clave !== 'string' || !clave) return false;
+  const buena = await firma(clave);
+  const acceso = url.searchParams.get('acceso');
+  /* Vacío = ausente. Se comparan las firmas, no la clave en claro */
+  if (acceso && iguales(await firma(acceso), buena)) {
+    url.searchParams.delete('acceso');
+    const segura = url.protocol === 'https:' ? '; Secure' : '';
+    return new Response(null, {
+      status: 303,
+      headers: {
+        'Location': url.pathname + url.search,
+        'Set-Cookie': `${COOKIE}=${buena}; Path=/; Max-Age=${DIAS_COOKIE * 86400}; HttpOnly; SameSite=Lax${segura}`,
+        'Cache-Control': 'no-store',
+        'Referrer-Policy': 'no-referrer'
+      }
+    });
+  }
+  const cookie = leerCookie(request, COOKIE);
+  return !!cookie && iguales(cookie, buena);
+}
+
+function paginaMantenimiento() {
   return new Response(PAGINA, {
     status: 503,
     headers: {
