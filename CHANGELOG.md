@@ -10,11 +10,11 @@ retiraron por no estar confirmados no se repiten aquí.
 
 ---
 
-## Tramo de cierre (octubre de 2026, en curso)
+## Tramo de cierre (del 7 de octubre al 25 de noviembre de 2026, en curso)
 
 Empieza el 07/10/2026, con la integración «web viva» aprobada por el propietario.
 
-Hecho a 07/10/2026:
+### 7 de octubre: copia, historial y batería de QA
 
 - Copia completa del repositorio (`git clone --mirror`) fuera de cualquier repo, antes de
   tocar el historial.
@@ -24,15 +24,53 @@ Hecho a 07/10/2026:
   redactar este historial y localizar lo que no debe seguir en el historial público.
 - Batería permanente de pruebas en `tools/qa` (Playwright y axe-core, con su propio
   `package.json`): tamaños de 320 a 2560 px, las cinco páginas, tres idiomas, sin JS,
-  movimiento reducido y zoom al 200 %.
+  movimiento reducido y zoom al 200 %. Compara los fallos conocidos por elemento y medida,
+  fija la CSP esperada y se pasa completa antes de cada commit.
 
-Hecho el 08/11/2026:
+### 8 y 18 de octubre, y 8 de noviembre: el hero que se rompía a trozos
 
+- Causa encontrada: cuando las capas compuestas del hero no caben en la memoria de GPU, el
+  navegador deja teselas sin pintar (bloques negros, pista fuera del logo, barra del logo
+  separada). Arreglo de fondo: una sola capa enmascarada con la geometría del logo, tinte y
+  penumbra como colores planos, capas solo mientras hay movimiento, la pista 3D congelada en
+  una imagen en reposo, el texto del hero en su propia capa, y sin pintar la imagen fija ni el
+  velo mientras no se ven.
+- La pista 3D se recupera si se pierde el contexto WebGL (mientras tanto, la imagen fija); el
+  progreso del hero se calcula bien aunque la página se cargue muy abajo.
+- Regresión en la batería (módulo `hero`): los escenarios del encargo repetidos muchas
+  veces, con memoria de GPU justa, compartida y en movimiento, sin reintentos. El riesgo que
+  queda está descrito en `CLAUDE.md`.
+
+### 8 de noviembre: datos de los carteles, arreglos de diseño e idiomas
+
+- **Datos de los carteles del club**, tal cual y con su fecha de verificación y fuente:
+  tarifas de pista (IVA incluido) dentro de «El club», horario semanal de los pools (día,
+  hora, pool y pistas) y la sección «Colaborar con el club» con sus opciones, la
+  disponibilidad de pistas y el contacto por WhatsApp. `tools/validar.js` exige `verificado`
+  y `fuente` a todo bloque que caduca y avisa a los 90 días.
+- `tools/generar.js` alterna las superficies (tinta y negro) entre las secciones visibles.
+- El cursor del sistema se ve siempre bajo el punto que lo acompaña (respeta cursores
+  grandes o de alto contraste), con su prueba en la batería.
+- Por debajo de 408 px el nombre del club junto al logo se oculta también sin JS.
+- El titular del hero de `/` ya no parte «Eleva» ni «Pádel», y «Reservas» ya no se parte en
+  los títulos.
 - En «Colaborar con el club», el número de WhatsApp va unido a la palabra anterior y la
   línea de contacto ya no se parte a 320 px. Salió en el mismo commit que la nota del README
   sobre `verificado` y `fuente` (30c56a3), cuyo mensaje solo cita la nota.
+- **Idiomas rehechos (fase A del punto 7)**: una sola fuente por texto con sus tres idiomas
+  y la huella del español del que sale cada traducción (`js/translations.js` y el manifest);
+  `tools/validar.js` falla con una traducción desfasada, un texto visible sin clave, una
+  clave sin uso o una lista de nombres propios distinta de la de `CLAUDE.md`. El idioma se
+  decide antes de la primera pintura (`js/idioma.js`, sin destello en español), se recuerda
+  solo cuando el usuario lo elige y, si no, se toma del navegador. Lo pendiente de traducir
+  se pinta en español marcado `lang="es"`. Cambiar de idioma lo alcanza todo (textos,
+  atributos, `<title>`, metas, WhatsApp, formulario y lo pintado después) y la ida y vuelta
+  deja el DOM igual. Módulo `idiomas` en la batería.
+- **404 y mantenimiento en tres idiomas**: salen en el idioma guardado o del navegador, con
+  el mismo selector arriba a la derecha; sin JS, en español. Sus textos los escribe
+  `tools/generar.js`.
 
-Hecho el 24/11/2026:
+### 24 y 25 de noviembre: superficies, cancelaciones, tarifas y correcciones
 
 - **Sin destello marrón con el scroll** (propuesta M1, elegida por el usuario): el corte de
   sección (telón y logo que crece) queda solo en las secciones de tinta; las negras entran
@@ -42,17 +80,26 @@ Hecho el 24/11/2026:
 - **Política de cancelaciones como paneles de cristal de pista** (propuesta C2, elegida por
   el usuario): canto LED que se enciende al entrar, reflejo que cruza el panel con el scroll
   y el rótulo de cada norma destacado. El texto es el del cartel, sin cambios, y se lee
-  desde el primer fotograma, sin JS y con movimiento reducido.
+  desde el primer fotograma, sin JS y con movimiento reducido. Sustituye al formato de filas
+  (`.filas > .fila`), que deja de usarse y se borra.
 - Tarifas de pista: «Lunes a viernes» en lugar de «L–V» (legibilidad); se publica que los
   precios son por pista y que la tarifa de 15 € y 22 € es de lunes a viernes desde las
-  17:00 h y todo el día los fines de semana y festivos (confirmado por el propietario).
+  17:00 h y todo el día los fines de semana y festivos (confirmado por el propietario). La
+  hora no se separa de su «h» a 320 px.
+- Correcciones de la revisión de idiomas: en mantenimiento, la lista de idiomas cerrada ya
+  no se ve; cambiar de idioma a media página no mueve el scroll; con la red muy lenta no se
+  ve el español antes del idioma elegido (el seguro de `js/idioma.js` espera a que la página
+  termine de leerse, con un tope de 8 s). La batería lo comprueba, y también que cada enlace
+  de WhatsApp lleve su mensaje en el idioma de la página.
+- Repositorio: fin de línea LF fijado en `.gitattributes` (con `core.autocrlf=true`,
+  `validar.js` daba errores falsos en un clon nuevo), `.editorconfig`, `.vercelignore` más
+  preciso, código muerto fuera y documentación al día.
 
-Pendiente en este tramo: publicar los datos de los carteles que el club ha confirmado;
-fallo intermitente del hero; más protagonismo para la pista 3D; rediseño de la sección de
-cancelaciones; color de las superficies con el scroll; traducciones completas en ES, EN y
-NL con comprobación automática; textos en español; página legal; borrador de la marca solo
-en local; revisión del repositorio y su documentación; QA final con un agente distinto;
-sustitución del historial de Git por un único commit; paso a elevapadel.com.
+Pendiente en este tramo: traducciones revisadas al inglés y al neerlandés; textos en español
+(a revisión); página legal en tres idiomas; borrador de la marca solo en local y sin pasar aún
+al sistema de idiomas; QA final con un agente distinto; sustitución del historial de Git por
+un único commit; paso a elevapadel.com. El rediseño visual (paleta clara) llegará después y
+rehará el hero y la composición, también el protagonismo de la pista 3D.
 
 ---
 
@@ -86,7 +133,8 @@ una mezcla de dos en `rediseno`.
 - **Pools**: color propio de cada insignia, muestreado de su imagen, como único marcador de
   categoría; giro, inclinación y abanico, siempre dentro de su celda.
 - **Selector de idioma** en la cabecera, fuera del menú, manejable por teclado.
-- Formato de filas reutilizable (`.filas > .fila`), estrenado en Cancelaciones.
+- Formato de filas (`.filas > .fila`), estrenado en Cancelaciones (sustituido el 24/11/2026
+  por los paneles de cristal de pista).
 - Borrador de la web de la marca solo en local (`/?borrador`), fuera de Git y de Vercel.
 - Accesibilidad: orden del DOM de la cabecera igual al visual (WCAG 2.4.3).
 - Hero adaptado a móvil en horizontal y a zoom del 200 %.
@@ -126,7 +174,9 @@ una mezcla de dos en `rediseno`.
 ## Modo mantenimiento y documentación del proyecto (30 de septiembre de 2026)
 
 - `middleware.js`: con la variable de entorno activa, todas las rutas responden 503 con
-  `Retry-After` y `noindex`, con una página propia con logo y canales de contacto. Acceso con
+  `Retry-After` y `noindex` (salvo el favicon, los iconos de la web y `robots.txt`; después, también el logo y
+  los glifos que usa la página), con una página propia con logo y canales de contacto. Desde el
+  08/11/2026 sale en tres idiomas, con selector, y se sirven también los JS del idioma. Acceso con
   una clave guardada solo en Vercel (cookie de 30 días). El servidor local usa el mismo
   middleware.
 - Crédito del pie: «Desarrollado por Biznaga Consulting».
