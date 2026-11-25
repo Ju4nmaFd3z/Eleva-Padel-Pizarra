@@ -134,8 +134,7 @@
     'e404.text': { es: 'Puede que el enlace esté mal escrito o que la página ya no exista. Desde aquí puedes ir al club o a Eleva Pádel.', en: 'The link may be mistyped, or the page may no longer exist. From here you can go to the club or to Eleva Pádel.', nl: 'Misschien is de link verkeerd getypt of bestaat de pagina niet meer. Vanaf hier kun je naar de club of naar Eleva Pádel.', h: { en: '8b837b71', nl: '8b837b71' } },
 
     /* Página de mantenimiento (middleware.js) */
-    'maint.text': { es: 'Estamos haciendo cambios en la web. Mientras tanto, escríbenos por WhatsApp o por Instagram.', en: 'We\'re making some changes to the website. In the meantime, message us on WhatsApp or Instagram.', nl: 'We zijn de website aan het aanpassen. Stuur ons in de tussentijd een bericht via WhatsApp of Instagram.', h: { en: '571a8d76', nl: '571a8d76' } },
-    'maint.logoAlt': { es: 'Logo de Eleva Pádel', en: 'Eleva Pádel logo', nl: 'Logo van Eleva Pádel', h: { en: '58e55177', nl: '58e55177' } }
+    'maint.text': { es: 'Estamos haciendo cambios en la web. Mientras tanto, escríbenos por WhatsApp o por Instagram.', en: 'We\'re making some changes to the website. In the meantime, message us on WhatsApp or Instagram.', nl: 'We zijn de website aan het aanpassen. Stuur ons in de tussentijd een bericht via WhatsApp of Instagram.', h: { en: '571a8d76', nl: '571a8d76' } }
   };
 
   /* Marcado en línea → HTML. El texto se escapa entero y solo se

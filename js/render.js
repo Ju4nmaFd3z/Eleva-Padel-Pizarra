@@ -135,7 +135,8 @@
     var hayPools = !!(p && presente(p.insignias));
     /* Cada insignia es una pieza con dos caras: delante la imagen (recortada
        en círculo por CSS); detrás, el mismo texto del alt (nada nuevo): su
-       nombre (traducible) y el del club. El alt se compone de los dos.
+       nombre (traducible) y el del club. El alt se compone de los dos,
+       separados por una coma (el lector de pantalla no lee el punto medio).
        js/movimiento/tacto.js la convierte en botón para girarla; sin JS el
        reverso no se ve. El color de cada insignia (manifest, muestreado de
        su imagen) es el único que marca su categoría: aro y reverso. */
@@ -151,7 +152,7 @@
           '<span class="insignia-cara"><picture>' +
           '<source type="image/avif" srcset="' + b + '-240.avif 240w, ' + b + '-480.avif 480w, ' + b + '-720.avif 720w" ' +
           'sizes="(min-width: 64rem) 14rem, (min-width: 40rem) 30vw, 45vw">' +
-          '<img src="' + b + '-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="' + esc(club ? nombre + ' · ' + club : nombre) + '">' +
+          '<img src="' + b + '-480.jpg" width="480" height="480" loading="lazy" decoding="async" alt="' + esc(club ? nombre + ', ' + club : nombre) + '">' +
           '</picture></span>' +
           '<span class="insignia-dorso" aria-hidden="true"><span class="insignia-nombre">' + esc(nombre) + '</span>' +
           (club ? '<span class="insignia-club">' + esc(club) + '</span>' : '') +
@@ -219,9 +220,10 @@
       visible: hayPatro
     };
 
-    /* Colaborar con el club (anuncio de patrocinadores, literal). El número
-       solo se enlaza a WhatsApp (nunca tel:); data-wa: main.js le pone el
-       mensaje en el idioma activo. */
+    /* Colaborar con el club (anuncio de patrocinadores). El número solo se
+       enlaza a WhatsApp (nunca tel:); data-wa: main.js le pone el mensaje en
+       el idioma activo. El glifo va mudo (alt=""): la frase ya dice «por
+       WhatsApp» y el lector de pantalla lo repetía. */
     var co = d.colaborar;
     var hayCol = presente(co) && typeof co === 'object' && presente(co.opciones);
     function contactoCol() {
@@ -234,7 +236,7 @@
       var despues = partes[1].match(/^(\S*)([\s\S]*)$/);
       return '<p class="colaborar-contacto"' + la(co.contacto) + '>' + antes[1] + '<span class="sin-corte">' + antes[2] +
         '<a class="enlace" href="https://wa.me/' + esc(c.whatsapp) + '" data-wa="wa.collab" target="_blank" rel="noopener noreferrer">' +
-        '<img class="glifo" src="' + ASSETS + 'marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="WhatsApp">' +
+        '<img class="glifo" src="' + ASSETS + 'marcas/whatsapp-glifo-blanco.svg" width="20" height="20" alt="">' +
         '<span>' + esc(co.numero) + '</span></a>' + despues[1] + '</span>' + despues[2] + '</p>';
     }
     s['colaborar-titulo'] = { html: hayCol ? H(co.titulo) : '', visible: hayCol };

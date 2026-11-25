@@ -135,7 +135,7 @@ const PAGINA = `<!DOCTYPE html>
   </ul>
 </div>
 <main>
-  <img class="logo" src="/assets/img/logo-sin-fondo.svg" width="88" height="88" alt="Logo de Eleva Pádel" data-i18n-attr="alt:maint.logoAlt">
+  <img class="logo" src="/assets/img/logo-sin-fondo.svg" width="88" height="88" alt="">
   <h1>Eleva Pádel</h1>
   <p data-i18n="maint.text">Estamos haciendo cambios en la web. Mientras tanto, escríbenos por WhatsApp o por Instagram.</p>
   <ul>
