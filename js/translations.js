@@ -124,7 +124,7 @@
     'meta.pizarra.ogImageAlt': { es: 'Jugador de pádel golpeando la bola', soloEs: true },
 
     /* Página 404 */
-    'e404.title': { es: 'Página no encontrada · Eleva Pádel' },
+    'e404.title': { es: 'Página no encontrada | Eleva Pádel' },
     'e404.heading': { es: 'Esta página no existe' },
     'e404.text': { es: 'El enlace puede estar mal escrito o la página ya no está disponible.' },
 
