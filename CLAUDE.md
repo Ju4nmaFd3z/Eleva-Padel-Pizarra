@@ -268,9 +268,9 @@ mobile-first, 4 iconos y la integración «web viva» (mezcla de las propuestas 
 04-05/10/2026; las ramas `propuesta-a` y `propuesta-c`, borradas el 07/10/2026; sus
 despliegues, en la limpieza final). Tramo de cierre (07/10-25/11/2026, detalle en
 `CHANGELOG.md`): datos de los carteles, hero, i18n fase A, M1, C2 y correcciones. Siguen:
-5 textos en español (a revisión), 6 EN/NL revisados (fase B), 7 legal (fase 1 en español
-hecha el 25/11/2026: falta titular y NIF del club y traducir `js/legal-textos.js`) y 8 QA con
-otro agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
+5 textos en español (a revisión del usuario; al aprobarlos, sus EN/NL se rehacen), 6 EN/NL
+revisados (fase B: web y legal integradas el 25/11/2026), 7 legal (hecha el 25/11/2026 en los tres
+idiomas: falta titular y NIF del club) y 8 QA con otro agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
 documentado en `CHANGELOG.md` (plan aprobado, ver memoria; el repo no tiene forks a
 01/10/2026; los commits van con la identidad de Git actual del propietario, por
 decisión suya). Pendientes del cliente y de
