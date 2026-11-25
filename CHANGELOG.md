@@ -101,13 +101,60 @@ Empieza el 07/10/2026, con la integración «web viva» aprobada por el propieta
   `validar.js` daba errores falsos en un clon nuevo), `.editorconfig`, `.vercelignore` más
   preciso, código muerto fuera y documentación al día.
 
-Pendiente en este tramo (a 25/11/2026): integrar las traducciones revisadas al inglés y
-al neerlandés (fase B del punto 7); aprobar los textos en español y retraducir los que
-cambien; página legal en tres idiomas y al día con lo que hace la web; borrador de la marca
-solo en local y sin pasar aún al sistema de idiomas; procedencia de la foto ilustrativa y de
-la imagen para redes; QA final con un agente distinto; sustitución del historial de Git por un
-único commit; paso a elevapadel.com. El rediseño visual (paleta clara) llegará después y
-rehará el hero y la composición, también el protagonismo de la pista 3D.
+### 25 de noviembre: página legal, traducciones y QA final
+
+- **Página legal rehecha con solo lo confirmado** (`/privacidad`): sin enlaces `tel:`, sin
+  normas del club ni prácticas fuera de la web que el club no ha confirmado; lo que la web
+  guarda en el navegador, sacado del código (`eleva-lang` en `localStorage`, solo al elegir
+  idioma, y la cookie `eleva-acceso` del mantenimiento, más la de seguridad de Vercel); el
+  formulario descrito como es. La política de cancelaciones sale del manifest del club, la
+  misma fuente que `/pizarra`. Textos propios en `js/legal-textos.js`, con marcado en línea
+  (negrita, `código` y enlaces) que `generar.js` y el navegador pintan con la misma función.
+  Titular y NIF siguen sin publicarse.
+- Correcciones de la revisión legal, en los tres idiomas: el derecho de limitación con los
+  supuestos del art. 18.1 del RGPD, WhatsApp Ireland Limited como responsable en el EEE y,
+  en Vola, solo la cuenta y la reserva.
+- El nombre del único patrocinador conocido sale de lo servido (la sección solo se pinta con
+  la lista completa confirmada).
+- **Traducciones al inglés británico y al neerlandés de los Países Bajos integradas** (fase B
+  del punto 7): toda la web y la página legal, cada idioma con traductor y revisor y con la
+  huella del español del que sale. La legal en EN/NL avisa de que solo vale la española.
+  Desde entonces no queda ningún texto pendiente: `PERMITIR_PENDIENTES` pasa a `false` y un
+  texto nuevo entra en el mismo commit que sus traducciones revisadas. Una traducción idéntica
+  al español solo vale si es neutra o va marcada `igual` en la fuente.
+- Batería: `/privacidad` también en inglés y neerlandés; la prueba de que no queda español en
+  EN/NL solo acepta invariables de una lista explícita (nombres propios, navegadores, dominios,
+  rutas y `código`); cambiar de idioma a media página mide lo que se está leyendo, también a
+  390 px táctil. El servidor local ya no sirve `vercel.json` ni `middleware.js`, como Vercel.
+- Títulos de pestaña con un único separador « | » (404 y legal).
+- **Arreglos de la QA final** (agente distinto, batería completa con 50 repeticiones del hero):
+  - `/privacidad` sin salto de la cabecera al cargar (CLS en móvil de 0,139 a 0): precarga de
+    Barlow Condensed y enlaces de vuelta siempre en columna en móvil. La batería mide el CLS
+    con las fuentes servidas 3 s tarde.
+  - **URL del sitio en una sola constante** (`SITIO` de `tools/sitio.js`, `elevapadel.com`):
+    de ella salen canónicas, og:url, og:image, JSON-LD, `sitemap.xml` y `robots.txt`, y
+    `validar.js` falla si aparece escrita a mano. El dominio aún no está activo: tiene que
+    servir HTTPS antes de llevarlo a `main` y de quitar el mantenimiento.
+  - La cookie `eleva-acceso` guarda un HMAC de la clave de mantenimiento, no la clave.
+  - Sin JS, el formulario de contacto (que necesita JS) no se muestra.
+  - `validar.js` exige en cada traducción los mismos fragmentos `código` que en el español.
+  - Fuentes Barlow registradas en `credits.json`, sin código en comentarios y documentación
+    con las mismas cifras.
+
+Pendiente (a 25/11/2026):
+- Aprobar los textos nuevos en español (`/`, `/pizarra`, 404, mantenimiento y legal) y, al
+  integrarlos, retraducir al inglés y al neerlandés los que cambien.
+- Titular y NIF de la web (los exige la ley a la vista en la página legal) y las preguntas
+  abiertas de la legal; revisión jurídica recomendada antes de publicar.
+- Dominio elevapadel.com: compra o propiedad, alta en Vercel, `www` y `vercel.app` con
+  redirección 301, HTTPS y, después, salida del mantenimiento (nada sin OK del propietario).
+- Procedencia y licencia de la foto ilustrativa y de la imagen para redes, o fotos reales.
+- Pruebas en el iPhone (Safari iOS), que la batería no puede cubrir.
+- Reconfirmar con el club los datos verificados el 30/09/2026 antes del 29/12/2026.
+- Borrador de la marca solo en local, aún fuera del sistema de idiomas.
+- Sustitución del historial de Git por un único commit documentado aquí.
+- El rediseño visual (paleta clara) llegará después y rehará el hero y la composición,
+  también el protagonismo de la pista 3D.
 
 ---
 
