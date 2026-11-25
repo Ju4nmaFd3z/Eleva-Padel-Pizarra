@@ -70,7 +70,11 @@ comprueba y cómo añadir un módulo: [`tools/qa/README.md`](tools/qa/README.md)
 ## Modo mantenimiento
 
 Lo gestiona `middleware.js`: con el modo activo, todas las rutas responden **503**
-con `Retry-After` y `noindex` y muestran una página con los canales de contacto.
+con `Retry-After` y `noindex` y muestran una página con los canales de contacto,
+en el idioma guardado o del navegador (ES, EN o NL) y con el selector de idioma;
+sin JavaScript, en español. Se sirven tal cual solo los archivos que necesita esa
+página (lista `LIBRES` de `middleware.js`: favicon, logo, glifos, iconos, `robots.txt`
+y los JS del idioma).
 
 - **Activar:** en Vercel → Settings → Environment Variables, `MANTENIMIENTO` = `1`
   (Production) y **Redeploy** del último despliegue.
@@ -88,7 +92,7 @@ En local: `MANTENIMIENTO=1 MANTENIMIENTO_CLAVE=prueba node tools/servidor-local.
 Cada `push` a `main` publica en producción. Se trabaja en ramas: cada rama tiene
 su preview en Vercel. Publica siempre desde Git, nunca arrastrando la carpeta a
 Vercel: la carpeta local tiene material interno (`CONFIRMAR.md`, capturas,
-borradores) que está fuera de Git y de `.vercelignore`.
+borradores) que está fuera de Git y excluido en `.vercelignore`.
 
 ---
 
@@ -191,8 +195,12 @@ como plantilla vacía.
 ├── assets/              ← fuentes, imágenes, insignias, credits.json (interno)
 ├── clubs/_plantilla/    ← alta de clubes (no se publica)
 ├── tools/               ← servidor local, generar, validar, i18n, hooks y qa/ (no se publica)
+├── README.md            ← esta guía
 ├── CONTRIBUTING.md      ← convención de commits
-├── robots.txt · sitemap.xml · vercel.json · .vercelignore
+├── CHANGELOG.md         ← historial por etapas
+├── CLAUDE.md            ← reglas, arquitectura y decisiones del proyecto
+├── robots.txt · sitemap.xml · vercel.json
+└── .vercelignore · .gitignore · .gitattributes (LF) · .editorconfig
 ```
 
 ## Preguntas frecuentes
@@ -213,7 +221,9 @@ WhatsApp +34 659 14 31 03 e Instagram @elevapadelpizarra.
 carga `marca-borrador.js` solo en localhost y con `?borrador`; el servidor local lo sirve
 aunque esté en `.vercelignore` (excepción `SOLO_LOCAL` en `tools/servidor-local.js`). Los
 textos y la arquitectura están en `MARCA-borrador.md`. Los dos archivos están fuera de Git
-y de Vercel: en un clon nuevo no existen y `/?borrador` se ve como `/`.
+y de Vercel: en un clon nuevo no existen y `/?borrador` se ve como `/`. Sus textos aún no
+están en el sistema de idiomas (`{ es, en, nl }`): queda pendiente para cuando se trabaje el
+borrador; la web publicada no lo usa.
 
 ---
 

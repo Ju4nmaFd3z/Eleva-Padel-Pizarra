@@ -81,10 +81,10 @@ Fuente: cartel "Escuela infantil", verificado 2026-09-30
 ```
 
 ```
-fix(pizarra): evita que el botón de reservar tape el formulario
+fix(mantenimiento): oculta la lista de idiomas mientras está cerrada
 
-El botón flotante se ocultaba solo sobre el hero. Ahora también se
-oculta mientras la sección de contacto está en pantalla.
+La regla display de la plantilla anulaba el atributo hidden y la lista
+se veía siempre abierta; a 320 px tapaba el logo.
 ```
 
 ```

@@ -122,7 +122,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - Colores muestreados de las insignias: negro `#000`, crema `#EDE4DC`, claro `#DBD2CC`,
   beige `#947E6B`, anillo `#A18572`. Crema sobre beige (3,1:1) no se usa.
 - Tinta `#181411`: **derivada, no muestreada** (beige al 16 % sobre negro); solo como
-  superficie alterna de las secciones y del pie. Pendiente de aprobación del cliente con la web viva.
+  superficie alterna de las secciones y del pie. Aprobada por el usuario (07/10/2026).
 - **Color por insignia, no por género**: campo `color` de cada insignia en
   `pizarra/manifest.js` (muestreado de la palabra de la categoría de su imagen de 720 px,
   04/10/2026; la mixta añade `colorAro`). `render.js` lo lleva al HTML como `--acento` y
@@ -162,8 +162,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `pista.js` (pista 3D). Todo lo animado vive en
   `css/movimiento.css`; `main.css` es el estado estático, completo sin JS y con
   movimiento reducido. Solo `transform`/`opacity` (excepción documentada: la transición
-  entre páginas). Nada de cursores ni hovers con el logo. Formato de filas reutilizable:
-  `.filas > .fila`.
+  entre páginas). Nada de cursores ni hovers con el logo.
 - **Superficies y cortes** (propuesta M1 «Sin destello», 24/11/2026): `generar.js` alterna
   tinta y negro entre las secciones visibles (la primera tras el hero, tinta) y el pie sigue
   la alternancia (tinta si la última sección visible es negra). Solo las secciones de tinta
@@ -179,8 +178,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   enmascarada (`.hero-mascara`, la única que usa la geometría del logo: `--L`, `--mx`,
   `--my`, `--ox`, `--oy`); el tinte y la penumbra, colores planos de la escena; sin
   animaciones CSS en el hero del club, salvo el encendido de la penumbra (`encender`, una vez
-  al cargar, relleno solo hacia atrás: deja de ser capa al terminar) (`scroll.js` escribe un solo progreso, `--p-hero`, y
-  la escala del telón; las curvas, en `movimiento.css`); capas (`will-change`) solo con
+  al cargar, relleno solo hacia atrás: deja de ser capa al terminar) (`scroll.js` escribe
+  un solo progreso, `--p-hero`, y la escala del telón; las curvas, en `movimiento.css`); capas (`will-change`) solo con
   `.en-movimiento` (`ElevaMov.enMovimiento`, se sueltan 400 ms después). Excepción: el texto
   del hero (líneas, lugar y botones) va siempre en su capa, cada línea del ancho de su texto
   (compuesto y pintado se suavizan distinto: al soltar la capa el titular saltaba un píxel).
@@ -207,12 +206,13 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   primer tramo pared 3 m + malla hasta 4 m, segundo pared 2 m + malla hasta 3 m, 12 m
   centrales malla hasta 3 m; fondos 3 + 1 m. Sin puerta, suelo, focos ni entorno. Se crea
   por pasos (cediendo el hilo) tras la carga, con el primer gesto o a los 6 s, solo si el hero
-  se ve (no al entrar por un ancla) y en equipos aptos (WebGL2 con GPU, sin Save-Data); imagen fija `assets/img/pista-*` de la misma
-  escena (si cambia la escena: re-render con nombre nuevo).
+  se ve (no al entrar por un ancla) y en equipos aptos (WebGL2 con GPU, sin Save-Data);
+  imagen fija `assets/img/pista-*` de la misma escena (si cambia la escena: re-render con nombre nuevo).
 - **Borrador de la marca**: `MARCA-borrador.md` y `marca-borrador.js` (raíz, en
   `.gitignore` y `.vercelignore`). `main.js` carga el `.js` solo en localhost con
   `?borrador`; `tools/servidor-local.js` los sirve igualmente (lista `SOLO_LOCAL`), Vercel
-  nunca. `/` publicado lleva solo lo confirmado.
+  nunca. `/` publicado lleva solo lo confirmado. **Pendiente:** sus textos no están aún en
+  `{ es, en, nl }` (la fase A de i18n no lo migró); se hace con el borrador (punto 9).
 - `tools/validar.js`: pendientes, fechas de verificación (y que todo bloque que caduca
   publicado lleve `verificado` y `fuente`), eventos, i18n (regla 11: huellas, pendientes,
   textos sin clave, claves sin uso, nombres propios), cache-buster, scripts inline y todo lo
@@ -239,11 +239,14 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 - Producción puede responder 403 `x-vercel-mitigated: challenge` con muchas
   peticiones seguidas: no es un fallo del sitio.
 
-## Estado del rediseño (octubre 2026)
+## Estado del rediseño (noviembre 2026)
 Hechos en la rama `rediseno`: 1 limpieza, 2 datos, estructura y generador, 3 CSS
 mobile-first, 4 iconos y la integración «web viva» (mezcla de las propuestas A y C,
-04-05/10/2026; las ramas `propuesta-a` y `propuesta-c` se borran cuando el cliente apruebe). Siguen: 5 textos en español
-(a revisión), 6 EN/NL, 7 legal y 8 QA con otro agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
+04-05/10/2026; las ramas `propuesta-a` y `propuesta-c`, borradas el 07/10/2026; sus
+despliegues, en la limpieza final). Tramo de cierre (07/10-25/11/2026, detalle en
+`CHANGELOG.md`): datos de los carteles, hero, i18n fase A, M1, C2 y correcciones. Siguen:
+5 textos en español (a revisión), 6 EN/NL revisados (fase B), 7 legal y 8 QA con otro
+agente. Al final, con OK explícito: sustituir el historial de Git por un único commit
 documentado en `CHANGELOG.md` (plan aprobado, ver memoria; el repo no tiene forks a
 01/10/2026; los commits van con la identidad de Git actual del propietario, por
 decisión suya). Pendientes del cliente y de
