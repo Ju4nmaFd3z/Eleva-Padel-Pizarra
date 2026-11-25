@@ -160,6 +160,9 @@
       visible: hayPools
     };
     s['pools-texto'] = { html: hayPools ? H(p.texto) : '', visible: hayPools };
+    /* Nota bajo las insignias (qué son SNP y Rocha) */
+    var hayNota = hayPools && presente(p.nota);
+    s['pools-nota'] = { html: hayNota ? H(p.nota) : '', visible: hayNota };
 
     /* Horario semanal (cartel): día y hora | pool y pistas, una fila por pool */
     var ph = p && p.horario;

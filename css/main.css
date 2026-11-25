@@ -474,6 +474,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .horario-hora { color: var(--claro); font-variant-numeric: tabular-nums; }
 .horario-pool { color: var(--crema); font-weight: 500; }
 .horario-pistas { color: var(--claro); font-size: .9375rem; }
+/* Nota bajo las insignias: qué son SNP y Rocha */
+.pools-nota { max-width: 42rem; color: var(--claro); }
 .insignias {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1rem, 3vw, 1.5rem); margin-block: 2rem;
@@ -776,8 +778,8 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   .tramo:last-child:nth-child(odd) { grid-column: auto; }
   .seccion-pools {
     display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
-    grid-template-areas: 'intro lista' 'cta lista';
-    grid-template-rows: auto 1fr;
+    grid-template-areas: 'intro lista' 'cta lista' '. nota';
+    grid-template-rows: auto 1fr auto;
     column-gap: clamp(2rem, 5vw, 5rem);
   }
   .seccion-pools h2 { font-size: clamp(4.5rem, 10vw, 10rem); }
@@ -785,6 +787,7 @@ button.insignia-pieza { cursor: pointer; -webkit-tap-highlight-color: transparen
   /* align-self: start: si la columna de la izquierda es más alta, la lista no
      se estira (sus celdas seguirían cuadradas y el abanico, dentro de ellas) */
   .insignias { grid-area: lista; margin: 0; max-width: 42rem; justify-self: end; align-self: start; width: 100%; }
+  .pools-nota { grid-area: nota; justify-self: end; width: 100%; margin: 1.5rem 0 0; }
   .pools-cta { grid-area: cta; margin-top: 2rem; }
   .galeria { grid-template-columns: repeat(3, 1fr); }
   .contacto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }

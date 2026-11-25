@@ -340,7 +340,16 @@
         { img: 'pool_5a_femenina',   nombre: { es: 'Pool 5.ª femenina', en: 'Women\'s 5th cat. pool', nl: 'Pool 5e klasse dames', h: { en: '5498e7a6', nl: '5498e7a6' } }, color: '#E38B9B' },
         { img: 'pool_mixta',         nombre: { es: 'Pool mixta', en: 'Mixed pool', nl: 'Pool gemengd', h: { en: 'a6b93a5d', nl: 'a6b93a5d' } }, color: '#945BA4', colorAro: '#7D72AB' },
         { img: 'pool_rocha',         nombre: { es: 'Pool Rocha', en: 'Rocha pool', nl: 'Pool Rocha', igual: ['nl'], h: { en: 'd3482be1', nl: 'd3482be1' } }, color: '#A49183' }
-      ]
+      ],
+      /* Qué son SNP y Rocha (bajo las insignias). Confirmado por el
+         propietario: notaConfirmada lleva su fecha y su fuente */
+      nota: {
+        es: 'SNP son las Series Nacionales de Pádel, una competición por equipos para jugadores aficionados. Rocha es una pool propia del club.',
+        en: 'SNP stands for Series Nacionales de Pádel, a team competition for amateur players. Rocha is one of the club\'s own pools.',
+        nl: 'SNP staat voor Series Nacionales de Pádel, een teamcompetitie voor amateurspelers. Rocha is een eigen pool van de club.',
+        h: { en: 'cc205de2', nl: 'cc205de2' }
+      },
+      notaConfirmada: { verificado: '2026-11-24', fuente: 'confirmado por el propietario' }
     },
 
     equipo: [
