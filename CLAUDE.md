@@ -72,30 +72,39 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     cliente; EN (británico) y NL (de los Países Bajos) después, con traductor y revisor.
     `node tools/i18n.js estado` lista lo pendiente; `exportar` lo saca para traducir.
     - **Nombres propios que no se traducen** (copia exacta de `NOMBRES_PROPIOS` en `js/translations.js`; `validar.js` comprueba que coinciden):
-      «Eleva Pádel Pizarra», «Eleva Pádel», «WhatsApp», «Instagram», «Vola», «Biznaga Consulting», «OpenStreetMap», «Google Maps», «Pizarra», «Málaga», «Pasaje Jerez s/n», «@elevapadelpizarra», «Lorena Vano», «Maripaz», «Liga SNP», «Liga LAPI», «Vercel Inc.», «Meta Platforms Ireland Ltd.», «Español», «English», «Nederlands»
+      «Eleva Pádel Pizarra», «Eleva Pádel», «WhatsApp», «Instagram», «Vola», «Biznaga Consulting», «OpenStreetMap», «Google Maps», «Pizarra», «Málaga», «Pasaje Jerez s/n», «@elevapadelpizarra», «Lorena Vano», «Maripaz», «Liga SNP», «Liga LAPI», «SNP», «Series Nacionales de Pádel», «Rocha», «Vercel Inc.», «Meta Platforms Ireland Ltd.», «Español», «English», «Nederlands»
 
     Neutros (tampoco se traducen): cifras, precios, horas, «60 min», teléfonos, URL, códigos
     ES/EN/NL y la atribución «© OpenStreetMap contributors» (licencia ODbL, en inglés).
-    - **Glosario (PROPUESTA, pendiente de aprobación del usuario; D6: lo cierran el traductor
-      y el revisor de cada idioma en la fase B).** Se usa igual en toda la web.
+    - **Glosario vigente** (el de los revisores EN y NL del 24/11/2026, integrado por delegación
+      del usuario). Se usa igual en toda la web; cambiar una fila obliga a revisar las
+      traducciones que la usan.
 
       | ES | EN (británico) | NL (Países Bajos) | Criterio |
       |---|---|---|---|
-      | pista | court | baan | |
-      | reservar pista | book a court | baan reserveren | |
-      | pool | por decidir | por decidir | hoy «Pools» en los tres; ¿se entiende fuera de España? |
-      | americano | por decidir | por decidir | formato de torneo; suele quedarse «Americano» |
-      | 4.ª / 5.ª (categoría) | por decidir | por decidir | nivel de juego, no ordinal suelto |
-      | masculina / femenina / mixta | men's / women's / mixed | heren / dames / gemengd | |
-      | clases de grupo · particulares | group · private lessons | groeps- · privélessen | |
-      | escuela infantil | por decidir | por decidir | hasta 12 años, 1 clase semanal |
-      | modalidad puntual · mensual | por decidir | por decidir | clase suelta frente a cuota |
-      | colaborar (con el club) | por decidir | por decidir | hoy EN/NL dicen «patrocinio»: el ES no |
-      | zona chill-out | chill-out area | chill-outzone | |
-      | IVA incluido | VAT included | inclusief btw | |
-      | recepción | reception | receptie | |
-      | lunes a viernes · 17:00 h | Monday to Friday · 17:00 | maandag tot en met vrijdag · 17:00 | días completos (no «L–V»: legibilidad, decisión del usuario 24/11/2026), sin Title Case; horas sin la «h» española |
-      | «SNP», «Rocha» | sin traducir | sin traducir | siguen pendientes de qué son |
+      | pista · reservar pista | court · book a court (cabecera: «Book») | baan (banen) · baan reserveren (rótulo: «Reserveren») | |
+      | tarifas de pista · por pista | court hire · per court | baantarieven · per baan | |
+      | pool | pool («Pools» en menú y título) | pool (pools), nunca «poule» | sin traducir: coincide con las insignias y el cartel |
+      | americano | Americano (Americanos) | Americano (americano's) | formato de torneo |
+      | 3.ª / 4.ª / 5.ª (categoría) | 3rd / 4th / 5th category; en el nombre del pool, «4th cat.» | 3e / 4e / 5e klasse | nivel de juego; no se convierte a otra escala |
+      | masculina / femenina / mixta | men's / women's / mixed (delante) | heren / dames / gemengd | |
+      | clases de grupo · particulares | group lessons · private lessons («individual» = one-to-one) | groepslessen · privélessen | |
+      | escuela infantil | junior academy | kinderpadel | hasta 12 años, 1 clase semanal |
+      | modalidad puntual · mensual | pay-as-you-go · monthly | losse les · per maand | clase suelta frente a cuota |
+      | cuota mensual | monthly fee | maandelijks lesgeld (no «contributie») | |
+      | recuperar (una clase) | reschedule («recuperación por ausencia» = missed lessons) | inhalen | |
+      | colaborar · colaboración | partner · Partnerships | samenwerken · samenwerking | «sponsor(ship)» / «sponsoring» solo donde el ES dice patrocinio (regla 10) |
+      | equipaciones · vallas publicitarias · plazas | kit · advertising hoardings · places | teamkleding · reclameborden · plaatsen | |
+      | inscripciones | sign-ups | inschrijven | |
+      | zona chill-out · iluminación LED | chill-out area · LED lighting | chill-outzone · ledverlichting | |
+      | IVA incluido | Prices include VAT. | inclusief btw | |
+      | recepción · por WhatsApp | reception · on WhatsApp (at reception) | receptie · via WhatsApp (bij de receptie) | |
+      | lunes a viernes · 17:00 h | Monday to Friday · 17:00 | maandag t/m vrijdag · 17:00 | días completos (no «L–V»), reloj de 24 h, sin la «h» española |
+      | fines de semana y festivos · todo el día | weekends and public holidays · all day | weekenden en feestdagen · de hele dag | |
+      | política de cancelaciones | cancellation policy (menú: «Cancellations») | regels voor annuleren (menú: «Annuleren») | «Annuleringsbeleid» no cabe a 320-390 px |
+      | aviso legal · inicio | legal notice · home | juridische informatie · startpagina | |
+      | tratamiento | you | je/jij; el club, we/ons; al club, jullie | |
+      | «SNP», «Rocha» | sin traducir | sin traducir | nombres propios (SNP = Series Nacionales de Pádel; Rocha = pool propia del club) |
 12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261125b`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según

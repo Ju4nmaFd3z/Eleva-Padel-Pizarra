@@ -26,14 +26,4 @@
 
 const partida = (clave, detalle) => ({ tipo: 'palabra-partida', clave, detalle });
 
-module.exports = [
-  {
-    caso: /^responsive · pizarra · (320x640|390x844) · nl · (normal|reducido)$/,
-    fallos: [
-      partida('h2#cancelaciones-titulo «Annuleringsbeleid» «Annuleringsbeleid»', '351 px en 288 px'),
-      partida('h2#cancelaciones-titulo «Annuleringsbeleid» «Annuleringsbeleid»', '371 px en 358 px')
-    ],
-    motivo: '/pizarra en NL: el título «Annuleringsbeleid» no cabe a 320 ni a 390 px y se parte',
-    apuntado: '2026-10-07 · cierre/qa/INFORME.md, fallo 5'
-  }
-];
+module.exports = [];
