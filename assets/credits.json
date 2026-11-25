@@ -66,8 +66,8 @@
       "status": "definitivo"
     },
     {
-      "file": "../marcas/instagram-glifo-{blanco,negro}.svg",
-      "description": "Glifo oficial de Instagram, copiado sin modificar (Instagram_Glyph_White/Black.svg)",
+      "file": "../marcas/instagram-glifo-blanco.svg",
+      "description": "Glifo oficial de Instagram, copiado sin modificar (Instagram_Glyph_White.svg)",
       "source": "Instagram Brand Resources (meta.com/brand/resources/instagram), IG_brand_asset_pack_2023, descargado el 01-10-2026",
       "license": "Recursos de marca de Meta: sin modificar, siempre junto al nombre o la cuenta",
       "credit": "Instagram es una marca de Meta",
