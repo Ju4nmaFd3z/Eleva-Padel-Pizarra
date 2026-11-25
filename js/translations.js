@@ -123,6 +123,7 @@
     /* <head>: <title> y meta description se traducen; og:* y JSON-LD van
        siempre en español (una URL = una ficha para buscadores y vistas previas) */
     'meta.marca.description': { es: 'Web de Eleva Pádel y de su club en Pizarra, Málaga.', en: 'The website of Eleva Pádel and its club in Pizarra, Málaga.', nl: 'Website van Eleva Pádel en de club in Pizarra, Málaga.', h: { en: '72483b2e', nl: '72483b2e' } },
+    'meta.pizarra.title': { es: 'Eleva Pádel Pizarra, club de pádel en Pizarra', en: 'Eleva Pádel Pizarra, padel club in Pizarra', nl: 'Eleva Pádel Pizarra, padelclub in Pizarra', h: { en: 'b6a6dfb6', nl: 'b6a6dfb6' } },
     'meta.pizarra.description': { es: 'Club de pádel en Pizarra, Málaga, con 4 pistas exteriores de cristal, iluminación LED y zona chill-out. Reserva por Vola, por WhatsApp o en recepción.', en: 'Padel club in Pizarra, Málaga, with 4 outdoor glass courts, LED lighting and a chill-out area. Book on Vola, on WhatsApp or at reception.', nl: 'Padelclub in Pizarra, Málaga, met 4 glazen buitenbanen, ledverlichting en een chill-outzone. Reserveer via Vola, via WhatsApp of bij de receptie.', h: { en: 'ecfbfb9a', nl: 'ecfbfb9a' } },
     'meta.pizarra.ogDescription': { es: '4 pistas exteriores de cristal, iluminación LED y zona chill-out en Pizarra, Málaga.', soloEs: true },
     'meta.pizarra.ogImageAlt': { es: 'Jugador de pádel golpeando la bola', soloEs: true },
