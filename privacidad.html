@@ -19,6 +19,7 @@
        (js/idioma.js, antes de pintar); sin JS, en español y sin selector.
        La versión que vale legalmente es la española. -->
   <script src="js/idioma.js?v=20261125d"></script>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-condensed-600-latin.woff2" crossorigin>
   <link rel="stylesheet" href="css/fonts.css?v=20261125d">
   <style>
     :root {
@@ -58,7 +59,10 @@
 
     /* Cabecera: volver a la marca o al club · idioma */
     .barra { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem 1rem; margin-bottom: 2rem; }
-    .volver { display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
+    /* En móvil, los dos enlaces siempre en columna: en fila cabían o no según
+       hubiera llegado ya Barlow Condensed, y la cabecera cambiaba de alto (CLS). */
+    .volver { display: flex; flex-direction: column; align-items: flex-start; gap: 0 1.25rem; }
+    @media (min-width: 40rem) { .volver { flex-direction: row; flex-wrap: wrap; } }
     .volver a {
       display: inline-flex; align-items: center; gap: .5rem; min-height: 44px;
       color: var(--crema); text-decoration: none;

@@ -64,7 +64,10 @@ que falla.
   por debajo de 408 px (con y sin JS); el menú y el selector de idioma
   abiertos; y en cada carga, errores y avisos de consola, errores de página,
   peticiones fallidas o con error, peticiones a terceros, CSP (cabecera y
-  violaciones) y estado HTTP.
+  violaciones) y estado HTTP. Y el CLS de la carga con las tres fuentes Barlow
+  servidas 3 s tarde (peor caso de red), en `/`, `/pizarra`, `/privacidad` y la 404
+  a 320, 390, 414, 768 y 1440 px: falla con 0,1 o más (mantenimiento usa fuentes
+  del sistema).
 - **interaccion**: cursor del sistema siempre visible bajo el punto propio,
   selector de idioma con teclado y ratón, menú móvil (foco
   en ciclo, Escape, paso a escritorio), orden e indicador del foco, giro de
@@ -159,7 +162,8 @@ nuevo: los fallos se arreglan.
   interfaz no tiene GPU, así que la escena no se crea y se ve la imagen fija.
   La pista con GPU real solo la ejerce el módulo `hero`, y depende de la GPU
   del equipo que lo ejecuta.
-- **Rendimiento** (Lighthouse, fps, trazas): herramientas aparte, en la QA final.
+- **Rendimiento** (Lighthouse, fps, trazas): herramientas aparte, en la QA final
+  (la batería solo mide el CLS con las fuentes tarde, en `responsive`).
 - **Contenido y datos**: si un texto es correcto o está confirmado lo revisan
   `tools/validar.js` y las personas, no la batería.
 

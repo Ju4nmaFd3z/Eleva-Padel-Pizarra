@@ -9,6 +9,7 @@
    nombre del club (< 408 px oculto, con y sin JS), menú y
    selector de idioma abiertos, idioma aplicado, y el registro
    de la página (consola, errores, peticiones, CSP, terceros).
+   Y el CLS de la carga con las fuentes tarde (casoCls).
    ========================================================= */
 'use strict';
 const { VISTAS, vista, PAGINAS } = require('../lib/vistas');
@@ -90,6 +91,59 @@ function caso(v, pag, lang, modo, rapido) {
   };
 }
 
+/* CLS con las fuentes tarde: las tres Barlow se sirven 3 s después de
+   pedirlas (peor caso de red; la precarga no basta si la red es lenta). Se
+   suma cada layout-shift sin interacción reciente desde la carga hasta que
+   las fuentes están puestas; falla con 0,1 o más (umbral «bueno» de Core Web
+   Vitals). Así se vio el salto de la cabecera de /privacidad a 412 px. */
+const CLS_VISTAS = ['320x640', '390x844', '414x896', '768x1024', '1440x900'];
+const CLS_RETRASO_MS = 3000;
+const CLS_UMBRAL = 0.1;
+
+function casoCls(v, pag) {
+  const id = ['responsive', pag.nombre, v.nombre, 'es', 'cls con fuentes tarde'].join(' · ');
+  return {
+    id,
+    pagina: pag.nombre,
+    rapido: false,
+    async ejecutar(entorno) {
+      const base = pag.mantenimiento ? entorno.baseMantenimiento : entorno.base;
+      const { ctx, p, registro } = await abrir(entorno.navegador, { vista: v, modo: 'normal', base });
+      try {
+        let pedidas = 0, servidas = 0;
+        await ctx.route(/\/assets\/fonts\/barlow[^/]*\.woff2/, async r => {
+          pedidas++;
+          await new Promise(z => setTimeout(z, CLS_RETRASO_MS));
+          await r.continue();
+          servidas++;
+        });
+        await ctx.addInitScript(() => {
+          window.__qaCls = [];
+          new PerformanceObserver(l => {
+            for (const e of l.getEntries()) if (!e.hadRecentInput) window.__qaCls.push({ v: e.value, de: e.sources.map(s => s.node ? s.node.nodeName.toLowerCase() + (s.node.id ? '#' + s.node.id : '') + (typeof s.node.className === 'string' && s.node.className ? '.' + s.node.className.split(' ')[0] : '') : '?') });
+          }).observe({ type: 'layout-shift', buffered: true });
+        });
+        await p.goto(base + pag.ruta, { waitUntil: 'load' });
+        /* Espera por condición: todas las fuentes pedidas ya servidas y puestas */
+        await p.waitForFunction(() => document.fonts.status === 'loaded', null, { timeout: 15000 });
+        for (let i = 0; i < 300 && (pedidas === 0 || servidas < pedidas); i++) await p.waitForTimeout(20);
+        await p.evaluate(() => document.fonts.ready);
+        await estabilizar(p);
+        const prob = [];
+        if (!pedidas) prob.push({ tipo: 'cls', clave: 'no se ha pedido ninguna fuente Barlow', detalle: 'la prueba no ejerce nada' });
+        const r = await p.evaluate(() => ({ total: window.__qaCls.reduce((a, x) => a + x.v, 0), de: [...new Set(window.__qaCls.flatMap(x => x.de))].slice(0, 6) }));
+        if (r.total >= CLS_UMBRAL) prob.push({ tipo: 'cls', clave: 'CLS ≥ ' + CLS_UMBRAL + ' con las fuentes ' + CLS_RETRASO_MS + ' ms tarde', detalle: r.total.toFixed(3) + ': ' + r.de.join(', ') });
+        prob.push(...await problemasDeRegistro(p, registro, { esperado: pag.estado }));
+        const fallos = agrupar(prob);
+        if (fallos.length) await entorno.capturar(p, id);
+        return fallos;
+      } finally {
+        await ctx.close();
+      }
+    }
+  };
+}
+
 function casos() {
   const lista = [];
   for (const v of VISTAS) for (const pag of PAGINAS) {
@@ -108,6 +162,8 @@ function casos() {
   for (const n of SINJS_ESTRECHAS) for (const pag of PAGINAS.filter(x => x.cabecera)) {
     lista.push(caso(vista(n), pag, 'es', 'sinjs', n === '320x640'));
   }
+  /* mantenimiento no usa fuentes web (system-ui): no hay nada que retrasar */
+  for (const n of CLS_VISTAS) for (const pag of PAGINAS.filter(x => !x.mantenimiento)) lista.push(casoCls(vista(n), pag));
   return lista;
 }
 
