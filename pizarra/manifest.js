@@ -193,13 +193,11 @@
       { nombre: 'Maripaz',     foto: null,                            rol: PENDIENTE_CLUB, bio: null }  /* sin bio: decidido */
     ],
 
-    /* No se pinta hasta tener la lista completa confirmada (no se publica
-       una lista parcial). Tipo de colaboración: PENDIENTE_CLUB. */
+    /* Sin nombres hasta tener la lista completa confirmada: una lista
+       parcial no se publica, ni oculta (regla 10). */
     patrocinadores: {
-      listaCompleta: PENDIENTE_CLUB,
-      items: [
-        { nombre: 'Bar Restaurante La Herradura', tipo: PENDIENTE_CLUB }
-      ]
+      listaCompleta: false,
+      items: []
     },
 
     /* «Colaborar con el club»: anuncio «Buscamos patrocinadores», literal.

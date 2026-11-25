@@ -23,7 +23,7 @@
 
   var NOMBRES_PROPIOS = [
     'Eleva Pádel Pizarra', 'Eleva Pádel', 'WhatsApp', 'Instagram', 'Vola',
-    'Bar Restaurante La Herradura', 'Biznaga Consulting', 'OpenStreetMap',
+    'Biznaga Consulting', 'OpenStreetMap',
     'Google Maps', 'Pizarra', 'Málaga', 'Pasaje Jerez s/n', '@elevapadelpizarra',
     'Lorena Vano', 'Maripaz', 'Liga SNP', 'Liga LAPI',
     'Español', 'English', 'Nederlands'

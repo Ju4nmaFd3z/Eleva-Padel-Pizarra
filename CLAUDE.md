@@ -71,7 +71,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     cliente; EN (británico) y NL (de los Países Bajos) después, con traductor y revisor.
     `node tools/i18n.js estado` lista lo pendiente; `exportar` lo saca para traducir.
     - **Nombres propios que no se traducen** (copia exacta de `NOMBRES_PROPIOS` en `js/translations.js`; `validar.js` comprueba que coinciden):
-      «Eleva Pádel Pizarra», «Eleva Pádel», «WhatsApp», «Instagram», «Vola», «Bar Restaurante La Herradura», «Biznaga Consulting», «OpenStreetMap», «Google Maps», «Pizarra», «Málaga», «Pasaje Jerez s/n», «@elevapadelpizarra», «Lorena Vano», «Maripaz», «Liga SNP», «Liga LAPI», «Español», «English», «Nederlands»
+      «Eleva Pádel Pizarra», «Eleva Pádel», «WhatsApp», «Instagram», «Vola», «Biznaga Consulting», «OpenStreetMap», «Google Maps», «Pizarra», «Málaga», «Pasaje Jerez s/n», «@elevapadelpizarra», «Lorena Vano», «Maripaz», «Liga SNP», «Liga LAPI», «Español», «English», «Nederlands»
 
     Neutros (tampoco se traducen): cifras, precios, horas, «60 min», teléfonos, URL, códigos
     ES/EN/NL y la atribución «© OpenStreetMap contributors» (licencia ODbL, en inglés).
