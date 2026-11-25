@@ -120,7 +120,7 @@ for (const p of servidos.filter(p => p.endsWith('manifest.js'))) {
   const nPend = pendientes.en.length + pendientes.nl.length;
   if (nPend) {
     const msg = `i18n: TRADUCCIONES PENDIENTES: ${pendientes.en.length} sin inglés y ${pendientes.nl.length} sin neerlandés (se pintan en español con lang="es"). Lista: node tools/i18n.js estado`;
-    if (ESTRICTO || !I.PERMITIR_PENDIENTES) errores.push(msg); else avisos.push(msg + '. Fase B del punto 7: PERMITIR_PENDIENTES = true en tools/i18n.js');
+    if (ESTRICTO || !I.PERMITIR_PENDIENTES) errores.push(msg); else avisos.push(msg + '. PERMITIR_PENDIENTES = true en tools/i18n.js');
   }
 
   /* Claves usadas que no existen y claves que nadie usa */

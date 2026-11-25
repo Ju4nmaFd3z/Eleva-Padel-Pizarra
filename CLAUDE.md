@@ -64,9 +64,9 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     español en las páginas y en la de mantenimiento. `h` es la **huella** del español del que
     salió cada traducción (`tools/i18n.js`): si el español cambia, la traducción queda
     **desfasada** y `validar.js` falla. Sin `en`/`nl` = **pendiente**: el navegador pinta el
-    español con `lang="es"` (nunca disfrazado de EN/NL) y `validar.js` lo avisa mientras
-    `PERMITIR_PENDIENTES` sea `true` en `tools/i18n.js` (fase A del punto 7; pasa a `false`
-    al integrar las traducciones revisadas; `--estricto` lo trata ya como error). `validar.js`
+    español con `lang="es"` (nunca disfrazado de EN/NL); desde el 25/11/2026 (fase B, traducciones
+    revisadas integradas) `PERMITIR_PENDIENTES` es `false` en `tools/i18n.js` y un pendiente es
+    **error** de `validar.js`: un texto nuevo entra en el mismo commit que su EN y NL revisados. `validar.js`
     falla también por un texto visible sin clave, una clave sin uso o la lista de nombres
     propios distinta de la del código. Textos nuevos: primero en español, a revisión del
     cliente; EN (británico) y NL (de los Países Bajos) después, con traductor y revisor.

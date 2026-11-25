@@ -84,7 +84,7 @@ que falla.
   (`tools/i18n.js`), traducciones iguales a propósito y fragmentos en línea que no
   cambian de idioma dentro de un párrafo traducido (`localStorage`, www.aepd.es); un texto pendiente de
   traducir solo pasa si va marcado `lang="es"` y mientras `PERMITIR_PENDIENTES`
-  sea `true`. Ida y vuelta ES → EN → NL → ES con el teclado (tras crearse la pista
+  sea `true` (hoy `false`: ninguno pasa). Ida y vuelta ES → EN → NL → ES con el teclado (tras crearse la pista
   3D y en reposo): `outerHTML` idéntico, comentarios `<!--gen-->` incluidos. Con
   EN/NL guardado, ningún fotograma con textos traducibles en español antes de
   aplicar el idioma, y aplicado en menos de 1,5 s (red sin limitar). Idioma recordado de `/` a

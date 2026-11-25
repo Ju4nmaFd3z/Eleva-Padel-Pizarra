@@ -132,7 +132,8 @@ de cada traducción (`{ es, en, nl, h: { en, nl } }`):
 - Al cambiar un texto en español, sus traducciones quedan **desfasadas** y
   `validar.js` falla hasta que se retraducen (y se pone la huella nueva).
   Un texto sin traducir (**pendiente**) se ve en español, marcado `lang="es"`,
-  y `validar.js` lo avisa.
+  y `validar.js` falla (`PERMITIR_PENDIENTES = false` en `tools/i18n.js` desde que
+  se integraron las traducciones revisadas): un texto nuevo entra con su EN y NL.
 - `node tools/i18n.js estado` lista lo pendiente o desfasado;
   `node tools/i18n.js exportar textos.json` lo saca para traducir.
 - Nombres propios que no se traducen y glosario: `CLAUDE.md` (regla 11).

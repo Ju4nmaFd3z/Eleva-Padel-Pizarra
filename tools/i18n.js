@@ -34,9 +34,10 @@ const ROOT = path.resolve(__dirname, '..');
 const IDIOMAS = ['es', 'en', 'nl'];
 const TRADUCIDOS = ['en', 'nl'];
 
-/* Fase A del punto 7: las traducciones revisadas aún no están. Pasa a false
-   en el commit que las integra; desde entonces un texto sin traducir es error. */
-const PERMITIR_PENDIENTES = true;
+/* Fase B del punto 7: las traducciones revisadas están integradas (25/11/2026).
+   Desde entonces un texto sin traducir es error: un texto nuevo entra en el
+   mismo commit que sus traducciones revisadas. */
+const PERMITIR_PENDIENTES = false;
 
 /* Textos fijos que no son nombres propios pero no se traducen nunca:
    la atribución de OpenStreetMap (licencia ODbL, en inglés) y los nombres
