@@ -10,7 +10,7 @@ retiraron por no estar confirmados no se repiten aquí.
 
 ---
 
-## Tramo de cierre (del 7 de octubre al 25 de noviembre de 2026, en curso)
+## Tramo de cierre (del 7 de octubre al 26 de noviembre de 2026, en curso)
 
 Empieza el 07/10/2026, con la integración «web viva» aprobada por el propietario.
 
@@ -143,9 +143,33 @@ Empieza el 07/10/2026, con la integración «web viva» aprobada por el propieta
   - Fuentes Barlow registradas en `credits.json`, sin código en comentarios y documentación
     con las mismas cifras.
 
-Pendiente (a 25/11/2026):
-- Aprobar los textos nuevos en español (`/`, `/pizarra`, 404, mantenimiento y legal) y, al
-  integrarlos, retraducir al inglés y al neerlandés los que cambien.
+### 26 de noviembre: textos nuevos en español, con su inglés y su neerlandés
+
+Textos aprobados por el propietario el 26/11/2026 (51 cambiados, 4 nuevos y uno borrado),
+cada uno integrado en el mismo commit que sus traducciones revisadas al inglés británico y
+al neerlandés, con la huella del español recalculada.
+
+- Interfaz: «Ir al contenido», «Menú principal», «Cómo cancelar» en el hero, «Cancelaciones»,
+  «Pregunta por WhatsApp» en los tres botones, contacto más llano, la firma «Web hecha por
+  Biznaga Consulting», descripciones para buscadores, 404 y mantenimiento. /pizarra estrena
+  título: «Eleva Pádel Pizarra, club de pádel en Pizarra».
+- Club: clases («clases en grupo», «clases sueltas», «al mes»), escuela infantil («hasta los
+  12 años, incluidos»), otros servicios y pools. **La política de cancelaciones y «Colaborar
+  con el club» se publican reescritas** con los mismos plazos, condiciones y datos («escuela»
+  pasa a «escuela infantil»; contacto solo por WhatsApp). /privacidad dice lo mismo: sale del
+  mismo manifest.
+- Tarifas de pista en tres tramos («De lunes a viernes hasta las 17:00 h», «De lunes a viernes
+  desde las 17:00 h» y «Fines de semana y festivos, todo el día»), con las listas de precios
+  alineadas (subgrid) a partir de 40rem.
+- Bajo las insignias, qué son SNP (Series Nacionales de Pádel) y Rocha (pool propia del club).
+- Accesibilidad: el glifo de WhatsApp de «Colaborar» y el logo de mantenimiento, decorativos;
+  el alt de las insignias, con coma en lugar del punto medio.
+- Los botones del hero van siempre en columna en móvil: con «Cómo cancelar», más corto,
+  cabían en fila o no según hubiera cargado la fuente y la página saltaba.
+- Glosario en español de `CLAUDE.md` aprobado: «clases en grupo», «clases sueltas», «las
+  pools», «Tarifas de pista».
+
+Pendiente (a 26/11/2026):
 - Titular y NIF de la web (los exige la ley a la vista en la página legal) y las preguntas
   abiertas de la legal; revisión jurídica recomendada antes de publicar.
 - Dominio elevapadel.com: compra o propiedad, alta en Vercel, `www` y `vercel.app` con

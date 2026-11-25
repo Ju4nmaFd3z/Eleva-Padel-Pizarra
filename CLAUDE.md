@@ -93,20 +93,20 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     Neutros (tampoco se traducen): cifras, precios, horas, «60 min», teléfonos, URL, códigos
     ES/EN/NL y la atribución «© OpenStreetMap contributors» (licencia ODbL, en inglés).
     - **Glosario vigente** (el de los revisores EN y NL del 24/11/2026, integrado por delegación
-      del usuario). Se usa igual en toda la web; cambiar una fila obliga a revisar las
+      del usuario; la columna ES, aprobada con los textos el 26/11/2026). Se usa igual en toda la web; cambiar una fila obliga a revisar las
       traducciones que la usan.
 
       | ES | EN (británico) | NL (Países Bajos) | Criterio |
       |---|---|---|---|
       | pista · reservar pista | court · book a court (cabecera: «Book») | baan (banen) · baan reserveren (rótulo: «Reserveren») | |
-      | tarifas de pista · por pista | court hire · per court | baantarieven · per baan | |
-      | pool | pool («Pools» en menú y título) | pool (pools), nunca «poule» | sin traducir: coincide con las insignias y el cartel |
+      | tarifas de pista · por pista | court hire · per court | baantarieven · per baan | título «Tarifas de pista» (no «Alquiler de pista»): es lo que se busca |
+      | pool (femenino: «las pools») | pool («Pools» en menú y título) | pool (pools), nunca «poule» | sin traducir: coincide con las insignias y el cartel |
       | americano | Americano (Americanos) | Americano (americano's) | formato de torneo |
       | 3.ª / 4.ª / 5.ª (categoría) | 3rd / 4th / 5th category; en el nombre del pool, «4th cat.» | 3e / 4e / 5e klasse | nivel de juego; no se convierte a otra escala |
       | masculina / femenina / mixta | men's / women's / mixed (delante) | heren / dames / gemengd | |
-      | clases de grupo · particulares | group lessons · private lessons («individual» = one-to-one) | groepslessen · privélessen | |
+      | clases en grupo · particulares | group lessons · private lessons («individual» = one-to-one) | groepslessen · privélessen | |
       | escuela infantil | junior academy | kinderpadel | hasta 12 años, 1 clase semanal |
-      | modalidad puntual · mensual | pay-as-you-go · monthly | losse les · per maand | clase suelta frente a cuota |
+      | clases sueltas · cuota mensual | pay-as-you-go · monthly | losse les · per maand | clase suelta frente a cuota; nunca «modalidad puntual» |
       | cuota mensual | monthly fee | maandelijks lesgeld (no «contributie») | |
       | recuperar (una clase) | reschedule («recuperación por ausencia» = missed lessons) | inhalen | |
       | colaborar · colaboración | partner · Partnerships | samenwerken · samenwerking | «sponsor(ship)» / «sponsoring» solo donde el ES dice patrocinio (regla 10) |
@@ -115,12 +115,13 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
       | zona chill-out · iluminación LED | chill-out area · LED lighting | chill-outzone · ledverlichting | |
       | IVA incluido | Prices include VAT. | inclusief btw | |
       | recepción · por WhatsApp | reception · on WhatsApp (at reception) | receptie · via WhatsApp (bij de receptie) | |
-      | lunes a viernes · 17:00 h | Monday to Friday · 17:00 | maandag t/m vrijdag · 17:00 | días completos (no «L–V»), reloj de 24 h, sin la «h» española |
+      | de lunes a viernes · 17:00 h | Monday to Friday · 17:00 | maandag t/m vrijdag · 17:00 | días completos (no «L–V»), reloj de 24 h, sin la «h» española |
       | fines de semana y festivos · todo el día | weekends and public holidays · all day | weekenden en feestdagen · de hele dag | |
-      | política de cancelaciones | cancellation policy (menú: «Cancellations») | regels voor annuleren (menú: «Annuleren») | «Annuleringsbeleid» no cabe a 320-390 px |
+      | cancelaciones (título y menú) · cómo cancelar (botón del hero) · política de cancelaciones (legal) | Cancellations · How to cancel · cancellation policy | Annuleren · Zo annuleer je · regels voor annuleren | «Annuleringsbeleid» no cabe a 320-390 px |
+      | pregunta por WhatsApp (botones) | Ask us on WhatsApp | Vraag het via WhatsApp | igual en clases, pools y colaborar |
       | aviso legal · inicio | legal notice · home | juridische informatie · startpagina | |
       | tratamiento | you | je/jij; el club, we/ons; al club, jullie | |
-      | «SNP», «Rocha» | sin traducir | sin traducir | nombres propios (SNP = Series Nacionales de Pádel; Rocha = pool propia del club) |
+      | «SNP», «Series Nacionales de Pádel», «Rocha» | sin traducir | sin traducir | nombres propios; publicados en `pools.nota` (SNP, competición por equipos para jugadores aficionados; Rocha, pool propia del club) |
 12. **Cache-buster** `?v=YYYYMMDD[letra]` (hoy `20261126b`) igual en todos los HTML;
     subirlo al cambiar CSS, JS o manifest. Imágenes y fuentes reemplazadas: nombre nuevo.
 13. **Git**: trabajo en ramas; push o merge a `main` solo con OK explícito. Commits según
