@@ -7,7 +7,8 @@
    Desactivar:  borrar la variable o ponerla a 0 + Redeploy.
    Saltárselo:  visitar cualquier URL con ?acceso=<clave>, donde
                 <clave> es la variable MANTENIMIENTO_CLAVE. Deja
-                una cookie durante 30 días.
+                una cookie durante 30 días con un HMAC-SHA256 de
+                la clave (nunca la clave en claro).
 
    La clave NUNCA se escribe en el repo (es público).
    Sin dependencias: solo Request/Response estándar.
@@ -160,7 +161,27 @@ function leerCookie(request, nombre) {
   return null;
 }
 
-export default function middleware(request) {
+/* La cookie no guarda la clave: guarda su HMAC-SHA256 (Web Crypto), con la
+   clave como secreto sobre un texto fijo. Quien lea la cookie en un equipo
+   compartido no obtiene la clave, y cambiar MANTENIMIENTO_CLAVE invalida
+   todas las cookies dadas. */
+const FIRMA_TEXTO = new TextEncoder().encode(COOKIE + ':v1');
+
+async function firma(clave) {
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(clave), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const f = new Uint8Array(await crypto.subtle.sign('HMAC', k, FIRMA_TEXTO));
+  return Array.from(f, b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* Comparación en tiempo constante (no se corta en el primer carácter distinto) */
+function iguales(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  let d = a.length ^ b.length;
+  for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ (b.charCodeAt(i % (b.length || 1)) || 0);
+  return d === 0;
+}
+
+export default async function middleware(request) {
   const env = (typeof process !== 'undefined' && process.env) || {};
   if (env.MANTENIMIENTO !== '1') return; // sin respuesta: la petición sigue su curso normal
 
@@ -169,19 +190,23 @@ export default function middleware(request) {
 
   const clave = env.MANTENIMIENTO_CLAVE;
   if (clave) {
-    if (url.searchParams.get('acceso') === clave) {
+    const buena = await firma(clave);
+    const acceso = url.searchParams.get('acceso');
+    /* Se comparan las firmas, no la clave en claro */
+    if (acceso !== null && iguales(await firma(acceso), buena)) {
       url.searchParams.delete('acceso');
       const segura = url.protocol === 'https:' ? '; Secure' : '';
       return new Response(null, {
         status: 303,
         headers: {
           'Location': url.pathname + url.search,
-          'Set-Cookie': `${COOKIE}=${encodeURIComponent(clave)}; Path=/; Max-Age=${DIAS_COOKIE * 86400}; HttpOnly; SameSite=Lax${segura}`,
-          'Cache-Control': 'no-store'
+          'Set-Cookie': `${COOKIE}=${buena}; Path=/; Max-Age=${DIAS_COOKIE * 86400}; HttpOnly; SameSite=Lax${segura}`,
+          'Cache-Control': 'no-store',
+          'Referrer-Policy': 'no-referrer'
         }
       });
     }
-    if (leerCookie(request, COOKIE) === encodeURIComponent(clave)) return;
+    if (iguales(leerCookie(request, COOKIE), buena)) return;
   }
 
   return new Response(PAGINA, {

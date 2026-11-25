@@ -86,7 +86,8 @@ y los JS del idioma).
 - **Desactivar:** borra la variable (o ponla a `0`) y haz **Redeploy**.
 - **Saltártelo:** abre cualquier URL con `?acceso=<clave>`, donde `<clave>` es la
   variable `MANTENIMIENTO_CLAVE` (nunca en el repo: es público). Deja la cookie
-  `eleva-acceso` durante 30 días.
+  `eleva-acceso` durante 30 días; guarda un HMAC de la clave, no la clave (al cambiar
+  la clave, las cookies dadas dejan de valer).
 
 En local: `MANTENIMIENTO=1 MANTENIMIENTO_CLAVE=prueba node tools/servidor-local.js`.
 

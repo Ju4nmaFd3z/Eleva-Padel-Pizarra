@@ -16,7 +16,7 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
 ## Modo mantenimiento (`middleware.js`: 503 + `Retry-After` + noindex en todo)
 - Activar: variable `MANTENIMIENTO=1` en Vercel (Production) + Redeploy.
 - Desactivar: borrar la variable o ponerla a `0` + Redeploy.
-- Saltárselo: `?acceso=<MANTENIMIENTO_CLAVE>` (cookie `eleva-acceso`, 30 días). La clave nunca va al repo.
+- Saltárselo: `?acceso=<MANTENIMIENTO_CLAVE>` (cookie `eleva-acceso`, 30 días, `HttpOnly`, `SameSite=Lax` y `Secure` en HTTPS; guarda un HMAC-SHA256 de la clave, nunca la clave: cambiar la clave invalida las cookies dadas). La clave nunca va al repo.
 - La página sale en el idioma guardado o del navegador, con selector (CSP propia con
   `script-src 'self'`; `js/idioma.js`, `translations.js`, `main.js` y el sprite se sirven
   también en mantenimiento). Sin JS, en español. Sus textos los escribe `generar.js`.

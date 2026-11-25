@@ -7,7 +7,8 @@
    · URLs limpias (308), 404 con su página;
    · nada de lo excluido en .vercelignore se sirve;
    · modo mantenimiento: 503 + Retry-After + noindex + CSP propia,
-     recursos libres, paso con ?acceso=<clave> y cookie.
+     recursos libres, paso con ?acceso=<clave> y cookie (un HMAC de
+     la clave, nunca la clave; Secure en HTTPS).
    ========================================================= */
 'use strict';
 const fs = require('fs');
@@ -122,6 +123,28 @@ function mantenimiento() {
     const dentro = await pedir(b + '/pizarra', { headers: { cookie: cookie.split(';')[0] } });
     ok(dentro.status === 200, 'con la cookie no se pasa', dentro.status);
     await dentro.arrayBuffer();
+    /* La cookie guarda un HMAC-SHA256 de la clave, nunca la clave */
+    const valor = cookie.split(';')[0].slice('eleva-acceso='.length);
+    ok(/^[0-9a-f]{64}$/.test(valor), 'la cookie eleva-acceso no es un HMAC-SHA256 (64 hex)', valor.length + ' caracteres');
+    ok(!valor.includes(clave) && !valor.includes(encodeURIComponent(clave)), 'la cookie eleva-acceso lleva la clave en claro');
+    for (const [nombre, v] of [['la clave en claro', encodeURIComponent(clave)], ['un HMAC cambiado', valor.slice(0, -1) + (valor.endsWith('0') ? '1' : '0')], ['un HMAC cortado', valor.slice(0, 32)]]) {
+      const x = await pedir(b + '/pizarra', { headers: { cookie: 'eleva-acceso=' + v } });
+      ok(x.status === 503, 'una cookie con ' + nombre + ' deja pasar', x.status);
+      await x.arrayBuffer();
+    }
+    /* En HTTPS (Vercel) la cookie lleva Secure: se llama al middleware directamente */
+    const { pathToFileURL } = require('url');
+    const { default: mw } = await import(pathToFileURL(path.join(RAIZ, 'middleware.js')).href);
+    const antes = { m: process.env.MANTENIMIENTO, c: process.env.MANTENIMIENTO_CLAVE };
+    process.env.MANTENIMIENTO = '1'; process.env.MANTENIMIENTO_CLAVE = clave;
+    try {
+      const s = await mw(new Request('https://ejemplo.invalid/pizarra?acceso=' + encodeURIComponent(clave)));
+      const c = (s && s.headers.get('set-cookie')) || '';
+      ok(/;\s*Secure/i.test(c) && /HttpOnly/i.test(c) && /SameSite=Lax/i.test(c), 'en HTTPS la cookie eleva-acceso no lleva Secure, HttpOnly y SameSite=Lax', c);
+      ok(c.split(';')[0] === 'eleva-acceso=' + valor, 'la cookie de HTTPS no es la misma firma que la de HTTP', c.split(';')[0]);
+    } finally {
+      for (const [k, v] of [['MANTENIMIENTO', antes.m], ['MANTENIMIENTO_CLAVE', antes.c]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+    }
   });
 }
 
