@@ -122,10 +122,10 @@
           },
           precio:  '60 €',
           unidad:  {
-            es: 'por persona / mes',
-            en: 'per person / month',
-            nl: 'per persoon / maand',
-            h: { en: '00ed7119', nl: '00ed7119' }
+            es: 'por persona al mes',
+            en: 'per person per month',
+            nl: 'per persoon per maand',
+            h: { en: 'abe7e342', nl: 'abe7e342' }
           },
           detalle: [
             {
@@ -135,10 +135,10 @@
               h: { en: 'ccf75512', nl: 'ccf75512' }
             },
             {
-              es: 'Organizados por nivel y disponibilidad.',
-              en: 'Arranged by level and availability.',
-              nl: 'Ingedeeld op niveau en beschikbaarheid.',
-              h: { en: '364c932f', nl: '364c932f' }
+              es: 'Se organizan por nivel, según haya hueco y se pueda formar el grupo.',
+              en: 'Organised by level, subject to space and enough players to form a group.',
+              nl: 'Ingedeeld op niveau, als er plek is en er genoeg deelnemers voor een groep zijn.',
+              h: { en: '2ad60240', nl: '2ad60240' }
             },
             {
               es: 'Plazas limitadas.',
@@ -147,10 +147,10 @@
               h: { en: '942e65ef', nl: '942e65ef' }
             },
             {
-              es: 'También en modalidad puntual (consultar).',
-              en: 'Also available pay-as-you-go (just ask).',
-              nl: 'Ook als losse les (vraag ernaar).',
-              h: { en: '2068bbcc', nl: '2068bbcc' }
+              es: 'También hay clases sueltas: pregúntanos.',
+              en: 'You can also pay as you go: just ask.',
+              nl: 'Er zijn ook losse lessen: vraag ernaar.',
+              h: { en: '27b6db74', nl: '27b6db74' }
             }
           ]
         },
@@ -163,22 +163,22 @@
           },
           detalle: [
             {
-              es: 'Individual, 2 personas o 3 personas.',
-              en: 'One-to-one, 2 people or 3 people.',
-              nl: 'Individueel, met 2 of 3 personen.',
-              h: { en: '8205ba15', nl: '8205ba15' }
+              es: 'Clases individuales o para 2 o 3 personas.',
+              en: 'One-to-one lessons, or for 2 or 3 people.',
+              nl: 'Individuele lessen of lessen voor 2 of 3 personen.',
+              h: { en: 'ec001292', nl: 'ec001292' }
             },
             {
-              es: 'Modalidad mensual o puntual.',
-              en: 'Monthly or pay-as-you-go.',
-              nl: 'Per maand of per losse les.',
-              h: { en: '2ee2158e', nl: '2ee2158e' }
+              es: 'Con cuota mensual o en clases sueltas.',
+              en: 'Monthly fee or pay-as-you-go.',
+              nl: 'Met maandelijks lesgeld of per losse les.',
+              h: { en: 'ede4eb78', nl: 'ede4eb78' }
             },
             {
-              es: 'Consulta precio y disponibilidad.',
-              en: 'Ask about price and availability.',
-              nl: 'Vraag naar prijs en beschikbaarheid.',
-              h: { en: 'fdfbadff', nl: 'fdfbadff' }
+              es: 'Pregúntanos el precio y si hay hueco.',
+              en: 'Ask us about prices and whether there\'s a slot.',
+              nl: 'Vraag ons naar de prijs en of er plek is.',
+              h: { en: '5cf7d6cf', nl: '5cf7d6cf' }
             }
           ]
         }
@@ -194,23 +194,23 @@
         },
         precio:  '40 €',
         unidad:  {
-          es: 'por niño / mes',
-          en: 'per child / month',
-          nl: 'per kind / maand',
-          h: { en: '1a37d258', nl: '1a37d258' }
+          es: 'por niño al mes',
+          en: 'per child per month',
+          nl: 'per kind per maand',
+          h: { en: '310b274a', nl: '310b274a' }
         },
         detalle: [
           {
-            es: 'Hasta 12 años.',
-            en: 'Up to age 12.',
-            nl: 'Tot 12 jaar.',
-            h: { en: '76a57371', nl: '76a57371' }
+            es: 'Hasta los 12 años, incluidos.',
+            en: 'Up to and including age 12.',
+            nl: 'Tot en met 12 jaar.',
+            h: { en: '6904ac08', nl: '6904ac08' }
           },
           {
-            es: '1 clase a la semana.',
-            en: '1 lesson a week.',
-            nl: '1 les per week.',
-            h: { en: '40ea1fac', nl: '40ea1fac' }
+            es: 'Una clase a la semana.',
+            en: 'One lesson a week.',
+            nl: 'Eén les per week.',
+            h: { en: '2411c2c1', nl: '2411c2c1' }
           },
           {
             es: 'Máximo 6 niños por grupo.',
@@ -226,30 +226,30 @@
       verificado: '2026-09-30',
       fuente:     'cartel: Clases y servicios',
       texto:      {
-        es: 'Americanos, pools y eventos. Precio según evento.',
-        en: 'Americanos, pools and events. Prices vary by event.',
-        nl: 'Americano\'s, pools en evenementen. Prijs afhankelijk van het evenement.',
-        h: { en: 'd64b7673', nl: 'd64b7673' }
+        es: 'Organizamos americanos, pools y eventos. El precio depende de cada evento.',
+        en: 'We organise Americanos, pools and events. Prices vary by event.',
+        nl: 'We organiseren americano\'s, pools en evenementen. De prijs verschilt per evenement.',
+        h: { en: 'f275cdba', nl: 'f275cdba' }
       }
     },
 
     cancelaciones: {
       verificado: '2026-09-30',
-      fuente:     'cartel: Política de cancelaciones',
+      fuente:     'cartel: Política de cancelaciones; redacción nueva aprobada por el propietario el 2026-11-26',
       pistas: {
         titulo: { es: 'Reservas de pista', en: 'Court bookings', nl: 'Banen', h: { en: '67b2a51f', nl: '67b2a51f' } },
         items: [
           {
-            es: 'Las reservas deberán cancelarse con al menos 24 horas de antelación.',
-            en: 'Bookings must be cancelled at least 24 hours in advance.',
-            nl: 'Reserveringen moeten minstens 24 uur van tevoren worden geannuleerd.',
-            h: { en: 'e8c1e32b', nl: 'e8c1e32b' }
+            es: 'Si tienes que cancelar, hazlo con 24 horas de antelación como mínimo.',
+            en: 'If you need to cancel, please do so at least 24 hours in advance.',
+            nl: 'Als je moet annuleren, doe dat dan minstens 24 uur van tevoren.',
+            h: { en: '52c70235', nl: '52c70235' }
           },
           {
-            es: 'Las cancelaciones fuera de plazo podrán no ser reembolsadas.',
-            en: 'Late cancellations may not be refunded.',
-            nl: 'Te late annuleringen worden mogelijk niet terugbetaald.',
-            h: { en: '2dd8b671', nl: '2dd8b671' }
+            es: 'Si cancelas más tarde, puede que no te devolvamos el dinero.',
+            en: 'If you cancel later than that, you may not get a refund.',
+            nl: 'Annuleer je later, dan krijg je je geld mogelijk niet terug.',
+            h: { en: 'af88e81e', nl: 'af88e81e' }
           }
         ]
       },
@@ -257,42 +257,42 @@
         titulo: { es: 'Clases', en: 'Lessons', nl: 'Lessen', h: { en: '86bcee36', nl: '86bcee36' } },
         items: [
           {
-            es: 'Clases particulares: las cancelaciones deben avisarse con 24 horas de antelación.',
-            en: 'Private lessons: cancellations must be made with 24 hours\' notice.',
-            nl: 'Privélessen: annuleringen moeten 24 uur van tevoren worden doorgegeven.',
-            h: { en: '80afd8c1', nl: '80afd8c1' }
+            es: 'Clases particulares: si vas a cancelar, avisa con 24 horas de antelación.',
+            en: 'Private lessons: if you need to cancel, please give us 24 hours\' notice.',
+            nl: 'Privélessen: als je wilt annuleren, laat het dan 24 uur van tevoren weten.',
+            h: { en: '1fb6e99b', nl: '1fb6e99b' }
           },
           {
-            es: 'Clases de grupo y escuela: la cuota mensual reserva la plaza en el grupo asignado.',
-            en: 'Group lessons and junior academy: the monthly fee holds your place in the group you\'ve been assigned.',
-            nl: 'Groepslessen en kinderpadel: het maandelijkse lesgeld reserveert je plek in de groep waarin je bent ingedeeld.',
-            h: { en: '6255f99f', nl: '6255f99f' }
+            es: 'Clases en grupo y escuela infantil: la cuota mensual te guarda la plaza en tu grupo.',
+            en: 'Group lessons and junior academy: the monthly fee holds your place in your group.',
+            nl: 'Groepslessen en kinderpadel: met het maandelijkse lesgeld houd je je plek in je groep.',
+            h: { en: '99939f9c', nl: '99939f9c' }
           },
           {
-            es: 'Recuperación por ausencia: si se avisa con 24 horas y es la única ausencia del mes, se intentará siempre recuperar esa clase. Las ausencias adicionales no tienen recuperación garantizada.',
-            en: 'Missed lessons: if you give 24 hours\' notice and it\'s your only absence that month, we\'ll always try to reschedule that lesson. Rescheduling isn\'t guaranteed for any further absences.',
-            nl: 'Inhalen bij afwezigheid: als je het 24 uur van tevoren doorgeeft en het je enige afwezigheid van die maand is, proberen we die les altijd in te halen. Voor extra afwezigheden is inhalen niet gegarandeerd.',
-            h: { en: '290e71d7', nl: '290e71d7' }
+            es: 'Faltas a clase: si avisas con 24 horas y es tu única falta del mes, siempre intentaremos que la recuperes. Si faltas más veces, no te lo podemos asegurar.',
+            en: 'Missed lessons: if you give us 24 hours\' notice and it\'s your only missed lesson that month, we\'ll always try to reschedule it. If you miss more, we can\'t promise this.',
+            nl: 'Les missen: als je het 24 uur van tevoren laat weten en het je enige gemiste les van de maand is, proberen we altijd om die les in te halen. Mis je vaker, dan kunnen we dat niet beloven.',
+            h: { en: '22d92f35', nl: '22d92f35' }
           },
           {
-            es: 'Lluvia o imposibilidad del club: la clase será recuperada o compensada.',
-            en: 'Rain, or if the club can\'t hold the lesson: it will be rescheduled or compensated for.',
-            nl: 'Regen of als de club verhinderd is: de les wordt ingehaald of gecompenseerd.',
-            h: { en: '51f35503', nl: '51f35503' }
+            es: 'Lluvia o clase suspendida por el club: la clase se recupera y, si no se puede, te la compensamos económicamente.',
+            en: 'Rain or a lesson called off by the club: we\'ll reschedule it and, if we can\'t, we\'ll compensate you financially.',
+            nl: 'Regen of les afgelast door de club: we halen de les in en als dat niet kan, krijg je een financiële vergoeding.',
+            h: { en: '58ff2307', nl: '58ff2307' }
           },
           {
-            es: 'Cambios organizativos: el club podrá modificar horarios o grupos por motivos organizativos, avisando siempre con antelación.',
-            en: 'Organisational changes: the club may change times or groups for organisational reasons, always with advance notice.',
-            nl: 'Organisatorische wijzigingen: de club kan om organisatorische redenen tijden of groepen aanpassen en laat dat altijd van tevoren weten.',
-            h: { en: '07e8efb4', nl: '07e8efb4' }
+            es: 'Cambios de horario o de grupo: podemos hacerlos por motivos de organización, y siempre te avisaremos con antelación.',
+            en: 'Timetable or group changes: we may make these for organisational reasons, and we\'ll always let you know in advance.',
+            nl: 'Wijzigingen in lestijd of groep: die kunnen we om organisatorische redenen doorvoeren, en we laten het je altijd van tevoren weten.',
+            h: { en: 'e3001e56', nl: 'e3001e56' }
           }
         ]
       },
       nota: {
-        es: 'Consulta cualquier duda por WhatsApp o en recepción.',
+        es: '¿Tienes dudas? Pregúntanos por WhatsApp o en recepción.',
         en: 'Any questions? Ask us on WhatsApp or at reception.',
-        nl: 'Met vragen kun je terecht via WhatsApp of bij de receptie.',
-        h: { en: '1c8e929b', nl: '1c8e929b' }
+        nl: 'Heb je vragen? Stel ze via WhatsApp of bij de receptie.',
+        h: { en: 'ccb45207', nl: 'ccb45207' }
       }
     },
 
@@ -309,10 +309,10 @@
       verificado: '2026-09-30',
       fuente:     'cartel: Pools semanales',
       texto:      {
-        es: 'Información e inscripciones por WhatsApp.',
-        en: 'Information and sign-ups on WhatsApp.',
-        nl: 'Informatie en inschrijven via WhatsApp.',
-        h: { en: '45d39ca1', nl: '45d39ca1' }
+        es: 'Para apuntarte o preguntar, escríbenos por WhatsApp.',
+        en: 'To sign up or ask a question, message us on WhatsApp.',
+        nl: 'Wil je je aanmelden of iets vragen? Stuur ons een bericht via WhatsApp.',
+        h: { en: '8a8769a2', nl: '8a8769a2' }
       },
       horario: {
         verificado: '2026-10-06',
@@ -355,13 +355,14 @@
       items: []
     },
 
-    /* «Colaborar con el club»: anuncio «Buscamos patrocinadores», literal.
+    /* «Colaborar con el club»: anuncio «Buscamos patrocinadores», con sus
+       mismos datos y reescrito con el OK del propietario (26/11/2026).
        La disponibilidad de pistas caduca: tiene su propia verificación.
        contacto: {numero} se enlaza solo a WhatsApp (contacto.whatsapp);
        validar.js comprueba que es el mismo número. */
     colaborar: {
       verificado: '2026-10-07',
-      fuente:     'anuncio de patrocinadores del club, enviado por el propietario',
+      fuente:     'anuncio de patrocinadores del club, enviado por el propietario; redacción nueva aprobada por él el 2026-11-26',
       titulo:     {
         es: 'Buscamos patrocinadores',
         en: 'We\'re looking for sponsors',
@@ -369,58 +370,58 @@
         h: { en: '90f5fb61', nl: '90f5fb61' }
       },
       intro:      {
-        es: 'En Eleva Pádel abrimos nuevas posibilidades de colaboración para empresas que quieran vincular su marca al deporte y formar parte del crecimiento del club.',
-        en: 'At Eleva Pádel we\'re opening up new ways to partner with businesses that want to associate their brand with sport and be part of the club\'s growth.',
-        nl: 'Bij Eleva Pádel bieden we nieuwe mogelijkheden tot samenwerking voor bedrijven die hun merk willen verbinden aan de sport en deel willen uitmaken van de groei van de club.',
-        h: { en: '6ce22777', nl: '6ce22777' }
+        es: 'Si tu empresa quiere unir su marca al deporte y formar parte del crecimiento del club, puedes colaborar con nosotros de varias formas.',
+        en: 'If your business wants to associate its brand with sport and be part of the club\'s growth, there are several ways to partner with us.',
+        nl: 'Wil jouw bedrijf zijn merk aan de sport koppelen en deel uitmaken van de groei van de club? Dan kun je op verschillende manieren met ons samenwerken.',
+        h: { en: 'de92c611', nl: 'de92c611' }
       },
       opcionesTitulo: {
-        es: 'Opciones disponibles',
-        en: 'Available options',
-        nl: 'Beschikbare opties',
-        h: { en: '0cd0180a', nl: '0cd0180a' }
+        es: 'Formas de colaborar',
+        en: 'Ways to partner with us',
+        nl: 'Manieren om samen te werken',
+        h: { en: '9d4df925', nl: '9d4df925' }
       },
       opciones: [
         {
-          es: 'Equipaciones de nuestros equipos de competición de Liga SNP y Liga LAPI.',
-          en: 'Kit for our competition teams in Liga SNP and Liga LAPI.',
-          nl: 'Teamkleding voor onze competitieteams in de Liga SNP en de Liga LAPI.',
-          h: { en: '21c15f38', nl: '21c15f38' }
+          es: 'Vestir a nuestros equipos de la Liga SNP y la Liga LAPI.',
+          en: 'Kit out our Liga SNP and Liga LAPI teams.',
+          nl: 'Onze teams in de Liga SNP en de Liga LAPI van teamkleding voorzien.',
+          h: { en: 'c1c66307', nl: 'c1c66307' }
         },
         {
-          es: 'Patrocinio de pistas completas.',
-          en: 'Sponsorship of whole courts.',
-          nl: 'Sponsoring van hele banen.',
-          h: { en: '747907ca', nl: '747907ca' }
+          es: 'Patrocinar una pista entera.',
+          en: 'Sponsor a whole court.',
+          nl: 'Een hele baan sponsoren.',
+          h: { en: '19189fe0', nl: '19189fe0' }
         },
         {
-          es: 'Vallas publicitarias con visibilidad hacia el club y la carretera.',
-          en: 'Advertising hoardings visible from the club and the road.',
-          nl: 'Reclameborden die zichtbaar zijn vanaf de club en vanaf de weg.',
-          h: { en: 'f0ab1b73', nl: 'f0ab1b73' }
+          es: 'Poner vallas publicitarias que se ven desde el club y desde la carretera.',
+          en: 'Put up advertising hoardings that can be seen from the club and from the road.',
+          nl: 'Reclameborden plaatsen die zichtbaar zijn vanaf de club en vanaf de weg.',
+          h: { en: 'bccb9c2c', nl: 'bccb9c2c' }
         },
         {
-          es: 'Torneos, eventos y actividades deportivas.',
-          en: 'Tournaments, events and sports activities.',
-          nl: 'Toernooien, evenementen en sportactiviteiten.',
-          h: { en: 'fc35d2a3', nl: 'fc35d2a3' }
+          es: 'Patrocinar torneos, eventos y actividades deportivas.',
+          en: 'Sponsor tournaments, events and sports activities.',
+          nl: 'Toernooien, evenementen en sportactiviteiten sponsoren.',
+          h: { en: '9bc9854d', nl: '9bc9854d' }
         }
       ],
       disponibilidad: {
         verificado: '2026-10-07',
         fuente:     'anuncio de patrocinadores del club, enviado por el propietario',
         texto:      {
-          es: 'Tres de nuestras cuatro pistas ya cuentan con patrocinador. Actualmente queda una única pista disponible para nuevas colaboraciones.',
-          en: 'Three of our four courts already have a sponsor. There is currently just one court left for new partnerships.',
-          nl: 'Drie van onze vier banen hebben al een sponsor. Op dit moment is er nog één baan beschikbaar voor nieuwe samenwerkingen.',
-          h: { en: '48c282a8', nl: '48c282a8' }
+          es: 'Tres de nuestras cuatro pistas ya tienen patrocinador. Ahora mismo queda una libre para patrocinar.',
+          en: 'Three of our four courts already have a sponsor. Right now, there\'s one left to sponsor.',
+          nl: 'Drie van onze vier banen hebben al een sponsor. Op dit moment is er nog één baan vrij om te sponsoren.',
+          h: { en: '7872204f', nl: '7872204f' }
         }
       },
       cierre:     {
-        es: 'Estudiaremos cada propuesta de forma personalizada, buscando una colaboración que aporte valor a ambas partes.',
-        en: 'We\'ll look at each proposal individually, aiming for a partnership that benefits both sides.',
-        nl: 'We bekijken elk voorstel persoonlijk en zoeken naar een samenwerking waar beide partijen iets aan hebben.',
-        h: { en: '514a1784', nl: '514a1784' }
+        es: 'Vemos cada propuesta una a una, para que la colaboración merezca la pena para las dos partes.',
+        en: 'We look at each proposal individually, so that the partnership is worth it for both sides.',
+        nl: 'We bekijken elk voorstel afzonderlijk, zodat de samenwerking voor beide partijen de moeite waard is.',
+        h: { en: 'c90eed88', nl: 'c90eed88' }
       },
       pregunta:   {
         es: '¿Te interesa colaborar con Eleva Pádel?',
@@ -429,10 +430,10 @@
         h: { en: 'bd77be69', nl: 'bd77be69' }
       },
       contacto:   {
-        es: 'Contacta con nosotros en el {numero}.',
-        en: 'Get in touch on {numero}.',
-        nl: 'Neem contact met ons op via {numero}.',
-        h: { en: '506df2f4', nl: '506df2f4' }
+        es: 'Escríbenos por WhatsApp al {numero}.',
+        en: 'Message us on WhatsApp: {numero}.',
+        nl: 'Stuur ons een bericht via WhatsApp op {numero}.',
+        h: { en: 'f5837b9f', nl: 'f5837b9f' }
       },
       numero:     '659 14 31 03'
     },
