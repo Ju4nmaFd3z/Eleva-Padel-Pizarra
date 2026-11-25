@@ -53,11 +53,12 @@ function revisarVista(opc) {
   /* Invisible aunque ocupa su sitio: visibility o opacidad efectiva ~0 */
   const invisible = e => getComputedStyle(e).visibility !== 'visible' || opacidad(e) < 0.05;
   /* Ocultaciones previstas por el diseño (no son fallos): sin JS, el selector
-     de idioma (necesita JS; <noscript> lo oculta); el menú móvil cerrado (su
+     de idioma y el formulario de /pizarra (necesitan JS; <noscript> los
+     oculta); el menú móvil cerrado (su
      botón está a la vista con aria-expanded=false). Repetido en revisarVista y
      revisarRetirados: cada función se evalúa sola dentro de la página. */
   const permitido = e => {
-    if (opc.sinJs && e.closest('.idioma-selector')) return true;
+    if (opc.sinJs && e.closest('.idioma-selector, #contact-form')) return true;
     const b = document.querySelector('.menu-boton');
     return !!e.closest('#menu') && !!b && b.getBoundingClientRect().width > 0 && b.getAttribute('aria-expanded') === 'false';
   };
@@ -270,11 +271,12 @@ function revisarVista(opc) {
 function revisarRetirados(opc) {
   const salida = [];
   /* Ocultaciones previstas por el diseño (no son fallos): sin JS, el selector
-     de idioma (necesita JS; <noscript> lo oculta); el menú móvil cerrado (su
+     de idioma y el formulario de /pizarra (necesitan JS; <noscript> los
+     oculta); el menú móvil cerrado (su
      botón está a la vista con aria-expanded=false). Repetido en revisarVista y
      revisarRetirados: cada función se evalúa sola dentro de la página. */
   const permitido = e => {
-    if (opc.sinJs && e.closest('.idioma-selector')) return true;
+    if (opc.sinJs && e.closest('.idioma-selector, #contact-form')) return true;
     const b = document.querySelector('.menu-boton');
     return !!e.closest('#menu') && !!b && b.getBoundingClientRect().width > 0 && b.getAttribute('aria-expanded') === 'false';
   };

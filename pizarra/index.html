@@ -75,6 +75,10 @@
        en una fila propia bajo el logo y «Reservar» -->
   <noscript><style>
     .menu-boton, .idioma-selector { display: none; }
+    /* El formulario necesita JS para abrir WhatsApp (sin él, el botón va
+       desactivado): se retira y Contacto queda en una columna con sus canales */
+    .formulario { display: none; }
+    html .contacto { grid-template-columns: minmax(0, 1fr); }
     @media (max-width: 63.99rem) {
       .cabecera { position: relative; }
       .cabecera-barra { flex-wrap: wrap; }
