@@ -31,6 +31,7 @@
     'Biznaga Consulting', 'OpenStreetMap',
     'Google Maps', 'Pizarra', 'Málaga', 'Pasaje Jerez s/n', '@elevapadelpizarra',
     'Lorena Vano', 'Maripaz', 'Liga SNP', 'Liga LAPI',
+    'Vercel Inc.', 'Meta Platforms Ireland Ltd.',
     'Español', 'English', 'Nederlands'
   ];
 

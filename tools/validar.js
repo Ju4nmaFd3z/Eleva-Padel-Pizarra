@@ -125,16 +125,16 @@ for (const p of servidos.filter(p => p.endsWith('manifest.js'))) {
 
   /* Claves usadas que no existen y claves que nadie usa */
   const usos = I.usosDeInterfaz();
-  for (const k of Object.keys(usos)) if (!T.textos[k]) errores.push(`i18n: la clave «${k}» se usa (${usos[k][0]}) y no está en js/translations.js`);
-  for (const k of Object.keys(T.textos)) if (!usos[k]) errores.push(`i18n: la clave «${k}» no se usa en ninguna página: bórrala`);
+  const todas = I.todosLosTextos();
+  for (const k of Object.keys(usos)) if (!todas[k]) errores.push(`i18n: la clave «${k}» se usa (${usos[k][0]}) y no está en js/translations.js ni en js/legal-textos.js`);
+  for (const k of Object.keys(todas)) if (!usos[k]) errores.push(`i18n: la clave «${k}» no se usa en ninguna página: bórrala`);
 
   /* Textos visibles o audibles sin clave en lo servido */
-  const paginas = I.clubes().map(c => c + '/index.html').concat(['index.html', '404.html']);
+  const paginas = I.clubes().map(c => c + '/index.html').concat(['index.html', '404.html', 'privacidad.html']);
   for (const p of paginas) for (const x of I.textosSinClave(fs.readFileSync(path.join(ROOT, p), 'utf8'))) errores.push(`i18n: ${p}: texto sin clave ${x}`);
   const mant = (fs.readFileSync(path.join(ROOT, 'middleware.js'), 'utf8').match(/const PAGINA = `([\s\S]*?)`;/) || [])[1];
   if (!mant) errores.push('i18n: middleware.js sin plantilla PAGINA');
   else for (const x of I.textosSinClave(mant)) errores.push(`i18n: mantenimiento (middleware.js): texto sin clave ${x}`);
-  info.push('i18n: privacidad.html queda fuera de la comprobación de textos sin clave hasta el bloque legal (decisión D1)');
   const render = require('../js/render.js');
   for (const c of I.clubes()) {
     for (const x of I.textosSueltosDelManifest(I.cargarManifest(path.join(ROOT, c, 'manifest.js')), render)) errores.push(`i18n: ${c}/manifest.js: texto que se pinta sin { es, en, nl } y no es neutro: ${x}`);

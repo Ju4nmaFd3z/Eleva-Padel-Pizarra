@@ -39,8 +39,9 @@ const TRADUCIDOS = ['en', 'nl'];
 const PERMITIR_PENDIENTES = true;
 
 /* Textos fijos que no son nombres propios pero no se traducen nunca:
-   la atribución de OpenStreetMap (licencia ODbL, en inglés). */
-const TEXTOS_FIJOS = ['© OpenStreetMap contributors'];
+   la atribución de OpenStreetMap (licencia ODbL, en inglés) y los nombres
+   técnicos de lo que el sitio guarda en el navegador (página legal). */
+const TEXTOS_FIJOS = ['© OpenStreetMap contributors', 'eleva-lang', 'eleva-acceso'];
 
 const textos = () => {
   delete require.cache[require.resolve('../js/translations.js')];
