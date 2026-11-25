@@ -40,9 +40,11 @@ const TRADUCIDOS = ['en', 'nl'];
 const PERMITIR_PENDIENTES = false;
 
 /* Textos fijos que no son nombres propios pero no se traducen nunca:
-   la atribución de OpenStreetMap (licencia ODbL, en inglés) y los nombres
-   técnicos de lo que el sitio guarda en el navegador (página legal). */
-const TEXTOS_FIJOS = ['© OpenStreetMap contributors', 'eleva-lang', 'eleva-acceso'];
+   la atribución de OpenStreetMap (licencia ODbL, en inglés), los nombres
+   técnicos de lo que el sitio guarda en el navegador y los navegadores
+   (página legal). */
+const TEXTOS_FIJOS = ['© OpenStreetMap contributors', 'eleva-lang', 'eleva-acceso',
+  'Google Chrome', 'Mozilla Firefox', 'Safari', 'Microsoft Edge'];
 
 const textos = () => {
   delete require.cache[require.resolve('../js/translations.js')];
@@ -75,8 +77,8 @@ function huella(es) {
   return crypto.createHash('sha256').update(normalizar(es), 'utf8').digest('hex').slice(0, 8);
 }
 
-/* Un texto es neutro si, quitando nombres propios, textos fijos, URL, cuentas,
-   códigos de idioma, cifras, precios, horas, teléfonos, signos y letras
+/* Un texto es neutro si, quitando nombres propios, textos fijos, URL, dominios
+   sueltos (www.aepd.es), rutas del sitio (/pizarra), cuentas, códigos de idioma, cifras, precios, horas, teléfonos, signos y letras
    mayúsculas sueltas (la inicial de una persona), no queda nada. */
 function esNeutro(s, nombres) {
   let r = normalizar(s);
@@ -84,6 +86,8 @@ function esNeutro(s, nombres) {
   const lista = (nombres || textos().nombresPropios).concat(TEXTOS_FIJOS).slice().sort((a, b) => b.length - a.length);
   for (const n of lista) r = r.split(n).join(' ');
   r = r.replace(/https?:\/\/\S+/g, ' ')
+    .replace(/\b(?:[a-z0-9-]+\.)+(?:es|com|org|net|eu|nl|uk)\b/gi, ' ')
+    .replace(/(^|[\s(])\/[a-z0-9/-]*/gi, '$1 ')
     .replace(/@[\w.]+/g, ' ')
     .replace(/\b(ES|EN|NL)\b/g, ' ')
     .replace(/(^|\s)\p{Lu}(?=\s|$)/gu, ' ')

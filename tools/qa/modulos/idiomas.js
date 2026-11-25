@@ -27,9 +27,10 @@
    · sin-salto-scroll: cambiar de idioma a media página (clic a
      1280 con movimiento reducido, toque a 390 con movimiento normal,
      y teclado) no mueve lo que se está leyendo (±2 px en la vista).
-   En sin-espanol, un fragmento en línea que no cambia de idioma
-   (`localStorage`, www.aepd.es) vale dentro de un párrafo traducido
-   cuya traducción lo contiene. Además, cada enlace de WhatsApp (a[data-wa])
+   En sin-espanol solo valen iguales al español los invariables de una
+   lista explícita: nombres propios y textos fijos (tools/i18n.js, con los
+   navegadores), neutros (cifras, URL, dominios, rutas) y el contenido de
+   <code>. Además, cada enlace de WhatsApp (a[data-wa])
    lleva el mensaje de su clave en el idioma: sin text= es fallo.
    Los desbordes en EN/NL los revisa el módulo «responsive» (las
    cinco páginas con idiomas, también a 320 px).
@@ -52,9 +53,8 @@ const baseDe = (pag, entorno) => (PAGINAS[pag].mantenimiento ? entorno.baseMante
 /* Estado de cada texto, calculado en Node desde las fuentes */
 const ENTRADAS = I.entradas();
 const PENDIENTE = l => new Set(ENTRADAS.filter(e => e.estado[l] === 'pendiente').map(e => e.id));
-/* Traducciones de cada idioma, sin el marcado en línea (**…**, `…`, [texto](destino)) */
+/* Texto visible de una fuente: sin el marcado en línea (**…**, `…`, [texto](destino)) */
 const sinMarcado = s => I.normalizar(String(s).replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*\*|`/g, ''));
-const TRADUCIDO = l => ENTRADAS.filter(e => e.estado[l] === 'al-dia').map(e => sinMarcado(e.obj[l]));
 /* Traducciones iguales al español a propósito («Pools», nombres en claves,
    enlaces a la ayuda de cada navegador); se comparan sin el marcado en línea */
 const IGUALES = l => ENTRADAS.filter(e => !e.soloEs && e.obj[l] && I.normalizar(e.obj[l]) === I.normalizar(e.es)).map(e => sinMarcado(e.es));
@@ -81,15 +81,13 @@ function volcar() {
   };
   const marcadoEs = e => { const l = e.closest('[lang]'); return !!l && l.getAttribute('lang') === 'es' && l !== document.documentElement; };
   const bloque = e => { let b = e; while (b && EN_LINEA.has(b.tagName) && b.parentElement) b = b.parentElement; return b; };
-  /* El párrafo del marcado en línea (data-i18n-html): sube también por <a> y <code> */
-  const parrafo = e => { let b = e; while (b && (EN_LINEA.has(b.tagName) || b.tagName === 'A' || b.tagName === 'CODE') && b.parentElement) b = b.parentElement; return b; };
   const out = [];
   const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let n; (n = w.nextNode());) {
     const t = n.textContent.replace(/\s+/g, ' ').trim();
     const e = n.parentElement;
     if (!t || !e || e.closest('script, style, noscript, template')) continue;
-    out.push({ tipo: 'texto', ruta: ruta(e), v: t, contexto: bloque(e).textContent.replace(/\s+/g, ' ').trim(), parrafo: parrafo(e).textContent.replace(/\s+/g, ' ').trim(), es: marcadoEs(e) });
+    out.push({ tipo: 'texto', ruta: ruta(e), v: t, contexto: bloque(e).textContent.replace(/\s+/g, ' ').trim(), codigo: !!e.closest('code'), es: marcadoEs(e) });
   }
   for (const e of document.querySelectorAll('body [alt], body [aria-label], body [title], body [placeholder]')) {
     const claves = {};
@@ -152,19 +150,15 @@ function sinEspanol(pag, lang, nv) {
   return caso([pag, 'sin-espanol', lang, nv].join(' · '), pag, nv === '390x844', async (entorno, ok, cargarP, f) => {
     const v = vista(nv);
     const es = await cargarP(pag, v);
-    const volcadoEs = await es.p.evaluate(volcar);
-    const textosEs = new Set(volcadoEs.map(x => x.v));
-    const parrafosEs = new Set(volcadoEs.map(x => x.parrafo).filter(Boolean));
+    const textosEs = new Set((await es.p.evaluate(volcar)).map(x => x.v));
     const r = await cargarP(pag, v, { lang });
     const pend = PENDIENTE(lang);
     const nombres = T.nombresPropios.concat(IGUALES(lang));
     ok(await r.p.evaluate(() => document.documentElement.lang) === lang, 'lang de <html>', await r.p.evaluate(() => document.documentElement.lang));
     for (const x of await r.p.evaluate(volcar)) {
       if (!textosEs.has(x.v) || I.esNeutro(x.v, nombres) || (x.contexto && I.esNeutro(x.contexto, nombres))) continue;
-      /* Fragmento en línea que no cambia de idioma (un navegador, `localStorage`,
-         www.aepd.es) dentro de un párrafo traducido: vale si el párrafo no es el
-         español y la traducción de este idioma lo contiene tal cual */
-      if (x.parrafo && x.parrafo !== x.v && !parrafosEs.has(x.parrafo) && TRADUCIDO(lang).some(t => t.includes(x.v))) continue;
+      /* <code>: nombres técnicos (`localStorage`, `HttpOnly`), iguales en todos los idiomas */
+      if (x.codigo) continue;
       /* Igual que en español: solo vale si es una traducción pendiente declarada */
       const pendiente = x.es || (x.clave && pend.has(x.clave));
       if (pendiente && I.PERMITIR_PENDIENTES) continue;

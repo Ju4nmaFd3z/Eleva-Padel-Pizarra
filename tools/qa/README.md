@@ -81,8 +81,8 @@ que falla.
 - **idiomas**: en `/`, `/pizarra`, 404 y mantenimiento, a 390 (táctil) y 1280 px,
   EN y NL sin ningún texto, atributo, `<title>`, meta description ni mensaje de
   WhatsApp igual al de la página en español, salvo nombres propios y neutros
-  (`tools/i18n.js`), traducciones iguales a propósito y fragmentos en línea que no
-  cambian de idioma dentro de un párrafo traducido (`localStorage`, www.aepd.es); un texto pendiente de
+  (`tools/i18n.js`: también navegadores, dominios sueltos y rutas del sitio), el
+  contenido de `<code>` y traducciones iguales a propósito; un texto pendiente de
   traducir solo pasa si va marcado `lang="es"` y mientras `PERMITIR_PENDIENTES`
   sea `true` (hoy `false`: ninguno pasa). Ida y vuelta ES → EN → NL → ES con el teclado (tras crearse la pista
   3D y en reposo): `outerHTML` idéntico, comentarios `<!--gen-->` incluidos. Con
