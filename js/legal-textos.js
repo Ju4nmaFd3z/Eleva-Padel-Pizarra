@@ -440,6 +440,7 @@
       es: 'Google Maps (Google)',
       en: 'Google Maps (Google)',
       nl: 'Google Maps (Google)',
+      igual: ['en', 'nl'],
       h: { en: '5ff29619', nl: '5ff29619' }
     },
     'legal.priv.destMapsDd': {

@@ -339,7 +339,7 @@
         { img: 'pool_5a_masculina',  nombre: { es: 'Pool 5.ª masculina', en: 'Men\'s 5th cat. pool', nl: 'Pool 5e klasse heren', h: { en: '649c547c', nl: '649c547c' } }, color: '#8D7965' },
         { img: 'pool_5a_femenina',   nombre: { es: 'Pool 5.ª femenina', en: 'Women\'s 5th cat. pool', nl: 'Pool 5e klasse dames', h: { en: '5498e7a6', nl: '5498e7a6' } }, color: '#E38B9B' },
         { img: 'pool_mixta',         nombre: { es: 'Pool mixta', en: 'Mixed pool', nl: 'Pool gemengd', h: { en: 'a6b93a5d', nl: 'a6b93a5d' } }, color: '#945BA4', colorAro: '#7D72AB' },
-        { img: 'pool_rocha',         nombre: { es: 'Pool Rocha', en: 'Rocha pool', nl: 'Pool Rocha', h: { en: 'd3482be1', nl: 'd3482be1' } }, color: '#A49183' }
+        { img: 'pool_rocha',         nombre: { es: 'Pool Rocha', en: 'Rocha pool', nl: 'Pool Rocha', igual: ['nl'], h: { en: 'd3482be1', nl: 'd3482be1' } }, color: '#A49183' }
       ]
     },
 

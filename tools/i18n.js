@@ -167,15 +167,21 @@ function erroresDeFormato(lista) {
   const destinos = s => [...String(s).matchAll(/\]\(([^)\s]+)\)/g)].map(m => m[1]).sort().join(' ');
   for (const k of clavesRepetidas()) err.push(`${k}: está en js/translations.js y en js/legal-textos.js (una sola fuente por texto)`);
   for (const e of lista) {
-    const permitidas = new Set(IDIOMAS.concat(['h', 'soloEs']));
+    const permitidas = new Set(IDIOMAS.concat(['h', 'soloEs', 'igual']));
     for (const k of Object.keys(e.obj)) if (!permitidas.has(k)) err.push(`${e.id}: campo desconocido «${k}»`);
     if (!normalizar(e.es)) err.push(`${e.id}: el español está vacío`);
     if (e.soloEs) {
-      if (e.obj.en != null || e.obj.nl != null || e.obj.h) err.push(`${e.id}: soloEs no lleva traducciones ni huella`);
+      if (e.obj.en != null || e.obj.nl != null || e.obj.h || e.obj.igual) err.push(`${e.id}: soloEs no lleva traducciones, huella ni igual`);
       continue;
     }
+    const igual = e.obj.igual;
+    if (igual !== undefined && !(Array.isArray(igual) && igual.length && igual.every(l => TRADUCIDOS.includes(l)))) err.push(`${e.id}: igual tiene que ser una lista de idiomas traducidos (['en', 'nl'])`);
     for (const l of TRADUCIDOS) {
       const v = e.obj[l];
+      /* Una traducción igual al español solo vale si es neutra o va marcada con igual */
+      const marcada = Array.isArray(igual) && igual.includes(l);
+      if (v != null && v !== '' && normalizar(v) === normalizar(e.es) && !marcada && !esNeutro(e.es)) err.push(`${e.id} (${l}): la traducción copia el español; si es a propósito, márcalo con igual: ['${l}']`);
+      if (marcada && normalizar(v) !== normalizar(e.es)) err.push(`${e.id} (${l}): marcado igual pero la traducción no es igual al español`);
       if (v != null && v !== '' && marcas(v) !== marcas(e.es)) err.push(`${e.id} (${l}): no tiene las mismas marcas {…} que el español`);
       if (v != null && v !== '' && destinos(v) !== destinos(e.es)) err.push(`${e.id} (${l}): no enlaza a los mismos destinos [texto](destino) que el español`);
     }

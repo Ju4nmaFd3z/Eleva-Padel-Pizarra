@@ -68,7 +68,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
     revisadas integradas) `PERMITIR_PENDIENTES` es `false` en `tools/i18n.js` y un pendiente es
     **error** de `validar.js`: un texto nuevo entra en el mismo commit que su EN y NL revisados. `validar.js`
     falla también por un texto visible sin clave, una clave sin uso o la lista de nombres
-    propios distinta de la del código. Textos nuevos: primero en español, a revisión del
+    propios distinta de la del código, y por una traducción que copia el español sin la marca
+    `igual: ['en', 'nl']` (solo «Pools» y similares; lo neutro no la necesita). Textos nuevos: primero en español, a revisión del
     cliente; EN (británico) y NL (de los Países Bajos) después, con traductor y revisor.
     `node tools/i18n.js estado` lista lo pendiente; `exportar` lo saca para traducir.
     - **Nombres propios que no se traducen** (copia exacta de `NOMBRES_PROPIOS` en `js/translations.js`; `validar.js` comprueba que coinciden):

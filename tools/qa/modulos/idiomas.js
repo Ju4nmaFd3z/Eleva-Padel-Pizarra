@@ -55,9 +55,9 @@ const ENTRADAS = I.entradas();
 const PENDIENTE = l => new Set(ENTRADAS.filter(e => e.estado[l] === 'pendiente').map(e => e.id));
 /* Texto visible de una fuente: sin el marcado en línea (**…**, `…`, [texto](destino)) */
 const sinMarcado = s => I.normalizar(String(s).replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*\*|`/g, ''));
-/* Traducciones iguales al español a propósito («Pools», nombres en claves,
-   enlaces a la ayuda de cada navegador); se comparan sin el marcado en línea */
-const IGUALES = l => ENTRADAS.filter(e => !e.soloEs && e.obj[l] && I.normalizar(e.obj[l]) === I.normalizar(e.es)).map(e => sinMarcado(e.es));
+/* Traducciones iguales al español a propósito: solo las marcadas en la fuente
+   con `igual` («Pools»…; validar.js exige la marca a toda copia del español) */
+const IGUALES = l => ENTRADAS.filter(e => !e.soloEs && Array.isArray(e.obj.igual) && e.obj.igual.includes(l)).map(e => sinMarcado(e.es));
 const valor = (clave, l) => {
   const e = T.textos[clave];
   const v = (e && (e[l] || e.es)) || '';

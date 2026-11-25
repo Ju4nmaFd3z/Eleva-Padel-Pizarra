@@ -11,6 +11,9 @@
    · Sin en/nl: traducción pendiente. El navegador pinta el español con
      lang="es" (nunca como si fuera inglés o neerlandés) y validar.js lo avisa.
    · soloEs: true → solo en español a propósito (og:*, ver CLAUDE.md).
+   · igual: ['en', 'nl'] → la traducción es igual al español a propósito
+     («Pools»). Sin la marca, una traducción que copia el español es error
+     de validar.js (salvo si es neutra: nombres propios, cifras…).
    · {codigo}: el código del idioma activo (ES, EN, NL).
    · Marcado en línea (solo en los textos que se pintan con
      data-i18n-html, p. ej. los de la página legal, js/legal-textos.js):
@@ -47,7 +50,7 @@
     'nav.network': { es: 'Eleva Pádel', en: 'Eleva Pádel', nl: 'Eleva Pádel', h: { en: 'c3ff5107', nl: 'c3ff5107' } },
     'nav.club': { es: 'El club', en: 'The club', nl: 'De club', h: { en: '6921d1f3', nl: '6921d1f3' } },
     'nav.classes': { es: 'Clases', en: 'Lessons', nl: 'Lessen', h: { en: '86bcee36', nl: '86bcee36' } },
-    'nav.pools': { es: 'Pools', en: 'Pools', nl: 'Pools', h: { en: 'd46fbd72', nl: 'd46fbd72' } },
+    'nav.pools': { es: 'Pools', en: 'Pools', nl: 'Pools', igual: ['en', 'nl'], h: { en: 'd46fbd72', nl: 'd46fbd72' } },
     'nav.cancellations': { es: 'Cancelaciones', en: 'Cancellations', nl: 'Annuleren', h: { en: 'f0f88b82', nl: 'f0f88b82' } },
     'nav.collab': { es: 'Colaborar', en: 'Partnerships', nl: 'Samenwerken', h: { en: '969eae1e', nl: '969eae1e' } },
     'nav.contact': { es: 'Contacto', en: 'Contact', nl: 'Contact', h: { en: '771b96b0', nl: '771b96b0' } },
@@ -69,7 +72,7 @@
     'classes.vat': { es: 'Precios con IVA incluido.', en: 'Prices include VAT.', nl: 'Prijzen inclusief btw.', h: { en: '814e7dfb', nl: '814e7dfb' } },
     'classes.cta': { es: 'Consultar por WhatsApp', en: 'Ask us on WhatsApp', nl: 'Vraag het via WhatsApp', h: { en: '6aca4b2d', nl: '6aca4b2d' } },
 
-    'pools.heading': { es: 'Pools', en: 'Pools', nl: 'Pools', h: { en: 'd46fbd72', nl: 'd46fbd72' } },
+    'pools.heading': { es: 'Pools', en: 'Pools', nl: 'Pools', igual: ['en', 'nl'], h: { en: 'd46fbd72', nl: 'd46fbd72' } },
     'pools.cta': { es: 'Consultar por WhatsApp', en: 'Ask us on WhatsApp', nl: 'Vraag het via WhatsApp', h: { en: '6aca4b2d', nl: '6aca4b2d' } },
 
     'other.heading': { es: 'Otros servicios', en: 'Other services', nl: 'Overige diensten', h: { en: 'f0fdfba1', nl: 'f0fdfba1' } },
