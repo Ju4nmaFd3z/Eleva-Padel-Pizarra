@@ -21,6 +21,11 @@
       marcado en línea (los de la página legal salen de js/legal-textos.js);
       en /privacidad, además, la zona de cancelaciones desde el manifest de
       pizarra (ZONAS_DE). Así cada texto tiene una sola fuente.
+   3. URL del sitio, desde la constante SITIO de tools/sitio.js (la única):
+      href/content de cada <link>/<meta> con data-sitio="/ruta" (canónicas,
+      hreflang, og:url, og:image), el JSON-LD de / (la marca y sus clubes) y
+      de cada club, sitemap.xml (/ y cada club; /privacidad y la 404 llevan
+      noindex) y la línea Sitemap de robots.txt.
    Todo lo confirmado se ve sin JavaScript. Vercel no ejecuta nada: lo
    generado se versiona. El pre-commit lo ejecuta solo.
    ========================================================= */
@@ -30,7 +35,7 @@ const path = require('path');
 const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = 'https://eleva-padel-pizarra.vercel.app';
+const { SITIO } = require('./sitio.js');
 const render = require(path.join(ROOT, 'js/render.js'));
 
 /* Páginas sin club que llevan textos de interfaz */
@@ -114,6 +119,53 @@ function aplicarTextos(html, donde) {
   return html;
 }
 
+/* URL absolutas del sitio: <link>/<meta> con data-sitio="/ruta" */
+function urlsDelSitio(html, donde) {
+  return html.replace(/<(link|meta)\b[^>]*\sdata-sitio="([^"]*)"[^>]*>/g, (etiqueta, tag, ruta) => {
+    if (!ruta.startsWith('/')) throw new Error(`${donde}: data-sitio="${ruta}" tiene que empezar por /`);
+    const atr = tag === 'link' ? 'href' : 'content';
+    const re = new RegExp('(\\s' + atr + '=")[^"]*(")');
+    if (!re.test(etiqueta)) throw new Error(`${donde}: <${tag} data-sitio> sin atributo ${atr}`);
+    return etiqueta.replace(re, (x, a, b) => a + render.esc(SITIO + ruta) + b);
+  });
+}
+
+/* JSON-LD de / : la marca y sus clubes (los marcadores van fuera del <script>) */
+function jsonldMarca() {
+  const subs = clubes().map(slug => {
+    const d = cargar(path.join(ROOT, slug, 'manifest.js'), '__ELEVA__');
+    return { '@type': 'SportsActivityLocation', '@id': SITIO + '/' + d.sede.slug + '#club', name: d.sede.nombre, url: SITIO + '/' + d.sede.slug };
+  });
+  const o = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': SITIO + '/#organization',
+    name: 'Eleva Pádel',
+    url: SITIO + '/',
+    logo: SITIO + '/apple-touch-icon.png',
+    subOrganization: subs.length === 1 ? subs[0] : subs
+  };
+  return '<!--gen:jsonld--><script type="application/ld+json">\n' + JSON.stringify(o, null, 2) + '\n</script><!--/gen:jsonld-->';
+}
+
+/* sitemap.xml y robots.txt: solo las páginas indexables (/ y cada club).
+   Sin <lastmod>: no hay una fecha fiable de cambio sin un paso de build (la
+   del último commit cambia al hacer el propio commit), y una fecha falsa es
+   peor que ninguna. */
+function sitemap() {
+  const rutas = ['/'].concat(clubes().map(c => '/' + c));
+  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    rutas.map(r => '  <url><loc>' + SITIO + r + '</loc></url>\n').join('') + '</urlset>\n';
+}
+function robots() {
+  return 'User-agent: *\nAllow: /\n\nSitemap: ' + SITIO + '/sitemap.xml\n';
+}
+function generarArchivo(rel, contenido) {
+  const archivo = path.join(ROOT, rel);
+  const original = fs.existsSync(archivo) ? leerLF(archivo) : '';
+  return { rel, archivo, html: contenido, cambiado: contenido !== original };
+}
+
 /* Zonas generadas desde el manifest (data-gen="…", entre <!--gen--> y <!--/gen-->) */
 function zonas(html, s, donde) {
   return html.replace(/(data-gen="([a-z-]+)"[^>]*>)<!--gen-->[\s\S]*?<!--\/gen-->/g, (m, apertura, id) => {
@@ -142,7 +194,7 @@ function generar(slug) {
 
   /* JSON-LD: los marcadores van fuera del <script> para que el JSON sea válido */
   html = html.replace(/<!--gen:jsonld-->[\s\S]*?<!--\/gen:jsonld-->/, () =>
-    '<!--gen:jsonld--><script type="application/ld+json">\n' + render.jsonld(data, BASE) + '\n</script><!--/gen:jsonld-->');
+    '<!--gen:jsonld--><script type="application/ld+json">\n' + render.jsonld(data, SITIO) + '\n</script><!--/gen:jsonld-->');
 
   html = zonas(html, s, slug);
 
@@ -183,6 +235,7 @@ function generar(slug) {
     return `<a${a} href="${url ? render.esc(url) : '#'}"${b.replace(/\shidden\b/g, '')} data-href="${clave}"${d.replace(/\shidden\b/g, '')}${url ? '' : ' hidden'}>`;
   });
 
+  html = urlsDelSitio(html, slug + '/index.html');
   html = aplicarTextos(html, slug + '/index.html');
   return { rel: slug + '/index.html', archivo: htmlPath, html, cambiado: html !== original };
 }
@@ -192,6 +245,8 @@ function generarPagina(rel) {
   const original = leerLF(archivo);
   let html = original;
   if (ZONAS_DE[rel]) html = zonas(html, crearClub(ZONAS_DE[rel]).s, rel);
+  if (rel === 'index.html') html = html.replace(/<!--gen:jsonld-->[\s\S]*?<!--\/gen:jsonld-->/, () => jsonldMarca());
+  html = urlsDelSitio(html, rel);
   html = aplicarTextos(html, rel);
   return { rel, archivo, html, cambiado: html !== original };
 }
@@ -213,7 +268,7 @@ function generarMantenimiento() {
 function todo() {
   return clubes().map(generar)
     .concat(PAGINAS.filter(p => fs.existsSync(path.join(ROOT, p))).map(generarPagina))
-    .concat([generarMantenimiento()]);
+    .concat([generarMantenimiento(), generarArchivo('sitemap.xml', sitemap()), generarArchivo('robots.txt', robots())]);
 }
 
 if (require.main === module) {

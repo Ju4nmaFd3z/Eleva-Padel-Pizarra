@@ -20,7 +20,10 @@
    · mismo ?v= en todos los HTML
    · ningún <script> inline salvo JSON-LD (la CSP es 'self')
    · lo generado al día: HTML de cada club, textos de interfaz de cada
-     página y página de mantenimiento (tools/generar.js)
+     página, página de mantenimiento, sitemap.xml y robots.txt
+     (tools/generar.js)
+   · la URL del sitio solo sale de SITIO (tools/sitio.js): escrita a mano
+     en cualquier archivo versionado (o la de *.vercel.app) es error
    ========================================================= */
 'use strict';
 const fs = require('fs');
@@ -168,6 +171,36 @@ try {
     if (r.cambiado) errores.push(`${r.rel} no está generado (manifest o js/translations.js): ejecuta node tools/generar.js`);
   }
 } catch (e) { errores.push('tools/generar.js falló: ' + e.message); }
+
+/* 8. La URL del sitio sale solo de tools/sitio.js (SITIO): en los archivos
+   versionados (salvo la documentación .md) solo puede aparecer donde la
+   escribe tools/generar.js —atributos de los <link>/<meta> con data-sitio,
+   zonas <!--gen:jsonld-->, sitemap.xml y robots.txt— y ni rastro de la de
+   *.vercel.app. Lo generado ya se compara en el punto 7. */
+{
+  const { SITIO } = require('./sitio.js');
+  const escapar = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const reSitio = new RegExp(escapar(SITIO.replace(/^https?:\/\//, '')) + '|[a-z0-9-]+\\.vercel\\.app', 'gi');
+  const GENERADOS = ['sitemap.xml', 'robots.txt', 'tools/sitio.js'];
+  const { execFileSync } = require('child_process');
+  let versionados = [];
+  try { versionados = execFileSync('git', ['ls-files', '-z'], { cwd: ROOT, encoding: 'utf8' }).split('\0').filter(Boolean); }
+  catch (e) { errores.push('URL del sitio: no se puede listar lo versionado con git ls-files: ' + e.message); }
+  for (const r of versionados) {
+    if (!/\.(html|js|mjs|css|json|xml|txt|svg)$/.test(r) || r.startsWith('tools/qa/node_modules/') || GENERADOS.includes(r)) continue;
+    const archivo = path.join(ROOT, r);
+    if (!fs.existsSync(archivo)) continue;
+    let s = fs.readFileSync(archivo, 'utf8');
+    if (r.endsWith('.html')) {
+      s = s.replace(/<!--gen:jsonld-->[\s\S]*?<!--\/gen:jsonld-->/g, '')
+        .replace(/<(?:link|meta)\b[^>]*\sdata-sitio="[^"]*"[^>]*>/g, '');
+    }
+    s.split('\n').forEach((l, i) => {
+      const m = l.match(reSitio);
+      if (m) errores.push(`${r}:${i + 1}: URL del sitio escrita a mano («${m[0]}»): sale de SITIO en tools/sitio.js (data-sitio="/ruta" en <link>/<meta>, o tools/generar.js)`);
+    });
+  }
+}
 
 console.log(`\nValidación (${HOY.toISOString().slice(0, 10)}, plazo ${DIAS} días)\n`);
 if (info.length) console.log('Pendientes e info:\n  ' + info.join('\n  ') + '\n');

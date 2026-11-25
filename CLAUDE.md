@@ -21,6 +21,20 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `script-src 'self'`; `js/idioma.js`, `translations.js`, `main.js` y el sprite se sirven
   también en mantenimiento). Sin JS, en español. Sus textos los escribe `generar.js`.
 
+## Dominio (elevapadel.com, preparado, sin activar)
+- **Una sola constante**: `SITIO` en `tools/sitio.js` (`https://elevapadel.com`). De ella salen,
+  con `node tools/generar.js`, las canónicas, hreflang, og:url y og:image (`<link>`/`<meta>` con
+  `data-sitio="/ruta"`), el JSON-LD de `/` y de cada club, `sitemap.xml` (`/` y cada club, sin
+  `lastmod`) y su línea en `robots.txt`. `validar.js` falla si la URL del sitio o la de
+  `*.vercel.app` aparece escrita a mano en otro archivo versionado (salvo los `.md`).
+- **El dominio tiene que servir HTTPS antes de llevar esto a `main` y antes de quitar el
+  mantenimiento**: si no, las canónicas y el sitemap apuntan a un dominio muerto. A 24/11/2026
+  `elevapadel.com` no resolvía en DNS. Plan (compra o propiedad, alta en Vercel, `www` con 301 al
+  dominio sin `www`, 301 de `eleva-padel-pizarra.vercel.app` sin tocar las previews, HTTPS, salida
+  del mantenimiento, Search Console y cambios fuera de la web): documento DOMINIO.md del cierre,
+  fuera del repo. Nada en Vercel ni DNS sin OK explícito.
+- `/privacidad` y la 404 llevan `noindex` y no tienen canónica ni entran en el sitemap.
+
 ## Reglas que no se rompen
 1. **No inventar datos.** Solo se publica lo confirmado por el cliente. Lo
    pendiente se marca `PENDIENTE_CLUB` / `PENDIENTE_MARCA` y no se pinta. El valor
@@ -239,8 +253,8 @@ convención de commits en `CONTRIBUTING.md`; alta de clubes en `clubs/_plantilla
   `{ es, en, nl }` (la fase A de i18n no lo migró); se hace con el borrador (punto 9).
 - `tools/validar.js`: pendientes, fechas de verificación (y que todo bloque que caduca
   publicado lleve `verificado` y `fuente`), eventos, i18n (regla 11: huellas, pendientes,
-  textos sin clave, claves sin uso, nombres propios), cache-buster, scripts inline y todo lo
-  generado al día. `tools/i18n.js`: huella, neutros, `estado` y `exportar`.
+  textos sin clave, claves sin uso, nombres propios), cache-buster, scripts inline, todo lo
+  generado al día (también `sitemap.xml` y `robots.txt`) y la URL del sitio solo desde `SITIO`. `tools/i18n.js`: huella, neutros, `estado` y `exportar`.
 - `tools/qa/`: batería permanente (Playwright 1.63.0 + axe-core 4.13.0, versiones exactas, con
   su propio `package.json`; `npm ci` dentro de `tools/qa`, nunca en la raíz). Punto de entrada
   único `node tools/qa/bateria.js` (arranca su servidor local normal y otro con mantenimiento;

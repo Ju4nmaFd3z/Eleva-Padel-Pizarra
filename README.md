@@ -43,6 +43,11 @@ node tools/generar.js    # pinta el HTML de cada club desde su manifest
 node tools/validar.js    # pendientes, fechas, avisos, i18n, cache-buster y HTML al día
 ```
 
+La URL del sitio (`https://elevapadel.com`) está en una sola constante, `SITIO` de
+`tools/sitio.js`: de ahí salen canónicas, og:url, og:image, JSON-LD, `sitemap.xml` y
+`robots.txt` (los escribe `generar.js`; no se editan a mano). El dominio tiene que servir
+HTTPS antes de llevar esto a `main` y de quitar el mantenimiento.
+
 Con los hooks activados lo hace Git solo en cada commit:
 
 ```sh
@@ -205,7 +210,7 @@ como plantilla vacía.
 ├── CONTRIBUTING.md      ← convención de commits
 ├── CHANGELOG.md         ← historial por etapas
 ├── CLAUDE.md            ← reglas, arquitectura y decisiones del proyecto
-├── robots.txt · sitemap.xml · vercel.json
+├── robots.txt · sitemap.xml ← generados desde tools/sitio.js · vercel.json
 └── .vercelignore · .gitignore · .gitattributes (LF) · .editorconfig
 ```
 
