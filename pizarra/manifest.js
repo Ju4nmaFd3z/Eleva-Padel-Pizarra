@@ -43,7 +43,7 @@
       direccion:       'Pasaje Jerez s/n · 29560 Pizarra, Málaga',
       direccionPostal: { streetAddress: 'Pasaje Jerez s/n', postalCode: '29560', addressLocality: 'Pizarra', addressRegion: 'Málaga', addressCountry: 'ES' },
       mapsUrl:         'https://maps.app.goo.gl/Zapc2bCKXtFfKwTw5',
-      geo:             { lat: 36.76933415706922, lng: -4.709440122747979, verificado: '2026-09-30', fuente: 'Juanma' },
+      geo:             { lat: 36.76933415706922, lng: -4.709440122747979, verificado: '2026-09-30', fuente: 'propietario' },
       mapImage:        '../assets/maps/pizarra.svg',   /* generado con clubs/_plantilla/generar-mapa.js */
       horario:         PENDIENTE_CLUB
     },
