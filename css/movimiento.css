@@ -230,10 +230,8 @@ html.mov .seccion::before, html.mov .seccion::after { animation-play-state: paus
 /* ── Keyframes ──────────────────────────────────────────────────────
    Zoom exponencial (escala = S^t) en pasos: S = --prof-escala-corte (30)
    en los cortes y 9 en la marca (el del hero lo calcula scroll.js).
-   Generados con este guion de Node (fuera del repo):
-     const kf = (nombre, S, n) => '@keyframes ' + nombre + ' { ' + Array.from({ length: n + 1 },
-       (_, i) => (+(i / n * 100).toFixed(2)) + '% { scale: ' + (+Math.pow(S, i / n).toFixed(4)) + '; }').join(' ') + ' }';
-     console.log(kf('sd-corte-logo', 30, 10), kf('sd-hero-marca', 9, 20)); */
+   Cada keyframe i de n (n = 10 en sd-corte-logo, 20 en sd-hero-marca) va
+   en el i/n·100 % con scale = S^(i/n), redondeada a 4 decimales. */
 @keyframes sd-hero-abre  { 0%, 55% { opacity: 1; } 92%, 100% { opacity: 0; } }
 @keyframes sd-corte-telon { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes sd-abanico {
